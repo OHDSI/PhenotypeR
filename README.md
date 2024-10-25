@@ -5,8 +5,6 @@
 
 <!-- badges: start -->
 
-> **This package is under development and not yet ready for use.**
-
 [![R-CMD-check](https://github.com/ohdsi/PhenotypeR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ohdsi/PhenotypeR/actions/workflows/R-CMD-check.yaml)
 [![Lifecycle:Experimental](https://img.shields.io/badge/Lifecycle-Experimental-339999)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 
@@ -73,7 +71,7 @@ result <- cdm$gibleed |>
 
 ``` r
 summary(result)
-#> A summarised_result object with 16025 rows, 49 different result_id, 1 different
+#> A summarised_result object with 15951 rows, 49 different result_id, 1 different
 #> cdm names, and 24 settings.
 #> CDM names: Synthea synthetic health database.
 #> Settings: package_name, package_version, result_type, timing, table_name,
