@@ -47,7 +47,7 @@ shinyDiagnostics <- function(result,
     OmopViewer::exportStaticApp(
       directory = directory,
       # background = getBackground(result),
-      summary = FALSE,
+      summary = TRUE,
       panels = list(
                    "Database details" = c("Snapshot"= "summarise_omop_snapshot",
                                           "Observation periods"= "summarise_observation_period"),
@@ -64,9 +64,20 @@ shinyDiagnostics <- function(result,
                      "Large scale characteristics" = "summarise_large_scale_characteristics"),
                    "Population diagnostics" = c(
                      "Incidence" = "incidence",
-                     "Period prevalence" = "period_prevalence")
+                     "Incidence attrition" = "incidence_attrition",
+                     "Prevalence" = "prevalence",
+                     "Prevalence attrition" = "prevalence_attrition")
                    )
     )
+
+ # replace md background file
+ file.copy(from = system.file("extdata",
+                                  "background.md",
+                                  package = "PhenotypeR"),
+               to = file.path(directory, "shiny",
+                              "background.md"),
+               overwrite = TRUE)
+
 }
 
 getBackground <- function(result) {
