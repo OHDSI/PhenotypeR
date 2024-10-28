@@ -16,13 +16,16 @@ sampling will be performed}
 A summarised result
 }
 \description{
-Population-level diagnostics
+phenotypeR diagnostics on the cohort of input with relation to a denomination
+population. Diagnostics include:
+
+* Incidence
+* Prevalence
 }
 \examples{
 \donttest{
 library(IncidencePrevalence)
 cdm <- mockIncidencePrevalenceRef(sampleSize = 1000)
-cdm <- generateDenominatorCohortSet(cdm, name = "denom")
 pop_diag <- populationDiagnostics(cohort = cdm$outcome,
                                   populationSample = 250)
 CDMConnector::cdm_disconnect(cdm)

@@ -39,7 +39,14 @@ matching. If NULL, no sampling will be performed.}
 A summarised result
 }
 \description{
-Phenotype a cohort
+This comprises all the diagnostics that are being offered in this package,
+this includes:
+
+* A diagnostics on the database via `databaseDiagnostics`.
+* A diagnostics on the cohort_codelist attribute of the cohort via `codelistDiagnostics`.
+* A diagnostics on the cohort via `cohortDiagnostics`.
+* A diagnostics on the population via `populationDiagnostics`.
+* A diagnostics on the matched cohort via `matchedDiagnostics`.
 }
 \examples{
 \donttest{

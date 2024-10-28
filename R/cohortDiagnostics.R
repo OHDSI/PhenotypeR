@@ -1,5 +1,14 @@
 #' Run cohort-level diagnostics
 #'
+#' @description
+#' Runs phenotypeR diagnostics on the cohort.
+#' The diganotics include:
+#' * Age groups and sex summarised.
+#' * A summary of visits of everyone in the cohort using visit_occurrence table.
+#' * A summary of age and sex density of the cohort.
+#' * Attritions of the cohorts.
+#' * Overlap between cohorts (if more than one cohort is being used).
+#'
 #' @inheritParams cohortDoc
 #'
 #' @return A summarised result

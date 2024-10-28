@@ -18,7 +18,12 @@ addCodelistAttribute(cohort, codelist, cohortName = names(codelist))
 A cohort
 }
 \description{
-Adds the cohort_codelist attribute to a cohort
+`addCodelistAttribute()` allows the users to add a codelist to a cohort in
+OMOP CDM.
+
+This is particularly important for the use of `codelistDiagnostics()`, as the
+underlying assumption is that the cohort that is fed into
+`codelistDiagnostics()` has a cohort_codelist attribute attached to it.
 }
 \examples{
 \donttest{
