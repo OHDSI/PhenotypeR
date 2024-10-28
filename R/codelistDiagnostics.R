@@ -1,5 +1,14 @@
 #' Run codelist-level diagnostics
 #'
+#' @description
+#' `codelistDiagnostics()` runs phenotypeR diagnostics on the cohort_codelist
+#' attribute on the cohort. Thus codelist attribute of the cohort must be
+#' populated. If it is missing then it could be populated using
+#' `addCodelistAttribute()` function.
+#'
+#' Furthermore `codelistDiagnostics()` requires achilles tables to be present in
+#' the cdm so that concept counts could be derived.
+#'
 #' @param cohort A cohort table in a cdm reference. The cohort_codelist
 #' attribute must be populated. The cdm reference must contain achilles
 #' tables as these will be used for deriving concept counts.

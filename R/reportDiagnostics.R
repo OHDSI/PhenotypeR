@@ -1,4 +1,3 @@
-
 #' Create a report summarising your phenotyping results
 #'
 #' @inheritParams resultDoc

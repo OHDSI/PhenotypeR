@@ -15,7 +15,13 @@ tables as these will be used for deriving concept counts.}
 A summarised result
 }
 \description{
-Run codelist-level diagnostics
+`codelistDiagnostics()` runs phenotypeR diagnostics on the cohort_codelist
+attribute on the cohort. Thus codelist attribute of the cohort must be
+populated. If it is missing then it could be populated using
+`addCodelistAttribute()` function.
+
+Furthermore `codelistDiagnostics()` requires achilles tables to be present in
+the cdm so that concept counts could be derived.
 }
 \examples{
 \donttest{

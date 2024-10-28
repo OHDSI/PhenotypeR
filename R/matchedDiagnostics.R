@@ -1,5 +1,18 @@
 #' Compare characteristics of cohort matched to database population
 #'
+#' @description
+#' A summary of the cohort that is matched to the original cohort that has been
+#' given by the user. Such summary contains basic cohort summary including
+#' number of visits within one year prior of the cohort_start_date, as well as
+#' a large scale charactersitics using the following domians of OMOP CDM:
+#'
+#' * condition_occurrence
+#' * visit_occurrence
+#' * measurement
+#' * procedure_occurrence
+#' * observation
+#' * drug_exposure
+#'
 #' @inheritParams cohortDoc
 #' @inheritParams matchedSampleDoc
 #'

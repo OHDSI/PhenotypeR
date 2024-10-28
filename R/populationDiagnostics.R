@@ -1,5 +1,12 @@
 #' Population-level diagnostics
 #'
+#' @description
+#' phenotypeR diagnostics on the cohort of input with relation to a denomination
+#' population. Diagnostics include:
+#'
+#' * Incidence
+#' * Prevalence
+#'
 #' @inheritParams cohortDoc
 #' @inheritParams populationSampleDoc
 #'
@@ -10,7 +17,6 @@
 #' \donttest{
 #' library(IncidencePrevalence)
 #' cdm <- mockIncidencePrevalenceRef(sampleSize = 1000)
-#' cdm <- generateDenominatorCohortSet(cdm, name = "denom")
 #' pop_diag <- populationDiagnostics(cohort = cdm$outcome,
 #'                                   populationSample = 250)
 #' CDMConnector::cdm_disconnect(cdm)

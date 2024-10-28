@@ -1,5 +1,12 @@
 #' Database diagnostics
 #'
+#' @description
+#' phenotypeR diagnostics on the cdm object.
+#'
+#' Diagnostics include:
+#' * Summarise a cdm_reference object, creating a snapshot with the metadata of the cdm_reference object.
+#' * Summarise the observation period table getting some overall statistics in a summarised_result object.
+#'
 #' @param cdm CDM reference
 #'
 #' @return A summarised result

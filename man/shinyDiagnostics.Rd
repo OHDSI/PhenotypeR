@@ -15,7 +15,14 @@ shinyDiagnostics(result, directory = here::here())
 A shiny app
 }
 \description{
-Create a shiny app summarising your phenotyping results
+A shiny app that is designed for any diagnostics results from phenotypeR, this
+includes:
+
+* A diagnostics on the database via `databaseDiagnostics`.
+* A diagnostics on the cohort_codelist attribute of the cohort via `codelistDiagnostics`.
+* A diagnostics on the cohort via `cohortDiagnostics`.
+* A diagnostics on the population via `populationDiagnostics`.
+* A diagnostics on the matched cohort via `matchedDiagnostics`.
 }
 \examples{
 \donttest{

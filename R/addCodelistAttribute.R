@@ -1,5 +1,13 @@
 #' Adds the cohort_codelist attribute to a cohort
 #'
+#' @description
+#' `addCodelistAttribute()` allows the users to add a codelist to a cohort in
+#' OMOP CDM.
+#'
+#' This is particularly important for the use of `codelistDiagnostics()`, as the
+#' underlying assumption is that the cohort that is fed into
+#' `codelistDiagnostics()` has a cohort_codelist attribute attached to it.
+#'
 #' @inheritParams cohortDoc
 #' @param codelist Named list of concepts
 #' @param cohortName For each element of the codelist, the name of the cohort in
