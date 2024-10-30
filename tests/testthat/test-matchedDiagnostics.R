@@ -28,6 +28,9 @@ test_that("cohort to pop diagnostics", {
                                  schema ="main", overwrite = TRUE)
   expect_no_error(result <- cdm$my_cohort |>
                     matchedDiagnostics())
+  # can be NULL and would do no sampling
+  cdm$my_cohort |>
+    matchedDiagnostics(matchedSample  = NULL)
 
   # expected errors
   expect_error(matchedDiagnostics(cohort = "not a cohort"))
