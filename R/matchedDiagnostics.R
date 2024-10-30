@@ -54,7 +54,7 @@
 matchedDiagnostics <- function(cohort,
                                matchedSample = 1000){
 
-  omopgenerics::assertNumeric(matchedSample, min = 1)
+  omopgenerics::assertNumeric(matchedSample, min = 1, null = TRUE)
 
   cdm <- omopgenerics::cdmReference(cohort)
   cohortName <- omopgenerics::tableName(cohort)
@@ -72,7 +72,8 @@ matchedDiagnostics <- function(cohort,
                                    n = matchedSample,
                                    name = matchedCohortTable)
   } else {
-    cdm[[matchedCohortTable]] <- cdm[[cohortName]]
+    cdm[[matchedCohortTable]] <- cdm[[cohortName]] |>
+      dplyr::compute(name = matchedCohortTable, temporary = FALSE)
   }
 
   cli::cli_bullets(c("*" = "{.strong Generating a age and sex matched cohorts}"))
