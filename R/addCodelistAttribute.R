@@ -65,7 +65,7 @@ addCodelistAttribute <- function(cohort,
     }
 
     cohortCodelist <- dplyr::bind_rows(currentCohortCodelist |>
-      dplyr::filter(!cohort_definition_id %in%
+      dplyr::filter(!.data$cohort_definition_id %in%
                       unique(cohortCodelist$cohort_definition_id)),
                     cohortCodelist)
   }
