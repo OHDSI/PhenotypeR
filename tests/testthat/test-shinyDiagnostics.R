@@ -4,7 +4,8 @@ test_that("basic working example with one cohort", {
 
   # empty result - should still work without error
   expect_no_error(
-    shinyDiagnostics(result = omopgenerics::emptySummarisedResult())
+    shinyDiagnostics(result = omopgenerics::emptySummarisedResult(),
+                     directory = here::here())
     )
 
   # with results
