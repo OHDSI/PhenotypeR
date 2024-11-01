@@ -98,11 +98,11 @@ hip fracture using the Eunomia synthetic data.</p>
 <span>  <span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Rows: ??</span></span>
 <span><span class="co">#&gt; Columns: 4</span></span>
-<span><span class="co">#&gt; Database: DuckDB v1.1.2 [unknown@Linux 6.5.0-1025-azure:R 4.4.2//tmp/RtmptkB6JA/file1a0515c1f4df.duckdb]</span></span>
-<span><span class="co">#&gt; $ cohort_definition_id <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 2…</span></span>
-<span><span class="co">#&gt; $ subject_id           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 2287, 597, 1518, 1958, 2765, 2843, 3237, 3353, 35…</span></span>
-<span><span class="co">#&gt; $ cohort_start_date    <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 1969-07-19, 1985-08-08, 2009-12-16, 2003-09-12, …</span></span>
-<span><span class="co">#&gt; $ cohort_end_date      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 1969-08-18, 1985-08-22, 2010-01-06, 2003-10-17, …</span></span></code></pre></div>
+<span><span class="co">#&gt; Database: DuckDB v1.1.2 [unknown@Linux 6.5.0-1025-azure:R 4.4.2//tmp/RtmpyCDeDE/file1a3a6354f263.duckdb]</span></span>
+<span><span class="co">#&gt; $ cohort_definition_id <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 4, 1, 1, 1, 1…</span></span>
+<span><span class="co">#&gt; $ subject_id           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 2894, 2942, 49, 442, 1217, 1834, 2058, 2708, 3879…</span></span>
+<span><span class="co">#&gt; $ cohort_start_date    <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 1995-10-22, 1968-04-09, 1983-04-09, 2010-02-24, …</span></span>
+<span><span class="co">#&gt; $ cohort_end_date      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 1996-01-20, 1968-06-08, 1983-05-07, 2010-03-24, …</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="summarising-code-use">Summarising code use<a class="anchor" aria-label="anchor" href="#summarising-code-use"></a>
@@ -110,23 +110,23 @@ hip fracture using the Eunomia synthetic data.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">code_diag</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/codelistDiagnostics.html">codelistDiagnostics</a></span><span class="op">(</span><span class="va">cdm</span><span class="op">$</span><span class="va">injuries</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://darwin-eu.github.io/CodelistGenerator/reference/tableCohortCodeUse.html" class="external-link">tableCohortCodeUse</a></span><span class="op">(</span><span class="va">code_diag</span><span class="op">)</span></span></code></pre></div>
-<div id="bjgwtlmpwz" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#bjgwtlmpwz table {
+<div id="suvupsnnty" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#suvupsnnty table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#bjgwtlmpwz thead, #bjgwtlmpwz tbody, #bjgwtlmpwz tfoot, #bjgwtlmpwz tr, #bjgwtlmpwz td, #bjgwtlmpwz th {
+#suvupsnnty thead, #suvupsnnty tbody, #suvupsnnty tfoot, #suvupsnnty tr, #suvupsnnty td, #suvupsnnty th {
   border-style: none;
 }
 
-#bjgwtlmpwz p {
+#suvupsnnty p {
   margin: 0;
   padding: 0;
 }
 
-#bjgwtlmpwz .gt_table {
+#suvupsnnty .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -152,12 +152,12 @@ hip fracture using the Eunomia synthetic data.</p>
   border-left-color: #D3D3D3;
 }
 
-#bjgwtlmpwz .gt_caption {
+#suvupsnnty .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#bjgwtlmpwz .gt_title {
+#suvupsnnty .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -169,7 +169,7 @@ hip fracture using the Eunomia synthetic data.</p>
   border-bottom-width: 0;
 }
 
-#bjgwtlmpwz .gt_subtitle {
+#suvupsnnty .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -181,7 +181,7 @@ hip fracture using the Eunomia synthetic data.</p>
   border-top-width: 0;
 }
 
-#bjgwtlmpwz .gt_heading {
+#suvupsnnty .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -193,13 +193,13 @@ hip fracture using the Eunomia synthetic data.</p>
   border-right-color: #D3D3D3;
 }
 
-#bjgwtlmpwz .gt_bottom_border {
+#suvupsnnty .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#bjgwtlmpwz .gt_col_headings {
+#suvupsnnty .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -214,7 +214,7 @@ hip fracture using the Eunomia synthetic data.</p>
   border-right-color: #D3D3D3;
 }
 
-#bjgwtlmpwz .gt_col_heading {
+#suvupsnnty .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -234,7 +234,7 @@ hip fracture using the Eunomia synthetic data.</p>
   overflow-x: hidden;
 }
 
-#bjgwtlmpwz .gt_column_spanner_outer {
+#suvupsnnty .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -246,15 +246,15 @@ hip fracture using the Eunomia synthetic data.</p>
   padding-right: 4px;
 }
 
-#bjgwtlmpwz .gt_column_spanner_outer:first-child {
+#suvupsnnty .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#bjgwtlmpwz .gt_column_spanner_outer:last-child {
+#suvupsnnty .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#bjgwtlmpwz .gt_column_spanner {
+#suvupsnnty .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -266,11 +266,11 @@ hip fracture using the Eunomia synthetic data.</p>
   width: 100%;
 }
 
-#bjgwtlmpwz .gt_spanner_row {
+#suvupsnnty .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#bjgwtlmpwz .gt_group_heading {
+#suvupsnnty .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -296,7 +296,7 @@ hip fracture using the Eunomia synthetic data.</p>
   text-align: left;
 }
 
-#bjgwtlmpwz .gt_empty_group_heading {
+#suvupsnnty .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -311,15 +311,15 @@ hip fracture using the Eunomia synthetic data.</p>
   vertical-align: middle;
 }
 
-#bjgwtlmpwz .gt_from_md > :first-child {
+#suvupsnnty .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#bjgwtlmpwz .gt_from_md > :last-child {
+#suvupsnnty .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#bjgwtlmpwz .gt_row {
+#suvupsnnty .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -338,7 +338,7 @@ hip fracture using the Eunomia synthetic data.</p>
   overflow-x: hidden;
 }
 
-#bjgwtlmpwz .gt_stub {
+#suvupsnnty .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -351,7 +351,7 @@ hip fracture using the Eunomia synthetic data.</p>
   padding-right: 5px;
 }
 
-#bjgwtlmpwz .gt_stub_row_group {
+#suvupsnnty .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -365,15 +365,15 @@ hip fracture using the Eunomia synthetic data.</p>
   vertical-align: top;
 }
 
-#bjgwtlmpwz .gt_row_group_first td {
+#suvupsnnty .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#bjgwtlmpwz .gt_row_group_first th {
+#suvupsnnty .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#bjgwtlmpwz .gt_summary_row {
+#suvupsnnty .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -383,16 +383,16 @@ hip fracture using the Eunomia synthetic data.</p>
   padding-right: 5px;
 }
 
-#bjgwtlmpwz .gt_first_summary_row {
+#suvupsnnty .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#bjgwtlmpwz .gt_first_summary_row.thick {
+#suvupsnnty .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#bjgwtlmpwz .gt_last_summary_row {
+#suvupsnnty .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -402,7 +402,7 @@ hip fracture using the Eunomia synthetic data.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#bjgwtlmpwz .gt_grand_summary_row {
+#suvupsnnty .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -412,7 +412,7 @@ hip fracture using the Eunomia synthetic data.</p>
   padding-right: 5px;
 }
 
-#bjgwtlmpwz .gt_first_grand_summary_row {
+#suvupsnnty .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -422,7 +422,7 @@ hip fracture using the Eunomia synthetic data.</p>
   border-top-color: #D3D3D3;
 }
 
-#bjgwtlmpwz .gt_last_grand_summary_row_top {
+#suvupsnnty .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -432,11 +432,11 @@ hip fracture using the Eunomia synthetic data.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#bjgwtlmpwz .gt_striped {
+#suvupsnnty .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#bjgwtlmpwz .gt_table_body {
+#suvupsnnty .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -445,7 +445,7 @@ hip fracture using the Eunomia synthetic data.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#bjgwtlmpwz .gt_footnotes {
+#suvupsnnty .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -459,7 +459,7 @@ hip fracture using the Eunomia synthetic data.</p>
   border-right-color: #D3D3D3;
 }
 
-#bjgwtlmpwz .gt_footnote {
+#suvupsnnty .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -468,7 +468,7 @@ hip fracture using the Eunomia synthetic data.</p>
   padding-right: 5px;
 }
 
-#bjgwtlmpwz .gt_sourcenotes {
+#suvupsnnty .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -482,7 +482,7 @@ hip fracture using the Eunomia synthetic data.</p>
   border-right-color: #D3D3D3;
 }
 
-#bjgwtlmpwz .gt_sourcenote {
+#suvupsnnty .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -490,72 +490,72 @@ hip fracture using the Eunomia synthetic data.</p>
   padding-right: 5px;
 }
 
-#bjgwtlmpwz .gt_left {
+#suvupsnnty .gt_left {
   text-align: left;
 }
 
-#bjgwtlmpwz .gt_center {
+#suvupsnnty .gt_center {
   text-align: center;
 }
 
-#bjgwtlmpwz .gt_right {
+#suvupsnnty .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#bjgwtlmpwz .gt_font_normal {
+#suvupsnnty .gt_font_normal {
   font-weight: normal;
 }
 
-#bjgwtlmpwz .gt_font_bold {
+#suvupsnnty .gt_font_bold {
   font-weight: bold;
 }
 
-#bjgwtlmpwz .gt_font_italic {
+#suvupsnnty .gt_font_italic {
   font-style: italic;
 }
 
-#bjgwtlmpwz .gt_super {
+#suvupsnnty .gt_super {
   font-size: 65%;
 }
 
-#bjgwtlmpwz .gt_footnote_marks {
+#suvupsnnty .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#bjgwtlmpwz .gt_asterisk {
+#suvupsnnty .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#bjgwtlmpwz .gt_indent_1 {
+#suvupsnnty .gt_indent_1 {
   text-indent: 5px;
 }
 
-#bjgwtlmpwz .gt_indent_2 {
+#suvupsnnty .gt_indent_2 {
   text-indent: 10px;
 }
 
-#bjgwtlmpwz .gt_indent_3 {
+#suvupsnnty .gt_indent_3 {
   text-indent: 15px;
 }
 
-#bjgwtlmpwz .gt_indent_4 {
+#suvupsnnty .gt_indent_4 {
   text-indent: 20px;
 }
 
-#bjgwtlmpwz .gt_indent_5 {
+#suvupsnnty .gt_indent_5 {
   text-indent: 25px;
 }
 
-#bjgwtlmpwz .katex-display {
+#suvupsnnty .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#bjgwtlmpwz div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#suvupsnnty div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
