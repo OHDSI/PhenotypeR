@@ -54,7 +54,3 @@ Imports:
     glue
 URL: https://ohdsi.github.io/PhenotypeR/
 VignetteBuilder: knitr
-Remotes: 
-    OHDSI/OmopViewer,
-    OHDSI/OmopSketch,
-    OHDSI/CohortConstructor
