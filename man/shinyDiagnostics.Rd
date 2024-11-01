@@ -4,7 +4,7 @@
 \alias{shinyDiagnostics}
 \title{Create a shiny app summarising your phenotyping results}
 \usage{
-shinyDiagnostics(result, directory = here::here())
+shinyDiagnostics(result, directory)
 }
 \arguments{
 \item{result}{A summarised result}
@@ -54,6 +54,6 @@ includes:
                                  schema ="main",
                                  overwrite = TRUE)
   my_result_cohort_diag <- cdm$my_cohort |> phenotypeDiagnostics()
-  shinyDiagnostics(my_result_cohort_diag)
+  shinyDiagnostics(my_result_cohort_diag, here::here())
 }
 }

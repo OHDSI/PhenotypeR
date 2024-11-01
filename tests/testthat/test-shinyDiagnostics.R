@@ -4,7 +4,8 @@ test_that("basic working example with one cohort", {
 
   # empty result - should still work without error
   expect_no_error(
-    shinyDiagnostics(result = omopgenerics::emptySummarisedResult())
+    shinyDiagnostics(result = omopgenerics::emptySummarisedResult(),
+                     directory = here::here())
     )
 
   # with results
@@ -38,7 +39,8 @@ test_that("basic working example with one cohort", {
 
   my_result_cohort_diag <- cdm$my_cohort |> phenotypeDiagnostics()
 
-  expect_no_error(shinyDiagnostics(my_result_cohort_diag))
+  expect_no_error(shinyDiagnostics(my_result_cohort_diag,
+                                   directory = here::here()))
 
 
 })

@@ -47,10 +47,10 @@
 #'                                  schema ="main",
 #'                                  overwrite = TRUE)
 #'   my_result_cohort_diag <- cdm$my_cohort |> phenotypeDiagnostics()
-#'   shinyDiagnostics(my_result_cohort_diag)
+#'   shinyDiagnostics(my_result_cohort_diag, here::here())
 #' }
 shinyDiagnostics <- function(result,
-                             directory = here::here()){
+                             directory){
 
   rlang::check_installed("OmopViewer")
 
