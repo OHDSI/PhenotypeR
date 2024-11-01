@@ -40,9 +40,7 @@ addCodelistAttribute <- function(cohort,
   if (length(cohortName) != length(codelist)) {
     cli::cli_abort("`cohortName` and `codelist` must have the same length.")
   }
-  if (!is.null(attr(cohort, "cohort_codelist"))) {
-    cli::cli_warn("`cohort_codelist` will be overwritten.")
-  }
+  currentCohortCodelist <- attr(cohort, "cohort_codelist") |> dplyr::collect()
 
   cohortCodelist <- dplyr::tibble("cohort_name" = cohortName, codelist_name = names(codelist)) |>
     dplyr::inner_join(
@@ -54,6 +52,23 @@ addCodelistAttribute <- function(cohort,
     dplyr::select(
       "cohort_definition_id","codelist_name", "concept_id" = "value", "type"
     )
+  if(nrow(currentCohortCodelist) > 0){
+    overwriteId <- intersect(unique(currentCohortCodelist |>
+                                    dplyr::pull("cohort_definition_id")),
+                           unique(cohortCodelist |>
+                                    dplyr::pull("cohort_definition_id")))
+    if(length(overwriteId) > 0){
+      overwriteCohortName <- omopgenerics::settings(cohort) |>
+        dplyr::filter(.data$cohort_definition_id %in% .env$overwriteId) |>
+        dplyr::pull("cohort_name")
+    cli::cli_warn("Overwriting codelist for cohort{?s} {overwriteCohortName}")
+    }
+
+    cohortCodelist <- dplyr::bind_rows(currentCohortCodelist |>
+      dplyr::filter(!cohort_definition_id %in%
+                      unique(cohortCodelist$cohort_definition_id)),
+                    cohortCodelist)
+  }
 
   cohort <- cohort |>
     omopgenerics::newCohortTable(cohortCodelistRef = cohortCodelist)
