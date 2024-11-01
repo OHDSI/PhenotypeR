@@ -13,11 +13,8 @@ test_that("test add codelist works", {
   cdm <- CDMConnector::copyCdmTo(con = db, cdm = cdm_local,
                                  schema ="main", overwrite = TRUE)
 
-  expect_warning(
-    cohort <- addCodelistAttribute(cdm$cohort1, codelist = list("a" = 1L, "b" = 2L),
+  cohort <- addCodelistAttribute(cdm$cohort1, codelist = list("a" = 1L, "b" = 2L),
                                    cohortName = rep("cohort_1", 2))
-  )
-
   expect_equal(
     attr(cohort, "cohort_codelist") |> dplyr::collect(),
     dplyr::tibble(
@@ -28,10 +25,11 @@ test_that("test add codelist works", {
     )
   )
 
-  expect_warning(
     cohort <- addCodelistAttribute(cdm$cohort2, codelist = list("a" = 1L, "b" = 2L),
                                    cohortName = rep("cohort_1", 2))
-  )
+    # will get a warning if we overwrite
+    expect_warning(cohort <- addCodelistAttribute(cdm$cohort2, codelist = list("a" = 1L, "b" = 2L),
+                                   cohortName = rep("cohort_1", 2)))
   expect_equal(
     attr(cohort, "cohort_codelist") |> dplyr::collect(),
     dplyr::tibble(
