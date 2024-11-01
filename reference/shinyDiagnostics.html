@@ -60,7 +60,7 @@ includes:</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">shinyDiagnostics</span><span class="op">(</span><span class="va">result</span>, directory <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html" class="external-link">here</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">shinyDiagnostics</span><span class="op">(</span><span class="va">result</span>, <span class="va">directory</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -128,8 +128,6 @@ includes:</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Creating denominator for incidence and prevalence</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Creating denominator cohorts</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>  -- getting cohort dates for <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■      </span> 5 of 6 cohorts</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>  -- getting cohort dates for <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 6 of 6 cohorts</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Cohorts created in 0 min and 7 sec</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Estimating incidence</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Getting incidence for analysis 1 of 12</span>
@@ -186,7 +184,7 @@ includes:</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table observation (5 of 6)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table drug_exposure (6 of 6)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span>  <span class="fu">shinyDiagnostics</span><span class="op">(</span><span class="va">my_result_cohort_diag</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">shinyDiagnostics</span><span class="op">(</span><span class="va">my_result_cohort_diag</span>, <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html" class="external-link">here</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>`achilles_code_use`, `cohort_code_use`, `orphan_code_use`,</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> `summarise_cohort_overlap`, and `summarise_cohort_timing` eliminated from</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> panels as not present in results.</span>
