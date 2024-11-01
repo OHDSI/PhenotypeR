@@ -4,7 +4,7 @@
 \alias{shinyDiagnostics}
 \title{Create a shiny app summarising your phenotyping results}
 \usage{
-shinyDiagnostics(result, directory = here::here())
+shinyDiagnostics(result, directory)
 }
 \arguments{
 \item{result}{A summarised result}

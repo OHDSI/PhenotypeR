@@ -50,7 +50,7 @@
 #'   shinyDiagnostics(my_result_cohort_diag)
 #' }
 shinyDiagnostics <- function(result,
-                             directory = here::here()){
+                             directory){
 
   rlang::check_installed("OmopViewer")
 
