@@ -13,6 +13,8 @@
 #'
 #' @inheritParams resultDoc
 #' @inheritParams directoryDoc
+#' @param open If TRUE, the shiny app will be launched in a new session. If
+#' FALSE, the shiny app will be created but not launched.
 #'
 #' @return A shiny app
 #' @export
@@ -50,7 +52,8 @@
 #'   shinyDiagnostics(my_result_cohort_diag, here::here())
 #' }
 shinyDiagnostics <- function(result,
-                             directory){
+                             directory,
+                             open = rlang::is_interactive()){
 
   file.copy(from = system.file("shiny",
                                package = "PhenotypeR"),
@@ -62,6 +65,10 @@ shinyDiagnostics <- function(result,
                                        fileName = "result.csv",
                                        path = file.path(directory, "shiny", "data", "raw"))
   # shiny::shinyAppDir(file.path(directory, "shiny"))
+  if (isTRUE(open)) {
   usethis::proj_activate(directory)
+  }
+
+  return(invisible())
 
 }
