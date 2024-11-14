@@ -6,7 +6,7 @@ server <- function(input, output, session) {
   output$download_raw <- shiny::downloadHandler(
     filename = "results.csv",
     content = function(file) {
-      OmopViewer::exportSummarisedResult(data, fileName = file)
+      omopgenerics::exportSummarisedResult(data, fileName = file)
     }
   )
   # fill selectise variables ----
@@ -19,7 +19,7 @@ server <- function(input, output, session) {
         selected = selected[[k]],
         server = TRUE
       )
-      
+
       shinyWidgets::updatePickerInput(session,
                                       inputId = names(choices)[k],
                                       choices = choices[[k]],
@@ -30,8 +30,8 @@ server <- function(input, output, session) {
   ## tidy summarise_omop_snapshot -----
   getTidyDataSummariseOmopSnapshot <- shiny::reactive({
     res <- dataFiltered$summarise_omop_snapshot |>
-      OmopViewer::filterData("summarise_omop_snapshot", input) |>
-      OmopViewer::tidyData()
+      filterData("summarise_omop_snapshot", input) |>
+      tidyData()
 
     # columns to eliminate
     colsEliminate <- colnames(res)
@@ -79,7 +79,7 @@ server <- function(input, output, session) {
         subtitle = "Overview of data source"
       ) %>%
       tab_options(
-        heading.align = "left"  
+        heading.align = "left"
       )
   })
   output$summarise_omop_snapshot_gt_17 <- gt::render_gt({
@@ -98,8 +98,8 @@ server <- function(input, output, session) {
   ## tidy summarise_observation_period -----
   getTidyDataSummariseObservationPeriod <- shiny::reactive({
     res <- dataFiltered$summarise_observation_period |>
-      OmopViewer::filterData("summarise_observation_period", input) |>
-      OmopViewer::tidyData()
+      filterData("summarise_observation_period", input) |>
+      tidyData()
 
     # columns to eliminate
     colsEliminate <- colnames(res)
@@ -147,7 +147,7 @@ server <- function(input, output, session) {
         subtitle = "Observation periods are used to define time under observation for individuals in the data source."
       ) %>%
       tab_options(
-        heading.align = "left"  
+        heading.align = "left"
       )
   })
   output$summarise_observation_period_gt_15 <- gt::render_gt({
@@ -164,7 +164,7 @@ server <- function(input, output, session) {
   ## output 16 -----
   createOutput16 <- shiny::reactive({
     result <- dataFiltered$summarise_observation_period |>
-      OmopViewer::filterData("summarise_observation_period", input)
+      filterData("summarise_observation_period", input)
     OmopSketch::plotObservationPeriod(
       result,
       variableName = input$summarise_observation_period_ggplot2_16_variableName,
@@ -195,7 +195,7 @@ server <- function(input, output, session) {
   ## tidy cohort_code_use -----
   getTidyDataCohortCodeUse <- shiny::reactive({
     res <- dataFiltered$cohort_code_use |>
-      OmopViewer::tidyData()
+      tidyData()
 
 
     # pivot
@@ -209,7 +209,7 @@ server <- function(input, output, session) {
         visOmopResults::pivotEstimates(pivotEstimatesBy = vars)
     }
 
-    res 
+    res
   })
   output$cohort_code_use_tidy <- DT::renderDT({
     DT::datatable(
@@ -229,7 +229,7 @@ server <- function(input, output, session) {
   ## output 12 -----
   createOutput12 <- shiny::reactive({
     result <- dataFiltered$cohort_code_use |>
-      OmopViewer::filterData("cohort_code_use", input)
+      filterData("cohort_code_use", input)
     CodelistGenerator::tableCohortCodeUse(
       result,
       header = input$cohort_code_use_gt_12_header,
@@ -241,7 +241,7 @@ server <- function(input, output, session) {
         subtitle = "Codes from codelist observed on day of cohort entry. Note more than one code could be seen for a person on this day (both of which would have led to inclusion)."
       ) %>%
       tab_options(
-        heading.align = "left"  
+        heading.align = "left"
       )
   })
   output$cohort_code_use_gt_12 <- gt::render_gt({
@@ -260,8 +260,8 @@ server <- function(input, output, session) {
   ## tidy summarise_cohort_attrition -----
   getTidyDataSummariseCohortAttrition <- shiny::reactive({
     res <- dataFiltered$summarise_cohort_attrition |>
-      OmopViewer::filterData("summarise_cohort_attrition", input) |>
-      OmopViewer::tidyData()
+      filterData("summarise_cohort_attrition", input) |>
+      tidyData()
 
     # columns to eliminate
     colsEliminate <- colnames(res)
@@ -302,7 +302,7 @@ server <- function(input, output, session) {
   ## output 3 -----
   createOutput3 <- shiny::reactive({
     result <- dataFiltered$summarise_cohort_attrition |>
-      OmopViewer::filterData("summarise_cohort_attrition", input)
+      filterData("summarise_cohort_attrition", input)
     CohortCharacteristics::tableCohortAttrition(
       result,
       header = input$summarise_cohort_attrition_gt_3_header,
@@ -314,7 +314,7 @@ server <- function(input, output, session) {
         subtitle = "Attrition into study cohorts."
       ) %>%
       tab_options(
-        heading.align = "left"  
+        heading.align = "left"
       )
   })
   output$summarise_cohort_attrition_gt_3 <- gt::render_gt({
@@ -331,7 +331,7 @@ server <- function(input, output, session) {
   ## output 4 -----
   createOutput4 <- shiny::reactive({
     result <- dataFiltered$summarise_cohort_attrition |>
-      OmopViewer::filterData("summarise_cohort_attrition", input)
+      filterData("summarise_cohort_attrition", input)
     CohortCharacteristics::plotCohortAttrition(
       result
     )
@@ -358,8 +358,8 @@ server <- function(input, output, session) {
   ## tidy summarise_cohort_overlap -----
   getTidyDataSummariseCohortOverlap <- shiny::reactive({
     res <- dataFiltered$summarise_cohort_overlap |>
-      OmopViewer::filterData("summarise_cohort_overlap", input) |>
-      OmopViewer::tidyData()
+      filterData("summarise_cohort_overlap", input) |>
+      tidyData()
 
     # columns to eliminate
     colsEliminate <- colnames(res)
@@ -400,7 +400,7 @@ server <- function(input, output, session) {
   ## output 1 -----
   createOutput1 <- shiny::reactive({
     result <- dataFiltered$summarise_cohort_overlap |>
-      OmopViewer::filterData("summarise_cohort_overlap", input)
+      filterData("summarise_cohort_overlap", input)
     CohortCharacteristics::tableCohortOverlap(
       result,
       uniqueCombinations = input$summarise_cohort_overlap_gt_1_uniqueCombinations,
@@ -413,7 +413,7 @@ server <- function(input, output, session) {
         subtitle = "Overlap is where the same individual is in both cohorts. Note their cohort entries do not necessarily overlap."
       ) %>%
       tab_options(
-        heading.align = "left"  
+        heading.align = "left"
       )
   })
   output$summarise_cohort_overlap_gt_1 <- gt::render_gt({
@@ -430,7 +430,7 @@ server <- function(input, output, session) {
   ## output 2 -----
   createOutput2 <- shiny::reactive({
     result <- dataFiltered$summarise_cohort_overlap |>
-      OmopViewer::filterData("summarise_cohort_overlap", input)
+      filterData("summarise_cohort_overlap", input)
     CohortCharacteristics::plotCohortOverlap(
       result,
       facet = input$summarise_cohort_overlap_ggplot2_2_facet,
@@ -460,8 +460,8 @@ server <- function(input, output, session) {
   ## tidy summarise_characteristics -----
   getTidyDataSummariseCharacteristics <- shiny::reactive({
     res <- dataFiltered$summarise_characteristics |>
-      OmopViewer::filterData("summarise_characteristics", input) |>
-      OmopViewer::tidyData()
+      filterData("summarise_characteristics", input) |>
+      tidyData()
 
     # columns to eliminate
     colsEliminate <- colnames(res)
@@ -507,17 +507,17 @@ server <- function(input, output, session) {
         input$summarise_characteristics_grouping_cohort_name,
         paste0("matched_to_", input$summarise_characteristics_grouping_cohort_name),
         paste0(input$summarise_characteristics_grouping_cohort_name, "_matched")
-      )     
+      )
     } else {
       selectedCohorts <- input$summarise_characteristics_grouping_cohort_name
     }
 
-    
+
     result <- dataFiltered$summarise_characteristics |>
       dplyr::filter(cdm_name %in% input$summarise_characteristics_grouping_cdm_name,
                     group_level %in% selectedCohorts)
-      
-  
+
+
     CohortCharacteristics::tableCharacteristics(
       result,
       header = input$summarise_characteristics_gt_7_header,
@@ -529,7 +529,7 @@ server <- function(input, output, session) {
         subtitle = "Summary of patient characteristics relative to cohort entry"
       ) %>%
       tab_options(
-        heading.align = "left"  
+        heading.align = "left"
       )
   })
   output$summarise_characteristics_gt_7 <- gt::render_gt({
@@ -546,7 +546,7 @@ server <- function(input, output, session) {
   ## output 8 -----
   createOutput8 <- shiny::reactive({
     result <- dataFiltered$summarise_characteristics |>
-      OmopViewer::filterData("summarise_characteristics", input)
+      filterData("summarise_characteristics", input)
     CohortCharacteristics::plotCharacteristics(
       result,
       plotType = input$summarise_characteristics_ggplot2_8_plotType,
@@ -577,19 +577,19 @@ server <- function(input, output, session) {
   ## tidy summarise_large_scale_characteristics -----
   getTidyDataSummariseLargeScaleCharacteristics <- shiny::reactive({
     lsc_data <- dataFiltered$summarise_large_scale_characteristics |>
-      visOmopResults::filterSettings(table_name %in% input$summarise_large_scale_characteristics_grouping_domain) |> 
-      dplyr::filter(cdm_name %in% input$summarise_large_scale_characteristics_grouping_cdm_name ) |> 
-      dplyr::filter(group_level  %in% input$summarise_large_scale_characteristics_grouping_cohort_name) |> 
+      visOmopResults::filterSettings(table_name %in% input$summarise_large_scale_characteristics_grouping_domain) |>
+      dplyr::filter(cdm_name %in% input$summarise_large_scale_characteristics_grouping_cdm_name ) |>
+      dplyr::filter(group_level  %in% input$summarise_large_scale_characteristics_grouping_cohort_name) |>
       dplyr::filter(variable_level  %in% input$summarise_large_scale_characteristics_grouping_time_window)
-    
+
     tidy(lsc_data) |>
       mutate(concept = paste0(variable_name, " (",
-                              concept_id, ")")) |> 
+                              concept_id, ")")) |>
       dplyr::select("cdm_name",
                     "concept",
                     "count",
                     "percentage")
-    
+
   })
   output$summarise_large_scale_characteristics_tidy <- DT::renderDT({
     DT::datatable(
@@ -614,16 +614,16 @@ server <- function(input, output, session) {
     if (input$top_n > 100) {
       validate("Top n must be between 1 and 100")
     }
-    
+
      lsc_data <- dataFiltered$summarise_large_scale_characteristics |>
-      visOmopResults::filterSettings(table_name %in% input$summarise_large_scale_characteristics_grouping_domain) |> 
-      dplyr::filter(cdm_name %in% input$summarise_large_scale_characteristics_grouping_cdm_name ) |> 
-      dplyr::filter(group_level  %in% input$summarise_large_scale_characteristics_grouping_cohort_name) |> 
+      visOmopResults::filterSettings(table_name %in% input$summarise_large_scale_characteristics_grouping_domain) |>
+      dplyr::filter(cdm_name %in% input$summarise_large_scale_characteristics_grouping_cdm_name ) |>
+      dplyr::filter(group_level  %in% input$summarise_large_scale_characteristics_grouping_cohort_name) |>
        dplyr::filter(variable_level  %in% input$summarise_large_scale_characteristics_grouping_time_window)
-    
-    CohortCharacteristics::tableLargeScaleCharacteristics(lsc_data, 
+
+    CohortCharacteristics::tableLargeScaleCharacteristics(lsc_data,
                                                           topConcepts = input$top_n
-                                                          # , 
+                                                          # ,
                                                           # header = input$summarise_large_scale_characteristics_gt_0_header,
                                                           # groupColumn = input$summarise_large_scale_characteristics_gt_0_group,
                                                           # hide = input$summarise_large_scale_characteristics_gt_0_hide
@@ -633,7 +633,7 @@ server <- function(input, output, session) {
         subtitle = "Summary of all records from clinical tables within a time window"
       ) %>%
       tab_options(
-        heading.align = "left"  
+        heading.align = "left"
       )
 
   })
@@ -653,8 +653,8 @@ server <- function(input, output, session) {
   ## tidy incidence -----
   getTidyDataIncidence <- shiny::reactive({
     res <- dataFiltered$incidence |>
-      OmopViewer::filterData("incidence", input) |>
-      OmopViewer::tidyData()
+      filterData("incidence", input) |>
+      tidyData()
 
     # columns to eliminate
     colsEliminate <- colnames(res)
@@ -696,12 +696,12 @@ server <- function(input, output, session) {
   createOutput18 <- shiny::reactive({
     # browser()
     result <- dataFiltered$incidence |>
-      OmopViewer::filterData("incidence", input)
+      filterData("incidence", input)
     IncidencePrevalence::tableIncidence(
       result,
       # header = input$incidence_gt_18_header,
       groupColumn = c("cdm_name", "outcome_cohort_name"),
-      hide = "denominator_cohort_name", 
+      hide = "denominator_cohort_name",
       settingsColumns = c("denominator_age_group",
                           "denominator_sex",
                           "outcome_cohort_name")
@@ -711,7 +711,7 @@ server <- function(input, output, session) {
         subtitle = "Incidence rates estimated for outcomes of interest"
       ) %>%
       tab_options(
-        heading.align = "left"  
+        heading.align = "left"
       )
   })
   output$incidence_gt_18 <- gt::render_gt({
@@ -728,15 +728,15 @@ server <- function(input, output, session) {
   ## output 19 -----
   createOutput19 <- shiny::reactive({
     result <- dataFiltered$incidence |>
-      OmopViewer::filterData("incidence", input)
-    
+      filterData("incidence", input)
+
     IncidencePrevalence::plotIncidence(
       result,
       x = input$incidence_ggplot2_19_x,
       ribbon = input$incidence_ggplot2_19_ribbon,
       facet = input$incidence_ggplot2_19_facet,
       colour = input$incidence_ggplot2_19_colour
-    ) |> 
+    ) |>
       plotly::ggplotly()
   })
   output$incidence_ggplot2_19 <- plotly::renderPlotly({
@@ -762,8 +762,8 @@ server <- function(input, output, session) {
   ## tidy incidence_attrition -----
   getTidyDataIncidenceAttrition <- shiny::reactive({
     res <- dataFiltered$incidence |>
-      OmopViewer::filterData("incidence_attrition", input) |>
-      OmopViewer::tidyData()
+      filterData("incidence_attrition", input) |>
+      tidyData()
 
     # columns to eliminate
     colsEliminate <- colnames(res)
@@ -804,7 +804,7 @@ server <- function(input, output, session) {
   ## output 22 -----
   createOutput22 <- shiny::reactive({
     result <- dataFiltered$incidence_attrition |>
-      OmopViewer::filterData("incidence_attrition", input)
+      filterData("incidence_attrition", input)
     IncidencePrevalence::tableIncidenceAttrition(
       result,
       header = input$incidence_attrition_gt_22_header,
@@ -816,7 +816,7 @@ server <- function(input, output, session) {
         subtitle = "Subtitle"
       ) %>%
       tab_options(
-        heading.align = "left"  
+        heading.align = "left"
       )
   })
   output$incidence_attrition_gt_22 <- gt::render_gt({
@@ -835,21 +835,21 @@ server <- function(input, output, session) {
                     cohorts = c(input$compare_large_scale_characteristics_grouping_cohort_1,
                                 input$compare_large_scale_characteristics_grouping_cohort_2))
   } )
-  
+
   # orphan -----
   ## tidy orphan -----
   getTidyDataSummariseCharacteristics <- shiny::reactive({
     res <- dataFiltered$orphan |>
-      OmopViewer::filterData("orphan", input) |>
-      OmopViewer::tidyData()
-    
+      filterData("orphan", input) |>
+      tidyData()
+
     # columns to eliminate
     colsEliminate <- colnames(res)
     colsEliminate <- colsEliminate[!colsEliminate %in% c(
       input$orphan_tidy_columns, "variable_name", "variable_level",
       "estimate_name", "estimate_type", "estimate_value"
     )]
-    
+
     # pivot
     pivot <- input$orphan_tidy_pivot
     if (pivot != "none") {
@@ -860,7 +860,7 @@ server <- function(input, output, session) {
       res <- res |>
         visOmopResults::pivotEstimates(pivotEstimatesBy = vars)
     }
-    
+
     res |>
       dplyr::select(!dplyr::all_of(colsEliminate))
   })
@@ -884,23 +884,23 @@ server <- function(input, output, session) {
     result <- dataFiltered$orphan_code_use |>
       dplyr::filter(cdm_name %in% input$orphan_grouping_cdm_name,
                     group_level %in% input$orphan_grouping_codelist_name)
-    
+
   tbl <- CodelistGenerator::tableOrphanCodes(
       result,
       header = input$orphan_gt_99_header,
       groupColumn = input$orphan_gt_99_groupColumn,
       hide = input$orphan_gt_99_hide
-    )  
-  
+    )
+
   tbl %>%
       tab_header(
         title = "Summary of orphan codes",
         subtitle = "Orphan codes refer to concepts present in the database that are not in a codelist but are related to included codes."
       ) %>%
     tab_options(
-      heading.align = "left"  
+      heading.align = "left"
     )
-    
+
   })
   output$orphan_gt_99 <- gt::render_gt({
     createOutput99()
@@ -912,15 +912,15 @@ server <- function(input, output, session) {
       gt::gtsave(data = obj, filename = file)
     }
   )
-  
+
   ## unmapped codes -----
   ## output orphan -----
   ## output 99 -----
   createOutputUnmapped <- shiny::reactive({
     CodelistGenerator::tableUnmappedCodes(
-      dataFiltered$unmapped_codes |> 
+      dataFiltered$unmapped_codes |>
         dplyr::filter(cdm_name %in% input$unmapped_grouping_cdm_name,
-                      group_level %in% input$unmapped_grouping_codelist_name), 
+                      group_level %in% input$unmapped_grouping_codelist_name),
       header = input$unmapped_header,
       groupColumn = input$unmapped_groupColumn,
       hide = input$unmapped_hide
@@ -930,7 +930,7 @@ server <- function(input, output, session) {
         subtitle = "These codes are recorded as source concepts that are mapped to 0"
       ) %>%
       tab_options(
-        heading.align = "left"  
+        heading.align = "left"
       )
   })
   output$unmapped_formatted <- gt::render_gt({
@@ -943,7 +943,7 @@ server <- function(input, output, session) {
       gt::gtsave(data = obj, filename = file)
     }
   )
-  
-  
-  
+
+
+
 }

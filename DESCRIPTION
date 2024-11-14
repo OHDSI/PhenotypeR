@@ -23,9 +23,10 @@ Suggests:
     gt,
     omock,
     OmopSketch,
-    OmopViewer,
     testthat (>= 3.0.0),
     knitr,
+    visOmopResults,
+    glue,
     RPostgres,
     PatientProfiles,
     ggplot2,
@@ -33,7 +34,9 @@ Suggests:
     stringr,
     shiny,
     DiagrammeR,
-    sortable
+    sortable,
+    shinycssloaders,
+    here
 Config/testthat/edition: 3
 RoxygenNote: 7.3.2
 Imports: 
@@ -42,15 +45,11 @@ Imports:
     CohortConstructor,
     cli,
     dplyr,
-    here,
     IncidencePrevalence (>= 0.8.0),
     omopgenerics,
     magrittr,
     purrr,
-    rmarkdown,
     rlang,
-    vctrs,
-    visOmopResults,
-    glue
+    vctrs
 URL: https://ohdsi.github.io/PhenotypeR/
 VignetteBuilder: knitr
