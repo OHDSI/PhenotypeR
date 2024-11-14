@@ -31,8 +31,11 @@ populationDiagnostics <- function(cohort,
   denominatorTable <- omopgenerics::uniqueTableName()
 
   # add population sampling
+  if(!is.null(populationSample)){
+    cli::cli_bullets(c("*" = "{.strong Sampling person table to {populationSample}}"))
   cdm$person <- cdm$person |>
     dplyr::slice_sample(n = populationSample)
+  }
 
   cdm <- IncidencePrevalence::generateDenominatorCohortSet(
     cdm = cdm,
