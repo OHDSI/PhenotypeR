@@ -95,17 +95,17 @@ server <- function(input, output, session) {
 
 
   # achilles_code_use -----
-  
+
   createOutputAchillesCodeUse <- shiny::reactive({
     achillesFiltered <- dataFiltered$achilles_code_use  |>
       filterData("achilles_code_use", input)
-    CodelistGenerator::tableAchillesCodeUse(achillesFiltered, 
-                                            header = input$achilles_code_use_header, 
-                                            groupColumn = input$achilles_code_use_groupColumn, 
+    CodelistGenerator::tableAchillesCodeUse(achillesFiltered,
+                                            header = input$achilles_code_use_header,
+                                            groupColumn = input$achilles_code_use_groupColumn,
                                             hide = input$achilles_code_use_hide)
-    
+
   })
-  
+
   output$achilles_code_use_gt <- gt::render_gt({
     createOutputAchillesCodeUse()
   })
@@ -452,7 +452,7 @@ server <- function(input, output, session) {
       uniqueCombinations = input$summarise_cohort_overlap_ggplot2_2_uniqueCombinations
     )
   })
-  output$summarise_cohort_overlap_ggplot2_2 <- shiny::renderPlot({
+  output$summarise_cohort_overlap_ggplot2_2 <- plotly::renderPlotly({
     createOutput2()
   })
   output$summarise_cohort_overlap_ggplot2_2_download <- shiny::downloadHandler(
@@ -846,14 +846,14 @@ server <- function(input, output, session) {
   )
   # compare lsc ----
   output$plotly_compare_lsc <- renderPlotly({
-    lscFiltered <- dataFiltered$summarise_large_scale_characteristics |> 
+    lscFiltered <- dataFiltered$summarise_large_scale_characteristics |>
       filter(variable_level %in% input$compare_large_scale_characteristics_grouping_time_window) |>
       filterSettings(table_name %in% input$compare_large_scale_characteristics_grouping_table)
-    
+
     if (nrow(lscFiltered) == 0) {
       validate("No data to plot")
     }
-    
+
     plotComparedLsc(lsc = lscFiltered,
                     cohorts = c(input$compare_large_scale_characteristics_grouping_cohort_1,
                                 input$compare_large_scale_characteristics_grouping_cohort_2))
