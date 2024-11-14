@@ -4,12 +4,15 @@
 \alias{shinyDiagnostics}
 \title{Create a shiny app summarising your phenotyping results}
 \usage{
-shinyDiagnostics(result, directory)
+shinyDiagnostics(result, directory, open = rlang::is_interactive())
 }
 \arguments{
 \item{result}{A summarised result}
 
 \item{directory}{Directory where to save report}
+
+\item{open}{If TRUE, the shiny app will be launched in a new session. If
+FALSE, the shiny app will be created but not launched.}
 }
 \value{
 A shiny app
