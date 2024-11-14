@@ -53,15 +53,14 @@ shinyDiagnostics <- function(result,
                              directory){
 
   file.copy(from = system.file("shiny",
-                               package = "phenotypeR"),
+                               package = "PhenotypeR"),
             to = directory,
             recursive = TRUE,
             overwrite = TRUE)
 
   omopgenerics::exportSummarisedResult(result,
                                        fileName = "result.csv",
-                                       path = here::here(directory, "shiny", "data"))
-
-  shiny::shinyAppDir(here::here(directory, "shiny"))
+                                       path = file.path(directory, "shiny", "data", "raw"))
+  shiny::shinyAppDir(file.path(directory, "shiny"))
 
 }
