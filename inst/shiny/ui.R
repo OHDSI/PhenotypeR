@@ -2,9 +2,8 @@
 # Be careful editing this file
 
 ui <- bslib::page_navbar(
-  theme = bs_theme(bootswatch = "zephyr"),
-
-  #minty pulse
+  theme = bs_theme(bootswatch = "pulse"),
+  #  zephyr
 
   title = "PhenotypeR",
   bslib::nav_panel(
@@ -13,10 +12,11 @@ ui <- bslib::page_navbar(
     shiny::includeMarkdown(path = "background.md")
 
   ),
-
+  # Database diagnostics -----
   bslib::nav_menu(
     title = "Database diagnostics",
     icon = shiny::icon("list"),
+    ## snapshot -----
     bslib::nav_panel(
       title = "Snapshot",
       icon = shiny::icon("clipboard-list"),
@@ -39,6 +39,7 @@ ui <- bslib::page_navbar(
                 gt::gt_output("summarise_omop_snapshot_gt_17") |> withSpinner()
             )
     ),
+    ## observation periods -----
     bslib::nav_panel(
       title = "Observation periods",
       icon = shiny::icon("eye"),
@@ -65,10 +66,17 @@ ui <- bslib::page_navbar(
           )
     )
   ),
-
+  # Codelist diagnostics -----
   bslib::nav_menu(
     title = "Codelist diagnostics",
     icon = shiny::icon("list"),
+    ## achilles code use -----
+    bslib::nav_panel(
+      title = "Achilles Code Use",
+      icon = shiny::icon("database")
+    ),
+
+    ## unmapped concepts -----
     bslib::nav_panel(
       title = "Unmapped concepts",
       icon = shiny::icon("database"),
@@ -146,6 +154,7 @@ ui <- bslib::page_navbar(
       )
     ),
 
+    ## Orphan codes -----
     bslib::nav_panel(
       title = "Orphan codes",
       icon = shiny::icon("circle-half-stroke"),
@@ -222,10 +231,13 @@ ui <- bslib::page_navbar(
 
   ),
 
+  # Cohort diagnostics -----
+
   bslib::nav_menu(
     title = "Cohort diagnostics",
     icon = shiny::icon("list"),
 
+    ## Cohort code use -----
 
     bslib::nav_panel(
       title = "Cohort code use",
@@ -319,7 +331,7 @@ ui <- bslib::page_navbar(
         )
       )
     ),
-
+    ## Cohort characteristics -----
   bslib::nav_panel(
       title = "Cohort characteristics",
       icon = shiny::icon("users-gear"),
@@ -375,9 +387,6 @@ ui <- bslib::page_navbar(
               )
             )
             )
-
-
-
           )
         ),
             bslib::card(
@@ -400,6 +409,8 @@ ui <- bslib::page_navbar(
             )
       )
     ),
+  ## Large scale characteristics -----
+
     bslib::nav_panel(
       title = "Large scale characteristics",
       icon = shiny::icon("arrow-up-right-dots"),
@@ -531,6 +542,7 @@ ui <- bslib::page_navbar(
         )
       )
     ),
+  ## Compare large scale characteristics -----
     bslib::nav_panel(
       title = "Compare large scale characteristics",
       icon = shiny::icon("arrow-up-right-dots"),
@@ -570,8 +582,8 @@ ui <- bslib::page_navbar(
           full_screen = TRUE,
           plotly::plotlyOutput("plotly_compare_lsc") |> withSpinner()
           )
-
       )),
+  ## Cohort overlap -----
     bslib::nav_panel(
       title = "Cohort overlap",
       icon = shiny::icon("circle-half-stroke"),
@@ -742,9 +754,12 @@ ui <- bslib::page_navbar(
       )
     )
   ),
+
+  # Population diagnostics -----
   bslib::nav_menu(
     title = "Population diagnostics",
     icon = shiny::icon("list"),
+    ## Incidence -----
     bslib::nav_panel(
       title = "Incidence",
       icon = shiny::icon("chart-line"),
@@ -918,7 +933,7 @@ ui <- bslib::page_navbar(
           )
         )
       )
-    )
+    ),
     # ,
     # bslib::nav_panel(
     #   title = "Attrition",
@@ -1136,6 +1151,12 @@ ui <- bslib::page_navbar(
     #     )
     #   )
     # )
+    
+    ## Prevalence -----
+    bslib::nav_panel(
+      title = "Prevalence",
+      icon = shiny::icon("chart-line")
+    )
   ),
   bslib::nav_spacer(),
   bslib::nav_item(
@@ -1148,4 +1169,5 @@ ui <- bslib::page_navbar(
       )
     )
   )
+  # end ------
 )

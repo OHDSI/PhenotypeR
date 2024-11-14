@@ -31,9 +31,9 @@ data <- omopgenerics::importSummarisedResult(file.path(getwd(),"data", "raw")) |
 #
 choices <- getChoices(data, flatten = TRUE)
 #
-# # remove matched cohorts from choices
-# choices$summarise_characteristics_grouping_cohort_name <- choices$summarise_characteristics_grouping_cohort_name[
-#   !stringr::str_detect(choices$summarise_characteristics_grouping_cohort_name, "matched")]
+# remove matched cohorts from choices
+choices$summarise_characteristics_grouping_cohort_name <- choices$summarise_characteristics_grouping_cohort_name[
+  !stringr::str_detect(choices$summarise_characteristics_grouping_cohort_name, "matched")]
 #
 settingsUsed <- unique(settings(data) |> pull("result_type"))
 dataFiltered <- list()
@@ -50,36 +50,35 @@ for(i in seq_along(settingsUsed)){
 #
 selected <- choices
 #
-# selected$summarise_characteristics_grouping_cohort_name <- selected$summarise_characteristics_grouping_cohort_name[1]
-# selected$summarise_large_scale_characteristics_grouping_cohort_name <- selected$summarise_large_scale_characteristics_grouping_cohort_name[1]
+selected$summarise_characteristics_grouping_cohort_name <- selected$summarise_characteristics_grouping_cohort_name[1]
+selected$summarise_large_scale_characteristics_grouping_cohort_name <- selected$summarise_large_scale_characteristics_grouping_cohort_name[1]
 #
 # choices$cohort_code_use_grouping_cohort_name <- codeUseCohorts
 # selected$cohort_code_use_grouping_cohort_name <- codeUseCohorts[1]
 #
-# choices$compare_large_scale_characteristics_grouping_cdm_name <- choices$summarise_large_scale_characteristics_grouping_cdm_name
-# choices$compare_large_scale_characteristics_grouping_cohort_1 <- choices$summarise_large_scale_characteristics_grouping_cohort_name
-# choices$compare_large_scale_characteristics_grouping_cohort_2 <- choices$summarise_large_scale_characteristics_grouping_cohort_name
-# selected$compare_large_scale_characteristics_grouping_cdm_name <- choices$compare_large_scale_characteristics_grouping_cdm_name
-# selected$compare_large_scale_characteristics_grouping_cohort_1 <- choices$compare_large_scale_characteristics_grouping_cohort_1[1]
-# selected$compare_large_scale_characteristics_grouping_cohort_2 <- choices$compare_large_scale_characteristics_grouping_cohort_1[2]
-#
-# choices$summarise_large_scale_characteristics_grouping_domain <- settings(dataFiltered$summarise_large_scale_characteristics) |>
-#   pull("table_name")
-# selected$summarise_large_scale_characteristics_grouping_domain <- choices$summarise_large_scale_characteristics_grouping_domain
-#
-# choices$summarise_large_scale_characteristics_grouping_time_window <- unique(dataFiltered$summarise_large_scale_characteristics |>
-#   pull("variable_level"))
-# selected$summarise_large_scale_characteristics_grouping_time_window <-choices$summarise_large_scale_characteristics_grouping_time_window
-#
-# orphanCodelist <- unique(dataFiltered$orphan_code_use |>
-#                            visOmopResults::splitAll() |> pull("codelist_name"))
-# orphanCdm <- unique(dataFiltered$orphan_code_use |>
-#                             visOmopResults::addSettings() |> pull("cdm_name"))
-#
-# choices$orphan_grouping_cdm_name <- orphanCdm
-# choices$orphan_grouping_codelist_name <- orphanCodelist
-# selected$orphan_grouping_cdm_name <- orphanCdm
-# selected$orphan_grouping_cohort_name <- orphanCodelist[1]
+choices$compare_large_scale_characteristics_grouping_cdm_name <- choices$summarise_large_scale_characteristics_grouping_cdm_name
+choices$compare_large_scale_characteristics_grouping_cohort_1 <- choices$summarise_large_scale_characteristics_grouping_cohort_name
+choices$compare_large_scale_characteristics_grouping_cohort_2 <- choices$summarise_large_scale_characteristics_grouping_cohort_name
+selected$compare_large_scale_characteristics_grouping_cdm_name <- choices$compare_large_scale_characteristics_grouping_cdm_name
+selected$compare_large_scale_characteristics_grouping_cohort_1 <- choices$compare_large_scale_characteristics_grouping_cohort_1[1]
+selected$compare_large_scale_characteristics_grouping_cohort_2 <- choices$compare_large_scale_characteristics_grouping_cohort_1[2]
+
+choices$summarise_large_scale_characteristics_grouping_domain <- settings(dataFiltered$summarise_large_scale_characteristics) |>
+  pull("table_name")
+selected$summarise_large_scale_characteristics_grouping_domain <- choices$summarise_large_scale_characteristics_grouping_domain
+
+choices$summarise_large_scale_characteristics_grouping_time_window <- unique(dataFiltered$summarise_large_scale_characteristics |>
+  pull("variable_level"))
+selected$summarise_large_scale_characteristics_grouping_time_window <-choices$summarise_large_scale_characteristics_grouping_time_window
+
+orphanCodelist <- unique(dataFiltered$orphan_code_use |>
+                           visOmopResults::splitAll() |> pull("codelist_name"))
+orphanCdm <- unique(dataFiltered$orphan_code_use |>
+                            visOmopResults::addSettings() |> pull("cdm_name"))
+choices$orphan_grouping_cdm_name <- orphanCdm
+choices$orphan_grouping_codelist_name <- orphanCodelist
+selected$orphan_grouping_cdm_name <- orphanCdm
+selected$orphan_grouping_cohort_name <- orphanCodelist[1]
 #
 # unmappedCodelist <- unique(dataFiltered$unmapped_codes |>
 #                            visOmopResults::splitAll() |> pull("codelist_name"))

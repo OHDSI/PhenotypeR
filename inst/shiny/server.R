@@ -884,7 +884,6 @@ server <- function(input, output, session) {
     result <- dataFiltered$orphan_code_use |>
       dplyr::filter(cdm_name %in% input$orphan_grouping_cdm_name,
                     group_level %in% input$orphan_grouping_codelist_name)
-
   tbl <- CodelistGenerator::tableOrphanCodes(
       result,
       header = input$orphan_gt_99_header,
