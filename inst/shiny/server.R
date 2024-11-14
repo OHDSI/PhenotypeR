@@ -94,6 +94,21 @@ server <- function(input, output, session) {
   )
 
 
+  # achilles_code_use -----
+  
+  createOutputAchillesCodeUse <- shiny::reactive({
+    achillesFiltered <- dataFiltered$achilles_code_use  |>
+      filterData("achilles_code_use", input)
+    CodelistGenerator::tableAchillesCodeUse(achillesFiltered, 
+                                            header = input$achilles_code_use_header, 
+                                            groupColumn = input$achilles_code_use_groupColumn, 
+                                            hide = input$achilles_code_use_hide)
+    
+  })
+  
+  output$achilles_code_use_gt <- gt::render_gt({
+    createOutputAchillesCodeUse()
+  })
   # summarise_observation_period -----
   ## tidy summarise_observation_period -----
   getTidyDataSummariseObservationPeriod <- shiny::reactive({

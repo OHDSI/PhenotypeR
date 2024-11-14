@@ -72,10 +72,82 @@ ui <- bslib::page_navbar(
     icon = shiny::icon("list"),
     ## achilles code use -----
     bslib::nav_panel(
-      title = "Achilles Code Use",
-      icon = shiny::icon("database")
+      title = "Achilles code use",
+      icon = shiny::icon("database"),
+      bslib::layout_sidebar(
+        sidebar = bslib::sidebar(width = 400, open = "closed",
+                                 bslib::accordion(
+                                   bslib::accordion_panel(
+                                     title = "Settings",
+                                     shinyWidgets::pickerInput(
+                                       inputId = "achilles_code_use_grouping_cdm_name",
+                                       label = "Database",
+                                       choices = NULL,
+                                       selected = NULL,
+                                       multiple = TRUE,
+                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                     ),
+                                     shinyWidgets::pickerInput(
+                                       inputId = "achilles_code_use_grouping_codelist_name",
+                                       label = "Codelist name",
+                                       choices = NULL,
+                                       selected = NULL,
+                                       multiple = TRUE,
+                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                     )
+                                   ),
+                                   bslib::accordion_panel(
+                                     title = "Table formatting",
+                                     sortable::bucket_list(
+                                       header = NULL,
+                                       sortable::add_rank_list(
+                                         text = "none",
+                                         labels = c( "codelist_name"),
+                                         input_id = "achilles_code_use_none"
+                                       ),
+                                       sortable::add_rank_list(
+                                         text = "header",
+                                         labels = c("cdm_name", "estimate_name"),
+                                         input_id = "achilles_code_use_header"
+                                       ),
+                                       sortable::add_rank_list(
+                                         text = "groupColumn",
+                                         labels = NULL,
+                                         input_id = "achilles_code_use_groupColumn"
+                                       ),
+                                       sortable::add_rank_list(
+                                         text = "hide",
+                                         labels = character(),
+                                         input_id = "achilles_code_use_hide"
+                                       )
+                                     )
+                                   )
+                                 )
+        ),
+        bslib::nav_panel(
+          title = "achilles_code_use",
+          bslib::card(
+            full_screen = TRUE,
+            bslib::card_header(
+              bslib::popover(
+                shiny::icon("download"),
+                shinyWidgets::pickerInput(
+                  inputId = "achilles_code_use_formatted_download_type",
+                  label = "File type",
+                  selected = "docx",
+                  choices = c("docx", "png", "pdf", "html"),
+                  multiple = FALSE
+                ),
+                shiny::downloadButton(outputId = "achilles_code_use_formatted_download", label = "Download")
+              ),
+              class = "text-end"
+            ),
+            gt::gt_output("achilles_code_use_gt") |> withSpinner()
+          )
+        )
+      )
     ),
-
+    
     ## unmapped concepts -----
     bslib::nav_panel(
       title = "Unmapped concepts",
