@@ -113,6 +113,12 @@ codelistDiagnostics <- function(cohort){
   cli::cli_bullets(c("*" = "Getting code counts in database based on achilles"))
   results[[paste0("achilles_code_use")]] <- CodelistGenerator::summariseAchillesCodeUse(x = all_codelists, cdm = cdm)
 
+  cli::cli_bullets(c("*" = "Getting unmapped concepts"))
+  results[[paste0("unmapped_codes", i)]] <- CodelistGenerator::summariseUnmappedCodes(
+    x = all_codelists,
+    cdm = cdm
+  )
+
   cli::cli_bullets(c("*" = "Getting orphan concepts"))
   results[[paste0("orphan_codes", i)]] <- CodelistGenerator::summariseOrphanCodes(
       x = all_codelists,
