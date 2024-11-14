@@ -61,6 +61,7 @@ shinyDiagnostics <- function(result,
   omopgenerics::exportSummarisedResult(result,
                                        fileName = "result.csv",
                                        path = file.path(directory, "shiny", "data", "raw"))
-  shiny::shinyAppDir(file.path(directory, "shiny"))
+  # shiny::shinyAppDir(file.path(directory, "shiny"))
+  usethis::proj_activate(directory)
 
 }

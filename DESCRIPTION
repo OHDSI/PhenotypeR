@@ -36,7 +36,12 @@ Suggests:
     DiagrammeR,
     sortable,
     shinycssloaders,
-    here
+    here,
+    DT,
+    bslib,
+    shinyWidgets,
+    plotly,
+    tidyr
 Config/testthat/edition: 3
 RoxygenNote: 7.3.2
 Imports: 

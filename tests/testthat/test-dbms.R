@@ -18,7 +18,7 @@ test_that("eunomia", {
                                conceptSet = meds_cs,
                                name = "meds")
   results <- phenotypeDiagnostics(cdm$meds)
-  expect_no_error(shinyDiagnostics(result = results, directory = tempdir()))
+  expect_no_error(shinyDiagnostics(result = results, directory = here::here()))
 })
 
 test_that("postgres test", {
