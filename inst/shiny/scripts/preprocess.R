@@ -71,6 +71,12 @@ choices$summarise_large_scale_characteristics_grouping_time_window <- unique(dat
   pull("variable_level"))
 selected$summarise_large_scale_characteristics_grouping_time_window <-choices$summarise_large_scale_characteristics_grouping_time_window
 
+choices$compare_large_scale_characteristics_grouping_time_window <- choices$summarise_large_scale_characteristics_grouping_time_window
+choices$compare_large_scale_characteristics_grouping_table <- choices$summarise_large_scale_characteristics_grouping_domain
+selected$compare_large_scale_characteristics_grouping_time_window <- selected$summarise_large_scale_characteristics_grouping_time_window
+selected$compare_large_scale_characteristics_grouping_table <- selected$summarise_large_scale_characteristics_grouping_domain
+
+
 orphanCodelist <- unique(dataFiltered$orphan_code_use |>
                            visOmopResults::splitAll() |> pull("codelist_name"))
 orphanCdm <- unique(dataFiltered$orphan_code_use |>

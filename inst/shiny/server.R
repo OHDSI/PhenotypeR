@@ -831,7 +831,15 @@ server <- function(input, output, session) {
   )
   # compare lsc ----
   output$plotly_compare_lsc <- renderPlotly({
-    plotComparedLsc(lsc = dataFiltered$summarise_large_scale_characteristics,
+    lscFiltered <- dataFiltered$summarise_large_scale_characteristics |> 
+      filter(variable_level %in% input$compare_large_scale_characteristics_grouping_time_window) |>
+      filterSettings(table_name %in% input$compare_large_scale_characteristics_grouping_table)
+    
+    if (nrow(lscFiltered) == 0) {
+      validate("No data to plot")
+    }
+    
+    plotComparedLsc(lsc = lscFiltered,
                     cohorts = c(input$compare_large_scale_characteristics_grouping_cohort_1,
                                 input$compare_large_scale_characteristics_grouping_cohort_2))
   } )
