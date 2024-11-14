@@ -147,7 +147,7 @@ ui <- bslib::page_navbar(
         )
       )
     ),
-    
+
     ## unmapped concepts -----
     bslib::nav_panel(
       title = "Unmapped concepts",
@@ -834,7 +834,7 @@ ui <- bslib::page_navbar(
                   ),
                   position = "right"
                 ),
-                shiny::plotOutput("summarise_cohort_overlap_ggplot2_2")
+                plotly::plotlyOutput("summarise_cohort_overlap_ggplot2_2")
               )
             )
           )
@@ -1239,7 +1239,7 @@ ui <- bslib::page_navbar(
     #     )
     #   )
     # )
-    
+
     ## Prevalence -----
     bslib::nav_panel(
       title = "Prevalence",
