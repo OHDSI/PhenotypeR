@@ -15,7 +15,11 @@ library(sortable)
 library(visOmopResults)
 library(shinycssloaders)
 
-data <- omopgenerics::importSummarisedResult(file.path(getwd(),"data", "raw")) |>
+data <- omopgenerics::importSummarisedResult(file.path(getwd(),"data", "raw")) 
+if(nrow(data) == 0){
+  cli::cli_abort("No data found in data/raw")
+}
+data <- data |>
   correctSettings()
 
 # cohort_name_ref <- readr::read_csv(here::here("cohort_name_ref.csv"),
@@ -42,20 +46,20 @@ for(i in seq_along(settingsUsed)){
   dataFiltered[[workingSetting]] <- visOmopResults::filterSettings(data, result_type ==
                                                                      workingSetting)
 }
-#
-# codeUseCohorts <- unique(dataFiltered$cohort_code_use |>
-#                            visOmopResults::splitAll() |> pull("cohort_name"))
-# codeUseCodelist <- unique(dataFiltered$cohort_code_use |>
-#                             visOmopResults::splitAll() |> pull("codelist_name"))
-#
+
+codeUseCohorts <- unique(dataFiltered$cohort_code_use |>
+                           visOmopResults::splitAll() |> pull("cohort_name"))
+codeUseCodelist <- unique(dataFiltered$cohort_code_use |>
+                            visOmopResults::splitAll() |> pull("codelist_name"))
+
 selected <- choices
-#
+
 selected$summarise_characteristics_grouping_cohort_name <- selected$summarise_characteristics_grouping_cohort_name[1]
 selected$summarise_large_scale_characteristics_grouping_cohort_name <- selected$summarise_large_scale_characteristics_grouping_cohort_name[1]
-#
-# choices$cohort_code_use_grouping_cohort_name <- codeUseCohorts
-# selected$cohort_code_use_grouping_cohort_name <- codeUseCohorts[1]
-#
+
+choices$cohort_code_use_grouping_cohort_name <- codeUseCohorts
+selected$cohort_code_use_grouping_cohort_name <- codeUseCohorts[1]
+
 choices$compare_large_scale_characteristics_grouping_cdm_name <- choices$summarise_large_scale_characteristics_grouping_cdm_name
 choices$compare_large_scale_characteristics_grouping_cohort_1 <- choices$summarise_large_scale_characteristics_grouping_cohort_name
 choices$compare_large_scale_characteristics_grouping_cohort_2 <- choices$summarise_large_scale_characteristics_grouping_cohort_name
@@ -98,12 +102,12 @@ selected$orphan_grouping_cohort_name <- orphanCodelist[1]
 # selected$unmapped_grouping_codelist_name <- unmappedCodelist[1]
 #
 #
-# selected$incidence_settings_outcome_cohort_name <- selected$incidence_settings_outcome_cohort_name[1]
-#
-# selected$incidence_settings_analysis_interval <- selected$incidence_settings_analysis_interval[1]
-# selected$incidence_settings_denominator_age_group <- selected$incidence_settings_denominator_age_group[1]
-# selected$incidence_settings_denominator_sex <- selected$incidence_settings_denominator_sex[1]
-# selected$incidence_grouping_incidence_start_date
+selected$incidence_settings_outcome_cohort_name <- selected$incidence_settings_outcome_cohort_name[1]
+
+selected$incidence_settings_analysis_interval <- selected$incidence_settings_analysis_interval[1]
+selected$incidence_settings_denominator_age_group <- selected$incidence_settings_denominator_age_group[1]
+selected$incidence_settings_denominator_sex <- selected$incidence_settings_denominator_sex[1]
+selected$incidence_grouping_incidence_start_date
 #
 # min_incidence_start <- min(as.Date(selected$incidence_grouping_incidence_start_date))
 # max_incidence_end <- max(as.Date(selected$incidence_grouping_incidence_end_date))
