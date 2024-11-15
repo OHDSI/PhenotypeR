@@ -99,10 +99,10 @@ matchedDiagnostics <- function(cohort,
   cli::cli_bullets(c("*" = "{.strong Running large scale characterisation}"))
   results[["lsc"]] <- CohortCharacteristics::summariseLargeScaleCharacteristics(
     cohort = cdm[[matchedCohortTable]],
-    window = list(c(-Inf, -366), c(-365, -31),
+    window = list(c(-Inf, -1), c(-Inf, -366), c(-365, -31),
                   c(-30, -1), c(0, 0),
                   c(1, 30), c(31, 365),
-                  c(366, Inf)),
+                  c(366, Inf), c(1, Inf)),
     eventInWindow = c("condition_occurrence", "visit_occurrence",
                       "measurement", "procedure_occurrence",
                       "observation"),
