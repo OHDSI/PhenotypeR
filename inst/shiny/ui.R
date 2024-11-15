@@ -1647,12 +1647,8 @@ ui <- bslib::page_navbar(
     # )
     
     
-    ## Prevalence -----
-    bslib::nav_panel(
-      title = "Prevalence",
-      icon = shiny::icon("chart-line")
-    )
   ),
+  # end ------
   bslib::nav_spacer(),
   bslib::nav_item(
     bslib::popover(
@@ -1664,5 +1660,4 @@ ui <- bslib::page_navbar(
       )
     )
   )
-  # end ------
 )
