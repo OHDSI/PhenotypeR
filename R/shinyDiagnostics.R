@@ -66,7 +66,7 @@ shinyDiagnostics <- function(result,
                                        path = file.path(directory, "shiny", "data", "raw"))
   # shiny::shinyAppDir(file.path(directory, "shiny"))
   if (isTRUE(open)) {
-  usethis::proj_activate(directory)
+  usethis::proj_activate(path = file.path(directory,"shiny"))
   }
 
   return(invisible())
