@@ -1021,7 +1021,9 @@ server <- function(input, output, session) {
     plotComparedLsc(lsc = outputLSC(),
                     cohorts = c(input$compare_large_scale_characteristics_grouping_cohort_1,
                                 input$compare_large_scale_characteristics_grouping_cohort_2),
-                    colour = "table_name")
+                    colour = c(input$compare_large_scale_characteristics_colour_1),
+                    facet  = c(input$compare_large_scale_characteristics_facet_1)
+    )
   })
 
   # orphan -----
