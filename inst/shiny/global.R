@@ -27,11 +27,11 @@ if(file.exists(file.path(getwd(), "data", "appData.RData"))){
   source(file.path(getwd(),"scripts", "preprocess.R"))
 }
 
-plotComparedLsc <- function(lsc, cohorts){
+plotComparedLsc <- function(lsc, cohorts, colour = NULL){
    lsc <- lsc |>  tidy()
   plot_data <- lsc |>
     filter(cohort_name %in% c(cohorts
-    )) |> 
+    )) |>
     select(cohort_name,
            variable_name,
            variable_level,
@@ -40,15 +40,17 @@ plotComparedLsc <- function(lsc, cohorts){
            percentage) |>
     pivot_wider(names_from = cohort_name,
                 values_from = percentage)
+
   
   plot <- plot_data |>
     ggplot(aes(text = paste("Concept:", variable_name,
                             "<br>Concept ID:", concept_id,
                             "<br>Time window:", variable_level,
-                            "<br>Table:", table_name, 
+                            "<br>Table:", table_name,
                             "<br>Cohorts: "))) +
     geom_point(aes(x = !!sym(cohorts[1]),
-                   y = !!sym(cohorts[2]))) +
+                   y = !!sym(cohorts[2]),
+                   colour = !!sym(colour))) +
     geom_abline(slope = 1, intercept = 0,
                 color = "red", linetype = "dashed") +
     theme_bw()
