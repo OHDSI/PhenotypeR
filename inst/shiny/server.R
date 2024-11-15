@@ -844,21 +844,21 @@ server <- function(input, output, session) {
       gt::gtsave(data = obj, filename = file)
     }
   )
-  
+
   # prevalence -----
   ## tidy prevalence -----
   getTidyDataPrevalence <- shiny::reactive({
     res <- dataFiltered$prevalence |>
       filterData("prevalence", input) |>
       tidyData()
-    
+
     # columns to eliminate
     colsEliminate <- colnames(res)
     colsEliminate <- colsEliminate[!colsEliminate %in% c(
       input$prevalence_tidy_columns, "variable_name", "variable_level",
       "estimate_name", "estimate_type", "estimate_value"
     )]
-    
+
     # pivot
     pivot <- input$prevalence_tidy_pivot
     if (pivot != "none") {
@@ -869,7 +869,7 @@ server <- function(input, output, session) {
       res <- res |>
         visOmopResults::pivotEstimates(pivotEstimatesBy = vars)
     }
-    
+
     res |>
       dplyr::select(!dplyr::all_of(colsEliminate))
   })
@@ -892,7 +892,7 @@ server <- function(input, output, session) {
   createOutputprev1 <- shiny::reactive({
     result <- dataFiltered$prevalence |>
       filter(cdm_name %in% input$prevalence_grouping_cdm_name,
-             variable_level %in% input$prevalence_settings_outcome_cohort_name) |> 
+             variable_level %in% input$prevalence_settings_outcome_cohort_name) |>
       filterSettings(analysis_interval %in% input$prevalence_settings_analysis_interval,
                      denominator_age_group %in% input$prevalence_settings_denominator_age_group,
                      denominator_sex %in% input$prevalence_settings_denominator_sex)
@@ -923,16 +923,16 @@ server <- function(input, output, session) {
       gt::gtsave(data = obj, filename = file)
     }
   )
-  
+
   ## output prev2 -----
   createOutputprev2 <- shiny::reactive({
     result <- dataFiltered$prevalence |>
       filter(cdm_name %in% input$prevalence_grouping_cdm_name,
-             variable_level %in% input$prevalence_settings_outcome_cohort_name) |> 
+             variable_level %in% input$prevalence_settings_outcome_cohort_name) |>
       filterSettings(analysis_interval %in% input$prevalence_settings_analysis_interval,
                      denominator_age_group %in% input$prevalence_settings_denominator_age_group,
                      denominator_sex %in% input$prevalence_settings_denominator_sex)
-    
+
     IncidencePrevalence::plotPrevalence(
       result,
       x = input$prevalence_ggplot2_prev2_x,
@@ -959,27 +959,27 @@ server <- function(input, output, session) {
       )
     }
   )
-  
-  
+
+
   # compare lsc ----
-  
+
   outputLSC <- shiny::reactive({
     dataFiltered$summarise_large_scale_characteristics |>
       filter(variable_level %in% input$compare_large_scale_characteristics_grouping_time_window) |>
       filterSettings(table_name %in% input$compare_large_scale_characteristics_grouping_table)
-    
+
   })
-  
+
   output$gt_compare_lsc <- DT::renderDT({
-  
+
     lscFiltered <- outputLSC()
     target_cohort <- input$compare_large_scale_characteristics_grouping_cohort_1
     comparator_cohort <- input$compare_large_scale_characteristics_grouping_cohort_2
-    lsc <- lscFiltered |>  
+    lsc <- lscFiltered |>
       tidy() |>
-      filter(cohort_name %in% 
-               c(target_cohort, comparator_cohort) 
-             ) |> 
+      filter(cohort_name %in%
+               c(target_cohort, comparator_cohort)
+             ) |>
       select(cohort_name,
              variable_name,
              concept_id,
@@ -988,31 +988,31 @@ server <- function(input, output, session) {
              percentage) |>
       pivot_wider(names_from = cohort_name,
                   values_from = percentage)
-    
+
     lsc <-lsc |>
       mutate(across(c(target_cohort, comparator_cohort), ~ as.numeric(.x)/100)) |>
       mutate(smd = (!!sym(target_cohort) - !!sym(comparator_cohort))/sqrt((!!sym(target_cohort)*(1-!!sym(target_cohort)) + !!sym(comparator_cohort)*(1-!!sym(comparator_cohort)))/2)) |>
       arrange(desc(smd))  |>
-      mutate(across(c(target_cohort, comparator_cohort), ~ as.numeric(.x)*100)) |> 
-      mutate(concept = paste0(variable_name, " (",concept_id, ")")) |> 
+      mutate(across(c(target_cohort, comparator_cohort), ~ as.numeric(.x)*100)) |>
+      mutate(concept = paste0(variable_name, " (",concept_id, ")")) |>
       select("Concept name (concept ID)" = concept,
              "Table" = table_name,
              "Time window" = variable_level,
              target_cohort,
              comparator_cohort,
              "Standardised mean difference" = smd)
-      
-    
-    round_cols <- c("Standardised mean difference", 
-                    target_cohort, 
+
+
+    round_cols <- c("Standardised mean difference",
+                    target_cohort,
                     comparator_cohort)
-    
+
     DT::datatable(lsc, rownames= FALSE) %>%
       formatRound(columns=c(round_cols), digits=2)
-  
+
   })
-  
-  
+
+
   output$plotly_compare_lsc <- renderPlotly({
     if (nrow(outputLSC()) == 0) {
       validate("No data to plot")
@@ -1020,7 +1020,10 @@ server <- function(input, output, session) {
 
     plotComparedLsc(lsc = outputLSC(),
                     cohorts = c(input$compare_large_scale_characteristics_grouping_cohort_1,
-                                input$compare_large_scale_characteristics_grouping_cohort_2))
+                                input$compare_large_scale_characteristics_grouping_cohort_2),
+                    colour = c(input$compare_large_scale_characteristics_colour_1),
+                    facet  = c(input$compare_large_scale_characteristics_facet_1)
+    )
   })
 
   # orphan -----

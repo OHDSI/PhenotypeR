@@ -679,6 +679,28 @@ ui <- bslib::page_navbar(
             title = "Plot",
         bslib::card(
           full_screen = TRUE,
+          bslib::layout_sidebar(
+            sidebar = bslib::sidebar(width = 400, open = "closed",
+                                     shinyWidgets::pickerInput(
+                                       inputId = "compare_large_scale_characteristics_colour_1",
+                                       label = "Colour",
+                                       selected = c("table"),
+                                       multiple = TRUE,
+                                       choices = c("table", "database", "time_window"),
+                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                     ),
+                                     shinyWidgets::pickerInput(
+                                       inputId = "compare_large_scale_characteristics_facet_1",
+                                       label = "Facet",
+                                       selected = c("database"),
+                                       multiple = TRUE,
+                                       choices = c("table", "database", "time_window"),
+                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                     ),
+                                     position = "right"
+            ),
+            position = "right"
+          ),
           plotly::plotlyOutput("plotly_compare_lsc") |> withSpinner()
           )
           )
@@ -797,6 +819,7 @@ ui <- bslib::page_navbar(
               )
             )
           ),
+          # Cohort overlap ----
           bslib::nav_panel(
             title = "Plot cohort overlap",
             bslib::card(
