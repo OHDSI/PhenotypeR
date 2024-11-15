@@ -80,8 +80,14 @@ matchedDiagnostics <- function(cohort,
   cdm[[matchedCohortTable]] <- CohortConstructor::matchCohorts(cdm[[matchedCohortTable]],
                                      name = matchedCohortTable)
 
+  cdm[[matchedCohortTable]]  <- cdm[[matchedCohortTable]] |>
+    PatientProfiles::addAge(ageGroup = list(c(0, 17), c(18, 64), c(65, 150))) |>
+    PatientProfiles::addSex() |>
+    CDMConnector::compute(name = matchedCohortTable, temporary = FALSE)
+
   results[["cohort_summary"]] <- cdm[[matchedCohortTable]] |>
     CohortCharacteristics::summariseCharacteristics(
+      strata = list("age_group", "sex"),
       tableIntersectCount = list(
         "Number visits prior year" = list(
           tableName = "visit_occurrence",
@@ -89,7 +95,6 @@ matchedDiagnostics <- function(cohort,
         )
       )
     )
-
 
   cli::cli_bullets(c("*" = "{.strong Running large scale characterisation}"))
   results[["lsc"]] <- CohortCharacteristics::summariseLargeScaleCharacteristics(

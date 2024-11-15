@@ -562,7 +562,7 @@ ui <- bslib::page_navbar(
             )
           ),
           bslib::nav_panel(
-            title = "Formatted",
+            title = "Top concepts",
             bslib::card(
               full_screen = TRUE,
               bslib::card_header(
@@ -666,11 +666,24 @@ ui <- bslib::page_navbar(
                                      )
                                    )
         ),
+        bslib::navset_card_tab(
+          
+          bslib::nav_panel(
+            title = "Table",
+          bslib::card(
+            full_screen = TRUE,
+            DT::DTOutput("gt_compare_lsc") |> withSpinner()
+          )
+          ),
+          bslib::nav_panel(
+            title = "Plot",
         bslib::card(
           full_screen = TRUE,
           plotly::plotlyOutput("plotly_compare_lsc") |> withSpinner()
           )
-      )),
+          )
+      ))
+      ),
   ## Cohort overlap -----
     bslib::nav_panel(
       title = "Cohort overlap",

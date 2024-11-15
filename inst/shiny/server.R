@@ -845,19 +845,66 @@ server <- function(input, output, session) {
     }
   )
   # compare lsc ----
-  output$plotly_compare_lsc <- renderPlotly({
-    lscFiltered <- dataFiltered$summarise_large_scale_characteristics |>
+  
+  outputLSC <- shiny::reactive({
+    dataFiltered$summarise_large_scale_characteristics |>
       filter(variable_level %in% input$compare_large_scale_characteristics_grouping_time_window) |>
       filterSettings(table_name %in% input$compare_large_scale_characteristics_grouping_table)
-
-    if (nrow(lscFiltered) == 0) {
+    
+  })
+  
+  output$gt_compare_lsc <- DT::renderDT({
+  
+    lscFiltered <- outputLSC()
+    target_cohort <- input$compare_large_scale_characteristics_grouping_cohort_1
+    comparator_cohort <- input$compare_large_scale_characteristics_grouping_cohort_2
+    lsc <- lscFiltered |>  
+      tidy() |>
+      filter(cohort_name %in% 
+               c(target_cohort, comparator_cohort) 
+             ) |> 
+      select(cohort_name,
+             variable_name,
+             concept_id,
+             variable_level,
+             table_name,
+             percentage) |>
+      pivot_wider(names_from = cohort_name,
+                  values_from = percentage)
+    
+    lsc <-lsc |>
+      mutate(across(c(target_cohort, comparator_cohort), ~ as.numeric(.x)/100)) |>
+      mutate(smd = (!!sym(target_cohort) - !!sym(comparator_cohort))/sqrt((!!sym(target_cohort)*(1-!!sym(target_cohort)) + !!sym(comparator_cohort)*(1-!!sym(comparator_cohort)))/2)) |>
+      arrange(desc(smd))  |>
+      mutate(across(c(target_cohort, comparator_cohort), ~ as.numeric(.x)*100)) |> 
+      mutate(concept = paste0(variable_name, " (",concept_id, ")")) |> 
+      select("Concept name (concept ID)" = concept,
+             "Table" = table_name,
+             "Time window" = variable_level,
+             target_cohort,
+             comparator_cohort,
+             "Standardised mean difference" = smd)
+      
+    
+    round_cols <- c("Standardised mean difference", 
+                    target_cohort, 
+                    comparator_cohort)
+    
+    DT::datatable(lsc, rownames= FALSE) %>%
+      formatRound(columns=c(round_cols), digits=2)
+  
+  })
+  
+  
+  output$plotly_compare_lsc <- renderPlotly({
+    if (nrow(outputLSC()) == 0) {
       validate("No data to plot")
     }
 
-    plotComparedLsc(lsc = lscFiltered,
+    plotComparedLsc(lsc = outputLSC(),
                     cohorts = c(input$compare_large_scale_characteristics_grouping_cohort_1,
                                 input$compare_large_scale_characteristics_grouping_cohort_2))
-  } )
+  })
 
   # orphan -----
   ## tidy orphan -----
