@@ -844,6 +844,123 @@ server <- function(input, output, session) {
       gt::gtsave(data = obj, filename = file)
     }
   )
+  
+  # prevalence -----
+  ## tidy prevalence -----
+  getTidyDataPrevalence <- shiny::reactive({
+    res <- dataFiltered$prevalence |>
+      filterData("prevalence", input) |>
+      tidyData()
+    
+    # columns to eliminate
+    colsEliminate <- colnames(res)
+    colsEliminate <- colsEliminate[!colsEliminate %in% c(
+      input$prevalence_tidy_columns, "variable_name", "variable_level",
+      "estimate_name", "estimate_type", "estimate_value"
+    )]
+    
+    # pivot
+    pivot <- input$prevalence_tidy_pivot
+    if (pivot != "none") {
+      vars <- switch(pivot,
+                     "estimates" = "estimate_name",
+                     "estimates and variables" = c("variable_name", "variable_level", "estimate_name")
+      )
+      res <- res |>
+        visOmopResults::pivotEstimates(pivotEstimatesBy = vars)
+    }
+    
+    res |>
+      dplyr::select(!dplyr::all_of(colsEliminate))
+  })
+  output$prevalence_tidy <- DT::renderDT({
+    DT::datatable(
+      getTidyDataPrevalence(),
+      options = list(scrollX = TRUE),
+      rownames = FALSE
+    )
+  })
+  output$prevalence_tidy_download <- shiny::downloadHandler(
+    filename = "tidy_prevalence.csv",
+    content = function(file) {
+      getTidyDataPrevalence() |>
+        readr::write_csv(file = file)
+    }
+  )
+  ## output prevalence -----
+  ## output prev1 -----
+  createOutputprev1 <- shiny::reactive({
+    result <- dataFiltered$prevalence |>
+      filter(cdm_name %in% input$prevalence_grouping_cdm_name,
+             variable_level %in% input$prevalence_settings_outcome_cohort_name) |> 
+      filterSettings(analysis_interval %in% input$prevalence_settings_analysis_interval,
+                     denominator_age_group %in% input$prevalence_settings_denominator_age_group,
+                     denominator_sex %in% input$prevalence_settings_denominator_sex)
+    IncidencePrevalence::tablePrevalence(
+      result,
+      # header = input$prevalence_gt_prev1_header,
+      groupColumn = c("cdm_name", "outcome_cohort_name"),
+      hide = "denominator_cohort_name",
+      settingsColumns = c("denominator_age_group",
+                          "denominator_sex",
+                          "outcome_cohort_name")
+    ) %>%
+      tab_header(
+        title = "Prevalence estimates",
+        subtitle = "Prevalence rates estimated for outcomes of interest"
+      ) %>%
+      tab_options(
+        heading.align = "left"
+      )
+  })
+  output$prevalence_gt_prev1 <- gt::render_gt({
+    createOutputprev1()
+  })
+  output$prevalence_gt_prev1_download <- shiny::downloadHandler(
+    filename = paste0("output_gt_prevalence.", input$prevalence_gt_prev1_download_type),
+    content = function(file) {
+      obj <- createOutputprev1()
+      gt::gtsave(data = obj, filename = file)
+    }
+  )
+  
+  ## output prev2 -----
+  createOutputprev2 <- shiny::reactive({
+    result <- dataFiltered$prevalence |>
+      filter(cdm_name %in% input$prevalence_grouping_cdm_name,
+             variable_level %in% input$prevalence_settings_outcome_cohort_name) |> 
+      filterSettings(analysis_interval %in% input$prevalence_settings_analysis_interval,
+                     denominator_age_group %in% input$prevalence_settings_denominator_age_group,
+                     denominator_sex %in% input$prevalence_settings_denominator_sex)
+    
+    IncidencePrevalence::plotPrevalence(
+      result,
+      x = input$prevalence_ggplot2_prev2_x,
+      ribbon = input$prevalence_ggplot2_prev2_ribbon,
+      facet = input$prevalence_ggplot2_prev2_facet,
+      colour = input$prevalence_ggplot2_prev2_colour
+    ) |>
+      plotly::ggplotly()
+  })
+  output$prevalence_ggplot2_prev2 <- plotly::renderPlotly({
+    createOutputprev2()
+  })
+  output$prevalence_ggplot2_prev2_download <- shiny::downloadHandler(
+    filename = paste0("output_ggplot2_prevalence.", "png"),
+    content = function(file) {
+      obj <- createOutputprev2()
+      ggplot2::ggsave(
+        filename = file,
+        plot = obj,
+        width = as.numeric(input$prevalence_ggplot2_prev2_download_width),
+        height = as.numeric(input$prevalence_ggplot2_prev2_download_height),
+        units = input$prevalence_ggplot2_prev2_download_units,
+        dpi = as.numeric(input$prevalence_ggplot2_prev2_download_dpi)
+      )
+    }
+  )
+  
+  
   # compare lsc ----
   
   outputLSC <- shiny::reactive({

@@ -1,4 +1,5 @@
 library(bslib)
+library(omopgenerics)
 library(CodelistGenerator)
 library(CohortCharacteristics)
 library(DiagrammeR)

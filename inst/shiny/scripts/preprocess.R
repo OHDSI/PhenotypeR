@@ -112,6 +112,16 @@ selected$incidence_grouping_incidence_start_date
 # min_incidence_start <- min(as.Date(selected$incidence_grouping_incidence_start_date))
 # max_incidence_end <- max(as.Date(selected$incidence_grouping_incidence_end_date))
 
+prevalence_cohorts <- unique(dataFiltered$prevalence |> pull("variable_level"))
+choices$prevalence_settings_outcome_cohort_name <- prevalence_cohorts
+selected$prevalence_settings_outcome_cohort_name <- prevalence_cohorts[1]
+
+selected$prevalence_settings_analysis_interval <- selected$prevalence_settings_analysis_interval[1]
+selected$prevalence_settings_denominator_age_group <- selected$prevalence_settings_denominator_age_group[1]
+selected$prevalence_settings_denominator_sex <- selected$prevalence_settings_denominator_sex[1]
+selected$prevalence_grouping_prevalence_start_date
+
+
 save(data, dataFiltered, selected, choices,
      file = here::here("data", "appData.RData"))
 
