@@ -57,6 +57,7 @@ Imports:
     magrittr,
     purrr,
     rlang,
-    vctrs
+    vctrs,
+    usethis
 URL: https://ohdsi.github.io/PhenotypeR/
 VignetteBuilder: knitr
