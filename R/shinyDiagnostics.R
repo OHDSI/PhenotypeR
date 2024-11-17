@@ -55,6 +55,11 @@ shinyDiagnostics <- function(result,
                              directory,
                              open = rlang::is_interactive()){
 
+  if(file.exists(file.path(directory, "shiny"))){
+  cli::cli_inform(c("i" = "Existing {.strong shiny} folder in {.arg directory} will be overwritten."))
+  unlink(file.path(directory, "shiny"), recursive = TRUE)
+  }
+
   file.copy(from = system.file("shiny",
                                package = "PhenotypeR"),
             to = directory,

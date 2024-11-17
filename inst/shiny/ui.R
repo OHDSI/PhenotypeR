@@ -258,12 +258,12 @@ ui <- bslib::page_navbar(
                                        header = NULL,
                                        sortable::add_rank_list(
                                          text = "none",
-                                         labels = c("variable_name", "variable_level", "estimate_name"),
+                                         labels = c("variable_name", "variable_level"),
                                          input_id = "orphan_gt_99_none"
                                        ),
                                        sortable::add_rank_list(
                                          text = "header",
-                                         labels = c("cdm_name", "cohort_name"),
+                                         labels = c("cdm_name", "cohort_name", "estimate_name"),
                                          input_id = "orphan_gt_99_header"
                                        ),
                                        sortable::add_rank_list(

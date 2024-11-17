@@ -111,3 +111,40 @@ test_that("test append codelist to existing", {
  expect_true(omopgenerics::cohortCodelist(cohort, 2) == 5)
 
 })
+
+test_that("test eunomia", {
+  skip_if_not_installed("CirceR")
+  skip_if_not(CDMConnector::eunomia_is_available())
+
+  con <- DBI::dbConnect(duckdb::duckdb(CDMConnector::eunomia_dir()))
+  cdm <- CDMConnector::cdm_from_con(
+    con = con, cdm_name = "eunomia",
+    cdm_schema = "main", write_schema = "main"
+  )
+
+  cohortSet <- CDMConnector::readCohortSet(
+    system.file(package = "PhenotypeR", "example_cohorts"))
+  cohortCodes <- CodelistGenerator::codesFromCohort(
+    system.file(package = "PhenotypeR", "example_cohorts"), cdm = cdm
+  )
+
+  cdm <- CDMConnector::generateCohortSet(cdm = cdm, cohortSet = cohortSet,
+                                         name = "gibleed")
+  cdm$gibleed <- addCodelistAttribute(cohort = cdm$gibleed,
+                                      codelist = list("gibleed_default" = 1L,
+                                                      "gibleed_male" = 2L))
+
+
+
+  expect_true(omopgenerics::cohortCodelist(cdm$gibleed,
+                                           omopgenerics::settings(cdm$gibleed) |>
+                                             dplyr::filter(cohort_name == "gibleed_default") |>
+                                             dplyr::pull("cohort_definition_id"))[[1]] == 1)
+  expect_true(omopgenerics::cohortCodelist(cdm$gibleed,
+                                           omopgenerics::settings(cdm$gibleed) |>
+                                             dplyr::filter(cohort_name == "gibleed_male") |>
+                                             dplyr::pull("cohort_definition_id"))[[1]] == 2)
+
+  CDMConnector::cdmDisconnect(cdm)
+
+})
