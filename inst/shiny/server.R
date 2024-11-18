@@ -635,7 +635,6 @@ server <- function(input, output, session) {
       dplyr::filter(cdm_name %in% input$summarise_large_scale_characteristics_grouping_cdm_name ) |>
       dplyr::filter(group_level  %in% input$summarise_large_scale_characteristics_grouping_cohort_name) |>
        dplyr::filter(variable_level  %in% input$summarise_large_scale_characteristics_grouping_time_window)
-    browser()
 
     CohortCharacteristics::tableLargeScaleCharacteristics(lsc_data |> arrange(desc(estimate_type), desc(estimate_value)),
                                                           topConcepts = input$top_n
