@@ -18,7 +18,7 @@ test_that("eunomia", {
                                conceptSet = meds_cs,
                                name = "meds")
   results <- phenotypeDiagnostics(cdm$meds)
-  expect_no_error(shinyDiagnostics(result = results, directory = here::here()))
+  expect_no_error(shinyDiagnostics(result = results, directory = tempdir()))
 })
 
 test_that("postgres test", {
@@ -49,7 +49,7 @@ test_that("postgres test", {
   cdm <- omopgenerics::bind(cdm$asthma, cdm$drugs, name = "my_cohort")
 
   results <- phenotypeDiagnostics(cdm$my_cohort)
-  expect_no_error(shinyDiagnostics(result = results, directory = here::here()))
+  expect_no_error(shinyDiagnostics(result = results, directory = tempir()))
   expect_no_error(CodelistGenerator::tableCohortCodeUse(results))
   expect_no_error(CodelistGenerator::tableAchillesCodeUse(results))
   expect_no_error(CodelistGenerator::tableOrphanCodes(results))
@@ -60,7 +60,7 @@ test_that("postgres test", {
   expect_no_error(CohortCharacteristics::tableCohortTiming(results))
   expect_no_error(CohortCharacteristics::tableLargeScaleCharacteristics(results))
   # omopViewer::exportStaticApp(results)
-  expect_no_error(shinyDiagnostics(result = results, directory = here::here()))
+  expect_no_error(shinyDiagnostics(result = results, directory = tempir()))
 
   CDMConnector::cdm_disconnect(cdm = cdm)
 
