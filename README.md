@@ -71,7 +71,7 @@ result <- cdm$gibleed |>
 
 ``` r
 summary(result)
-#> A summarised_result object with 15951 rows, 49 different result_id, 1 different
+#> A summarised_result object with 18179 rows, 49 different result_id, 1 different
 #> cdm names, and 24 settings.
 #> CDM names: Synthea synthetic health database.
 #> Settings: package_name, package_version, result_type, timing, table_name,
@@ -79,7 +79,7 @@ summary(result)
 #> analysis_outcome_washout, analysis_repeated_events, analysis_interval,
 #> analysis_complete_database_intervals, denominator_age_group, denominator_sex,
 #> denominator_days_prior_observation, denominator_start_date,
-#> denominator_end_date, denominator_time_at_risk, …, type, and analysis.
+#> denominator_end_date, denominator_target_cohort_name, …, type, and analysis.
 ```
 
 Once we have our results we can quickly view them in an interactive
