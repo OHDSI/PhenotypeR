@@ -19,12 +19,16 @@ library(shinyWidgets)
 library(plotly)
 library(tidyr)
 
-source(file.path(getwd(),"scripts", "functions.R"))
+source(here::here("scripts", "functions.R"))
 
-if(file.exists(file.path(getwd(), "data", "appData.RData"))){
-  load(file.path(getwd(),"data", "appData.RData"))
+if(file.exists(here::here("data", "appData.RData"))){
+  cli::cli_inform("Loading existing processed data")
+  load(here::here("data", "appData.RData"))
+  cli::cli_alert_success("Data loaded")
 } else {
-  source(file.path(getwd(),"scripts", "preprocess.R"))
+  cli::cli_inform("Preprocessing data from data/raw")
+  source(here::here("scripts", "preprocess.R"))
+  cli::cli_alert_success("Data processed")
 }
 
 plotComparedLsc <- function(lsc, cohorts, colour = NULL, facet = NULL){
@@ -32,7 +36,7 @@ plotComparedLsc <- function(lsc, cohorts, colour = NULL, facet = NULL){
   plot_data <- lsc |>
     filter(cohort_name %in% c(cohorts
     )) |>
-    select(database = cdm_name, 
+    select(database = cdm_name,
            cohort_name,
            variable_name,
            time_window = variable_level,
@@ -42,19 +46,9 @@ plotComparedLsc <- function(lsc, cohorts, colour = NULL, facet = NULL){
     pivot_wider(names_from = cohort_name,
                 values_from = percentage)
 
-  # plot <- visOmopResults::scatterPlot(plot_data, 
-  #                             x = cohorts[1],
-  #                             y = cohorts[2],
-  #                             colour = colour, 
-  #                             facet = facet,
-  #                             line = FALSE,
-  #                             point = TRUE, 
-  #                             ribbon = FALSE) +
-  #   ggplot2::geom_abline(slope = 1, intercept = 0, color = "red", linetype = "dashed") +
-  #   ggplot2::theme_bw() 
-
-  plot <- plot_data |>
-    ggplot(aes(text = paste("Concept:", variable_name,
+    plot <- plot_data |>
+    ggplot(aes(text = paste("<br>Database:", cdm_name,
+                            "<br>Concept:", variable_name,
                             "<br>Concept ID:", concept_id,
                             "<br>Time window:", time_window,
                             "<br>Table:", table,

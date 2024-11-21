@@ -49,11 +49,16 @@
 #'                                  schema ="main",
 #'                                  overwrite = TRUE)
 #'   my_result_cohort_diag <- cdm$my_cohort |> phenotypeDiagnostics()
-#'   shinyDiagnostics(my_result_cohort_diag, here::here())
+#'   shinyDiagnostics(my_result_cohort_diag, tempdir())
 #' }
 shinyDiagnostics <- function(result,
                              directory,
                              open = rlang::is_interactive()){
+
+  if(file.exists(file.path(directory, "shiny"))){
+  cli::cli_inform(c("i" = "Existing {.strong shiny} folder in {.arg directory} will be overwritten."))
+  unlink(file.path(directory, "shiny"), recursive = TRUE)
+  }
 
   file.copy(from = system.file("shiny",
                                package = "PhenotypeR"),

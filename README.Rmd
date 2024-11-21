@@ -70,5 +70,5 @@ summary(result)
 
 Once we have our results we can quickly view them in an interactive application. This shiny app will be saved in a new directory and can be further customised.
 ```{r, eval=FALSE}
-shinyDiagnostics(result = result)
+shinyDiagnostics(result = result, directory = tempdir())
 ```

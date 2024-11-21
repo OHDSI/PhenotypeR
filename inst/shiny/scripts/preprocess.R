@@ -15,9 +15,12 @@ library(sortable)
 library(visOmopResults)
 library(shinycssloaders)
 
-data <- omopgenerics::importSummarisedResult(file.path(getwd(),"data", "raw")) 
+data <- omopgenerics::importSummarisedResult(here::here("data", "raw"))
 if(nrow(data) == 0){
-  cli::cli_abort("No data found in data/raw")
+  cli::cli_warn("No data found in data/raw")
+  choices <- list()
+} else{
+  choices <- getChoices(data, flatten = TRUE)
 }
 data <- data |>
   correctSettings()
@@ -33,7 +36,6 @@ data <- data |>
 #   )
 # }
 #
-choices <- getChoices(data, flatten = TRUE)
 #
 # remove matched cohorts from choices
 choices$summarise_characteristics_grouping_cohort_name <- choices$summarise_characteristics_grouping_cohort_name[
@@ -47,18 +49,22 @@ for(i in seq_along(settingsUsed)){
                                                                      workingSetting)
 }
 
-codeUseCohorts <- unique(dataFiltered$cohort_code_use |>
-                           visOmopResults::splitAll() |> pull("cohort_name"))
-codeUseCodelist <- unique(dataFiltered$cohort_code_use |>
-                            visOmopResults::splitAll() |> pull("codelist_name"))
-
 selected <- choices
+
+if(!is.null(dataFiltered$cohort_code_use)){
+  if(nrow(dataFiltered$cohort_code_use)>0){
+    codeUseCohorts <- unique(dataFiltered$cohort_code_use |>
+                               visOmopResults::splitAll() |> pull("cohort_name"))
+    codeUseCodelist <- unique(dataFiltered$cohort_code_use |>
+                                visOmopResults::splitAll() |> pull("codelist_name"))
+
+    choices$cohort_code_use_grouping_cohort_name <- codeUseCohorts
+    selected$cohort_code_use_grouping_cohort_name <- codeUseCohorts[1]
+  }}
 
 selected$summarise_characteristics_grouping_cohort_name <- selected$summarise_characteristics_grouping_cohort_name[1]
 selected$summarise_large_scale_characteristics_grouping_cohort_name <- selected$summarise_large_scale_characteristics_grouping_cohort_name[1]
 
-choices$cohort_code_use_grouping_cohort_name <- codeUseCohorts
-selected$cohort_code_use_grouping_cohort_name <- codeUseCohorts[1]
 
 choices$compare_large_scale_characteristics_grouping_cdm_name <- choices$summarise_large_scale_characteristics_grouping_cdm_name
 choices$compare_large_scale_characteristics_grouping_cohort_1 <- choices$summarise_large_scale_characteristics_grouping_cohort_name
@@ -67,12 +73,14 @@ selected$compare_large_scale_characteristics_grouping_cdm_name <- choices$compar
 selected$compare_large_scale_characteristics_grouping_cohort_1 <- choices$compare_large_scale_characteristics_grouping_cohort_1[1]
 selected$compare_large_scale_characteristics_grouping_cohort_2 <- choices$compare_large_scale_characteristics_grouping_cohort_1[2]
 
-choices$summarise_large_scale_characteristics_grouping_domain <- settings(dataFiltered$summarise_large_scale_characteristics) |>
-  pull("table_name")
+if(!is.null(dataFiltered$summarise_large_scale_characteristics)){
+  if(nrow(dataFiltered$summarise_large_scale_characteristics)>0){
+    choices$summarise_large_scale_characteristics_grouping_domain <- settings(dataFiltered$summarise_large_scale_characteristics) |>
+      pull("table_name")
+    choices$summarise_large_scale_characteristics_grouping_time_window <- unique(dataFiltered$summarise_large_scale_characteristics |>
+                                                                                   pull("variable_level"))
+  }}
 selected$summarise_large_scale_characteristics_grouping_domain <- choices$summarise_large_scale_characteristics_grouping_domain
-
-choices$summarise_large_scale_characteristics_grouping_time_window <- unique(dataFiltered$summarise_large_scale_characteristics |>
-  pull("variable_level"))
 selected$summarise_large_scale_characteristics_grouping_time_window <-choices$summarise_large_scale_characteristics_grouping_time_window
 
 choices$compare_large_scale_characteristics_grouping_time_window <- choices$summarise_large_scale_characteristics_grouping_time_window
@@ -80,15 +88,18 @@ choices$compare_large_scale_characteristics_grouping_table <- choices$summarise_
 selected$compare_large_scale_characteristics_grouping_time_window <- selected$summarise_large_scale_characteristics_grouping_time_window
 selected$compare_large_scale_characteristics_grouping_table <- selected$summarise_large_scale_characteristics_grouping_domain
 
+if(!is.null(dataFiltered$orphan_code_use)){
+  if(nrow(dataFiltered$orphan_code_use)>0){
+    orphanCodelist <- unique(dataFiltered$orphan_code_use |>
+                               visOmopResults::splitAll() |> pull("codelist_name"))
+    orphanCdm <- unique(dataFiltered$orphan_code_use |>
+                          visOmopResults::addSettings() |> pull("cdm_name"))
+    choices$orphan_grouping_cdm_name <- orphanCdm
+    choices$orphan_grouping_codelist_name <- orphanCodelist
+    selected$orphan_grouping_cdm_name <- orphanCdm
+    selected$orphan_grouping_cohort_name <- orphanCodelist[1]
+  }}
 
-orphanCodelist <- unique(dataFiltered$orphan_code_use |>
-                           visOmopResults::splitAll() |> pull("codelist_name"))
-orphanCdm <- unique(dataFiltered$orphan_code_use |>
-                            visOmopResults::addSettings() |> pull("cdm_name"))
-choices$orphan_grouping_cdm_name <- orphanCdm
-choices$orphan_grouping_codelist_name <- orphanCodelist
-selected$orphan_grouping_cdm_name <- orphanCdm
-selected$orphan_grouping_cohort_name <- orphanCodelist[1]
 #
 # unmappedCodelist <- unique(dataFiltered$unmapped_codes |>
 #                            visOmopResults::splitAll() |> pull("codelist_name"))
@@ -111,16 +122,16 @@ selected$incidence_grouping_incidence_start_date
 #
 # min_incidence_start <- min(as.Date(selected$incidence_grouping_incidence_start_date))
 # max_incidence_end <- max(as.Date(selected$incidence_grouping_incidence_end_date))
-
-prevalence_cohorts <- unique(dataFiltered$prevalence |> pull("variable_level"))
-choices$prevalence_settings_outcome_cohort_name <- prevalence_cohorts
-selected$prevalence_settings_outcome_cohort_name <- prevalence_cohorts[1]
+if(!is.null(dataFiltered$prevalence)){
+  if(nrow(dataFiltered$prevalence)>0){
+    prevalence_cohorts <- unique(dataFiltered$prevalence |> pull("variable_level"))
+    choices$prevalence_settings_outcome_cohort_name <- prevalence_cohorts
+    selected$prevalence_settings_outcome_cohort_name <- prevalence_cohorts[1]
+  }}
 
 selected$prevalence_settings_analysis_interval <- selected$prevalence_settings_analysis_interval[1]
 selected$prevalence_settings_denominator_age_group <- selected$prevalence_settings_denominator_age_group[1]
 selected$prevalence_settings_denominator_sex <- selected$prevalence_settings_denominator_sex[1]
-selected$prevalence_grouping_prevalence_start_date
-
 
 save(data, dataFiltered, selected, choices,
      file = here::here("data", "appData.RData"))

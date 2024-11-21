@@ -3,10 +3,10 @@ test_that("basic working example with one cohort", {
   skip_on_cran()
 
   # empty result - should still work without error
-  # expect_no_error(
-  #   shinyDiagnostics(result = omopgenerics::emptySummarisedResult(),
-  #                    directory = here::here())
-  #   )
+  expect_no_error(
+    shinyDiagnostics(result = omopgenerics::emptySummarisedResult(),
+                     directory = tempdir())
+    )
 
   # with results
   cdm_local <- omock::mockCdmReference() |>
@@ -38,12 +38,12 @@ test_that("basic working example with one cohort", {
                                  schema ="main", overwrite = TRUE)
   my_result_code_diag <- cohortDiagnostics(cdm$my_cohort )
   expect_no_error(shinyDiagnostics(my_result_code_diag,
-                                   directory = here::here()))
+                                   directory = tempdir()))
 
   my_result_cohort_diag <- cdm$my_cohort |> phenotypeDiagnostics()
 
   expect_no_error(shinyDiagnostics(my_result_cohort_diag,
-                                   directory = here::here()))
+                                   directory = tempdir()))
 
 
 })

@@ -8,7 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-Phenotype study cohorts in data mapped to the Observational Medical Outcomes Partnership Common Data Model.
+Phenotype study cohorts in data mapped to the Observational Medical Outcomes Partnership Common Data Model. Diagnostics are run at the database, codelist, cohort, and population level to assess whether study cohorts are ready for research.
 }
 \seealso{
 Useful links:
@@ -24,6 +24,7 @@ Authors:
 \itemize{
   \item Marti Catala \email{marti.catalasabate@ndorms.ox.ac.uk} (\href{https://orcid.org/0000-0003-3308-9905}{ORCID})
   \item Xihang Chen \email{xihang.chen@ndorms.ox.ac.uk} (\href{https://orcid.org/0009-0001-8112-8959}{ORCID})
+  \item Marta Alcalde-Herraiz \email{marta.alcaldeherraiz@ndorms.ox.ac.uk} (\href{https://orcid.org/0009-0002-4405-1814}{ORCID})
   \item Albert Prats-Uribe \email{albert.prats-uribe@ndorms.ox.ac.uk} (\href{https://orcid.org/0000-0003-1202-9153}{ORCID})
 }
 
