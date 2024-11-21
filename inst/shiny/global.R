@@ -47,7 +47,7 @@ plotComparedLsc <- function(lsc, cohorts, colour = NULL, facet = NULL){
                 values_from = percentage)
 
     plot <- plot_data |>
-    ggplot(aes(text = paste("<br>Database:", cdm_name,
+    ggplot(aes(text = paste("<br>Database:", database,
                             "<br>Concept:", variable_name,
                             "<br>Concept ID:", concept_id,
                             "<br>Time window:", time_window,
