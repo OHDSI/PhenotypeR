@@ -46,19 +46,9 @@ plotComparedLsc <- function(lsc, cohorts, colour = NULL, facet = NULL){
     pivot_wider(names_from = cohort_name,
                 values_from = percentage)
 
-  # plot <- visOmopResults::scatterPlot(plot_data,
-  #                             x = cohorts[1],
-  #                             y = cohorts[2],
-  #                             colour = colour,
-  #                             facet = facet,
-  #                             line = FALSE,
-  #                             point = TRUE,
-  #                             ribbon = FALSE) +
-  #   ggplot2::geom_abline(slope = 1, intercept = 0, color = "red", linetype = "dashed") +
-  #   ggplot2::theme_bw()
-
-  plot <- plot_data |>
-    ggplot(aes(text = paste("Concept:", variable_name,
+    plot <- plot_data |>
+    ggplot(aes(text = paste("<br>Database:", cdm_name,
+                            "<br>Concept:", variable_name,
                             "<br>Concept ID:", concept_id,
                             "<br>Time window:", time_window,
                             "<br>Table:", table,

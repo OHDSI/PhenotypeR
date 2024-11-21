@@ -149,82 +149,82 @@ ui <- bslib::page_navbar(
     ),
 
     ## unmapped concepts -----
-    bslib::nav_panel(
-      title = "Unmapped concepts",
-      icon = shiny::icon("database"),
-      bslib::layout_sidebar(
-        sidebar = bslib::sidebar(width = 400, open = "closed",
-                                 bslib::accordion(
-                                   bslib::accordion_panel(
-                                     title = "Settings",
-                                     shinyWidgets::pickerInput(
-                                       inputId = "unmapped_grouping_cdm_name",
-                                       label = "Database",
-                                       choices = NULL,
-                                       selected = NULL,
-                                       multiple = TRUE,
-                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                                     ),
-                                     shinyWidgets::pickerInput(
-                                       inputId = "unmapped_grouping_codelist_name",
-                                       label = "Codelist name",
-                                       choices = NULL,
-                                       selected = NULL,
-                                       multiple = TRUE,
-                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                                     )
-                                   ),
-                                   bslib::accordion_panel(
-                                     title = "Table formatting",
-                                     sortable::bucket_list(
-                                       header = NULL,
-                                       sortable::add_rank_list(
-                                         text = "none",
-                                         labels = c( "codelist_name"),
-                                         input_id = "unmapped_none"
-                                       ),
-                                       sortable::add_rank_list(
-                                         text = "header",
-                                         labels = c("cdm_name", "estimate_name"),
-                                         input_id = "unmapped_header"
-                                       ),
-                                       sortable::add_rank_list(
-                                         text = "groupColumn",
-                                         labels = NULL,
-                                         input_id = "unmapped_groupColumn"
-                                       ),
-                                       sortable::add_rank_list(
-                                         text = "hide",
-                                         labels = character(),
-                                         input_id = "unmapped_hide"
-                                       )
-                                     )
-                                   )
-                                 )
-        ),
-        bslib::nav_panel(
-          title = "Unmapped",
-            bslib::card(
-              full_screen = TRUE,
-              bslib::card_header(
-                bslib::popover(
-                  shiny::icon("download"),
-                  shinyWidgets::pickerInput(
-                    inputId = "unmapped_formatted_download_type",
-                    label = "File type",
-                    selected = "docx",
-                    choices = c("docx", "png", "pdf", "html"),
-                    multiple = FALSE
-                  ),
-                  shiny::downloadButton(outputId = "unmapped_formatted_download", label = "Download")
-                ),
-                class = "text-end"
-              ),
-              gt::gt_output("unmapped_formatted") |> withSpinner()
-            )
-        )
-      )
-    ),
+    # bslib::nav_panel(
+    #   title = "Unmapped concepts",
+    #   icon = shiny::icon("database"),
+    #   bslib::layout_sidebar(
+    #     sidebar = bslib::sidebar(width = 400, open = "closed",
+    #                              bslib::accordion(
+    #                                bslib::accordion_panel(
+    #                                  title = "Settings",
+    #                                  shinyWidgets::pickerInput(
+    #                                    inputId = "unmapped_grouping_cdm_name",
+    #                                    label = "Database",
+    #                                    choices = NULL,
+    #                                    selected = NULL,
+    #                                    multiple = TRUE,
+    #                                    options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+    #                                  ),
+    #                                  shinyWidgets::pickerInput(
+    #                                    inputId = "unmapped_grouping_codelist_name",
+    #                                    label = "Codelist name",
+    #                                    choices = NULL,
+    #                                    selected = NULL,
+    #                                    multiple = TRUE,
+    #                                    options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+    #                                  )
+    #                                ),
+    #                                bslib::accordion_panel(
+    #                                  title = "Table formatting",
+    #                                  sortable::bucket_list(
+    #                                    header = NULL,
+    #                                    sortable::add_rank_list(
+    #                                      text = "none",
+    #                                      labels = c( "codelist_name"),
+    #                                      input_id = "unmapped_none"
+    #                                    ),
+    #                                    sortable::add_rank_list(
+    #                                      text = "header",
+    #                                      labels = c("cdm_name", "estimate_name"),
+    #                                      input_id = "unmapped_header"
+    #                                    ),
+    #                                    sortable::add_rank_list(
+    #                                      text = "groupColumn",
+    #                                      labels = NULL,
+    #                                      input_id = "unmapped_groupColumn"
+    #                                    ),
+    #                                    sortable::add_rank_list(
+    #                                      text = "hide",
+    #                                      labels = character(),
+    #                                      input_id = "unmapped_hide"
+    #                                    )
+    #                                  )
+    #                                )
+    #                              )
+    #     ),
+    #     bslib::nav_panel(
+    #       title = "Unmapped",
+    #         bslib::card(
+    #           full_screen = TRUE,
+    #           bslib::card_header(
+    #             bslib::popover(
+    #               shiny::icon("download"),
+    #               shinyWidgets::pickerInput(
+    #                 inputId = "unmapped_formatted_download_type",
+    #                 label = "File type",
+    #                 selected = "docx",
+    #                 choices = c("docx", "png", "pdf", "html"),
+    #                 multiple = FALSE
+    #               ),
+    #               shiny::downloadButton(outputId = "unmapped_formatted_download", label = "Download")
+    #             ),
+    #             class = "text-end"
+    #           ),
+    #           gt::gt_output("unmapped_formatted") |> withSpinner()
+    #         )
+    #     )
+    #   )
+    # ),
 
     ## Orphan codes -----
     bslib::nav_panel(
@@ -667,7 +667,7 @@ ui <- bslib::page_navbar(
                                    )
         ),
         bslib::navset_card_tab(
-          
+
           bslib::nav_panel(
             title = "Table",
           bslib::card(
@@ -1668,8 +1668,8 @@ ui <- bslib::page_navbar(
     #     )
     #   )
     # )
-    
-    
+
+
   ),
   # end ------
   bslib::nav_spacer(),
