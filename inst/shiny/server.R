@@ -33,7 +33,7 @@ server <- function(input, output, session) {
     if (is.null(dataFiltered$summarise_omop_snapshot)) {
       validate("No snapshot in results")
     }
-    
+
     OmopSketch::tableOmopSnapshot(
       dataFiltered$summarise_omop_snapshot
     ) %>%
@@ -389,7 +389,7 @@ server <- function(input, output, session) {
     if (is.null(dataFiltered$summarise_cohort_overlap)) {
       validate("No cohort overlap in results")
     }
-    
+
     result <- dataFiltered$summarise_cohort_overlap |>
       filterData("summarise_cohort_overlap", input)
     CohortCharacteristics::tableCohortOverlap(
@@ -423,7 +423,7 @@ server <- function(input, output, session) {
     if (is.null(dataFiltered$summarise_cohort_overlap)) {
       validate("No cohort overlap in results")
     }
-    
+
     result <- dataFiltered$summarise_cohort_overlap |>
       filterData("summarise_cohort_overlap", input)
     CohortCharacteristics::plotCohortOverlap(
@@ -496,11 +496,11 @@ server <- function(input, output, session) {
   ## output summarise_characteristics -----
   ## output 7 -----
   createOutput7 <- shiny::reactive({
-    
+
     if (is.null(dataFiltered$summarise_characteristics)) {
       validate("No summarised characteristics in results")
     }
-    
+
     if(isTRUE(input$summarise_characteristics_include_matched)){
       selectedCohorts <- c(
         input$summarise_characteristics_grouping_cohort_name,
@@ -510,7 +510,7 @@ server <- function(input, output, session) {
     } else {
       selectedCohorts <- input$summarise_characteristics_grouping_cohort_name
     }
-    
+
     result <- dataFiltered$summarise_characteristics |>
       dplyr::filter(cdm_name %in% input$summarise_characteristics_grouping_cdm_name,
                     group_level %in% selectedCohorts)
@@ -577,9 +577,9 @@ server <- function(input, output, session) {
     if (is.null(dataFiltered$summarise_large_scale_characteristics)) {
       validate("No large scale characteristics in results")
     }
-    
+
     lsc_data <- dataFiltered$summarise_large_scale_characteristics |>
-      filter(!is.na(estimate_value)) |> 
+      filter(!is.na(estimate_value)) |>
       visOmopResults::filterSettings(table_name %in% input$summarise_large_scale_characteristics_grouping_domain) |>
       dplyr::filter(cdm_name %in% input$summarise_large_scale_characteristics_grouping_cdm_name ) |>
       dplyr::filter(group_level  %in% input$summarise_large_scale_characteristics_grouping_cohort_name) |>
@@ -611,11 +611,11 @@ server <- function(input, output, session) {
   ## output summarise_large_scale_characteristics -----
   ## output 0 -----
   createOutput0 <- shiny::reactive({
-    
+
     if (is.null(dataFiltered$summarise_large_scale_characteristics)) {
       validate("No large scale characteristics in results")
     }
-    
+
     if (input$top_n < 1) {
       validate("Top n must be between 1 and 100")
     }
@@ -624,13 +624,13 @@ server <- function(input, output, session) {
     }
 
      lsc_data <- dataFiltered$summarise_large_scale_characteristics |>
-       filter(!is.na(estimate_value)) |> 
+       filter(!is.na(estimate_value)) |>
       visOmopResults::filterSettings(table_name %in% input$summarise_large_scale_characteristics_grouping_domain) |>
       dplyr::filter(cdm_name %in% input$summarise_large_scale_characteristics_grouping_cdm_name ) |>
       dplyr::filter(group_level  %in% input$summarise_large_scale_characteristics_grouping_cohort_name) |>
        dplyr::filter(variable_level  %in% input$summarise_large_scale_characteristics_grouping_time_window)
 
-    CohortCharacteristics::tableLargeScaleCharacteristics(lsc_data |> arrange(desc(estimate_type), desc(as.numeric(estimate_value)),
+    CohortCharacteristics::tableLargeScaleCharacteristics(lsc_data |> arrange(desc(estimate_type), desc(as.numeric(estimate_value))),
                                                           topConcepts = input$top_n
                                                           # ,
                                                           # header = input$summarise_large_scale_characteristics_gt_0_header,
@@ -703,11 +703,11 @@ server <- function(input, output, session) {
   ## output incidence -----
   ## output 18 -----
   createOutput18 <- shiny::reactive({
-   
+
     if (is.null(dataFiltered$incidence)) {
       validate("No incidence in results")
     }
-    
+
     result <- dataFiltered$incidence |>
       filterData("incidence", input)
     IncidencePrevalence::tableIncidence(
@@ -743,7 +743,7 @@ server <- function(input, output, session) {
     if (is.null(dataFiltered$incidence)) {
       validate("No incidence in results")
     }
-    
+
     result <- dataFiltered$incidence |>
       filterData("incidence", input)
 
@@ -820,11 +820,11 @@ server <- function(input, output, session) {
   ## output incidence_attrition -----
   ## output 22 -----
   createOutput22 <- shiny::reactive({
-    
+
     if (is.null(dataFiltered$incidence_attrition)) {
       validate("No incidence attrition in results")
     }
-    
+
     result <- dataFiltered$incidence_attrition |>
       filterData("incidence_attrition", input)
     IncidencePrevalence::tableIncidenceAttrition(
@@ -900,7 +900,7 @@ server <- function(input, output, session) {
     if (is.null(dataFiltered$prevalence)) {
       validate("No prevalence in results")
     }
-    
+
     result <- dataFiltered$prevalence |>
       filter(cdm_name %in% input$prevalence_grouping_cdm_name,
              variable_level %in% input$prevalence_settings_outcome_cohort_name) |>
@@ -937,11 +937,11 @@ server <- function(input, output, session) {
 
   ## output prev2 -----
   createOutputprev2 <- shiny::reactive({
-    
+
     if (is.null(dataFiltered$prevalence)) {
       validate("No prevalence in results")
     }
-    
+
     result <- dataFiltered$prevalence |>
       filter(cdm_name %in% input$prevalence_grouping_cdm_name,
              variable_level %in% input$prevalence_settings_outcome_cohort_name) |>
@@ -980,11 +980,11 @@ server <- function(input, output, session) {
   # compare lsc ----
 
   outputLSC <- shiny::reactive({
-    
+
     if (is.null(dataFiltered$summarise_large_scale_characteristics)) {
       validate("No large scale characteristics in results")
     }
-    
+
     dataFiltered$summarise_large_scale_characteristics |>
       filter(variable_level %in% input$compare_large_scale_characteristics_grouping_time_window) |>
       filterSettings(table_name %in% input$compare_large_scale_characteristics_grouping_table)
@@ -1092,15 +1092,15 @@ server <- function(input, output, session) {
   ## output orphan -----
   ## output 99 -----
   createOutput99 <- shiny::reactive({
-    
+
     if (is.null(dataFiltered$prevalence)) {
       validate("No orphan codes in results")
     }
-    
+
     if (is.null(dataFiltered$orphan_code_use)) {
       validate("No orphan codes in results")
     }
-    
+
     result <- dataFiltered$orphan_code_use |>
       dplyr::filter(cdm_name %in% input$orphan_grouping_cdm_name,
                     group_level %in% input$orphan_grouping_codelist_name)
@@ -1139,7 +1139,7 @@ server <- function(input, output, session) {
     if (is.null(dataFiltered$unmapped_codes)) {
       validate("No unmapped codes in results")
     }
-    
+
     CodelistGenerator::tableUnmappedCodes(
       dataFiltered$unmapped_codes |>
         dplyr::filter(cdm_name %in% input$unmapped_grouping_cdm_name,
