@@ -136,27 +136,35 @@ selected$incidence_grouping_outcome_cohort_name <- selected$incidence_grouping_o
 
 selected$incidence_settings_analysis_interval <- "overall"
 selected$incidence_settings_denominator_age_group <- selected$incidence_settings_denominator_age_group[1]
-selected$incidence_settings_denominator_sex <- selected$incidence_settings_denominator_sex[1]
+selected$incidence_settings_denominator_sex <- "Both"
 
 choices$incidence_settings_denominator_age_group <- c(
   "0 to 150",
-  "0 to 19", "20 to 64", "65 to 150",
-  "0 to 4", "5 to 9",
-  "10 to 19", "20 to 29",
-  "30 to 39", "40 to 49",
-  "50 to 59", "60 to 69",
-  "70 to 79",  "80 to 150"
+  "0 to 17", 
+  "18 to 64", 
+  "65 to 150"
 )
-
-selected$incidence_settings_denominator_age_group <- c("0 to 19",
-                                                       "20 to 64",
-                                                       "65 to 150")
+selected$incidence_settings_denominator_age_group <- c("0 to 150")
 
 min_incidence_start <- min(as.Date(selected$incidence_grouping_incidence_start_date))
 max_incidence_end <- max(as.Date(selected$incidence_grouping_incidence_end_date))
 
 choices$incidence_settings_analysis_interval <- c("overall", "years")
 selected$incidence_settings_analysis_interval <- "years"
+
+choices$prevalence_settings_analysis_interval <- c("overall", "years")
+selected$prevalence_settings_analysis_interval <- "years"
+
+selected$prevalence_grouping_outcome_cohort_name <- selected$prevalence_grouping_outcome_cohort_name[1]
+
+choices$prevalence_settings_denominator_age_group <- c(
+  "0 to 150",
+  "0 to 17", 
+  "18 to 64", 
+  "65 to 150"
+)
+selected$prevalence_settings_denominator_age_group <- c("0 to 150")
+selected$prevalence_settings_denominator_sex <- "Both"
 
 selected$summarise_cohort_overlap_grouping_cohort_name_reference <- selected$summarise_cohort_overlap_grouping_cohort_name_reference[1:2]
 selected$summarise_cohort_overlap_grouping_cohort_name_comparator <- selected$summarise_cohort_overlap_grouping_cohort_name_comparator[1:2]
