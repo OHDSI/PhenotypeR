@@ -21,17 +21,17 @@ License: Apache License (>= 2)
 Encoding: UTF-8
 LazyData: true
 Suggests: 
-    CDMConnector,
+    CDMConnector (>= 1.6.1),
     duckdb,
     DBI,
     gt,
     omock,
     testthat (>= 3.0.0),
     knitr,
-    visOmopResults,
+    visOmopResults (>= 0.5.0),
     glue,
     RPostgres,
-    PatientProfiles,
+    PatientProfiles (>= 1.2.2),
     ggplot2,
     ggpubr, 
     stringr,
@@ -48,14 +48,14 @@ Suggests:
 Config/testthat/edition: 3
 RoxygenNote: 7.3.2
 Imports: 
-    CodelistGenerator (>= 3.1.0),
-    CohortCharacteristics,
-    CohortConstructor,
+    CodelistGenerator (>=	3.3.1),
+    CohortCharacteristics (>= 0.4.0),
+    CohortConstructor (>= 0.3.2),
     cli,
     dplyr,
-    IncidencePrevalence (>= 0.8.0),
-    omopgenerics,
-    OmopSketch,
+    IncidencePrevalence (>= 0.9.0),
+    omopgenerics (>= 0.4.0),
+    OmopSketch (>= 0.1.2),
     magrittr,
     purrr,
     rlang,

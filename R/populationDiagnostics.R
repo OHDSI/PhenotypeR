@@ -59,8 +59,7 @@ populationDiagnostics <- function(cohort,
     interval = c("years", "overall"),
     repeatedEvents = FALSE,
     outcomeWashout = Inf,
-    completeDatabaseIntervals = FALSE,
-    minCellCount = 0)
+    completeDatabaseIntervals = FALSE)
 
   cli::cli_bullets(c("*" = "{.strong Estimating prevalence}"))
   results[["prevalence"]] <- IncidencePrevalence::estimatePeriodPrevalence(
@@ -69,16 +68,12 @@ populationDiagnostics <- function(cohort,
     outcomeTable = cohortName,
     interval = "years",
     completeDatabaseIntervals = TRUE,
-    fullContribution = FALSE,
-    minCellCount = 0)
+    fullContribution = FALSE)
 
   results <- results |>
     vctrs::list_drop_empty() |>
     omopgenerics::bind() |>
     omopgenerics::newSummarisedResult()
-
-  attr(results, "settings") <- attr(results, "settings") |>
-    dplyr::select(!dplyr::any_of(c("min_cell_count")))
 
   results
 

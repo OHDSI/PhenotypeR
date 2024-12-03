@@ -6,18 +6,22 @@ getChoices <- function(result, flatten = FALSE) {
   omopgenerics::assertLogical(flatten, length = 1)
 
   # get choices
+  cli::cli_inform("Get possible settings")
   settings <- getPossibleSettings(result)
+  cli::cli_inform("Get possible groupings")
   grouping <-getPossibleGrouping(result)
+  cli::cli_inform("Get possible variables")
   variables <- getPossibleVariables(result)
-
   sets <- omopgenerics::settings(result)
   if (!all(c("group", "strata", "additional") %in% colnames(sets))) {
+    cli::cli_inform("Correcting settings")
     sets <- result |>
       correctSettings() |>
       omopgenerics::settings()
   }
 
   # tidy columns
+  cli::cli_inform("Tidying columns")
   tidyCols <- sets |>
     dplyr::group_by(.data$result_type) |>
     dplyr::group_split()
@@ -35,6 +39,7 @@ getChoices <- function(result, flatten = FALSE) {
     })
 
   if (flatten) {
+    cli::cli_inform("Flattening")
     names(tidyCols) <- paste0(names(tidyCols), "_tidy_columns")
     choices <- c(
       correctNames(settings, "settings"),
@@ -53,7 +58,7 @@ getChoices <- function(result, flatten = FALSE) {
         tidy_columns = tidyCols[[x]]
       ))
   }
-
+  cli::cli_inform("Found all choices")
   return(choices)
 }
 getPossibleSettings <- function(result) {
@@ -64,7 +69,9 @@ getPossibleSettings <- function(result) {
 }
 getPossibleGrouping <- function(result) {
   result |>
-    visOmopResults::addSettings(settingsColumns = "result_type") |>
+    omopgenerics::addSettings(
+      settingsColumn = settingsColumns(result, metadata = TRUE)
+    ) |>
     dplyr::select(c(
       "result_type", "cdm_name", "group_name", "group_level", "strata_name",
       "strata_level", "additional_name", "additional_level")) |>
@@ -73,7 +80,8 @@ getPossibleGrouping <- function(result) {
 }
 getPossibleVariables <- function(result) {
   result |>
-    visOmopResults::addSettings(settingsColumns = "result_type") |>
+    omopgenerics::addSettings(
+      settingsColumn = settingsColumns(result, metadata = TRUE)) |>
     dplyr::select(c("result_type", "variable_name", "estimate_name")) |>
     dplyr::distinct() |>
     getPossibilities()
@@ -144,6 +152,7 @@ correctSettings <- function(result) {
   strata <- rep("", nrow(set))
   additional <- rep("", nrow(set))
   for (k in seq_len(nrow(set))) {
+    cli::cli_inform("-- Correcting {k} of {nrow(set)}")
     xk <- x |>
       dplyr::filter(.data$result_id == .env$set$result_id[k])
     group[k] <- visOmopResults::groupColumns(xk) |> joinCols()
