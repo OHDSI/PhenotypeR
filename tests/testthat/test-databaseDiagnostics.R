@@ -6,6 +6,8 @@ test_that("multiplication works", {
     omock::mockDrugExposure() |>
     omock::mockObservation() |>
     omock::mockMeasurement() |>
+    omock::mockVisitOccurrence() |>
+    omock::mockProcedureOccurrence() |>
     omock::mockCohort(name = "my_cohort", numberCohorts = 2)
 
   db <- DBI::dbConnect(duckdb::duckdb())
