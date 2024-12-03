@@ -7,3 +7,4 @@ inst/doc
 .Rproj.user/
 .Rhistory
 inst/shiny/data/raw/*.csv
+inst/shiny/data/appData.RData

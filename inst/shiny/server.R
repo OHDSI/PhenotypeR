@@ -543,13 +543,13 @@ server <- function(input, output, session) {
     if (nrow(result) == 0) {
       validate("No results found for selected inputs")
     }
-
     CohortCharacteristics::tableCharacteristics(
       result,
       header = input$summarise_characteristics_gt_7_header,
       groupColumn = input$summarise_characteristics_gt_7_groupColumn,
-      hide = input$summarise_characteristics_gt_7_hide
-    )%>%
+      hide = c(input$summarise_characteristics_gt_7_hide,
+               "table_name", "value", "window", "table")
+    ) %>%
       tab_header(
         title = "Patient characteristics",
         subtitle = "Summary of patient characteristics relative to cohort entry"

@@ -74,8 +74,7 @@ if(!is.null(dataFiltered$cohort_code_use)){
   }
 }
 
-choices$cohort_code_use_grouping_cohort_name <- codeUseCohorts
-selected$cohort_code_use_grouping_cohort_name <- codeUseCohorts[1]
+
 
 selected$summarise_characteristics_grouping_cohort_name <- selected$summarise_characteristics_grouping_cohort_name[1]
 selected$summarise_large_scale_characteristics_grouping_cohort_name <- selected$summarise_large_scale_characteristics_grouping_cohort_name[1]
