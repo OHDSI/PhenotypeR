@@ -62,6 +62,7 @@ phenotypeDiagnostics <- function(cohort,
                                  cohortDiagnostics = TRUE,
                                  populationDiagnostics = TRUE,
                                  populationSample = 1000000,
+                                 populationDateRange = as.Date(c(NA, NA)),
                                  matchedDiagnostics = TRUE,
                                  matchedSample = 1000) {
 
@@ -83,7 +84,8 @@ phenotypeDiagnostics <- function(cohort,
   if (isTRUE(populationDiagnostics)) {
     cli::cli("Running population diagnostics")
     results[["pop_diag"]] <- populationDiagnostics(cohort,
-                                                   populationSample = populationSample)
+                                                   populationSample = populationSample,
+                                                   populationDateRange = populationDateRange)
   }
   if (isTRUE(matchedDiagnostics)) {
     cli::cli("Running matched diagnostics")

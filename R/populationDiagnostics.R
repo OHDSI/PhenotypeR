@@ -22,7 +22,8 @@
 #' CDMConnector::cdm_disconnect(cdm)
 #' }
 populationDiagnostics <- function(cohort,
-                                  populationSample = 1000000) {
+                                  populationSample = 1000000,
+                                  populationDateRange = as.Date(c(NA, NA))) {
 
   cdm <- omopgenerics::cdmReference(cohort)
   cohortName <- omopgenerics::tableName(cohort)
@@ -46,7 +47,8 @@ populationDiagnostics <- function(cohort,
                     c(65, 150)),
     sex = c("Both", "Male", "Female"),
     daysPriorObservation = 0,
-    requirementInteractions = FALSE
+    requirementInteractions = FALSE,
+    cohortDateRange = populationDateRange
   )
 
   results <- list()
