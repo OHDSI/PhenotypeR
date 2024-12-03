@@ -2,7 +2,7 @@
 #'
 #' @description
 #' Runs phenotypeR diagnostics on the cohort.
-#' The diganotics include:
+#' The diganostics include:
 #' * Age groups and sex summarised.
 #' * A summary of visits of everyone in the cohort using visit_occurrence table.
 #' * A summary of age and sex density of the cohort.
@@ -64,7 +64,7 @@ cohortDiagnostics <- function(cohort){
   cdm[[tempCohortName]]  <- cdm[[cohortName]] |>
     PatientProfiles::addAge(ageGroup = list(c(0, 17), c(18, 64), c(65, 150))) |>
     PatientProfiles::addSex() |>
-    CDMConnector::compute(name = tempCohortName, temporary = FALSE)
+    dplyr::compute(name = tempCohortName, temporary = FALSE)
 
   cli::cli_bullets(c("*" = "Getting cohort summary"))
   results[["cohort_summary"]] <- cdm[[tempCohortName]] |>

@@ -65,6 +65,11 @@ server <- function(input, output, session) {
     }
     achillesFiltered <- dataFiltered$achilles_code_use  |>
       filterData("achilles_code_use", input)
+
+    if (nrow(achillesFiltered) == 0) {
+      validate("No results found for selected inputs")
+    }
+
     CodelistGenerator::tableAchillesCodeUse(achillesFiltered,
                                             header = input$achilles_code_use_header,
                                             groupColumn = input$achilles_code_use_groupColumn,
@@ -149,6 +154,11 @@ server <- function(input, output, session) {
   createOutput16 <- shiny::reactive({
     result <- dataFiltered$summarise_observation_period |>
       filterData("summarise_observation_period", input)
+
+    if (nrow(result) == 0) {
+      validate("No results found for selected inputs")
+    }
+
     OmopSketch::plotObservationPeriod(
       result,
       variableName = input$summarise_observation_period_ggplot2_16_variableName,
@@ -217,6 +227,11 @@ server <- function(input, output, session) {
     }
     result <- dataFiltered$cohort_code_use |>
       filterData("cohort_code_use", input)
+
+    if (nrow(result) == 0) {
+      validate("No results found for selected inputs")
+    }
+
     CodelistGenerator::tableCohortCodeUse(
       result,
       header = input$cohort_code_use_gt_12_header,
@@ -290,6 +305,11 @@ server <- function(input, output, session) {
   createOutput3 <- shiny::reactive({
     result <- dataFiltered$summarise_cohort_attrition |>
       filterData("summarise_cohort_attrition", input)
+
+    if (nrow(result) == 0) {
+      validate("No results found for selected inputs")
+    }
+
     CohortCharacteristics::tableCohortAttrition(
       result,
       header = input$summarise_cohort_attrition_gt_3_header,
@@ -392,6 +412,11 @@ server <- function(input, output, session) {
 
     result <- dataFiltered$summarise_cohort_overlap |>
       filterData("summarise_cohort_overlap", input)
+
+    if (nrow(result) == 0) {
+      validate("No results found for selected inputs")
+    }
+
     CohortCharacteristics::tableCohortOverlap(
       result,
       uniqueCombinations = input$summarise_cohort_overlap_gt_1_uniqueCombinations,
@@ -515,13 +540,16 @@ server <- function(input, output, session) {
       dplyr::filter(cdm_name %in% input$summarise_characteristics_grouping_cdm_name,
                     group_level %in% selectedCohorts)
 
-
+    if (nrow(result) == 0) {
+      validate("No results found for selected inputs")
+    }
     CohortCharacteristics::tableCharacteristics(
       result,
       header = input$summarise_characteristics_gt_7_header,
       groupColumn = input$summarise_characteristics_gt_7_groupColumn,
-      hide = input$summarise_characteristics_gt_7_hide
-    )%>%
+      hide = c(input$summarise_characteristics_gt_7_hide,
+               "table_name", "value", "window", "table")
+    ) %>%
       tab_header(
         title = "Patient characteristics",
         subtitle = "Summary of patient characteristics relative to cohort entry"
@@ -545,6 +573,11 @@ server <- function(input, output, session) {
   createOutput8 <- shiny::reactive({
     result <- dataFiltered$summarise_characteristics |>
       filterData("summarise_characteristics", input)
+
+    if (nrow(result) == 0) {
+      validate("No results found for selected inputs")
+    }
+
     CohortCharacteristics::plotCharacteristics(
       result,
       plotType = input$summarise_characteristics_ggplot2_8_plotType,
@@ -584,6 +617,10 @@ server <- function(input, output, session) {
       dplyr::filter(cdm_name %in% input$summarise_large_scale_characteristics_grouping_cdm_name ) |>
       dplyr::filter(group_level  %in% input$summarise_large_scale_characteristics_grouping_cohort_name) |>
       dplyr::filter(variable_level  %in% input$summarise_large_scale_characteristics_grouping_time_window)
+
+    if (nrow(lsc_data) == 0) {
+      validate("No results found for selected inputs")
+    }
 
     tidy(lsc_data) |>
       mutate(concept = paste0(variable_name, " (",
@@ -701,6 +738,20 @@ server <- function(input, output, session) {
     }
   )
   ## output incidence -----
+  incidenceFiltered <- shiny::reactive({
+    dataFiltered$incidence |>
+      filter(cdm_name %in% 
+               input$incidence_grouping_cdm_name) |> 
+      filterGroup(outcome_cohort_name %in% 
+                    input$incidence_grouping_outcome_cohort_name) |> 
+      filterSettings(denominator_age_group %in%
+                       input$incidence_settings_denominator_age_group, 
+                     denominator_sex %in% 
+                       input$incidence_settings_denominator_sex) |> 
+      filterAdditional(analysis_interval %in%
+                         input$incidence_settings_analysis_interval)
+  })
+  
   ## output 18 -----
   createOutput18 <- shiny::reactive({
 
@@ -708,13 +759,17 @@ server <- function(input, output, session) {
       validate("No incidence in results")
     }
 
-    result <- dataFiltered$incidence |>
-      filterData("incidence", input)
+    result <- incidenceFiltered()
+
+    if (nrow(result) == 0) {
+      validate("No results found for selected inputs")
+    }
+
     IncidencePrevalence::tableIncidence(
       result,
       # header = input$incidence_gt_18_header,
       groupColumn = c("cdm_name", "outcome_cohort_name"),
-      hide = "denominator_cohort_name",
+      hide = "denominator_cohort_name", 
       settingsColumns = c("denominator_age_group",
                           "denominator_sex",
                           "outcome_cohort_name")
@@ -724,7 +779,7 @@ server <- function(input, output, session) {
         subtitle = "Incidence rates estimated for outcomes of interest"
       ) %>%
       tab_options(
-        heading.align = "left"
+        heading.align = "left"  
       )
   })
   output$incidence_gt_18 <- gt::render_gt({
@@ -744,18 +799,22 @@ server <- function(input, output, session) {
       validate("No incidence in results")
     }
 
-    result <- dataFiltered$incidence |>
-      filterData("incidence", input)
-
+    result <- incidenceFiltered()
+    
+    if (nrow(result) == 0) {
+      validate("No results found for selected inputs")
+    }
+    
     IncidencePrevalence::plotIncidence(
       result,
       x = input$incidence_ggplot2_19_x,
-      ribbon = input$incidence_ggplot2_19_ribbon,
+      ribbon = FALSE,
       facet = input$incidence_ggplot2_19_facet,
       colour = input$incidence_ggplot2_19_colour
-    ) |>
+    ) |> 
       plotly::ggplotly()
   })
+  
   output$incidence_ggplot2_19 <- plotly::renderPlotly({
     createOutput19()
   })
@@ -827,6 +886,11 @@ server <- function(input, output, session) {
 
     result <- dataFiltered$incidence_attrition |>
       filterData("incidence_attrition", input)
+
+    if (nrow(result) == 0) {
+      validate("No results found for selected inputs")
+    }
+
     IncidencePrevalence::tableIncidenceAttrition(
       result,
       header = input$incidence_attrition_gt_22_header,
@@ -907,6 +971,11 @@ server <- function(input, output, session) {
       filterSettings(analysis_interval %in% input$prevalence_settings_analysis_interval,
                      denominator_age_group %in% input$prevalence_settings_denominator_age_group,
                      denominator_sex %in% input$prevalence_settings_denominator_sex)
+
+    if (nrow(result) == 0) {
+      validate("No results found for selected inputs")
+    }
+
     IncidencePrevalence::tablePrevalence(
       result,
       # header = input$prevalence_gt_prev1_header,
@@ -949,6 +1018,10 @@ server <- function(input, output, session) {
                      denominator_age_group %in% input$prevalence_settings_denominator_age_group,
                      denominator_sex %in% input$prevalence_settings_denominator_sex)
 
+    if (nrow(result) == 0) {
+      validate("No results found for selected inputs")
+    }
+
     IncidencePrevalence::plotPrevalence(
       result,
       x = input$prevalence_ggplot2_prev2_x,
@@ -984,16 +1057,19 @@ server <- function(input, output, session) {
     if (is.null(dataFiltered$summarise_large_scale_characteristics)) {
       validate("No large scale characteristics in results")
     }
-
     dataFiltered$summarise_large_scale_characteristics |>
       filter(variable_level %in% input$compare_large_scale_characteristics_grouping_time_window) |>
-      filterSettings(table_name %in% input$compare_large_scale_characteristics_grouping_table)
+      filterSettings(table_name %in% input$compare_large_scale_characteristics_grouping_domain)
 
   })
 
   output$gt_compare_lsc <- DT::renderDT({
-
     lscFiltered <- outputLSC()
+    
+    if (nrow(lscFiltered) == 0) {
+      validate("No results found for selected inputs")
+    }
+    
     target_cohort <- input$compare_large_scale_characteristics_grouping_cohort_1
     comparator_cohort <- input$compare_large_scale_characteristics_grouping_cohort_2
     lsc <- lscFiltered |>

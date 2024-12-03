@@ -83,7 +83,7 @@ matchedDiagnostics <- function(cohort,
   cdm[[matchedCohortTable]]  <- cdm[[matchedCohortTable]] |>
     PatientProfiles::addAge(ageGroup = list(c(0, 17), c(18, 64), c(65, 150))) |>
     PatientProfiles::addSex() |>
-    CDMConnector::compute(name = matchedCohortTable, temporary = FALSE)
+    dplyr::compute(name = matchedCohortTable, temporary = FALSE)
 
   results[["cohort_summary"]] <- cdm[[matchedCohortTable]] |>
     CohortCharacteristics::summariseCharacteristics(
