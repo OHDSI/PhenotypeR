@@ -26,19 +26,19 @@ if(nrow(data) == 0){
   choices <- list()
 } else{
 
-  # data <- data |>
-  #   mutate(group_level = if_else(str_starts(group_level, "matched_to_"),
-  #                                str_replace(group_level, "^matched_to_", "") %>%
-  #                                  paste0("_m1"),
-  #                                group_level)) |>
-  #   mutate(group_level = if_else(str_detect(group_level, "_matched"),
-  #                                str_replace(group_level, "_matched", "") %>%
-  #                                  paste0("_sample"),
-  #                                group_level))|>
-  #   mutate(group_level = if_else(str_detect(group_level, "_m1"),
-  #                                str_replace(group_level, "_m1", "") %>%
-  #                                  paste0("_matched"),
-  #                                group_level))
+  data <- data |>
+    mutate(group_level = if_else(str_starts(group_level, "matched_to_"),
+                                 str_replace(group_level, "^matched_to_", "") %>%
+                                   paste0("_m1"),
+                                 group_level)) |>
+    mutate(group_level = if_else(str_detect(group_level, "_matched"),
+                                 str_replace(group_level, "_matched", "") %>%
+                                   paste0("_sampled"),
+                                 group_level))|>
+    mutate(group_level = if_else(str_detect(group_level, "_m1"),
+                                 str_replace(group_level, "_m1", "") %>%
+                                   paste0("_matched"),
+                                 group_level))
 
 
   # cli::cli_inform("Correcting settings")
@@ -50,7 +50,7 @@ if(nrow(data) == 0){
 cli::cli_inform("Customising shiny app inputs")
 # remove matched cohorts from choices
 choices$summarise_characteristics_grouping_cohort_name <- choices$summarise_characteristics_grouping_cohort_name[
-  !stringr::str_detect(choices$summarise_characteristics_grouping_cohort_name, "matched")]
+  !stringr::str_detect(choices$summarise_characteristics_grouping_cohort_name, "matched|sampled")]
 
 settingsUsed <- unique(settings(data) |> pull("result_type"))
 dataFiltered <- list()
