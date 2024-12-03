@@ -14,7 +14,7 @@ A summarised result
 }
 \description{
 Runs phenotypeR diagnostics on the cohort.
-The diganotics include:
+The diganostics include:
 * Age groups and sex summarised.
 * A summary of visits of everyone in the cohort using visit_occurrence table.
 * A summary of age and sex density of the cohort.
