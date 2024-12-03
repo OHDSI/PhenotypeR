@@ -656,7 +656,7 @@ ui <- bslib::page_navbar(
                                          options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                        ),
                                        shinyWidgets::pickerInput(
-                                         inputId = "compare_large_scale_characteristics_grouping_table",
+                                         inputId = "compare_large_scale_characteristics_grouping_domain",
                                          label = "Table",
                                          choices = NULL,
                                          selected = NULL,
@@ -901,7 +901,7 @@ ui <- bslib::page_navbar(
                 options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
               ),
               shinyWidgets::pickerInput(
-                inputId = "incidence_settings_outcome_cohort_name",
+                inputId = "incidence_grouping_outcome_cohort_name",
                 label = "Outcome cohort name",
                 choices = NULL,
                 selected = NULL,

@@ -133,7 +133,7 @@ if(!is.null(dataFiltered$unmapped_codes)){
     selected$unmapped_grouping_codelist_name <- unmappedCodelist[1]
   }}
 
-selected$incidence_settings_outcome_cohort_name <- selected$incidence_settings_outcome_cohort_name[1]
+selected$incidence_grouping_outcome_cohort_name <- selected$incidence_grouping_outcome_cohort_name[1]
 
 selected$incidence_settings_analysis_interval <- "overall"
 selected$incidence_settings_denominator_age_group <- selected$incidence_settings_denominator_age_group[1]
@@ -155,6 +155,9 @@ selected$incidence_settings_denominator_age_group <- c("0 to 19",
 
 min_incidence_start <- min(as.Date(selected$incidence_grouping_incidence_start_date))
 max_incidence_end <- max(as.Date(selected$incidence_grouping_incidence_end_date))
+
+choices$incidence_settings_analysis_interval <- c("overall", "years")
+selected$incidence_settings_analysis_interval <- "years"
 
 selected$summarise_cohort_overlap_grouping_cohort_name_reference <- selected$summarise_cohort_overlap_grouping_cohort_name_reference[1:2]
 selected$summarise_cohort_overlap_grouping_cohort_name_comparator <- selected$summarise_cohort_overlap_grouping_cohort_name_comparator[1:2]

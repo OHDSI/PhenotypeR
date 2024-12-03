@@ -34,7 +34,7 @@ test_that("postgres test", {
     con = db,
     cdmSchema = Sys.getenv("CDM5_POSTGRESQL_CDM_SCHEMA"),
     writeSchema = c(schema =  Sys.getenv("CDM5_POSTGRESQL_SCRATCH_SCHEMA")),
-    writePrefix = prefix = "phen_"
+    writePrefix = "phen_",
     achillesSchema = Sys.getenv("CDM5_POSTGRESQL_CDM_SCHEMA")
   )
 
