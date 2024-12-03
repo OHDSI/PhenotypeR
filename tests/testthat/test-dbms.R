@@ -30,12 +30,12 @@ test_that("postgres test", {
                        host = Sys.getenv("CDM5_POSTGRESQL_HOST"),
                        user = Sys.getenv("CDM5_POSTGRESQL_USER"),
                        password = Sys.getenv("CDM5_POSTGRESQL_PASSWORD"))
-  cdm <- CDMConnector::cdm_from_con(
+  cdm <- CDMConnector::cdmFromCon(
     con = db,
-    cdm_schema = Sys.getenv("CDM5_POSTGRESQL_CDM_SCHEMA"),
-    write_schema = c(schema =  Sys.getenv("CDM5_POSTGRESQL_SCRATCH_SCHEMA"),
-                     prefix = "incp_"),
-    achilles_schema = Sys.getenv("CDM5_POSTGRESQL_CDM_SCHEMA")
+    cdmSchema = Sys.getenv("CDM5_POSTGRESQL_CDM_SCHEMA"),
+    writeSchema = c(schema =  Sys.getenv("CDM5_POSTGRESQL_SCRATCH_SCHEMA")),
+    writePrefix = prefix = "phen_"
+    achillesSchema = Sys.getenv("CDM5_POSTGRESQL_CDM_SCHEMA")
   )
 
   cdm$asthma <- CohortConstructor::conceptCohort(cdm = cdm,
@@ -49,7 +49,7 @@ test_that("postgres test", {
   cdm <- omopgenerics::bind(cdm$asthma, cdm$drugs, name = "my_cohort")
 
   results <- phenotypeDiagnostics(cdm$my_cohort)
-  expect_no_error(shinyDiagnostics(result = results, directory = tempir()))
+  expect_no_error(shinyDiagnostics(result = results, directory = tempdir()))
   expect_no_error(CodelistGenerator::tableCohortCodeUse(results))
   expect_no_error(CodelistGenerator::tableAchillesCodeUse(results))
   expect_no_error(CodelistGenerator::tableOrphanCodes(results))
@@ -60,7 +60,7 @@ test_that("postgres test", {
   expect_no_error(CohortCharacteristics::tableCohortTiming(results))
   expect_no_error(CohortCharacteristics::tableLargeScaleCharacteristics(results))
   # omopViewer::exportStaticApp(results)
-  expect_no_error(shinyDiagnostics(result = results, directory = tempir()))
+  expect_no_error(shinyDiagnostics(result = results, directory = tempdir()))
 
   CDMConnector::cdm_disconnect(cdm = cdm)
 
