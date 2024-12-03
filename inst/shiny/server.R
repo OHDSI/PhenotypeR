@@ -919,7 +919,7 @@ server <- function(input, output, session) {
 
   # prevalence -----
   prevalenceFiltered <- shiny::reactive({
-    dataFiltered$prevalence |>
+ dataFiltered$prevalence |>
       filter(cdm_name %in% 
                input$prevalence_grouping_cdm_name) |> 
       filterGroup(outcome_cohort_name %in% 
@@ -1021,12 +1021,7 @@ server <- function(input, output, session) {
       validate("No prevalence in results")
     }
 
-    result <- dataFiltered$prevalence |>
-      filter(cdm_name %in% input$prevalence_grouping_cdm_name,
-             variable_level %in% input$prevalence_settings_outcome_cohort_name) |>
-      filterSettings(analysis_interval %in% input$prevalence_settings_analysis_interval,
-                     denominator_age_group %in% input$prevalence_settings_denominator_age_group,
-                     denominator_sex %in% input$prevalence_settings_denominator_sex)
+    result <- prevalenceFiltered()
 
     if (nrow(result) == 0) {
       validate("No results found for selected inputs")
