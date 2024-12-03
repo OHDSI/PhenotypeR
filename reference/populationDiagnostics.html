@@ -51,7 +51,11 @@ population. Diagnostics include:</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">populationDiagnostics</span><span class="op">(</span><span class="va">cohort</span>, populationSample <span class="op">=</span> <span class="fl">1e+06</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">populationDiagnostics</span><span class="op">(</span></span>
+<span>  <span class="va">cohort</span>,</span>
+<span>  populationSample <span class="op">=</span> <span class="fl">1e+06</span>,</span>
+<span>  populationDateRange <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -65,6 +69,15 @@ population. Diagnostics include:</p>
 <dt id="arg-populationsample">populationSample<a class="anchor" aria-label="anchor" href="#arg-populationsample"></a></dt>
 <dd><p>Number of people from the cdm to sample. If NULL no
 sampling will be performed</p></dd>
+
+
+<dt id="arg-populationdaterange">populationDateRange<a class="anchor" aria-label="anchor" href="#arg-populationdaterange"></a></dt>
+<dd><p>Two dates. The first indicating the earliest cohort
+start date and the second indicating the latest possible cohort end date. If
+NULL or the first date is set as missing, the earliest observation_start_date
+in the observation_period table will be used for the former. If  NULL or the
+second date is set as missing, the latest observation_end_date in the
+observation_period table will be used for the latter.</p></dd>
 
 </dl></div>
     <div class="section level2">
