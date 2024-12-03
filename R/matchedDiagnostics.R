@@ -29,7 +29,7 @@
 #'   omock::mockObservation() |>
 #'   omock::mockMeasurement() |>
 #'   omock::mockVisitOccurrence() |>
-#'  omock::mockProcedureOccurrence() |>
+#'   omock::mockProcedureOccurrence() |>
 #'   omock::mockCohort(name = "my_cohort")
 #'
 #'  db <- DBI::dbConnect(duckdb::duckdb())

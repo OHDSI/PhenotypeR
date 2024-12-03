@@ -158,6 +158,11 @@ max_incidence_end <- max(as.Date(selected$incidence_grouping_incidence_end_date)
 choices$incidence_settings_analysis_interval <- c("overall", "years")
 selected$incidence_settings_analysis_interval <- "years"
 
+choices$prevalence_settings_analysis_interval <- c("overall", "years")
+selected$prevalence_settings_analysis_interval <- "years"
+
+selected$prevalence_grouping_outcome_cohort_name <- selected$prevalence_grouping_outcome_cohort_name[1]
+
 selected$summarise_cohort_overlap_grouping_cohort_name_reference <- selected$summarise_cohort_overlap_grouping_cohort_name_reference[1:2]
 selected$summarise_cohort_overlap_grouping_cohort_name_comparator <- selected$summarise_cohort_overlap_grouping_cohort_name_comparator[1:2]
 choices$compare_large_scale_characteristics_grouping_domain <- choices$summarise_large_scale_characteristics_grouping_domain
