@@ -530,6 +530,7 @@ server <- function(input, output, session) {
       selectedCohorts <- c(
         input$summarise_characteristics_grouping_cohort_name,
         paste0("matched_to_", input$summarise_characteristics_grouping_cohort_name),
+        paste0(input$summarise_characteristics_grouping_cohort_name, "_sampled"),
         paste0(input$summarise_characteristics_grouping_cohort_name, "_matched")
       )
     } else {
