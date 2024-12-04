@@ -19,6 +19,14 @@ library(shinyWidgets)
 library(plotly)
 library(tidyr)
 
+# ensure minimum versions
+rlang::check_installed("omopgenerics", version = "0.4")
+rlang::check_installed("visOmopResults", version = "0.5.0")
+rlang::check_installed("CodelistGenerator", version = "3.3.1")
+rlang::check_installed("CohortCharacteristics", version = "0.4.0")
+rlang::check_installed("IncidencePrevalence", version = "0.9.0")
+rlang::check_installed("OmopSketch", version = "0.1.2")
+
 source(here::here("scripts", "functions.R"))
 
 if(file.exists(here::here("data", "appData.RData"))){
