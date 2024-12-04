@@ -1074,7 +1074,7 @@ server <- function(input, output, session) {
 
   output$gt_compare_lsc <- DT::renderDT({
     lscFiltered <- outputLSC()
-    
+
     if (nrow(lscFiltered) == 0) {
       validate("No results found for selected inputs")
     }
@@ -1095,6 +1095,11 @@ server <- function(input, output, session) {
       pivot_wider(names_from = cohort_name,
                   values_from = percentage)
 
+    if(isTRUE(input$compare_large_scale_characteristics_impute_missings)){
+      lsc <- lsc |> 
+        mutate(across(c(target_cohort, comparator_cohort), ~if_else(is.na(.x), 0, .x)))
+    }
+    
     lsc <-lsc |>
       mutate(across(c(target_cohort, comparator_cohort), ~ as.numeric(.x)/100)) |>
       mutate(smd = (!!sym(target_cohort) - !!sym(comparator_cohort))/sqrt((!!sym(target_cohort)*(1-!!sym(target_cohort)) + !!sym(comparator_cohort)*(1-!!sym(comparator_cohort)))/2)) |>
@@ -1128,7 +1133,8 @@ server <- function(input, output, session) {
                     cohorts = c(input$compare_large_scale_characteristics_grouping_cohort_1,
                                 input$compare_large_scale_characteristics_grouping_cohort_2),
                     colour = c(input$compare_large_scale_characteristics_colour_1),
-                    facet  = c(input$compare_large_scale_characteristics_facet_1)
+                    facet  = c(input$compare_large_scale_characteristics_facet_1),
+                    imputeMissings = input$compare_large_scale_characteristics_impute_missings
     )
   })
 
