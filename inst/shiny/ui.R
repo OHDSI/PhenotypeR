@@ -529,7 +529,7 @@ ui <- bslib::page_navbar(
         ),
         bslib::navset_card_tab(
           bslib::nav_panel(
-            title = "Tidy",
+            title = "All concepts",
             bslib::card(
               full_screen = TRUE,
               bslib::card_header(
