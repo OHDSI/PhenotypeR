@@ -664,7 +664,7 @@ ui <- bslib::page_navbar(
                                        ),
                                        shinyWidgets::pickerInput(
                                          inputId = "compare_large_scale_characteristics_grouping_domain",
-                                         label = "Table",
+                                         label = "Domain",
                                          choices = NULL,
                                          selected = NULL,
                                          multiple = TRUE,
