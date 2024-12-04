@@ -97,8 +97,8 @@ selected$compare_large_scale_characteristics_grouping_domain <- choices$compare_
 
 if(!is.null(dataFiltered$summarise_large_scale_characteristics)){
   if(nrow(dataFiltered$summarise_large_scale_characteristics)>0){
-    choices$summarise_large_scale_characteristics_grouping_domain <- settings(dataFiltered$summarise_large_scale_characteristics) |>
-      pull("table_name") |> unique()
+    choices$summarise_large_scale_characteristics_grouping_domain <- unique(settings(dataFiltered$summarise_large_scale_characteristics) |>
+      pull("table_name"))
     selected$summarise_large_scale_characteristics_grouping_domain <- choices$summarise_large_scale_characteristics_grouping_domain
   }}
 
@@ -166,6 +166,11 @@ selected$summarise_cohort_overlap_grouping_cohort_name_reference <- selected$sum
 selected$summarise_cohort_overlap_grouping_cohort_name_comparator <- selected$summarise_cohort_overlap_grouping_cohort_name_comparator[1:2]
 choices$compare_large_scale_characteristics_grouping_domain <- choices$summarise_large_scale_characteristics_grouping_domain
 selected$compare_large_scale_characteristics_grouping_domain <- choices$compare_large_scale_characteristics_grouping_domain
+
+choices$compare_large_scale_characteristics_settings_analysis <- choices$summarise_large_scale_characteristics_settings_analysis
+selected$compare_large_scale_characteristics_settings_analysis <- "standard"
+
+selected$summarise_large_scale_characteristics_settings_analysis <-"standard"
 
 choices <- choices[!grepl("concept_id", names(choices))]
 selected <- selected[!grepl("concept_id", names(selected))]
