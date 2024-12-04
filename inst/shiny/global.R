@@ -39,8 +39,9 @@ if(file.exists(here::here("data", "appData.RData"))){
   cli::cli_alert_success("Data processed")
 }
 
-plotComparedLsc <- function(lsc, cohorts, colour = NULL, facet = NULL){
+plotComparedLsc <- function(lsc, cohorts, imputeMissings, colour = NULL, facet = NULL){
    lsc <- lsc |>  tidy()
+
   plot_data <- lsc |>
     filter(cohort_name %in% c(cohorts
     )) |>
@@ -54,6 +55,11 @@ plotComparedLsc <- function(lsc, cohorts, colour = NULL, facet = NULL){
     pivot_wider(names_from = cohort_name,
                 values_from = percentage)
 
+  if(isTRUE(imputeMissings)){
+    plot_data <- plot_data |> 
+      mutate(across(c(cohorts[1], cohorts[2]), ~if_else(is.na(.x), 0, .x)))
+  }
+  
     plot <- plot_data |>
     ggplot(aes(text = paste("<br>Database:", database,
                             "<br>Concept:", variable_name,
