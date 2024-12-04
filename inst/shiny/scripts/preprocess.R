@@ -98,7 +98,7 @@ selected$compare_large_scale_characteristics_grouping_domain <- choices$compare_
 if(!is.null(dataFiltered$summarise_large_scale_characteristics)){
   if(nrow(dataFiltered$summarise_large_scale_characteristics)>0){
     choices$summarise_large_scale_characteristics_grouping_domain <- settings(dataFiltered$summarise_large_scale_characteristics) |>
-      pull("table_name")
+      pull("table_name") |> unique()
     selected$summarise_large_scale_characteristics_grouping_domain <- choices$summarise_large_scale_characteristics_grouping_domain
   }}
 
