@@ -1,4 +1,5 @@
 test_that("overall diagnostics function", {
+
   cdm_local <- omock::mockCdmReference() |>
     omock::mockPerson(nPerson = 100) |>
     omock::mockObservationPeriod() |>

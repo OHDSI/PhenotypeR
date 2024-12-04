@@ -86,24 +86,20 @@ choices$compare_large_scale_characteristics_grouping_cohort <- choices$compare_l
 choices$compare_large_scale_characteristics_grouping_cohort_1 <- choices$summarise_large_scale_characteristics_grouping_cohort_name
 choices$compare_large_scale_characteristics_grouping_cohort_2 <- choices$summarise_large_scale_characteristics_grouping_cohort_name
 choices$compare_large_scale_characteristics_grouping_domain <- choices$summarise_large_scale_characteristics_grouping_domain
-choices$compare_large_scale_characteristics_grouping_time_window <- choices$summarise_large_scale_characteristics_grouping_time_window
+# choices$compare_large_scale_characteristics_grouping_time_window <- choices$summarise_large_scale_characteristics_grouping_time_window
 
 selected$compare_large_scale_characteristics_grouping_cdm_name <- choices$compare_large_scale_characteristics_grouping_cdm_name
 selected$compare_large_scale_characteristics_grouping_cohort <- choices$compare_large_scale_characteristics_grouping_cohort[1]
 selected$compare_large_scale_characteristics_grouping_cohort_1 <- choices$compare_large_scale_characteristics_grouping_cohort_1[1]
 selected$compare_large_scale_characteristics_grouping_cohort_2 <- choices$compare_large_scale_characteristics_grouping_cohort_1[2]
 selected$compare_large_scale_characteristics_grouping_domain <- choices$compare_large_scale_characteristics_grouping_domain[1]
-selected$compare_large_scale_characteristics_grouping_time_window <- choices$compare_large_scale_characteristics_grouping_time_window[1]
+# selected$compare_large_scale_characteristics_grouping_time_window <- choices$compare_large_scale_characteristics_grouping_time_window[1]
 
 if(!is.null(dataFiltered$summarise_large_scale_characteristics)){
   if(nrow(dataFiltered$summarise_large_scale_characteristics)>0){
     choices$summarise_large_scale_characteristics_grouping_domain <- settings(dataFiltered$summarise_large_scale_characteristics) |>
       pull("table_name")
     selected$summarise_large_scale_characteristics_grouping_domain <- choices$summarise_large_scale_characteristics_grouping_domain
-
-    choices$summarise_large_scale_characteristics_grouping_time_window <- unique(dataFiltered$summarise_large_scale_characteristics |>
-                                                                                   pull("variable_level"))
-    selected$summarise_large_scale_characteristics_grouping_time_window <-choices$summarise_large_scale_characteristics_grouping_time_window
   }}
 
 if(!is.null(dataFiltered$orphan_code_use)){
@@ -169,10 +165,7 @@ selected$prevalence_settings_denominator_sex <- "Both"
 selected$summarise_cohort_overlap_grouping_cohort_name_reference <- selected$summarise_cohort_overlap_grouping_cohort_name_reference[1:2]
 selected$summarise_cohort_overlap_grouping_cohort_name_comparator <- selected$summarise_cohort_overlap_grouping_cohort_name_comparator[1:2]
 choices$compare_large_scale_characteristics_grouping_domain <- choices$summarise_large_scale_characteristics_grouping_domain
-choices$compare_large_scale_characteristics_grouping_time_window <- choices$summarise_large_scale_characteristics_grouping_time_window
-selected$compare_large_scale_characteristics_grouping_domain <- selected$summarise_large_scale_characteristics_grouping_domain
-selected$compare_large_scale_characteristics_grouping_time_window <- selected$summarise_large_scale_characteristics_grouping_time_window
-
+selected$compare_large_scale_characteristics_grouping_domain <- choices$compare_large_scale_characteristics_grouping_domain
 
 choices <- choices[!grepl("concept_id", names(choices))]
 selected <- selected[!grepl("concept_id", names(selected))]
@@ -183,12 +176,37 @@ choices <- choices[grepl("summarise_cohort_overlap_variable_name", names(choices
                      !grepl("variable_name", names(choices))]
 selected <- selected[grepl("summarise_cohort_overlap_variable_name", names(selected)) |
                        !grepl("variable_name", names(selected))]
-# choices <- choices[!grepl("variable_name", names(choices))]
-# selected <- selected[!grepl("variable_name", names(selected))]
 
 # sort everything alphabetically
 choices <- purrr::map(choices, sort)
 selected <- purrr::map(selected, sort)
+
+choices$summarise_large_scale_characteristics_grouping_time_window <- c(
+  "-inf to -1",  
+  "-inf to -366",
+  "-365 to -31", 
+  "-30 to -1",
+  "0 to 0", 
+  "1 to 30",     
+  "1 to inf",
+  "31 to 365",
+  "366 to inf"
+)
+selected$summarise_large_scale_characteristics_grouping_time_window <-choices$summarise_large_scale_characteristics_grouping_time_window[1]
+
+choices$compare_large_scale_characteristics_grouping_time_window <- c(
+  "-inf to -1",  
+  "-inf to -366",
+  "-365 to -31", 
+  "-30 to -1",
+  "0 to 0", 
+  "1 to 30",     
+  "1 to inf",
+  "31 to 365",
+  "366 to inf"
+)
+selected$compare_large_scale_characteristics_grouping_time_window <- choices$compare_large_scale_characteristics_grouping_time_window[1]
+
 
 
 cli::cli_inform("Saving data for shiny")

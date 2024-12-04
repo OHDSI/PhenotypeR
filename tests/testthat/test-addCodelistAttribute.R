@@ -1,4 +1,5 @@
 test_that("test add codelist works", {
+  testthat::skip_on_cran()
   cdm_local <- omock::mockCdmReference() |>
     omock::mockPerson(nPerson = 100) |>
     omock::mockObservationPeriod() |>
@@ -66,6 +67,7 @@ test_that("test add codelist works", {
 })
 
 test_that("test append codelist to existing", {
+  testthat::skip_on_cran()
   cdm_local <- omock::mockCdmReference() |>
     omock::mockPerson(nPerson = 100) |>
     omock::mockObservationPeriod() |>
@@ -113,6 +115,7 @@ test_that("test append codelist to existing", {
 })
 
 test_that("test eunomia", {
+  testthat::skip_on_cran()
   skip_if_not_installed("CirceR")
   skip_if_not(CDMConnector::eunomia_is_available())
 

@@ -1,4 +1,6 @@
 test_that("run with a single cohort", {
+  testthat::skip_on_cran()
+
   cdm_local <- omock::mockCdmReference() |>
     omock::mockPerson(nPerson = 100) |>
     omock::mockObservationPeriod() |>
@@ -31,6 +33,8 @@ test_that("run with a single cohort", {
 })
 
 test_that("run with multiple cohorts", {
+  testthat::skip_on_cran()
+
   cdm_local <- omock::mockCdmReference() |>
     omock::mockPerson(nPerson = 100) |>
     omock::mockObservationPeriod() |>

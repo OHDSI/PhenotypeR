@@ -529,7 +529,7 @@ ui <- bslib::page_navbar(
         ),
         bslib::navset_card_tab(
           bslib::nav_panel(
-            title = "Tidy",
+            title = "All concepts",
             bslib::card(
               full_screen = TRUE,
               bslib::card_header(
@@ -581,7 +581,7 @@ ui <- bslib::page_navbar(
               ),
               bslib::layout_sidebar(
                 sidebar = bslib::sidebar(width = 400, open = "closed",
-                  numericInput("top_n", "Top n:", 10, min = 1, max = 100),
+                  # numericInput("top_n", "Top n:", 10, min = 1, max = 100),
                   sortable::bucket_list(
                     header = NULL,
                     sortable::add_rank_list(

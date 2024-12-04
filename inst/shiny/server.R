@@ -614,6 +614,7 @@ server <- function(input, output, session) {
 
     lsc_data <- dataFiltered$summarise_large_scale_characteristics |>
       filter(!is.na(estimate_value)) |>
+      filter(estimate_value != "-") |>
       visOmopResults::filterSettings(table_name %in% input$summarise_large_scale_characteristics_grouping_domain) |>
       dplyr::filter(cdm_name %in% input$summarise_large_scale_characteristics_grouping_cdm_name ) |>
       dplyr::filter(group_level  %in% input$summarise_large_scale_characteristics_grouping_cohort_name) |>
@@ -654,22 +655,25 @@ server <- function(input, output, session) {
       validate("No large scale characteristics in results")
     }
 
-    if (input$top_n < 1) {
-      validate("Top n must be between 1 and 100")
-    }
-    if (input$top_n > 100) {
-      validate("Top n must be between 1 and 100")
-    }
+    # if (input$top_n < 1) {
+    #   validate("Top n must be between 1 and 100")
+    # }
+    # if (input$top_n > 100) {
+    #   validate("Top n must be between 1 and 100")
+    # }
 
      lsc_data <- dataFiltered$summarise_large_scale_characteristics |>
        filter(!is.na(estimate_value)) |>
-      visOmopResults::filterSettings(table_name %in% input$summarise_large_scale_characteristics_grouping_domain) |>
+       filter(estimate_value != "-") |>
+       visOmopResults::filterSettings(table_name %in% input$summarise_large_scale_characteristics_grouping_domain) |>
       dplyr::filter(cdm_name %in% input$summarise_large_scale_characteristics_grouping_cdm_name ) |>
       dplyr::filter(group_level  %in% input$summarise_large_scale_characteristics_grouping_cohort_name) |>
        dplyr::filter(variable_level  %in% input$summarise_large_scale_characteristics_grouping_time_window)
-
-    CohortCharacteristics::tableLargeScaleCharacteristics(lsc_data |> arrange(desc(estimate_type), desc(as.numeric(estimate_value))),
-                                                          topConcepts = input$top_n
+    CohortCharacteristics::tableLargeScaleCharacteristics(lsc_data |> 
+                                                            arrange(desc(estimate_type), 
+                                                                    desc(as.numeric(estimate_value)))
+                                                          # ,
+                                                          # topConcepts = input$top_n
                                                           # ,
                                                           # header = input$summarise_large_scale_characteristics_gt_0_header,
                                                           # groupColumn = input$summarise_large_scale_characteristics_gt_0_group,
