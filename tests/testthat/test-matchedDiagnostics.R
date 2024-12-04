@@ -1,4 +1,6 @@
 test_that("cohort to pop diagnostics", {
+  testthat::skip_on_cran()
+
   cdm_local <- omock::mockCdmReference() |>
     omock::mockPerson(nPerson = 100) |>
     omock::mockObservationPeriod() |>

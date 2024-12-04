@@ -1,4 +1,6 @@
 test_that("multiplication works", {
+  testthat::skip_on_cran()
+
   cdm_local <- omock::mockCdmReference() |>
     omock::mockPerson(nPerson = 100) |>
     omock::mockObservationPeriod() |>
