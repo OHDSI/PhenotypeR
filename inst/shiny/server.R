@@ -636,7 +636,8 @@ server <- function(input, output, session) {
   })
   output$summarise_large_scale_characteristics_tidy <- DT::renderDT({
     DT::datatable(
-      getTidyDataSummariseLargeScaleCharacteristics(),
+      getTidyDataSummariseLargeScaleCharacteristics() |> 
+        dplyr::arrange(dplyr::desc(percentage)),
       options = list(scrollX = TRUE),
       rownames = FALSE
     )
