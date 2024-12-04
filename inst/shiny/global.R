@@ -40,7 +40,6 @@ if(file.exists(here::here("data", "appData.RData"))){
 }
 
 plotComparedLsc <- function(lsc, cohorts, imputeMissings, colour = NULL, facet = NULL){
-  # browser()
   plot_data <- lsc |>
     filter(group_level %in% c(cohorts
     )) |>
