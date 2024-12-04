@@ -515,10 +515,17 @@ ui <- bslib::page_navbar(
                 multiple = FALSE,
                 options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
               ),
-
               shinyWidgets::pickerInput(
                 inputId = "summarise_large_scale_characteristics_grouping_time_window",
                 label = "Time window",
+                choices = NULL,
+                selected = NULL,
+                multiple = FALSE,
+                options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+              ),
+              shinyWidgets::pickerInput(
+                inputId = "summarise_large_scale_characteristics_settings_analysis",
+                label = "Concept type",
                 choices = NULL,
                 selected = NULL,
                 multiple = FALSE,
@@ -661,6 +668,14 @@ ui <- bslib::page_navbar(
                                          choices = NULL,
                                          selected = NULL,
                                          multiple = TRUE,
+                                         options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                       ),
+                                       shinyWidgets::pickerInput(
+                                         inputId = "compare_large_scale_characteristics_settings_analysis",
+                                         label = "Concept type",
+                                         choices = NULL,
+                                         selected = NULL,
+                                         multiple = FALSE,
                                          options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                        )
                                      )

@@ -615,7 +615,8 @@ server <- function(input, output, session) {
     lsc_data <- dataFiltered$summarise_large_scale_characteristics |>
       filter(!is.na(estimate_value)) |>
       filter(estimate_value != "-") |>
-      visOmopResults::filterSettings(table_name %in% input$summarise_large_scale_characteristics_grouping_domain) |>
+      visOmopResults::filterSettings(table_name %in% input$summarise_large_scale_characteristics_grouping_domain,
+                                     analysis %in% input$summarise_large_scale_characteristics_settings_analysis) |>
       dplyr::filter(cdm_name %in% input$summarise_large_scale_characteristics_grouping_cdm_name ) |>
       dplyr::filter(group_level  %in% input$summarise_large_scale_characteristics_grouping_cohort_name) |>
       dplyr::filter(variable_level  %in% input$summarise_large_scale_characteristics_grouping_time_window)
@@ -665,7 +666,8 @@ server <- function(input, output, session) {
      lsc_data <- dataFiltered$summarise_large_scale_characteristics |>
        filter(!is.na(estimate_value)) |>
        filter(estimate_value != "-") |>
-       visOmopResults::filterSettings(table_name %in% input$summarise_large_scale_characteristics_grouping_domain) |>
+       visOmopResults::filterSettings(table_name %in% input$summarise_large_scale_characteristics_grouping_domain,
+                                      analysis %in% input$summarise_large_scale_characteristics_settings_analysis) |>
       dplyr::filter(cdm_name %in% input$summarise_large_scale_characteristics_grouping_cdm_name ) |>
       dplyr::filter(group_level  %in% input$summarise_large_scale_characteristics_grouping_cohort_name) |>
        dplyr::filter(variable_level  %in% input$summarise_large_scale_characteristics_grouping_time_window)
@@ -1068,7 +1070,8 @@ server <- function(input, output, session) {
     }
     dataFiltered$summarise_large_scale_characteristics |>
       filter(variable_level %in% input$compare_large_scale_characteristics_grouping_time_window) |>
-      filterSettings(table_name %in% input$compare_large_scale_characteristics_grouping_domain)
+      filterSettings(table_name %in% input$compare_large_scale_characteristics_grouping_domain,
+                     analysis %in% input$compare_large_scale_characteristics_settings_analysis)
 
   })
 

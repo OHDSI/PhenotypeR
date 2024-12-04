@@ -167,6 +167,9 @@ selected$summarise_cohort_overlap_grouping_cohort_name_comparator <- selected$su
 choices$compare_large_scale_characteristics_grouping_domain <- choices$summarise_large_scale_characteristics_grouping_domain
 selected$compare_large_scale_characteristics_grouping_domain <- choices$compare_large_scale_characteristics_grouping_domain
 
+choices$compare_large_scale_characteristics_settings_analysis <- choices$summarise_large_scale_characteristics_settings_analysis
+selected$compare_large_scale_characteristics_settings_analysis <- choices$compare_large_scale_characteristics_settings_analysis
+
 choices <- choices[!grepl("concept_id", names(choices))]
 selected <- selected[!grepl("concept_id", names(selected))]
 choices <- choices[!grepl("concept_name", names(choices))]
