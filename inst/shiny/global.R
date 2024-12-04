@@ -40,18 +40,22 @@ if(file.exists(here::here("data", "appData.RData"))){
 }
 
 plotComparedLsc <- function(lsc, cohorts, imputeMissings, colour = NULL, facet = NULL){
-   lsc <- lsc |>  tidy()
-
+  # browser()
   plot_data <- lsc |>
-    filter(cohort_name %in% c(cohorts
+    filter(group_level %in% c(cohorts
     )) |>
+    filter(estimate_name == "percentage") |> 
+    omopgenerics::addSettings() |> 
     select(database = cdm_name,
-           cohort_name,
+           cohort_name = group_level,
            variable_name,
            time_window = variable_level,
-           concept_id,
+           concept_id = additional_level,
            table = table_name,
-           percentage) |>
+           percentage = estimate_value) |>
+    mutate(percentage = if_else(percentage == "-",
+                                NA, percentage)) |> 
+    mutate(percentage = as.numeric(percentage)) |> 
     pivot_wider(names_from = cohort_name,
                 values_from = percentage)
 
