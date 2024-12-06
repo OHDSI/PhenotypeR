@@ -1086,16 +1086,20 @@ server <- function(input, output, session) {
     target_cohort <- input$compare_large_scale_characteristics_grouping_cohort_1
     comparator_cohort <- input$compare_large_scale_characteristics_grouping_cohort_2
     lsc <- lscFiltered |>
-      tidy() |>
-      filter(cohort_name %in%
-               c(target_cohort, comparator_cohort)
-             ) |>
-      select(cohort_name,
+      filter(group_level %in% c(target_cohort, comparator_cohort
+      )) |>
+      filter(estimate_name == "percentage") |> 
+      omopgenerics::addSettings() |> 
+      select(database = cdm_name,
+             cohort_name = group_level,
              variable_name,
-             concept_id,
-             variable_level,
-             table_name,
-             percentage) |>
+             time_window = variable_level,
+             concept_id = additional_level,
+             table = table_name,
+             percentage = estimate_value) |>
+      mutate(percentage = if_else(percentage == "-",
+                                  NA, percentage)) |> 
+      mutate(percentage = as.numeric(percentage)) |> 
       pivot_wider(names_from = cohort_name,
                   values_from = percentage)
 
@@ -1111,8 +1115,8 @@ server <- function(input, output, session) {
       mutate(across(c(target_cohort, comparator_cohort), ~ as.numeric(.x)*100)) |>
       mutate(concept = paste0(variable_name, " (",concept_id, ")")) |>
       select("Concept name (concept ID)" = concept,
-             "Table" = table_name,
-             "Time window" = variable_level,
+             "Table" = table,
+             "Time window" = time_window,
              target_cohort,
              comparator_cohort,
              "Standardised mean difference" = smd)
