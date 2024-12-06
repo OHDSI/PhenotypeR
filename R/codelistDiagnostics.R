@@ -18,21 +18,27 @@
 #'
 #' @examples
 #' \donttest{
-#'   cdm_local <- omock::mockCdmReference() |>
-#'   omock::mockPerson(nPerson = 100) |>
-#'   omock::mockObservationPeriod() |>
-#'   omock::mockConditionOccurrence() |>
-#'   omock::mockDrugExposure() |>
-#'   omock::mockCohort(name = "my_cohort")
+#'   library(CDMConnector)
+#'   library(CodelistGenerator)
+#'   library(PhenotypeR)
+#'   library(dplyr)
+#'   library(CohortConstructor)
 #'
-#'   db <- DBI::dbConnect(duckdb::duckdb())
+#'   con <- DBI::dbConnect(duckdb::duckdb(),
+#'   dbdir = CDMConnector::eunomia_dir()
+#'   )
 #'
-#'   cdm <- CDMConnector::copyCdmTo(con = db,
-#'                                  cdm = cdm_local,
-#'                                  schema ="main",
-#'                                  overwrite = TRUE)
+#'   cdm <- CDMConnector::cdm_from_con(con,
+#'                                     cdm_schem = "main",
+#'                                     write_schema = "main",
+#'                                    cdm_name = "Eunomia"
+#'   )
 #'
-#'  result <- cdm$my_cohort |>
+#'  cdm$ankle_sprain <- conceptCohort(cdm,
+#'                                  conceptSet = list("ankle_sprain" = 81151),
+#'                                  name = "ankle_sprain")
+#'
+#'  result <- cdm$ankle_sprain  |>
 #'    codelistDiagnostics()
 #'
 #'  CDMConnector::cdmDisconnect(cdm = cdm)
