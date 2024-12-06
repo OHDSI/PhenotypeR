@@ -546,26 +546,7 @@ ui <- bslib::page_navbar(
                 ),
                 class = "text-end"
               ),
-              bslib::layout_sidebar(
-                sidebar = bslib::sidebar(width = 400, open = "closed",
-                  shinyWidgets::pickerInput(
-                    inputId = "summarise_large_scale_characteristics_tidy_columns",
-                    label = "Columns",
-                    choices = NULL,
-                    selected = NULL,
-                    multiple = TRUE,
-                    options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                  ),
-                  shiny::radioButtons(
-                    inputId = "summarise_large_scale_characteristics_tidy_pivot",
-                    label = "Pivot estimates/variables",
-                    choices = c("none", "estimates", "estimates and variables"),
-                    selected = "none"
-                  ),
-                  position = "right"
-                ),
-                DT::dataTableOutput("summarise_large_scale_characteristics_tidy")
-              )
+              DT::dataTableOutput("summarise_large_scale_characteristics_tidy")
             )
           ),
           bslib::nav_panel(
