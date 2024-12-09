@@ -18,30 +18,31 @@
 #'
 #' @examples
 #' \donttest{
-#'   library(CDMConnector)
-#'   library(CodelistGenerator)
-#'   library(PhenotypeR)
-#'   library(dplyr)
-#'   library(CohortConstructor)
+#' library(omock)
+#' library(CDMConnector)
+#' library(DBI)
+#' library(CohortConstructor)
+#' library(PhenotypeR)
 #'
-#'   con <- DBI::dbConnect(duckdb::duckdb(),
-#'   dbdir = CDMConnector::eunomia_dir()
-#'   )
+#' cdm_local <- mockCdmReference() |>
+#'   mockPerson(nPerson = 100) |>
+#'   mockObservationPeriod() |>
+#'   mockConditionOccurrence()
 #'
-#'   cdm <- CDMConnector::cdm_from_con(con,
-#'                                     cdm_schem = "main",
-#'                                     write_schema = "main",
-#'                                    cdm_name = "Eunomia"
-#'   )
+#' con <- DBI::dbConnect(duckdb::duckdb(), ":memory:")
+#' cdm <- CDMConnector::copy_cdm_to(con = con,
+#'                                  cdm = cdm_local,
+#'                                  schema = "main")
+#' attr(cdm, "write_schema") <- "main"
 #'
-#'  cdm$ankle_sprain <- conceptCohort(cdm,
-#'                                  conceptSet = list("ankle_sprain" = 81151),
-#'                                  name = "ankle_sprain")
+#' cdm$arthropathies <- conceptCohort(cdm,
+#'                                    conceptSet = list("arthropathies" = c(40475132)),
+#'                                    name = "arthropathies")
 #'
-#'  result <- cdm$ankle_sprain  |>
-#'    codelistDiagnostics()
+#' result <- cdm$arthropathies |>
+#'  codelistDiagnostics()
 #'
-#'  CDMConnector::cdmDisconnect(cdm = cdm)
+#' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
 codelistDiagnostics <- function(cohort){
 

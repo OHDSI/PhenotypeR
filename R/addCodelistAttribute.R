@@ -18,10 +18,25 @@
 #'
 #' @examples
 #' \donttest{
-#' library(IncidencePrevalence)
-#' cdm <- mockIncidencePrevalence(sampleSize = 1000)
-#' cohort <- addCodelistAttribute(cohort = cdm$outcome, codelist = list("cohort_1" = 1L))
+#' library(omock)
+#' library(CDMConnector)
+#' library(DBI)
+#' library(PhenotypeR)
+#'
+#' cdm_local <- mockCdmReference() |>
+#'  mockPerson(nPerson = 100) |>
+#'  mockObservationPeriod() |>
+#'  mockCohort()
+#'
+#' con <- DBI::dbConnect(duckdb::duckdb(), ":memory:")
+#' cdm <- CDMConnector::copy_cdm_to(con = con,
+#'                                 cdm = cdm_local,
+#'                                  schema = "main")
+#' attr(cdm, "write_schema") <- "main"
+#'
+#' cohort <- addCodelistAttribute(cohort = cdm$cohort, codelist = list("cohort_1" = 1L))
 #' attr(cohort, "cohort_codelist")
+#'
 #' CDMConnector::cdm_disconnect(cdm)
 #' }
 
