@@ -14,21 +14,28 @@
 #'
 #' @examples
 #' \donttest{
-#'   cdm_local <- omock::mockCdmReference() |>
-#'     omock::mockPerson(nPerson = 100) |>
-#'     omock::mockObservationPeriod() |>
-#'     omock::mockConditionOccurrence() |>
-#'     omock::mockDrugExposure() |>
-#'     omock::mockObservation() |>
-#'     omock::mockMeasurement() |>
-#'     omock::mockCohort(name = "my_cohort", numberCohorts = 2)
-#'  db <- DBI::dbConnect(duckdb::duckdb())
-#'  cdm <- CDMConnector::copyCdmTo(con = db,
-#'                                 cdm = cdm_local,
-#'                                 schema ="main",
-#'                                 overwrite = TRUE)
-#'  db_diag <- databaseDiagnostics(cdm)
-#'  CDMConnector::cdmDisconnect(cdm = cdm)
+#' library(omock)
+#' library(CDMConnector)
+#' library(DBI)
+#' library(PhenotypeR)
+#'
+#' cdm_local <- mockCdmReference() |>
+#'   mockPerson(nPerson = 100) |>
+#'   mockObservationPeriod() |>
+#'   mockConditionOccurrence() |>
+#'   mockDrugExposure() |>
+#'   mockObservation() |>
+#'   mockMeasurement() |>
+#'   mockCohort(name = "my_cohort", numberCohorts = 2)
+#'
+#' con <- DBI::dbConnect(duckdb::duckdb(), ":memory:")
+#' cdm <- CDMConnector::copy_cdm_to(con = con,
+#'                                  cdm = cdm_local,
+#'                                  schema = "main")
+#' attr(cdm, "write_schema") <- "main"
+#'
+#' db_diag <- databaseDiagnostics(cdm)
+#' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
 databaseDiagnostics <- function(cdm){
 

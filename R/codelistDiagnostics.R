@@ -18,24 +18,31 @@
 #'
 #' @examples
 #' \donttest{
-#'   cdm_local <- omock::mockCdmReference() |>
-#'   omock::mockPerson(nPerson = 100) |>
-#'   omock::mockObservationPeriod() |>
-#'   omock::mockConditionOccurrence() |>
-#'   omock::mockDrugExposure() |>
-#'   omock::mockCohort(name = "my_cohort")
+#' library(omock)
+#' library(CDMConnector)
+#' library(DBI)
+#' library(CohortConstructor)
+#' library(PhenotypeR)
 #'
-#'   db <- DBI::dbConnect(duckdb::duckdb())
+#' cdm_local <- mockCdmReference() |>
+#'   mockPerson(nPerson = 100) |>
+#'   mockObservationPeriod() |>
+#'   mockConditionOccurrence()
 #'
-#'   cdm <- CDMConnector::copyCdmTo(con = db,
+#' con <- DBI::dbConnect(duckdb::duckdb(), ":memory:")
+#' cdm <- CDMConnector::copy_cdm_to(con = con,
 #'                                  cdm = cdm_local,
-#'                                  schema ="main",
-#'                                  overwrite = TRUE)
+#'                                  schema = "main")
+#' attr(cdm, "write_schema") <- "main"
 #'
-#'  result <- cdm$my_cohort |>
-#'    codelistDiagnostics()
+#' cdm$arthropathies <- conceptCohort(cdm,
+#'                                    conceptSet = list("arthropathies" = c(40475132)),
+#'                                    name = "arthropathies")
 #'
-#'  CDMConnector::cdmDisconnect(cdm = cdm)
+#' result <- cdm$arthropathies |>
+#'  codelistDiagnostics()
+#'
+#' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
 codelistDiagnostics <- function(cohort){
 

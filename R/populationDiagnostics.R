@@ -15,11 +15,38 @@
 #'
 #' @examples
 #' \donttest{
-#' library(IncidencePrevalence)
-#' cdm <- mockIncidencePrevalenceRef(sampleSize = 1000)
-#' pop_diag <- populationDiagnostics(cohort = cdm$outcome,
-#'                                   populationSample = 250)
-#' CDMConnector::cdm_disconnect(cdm)
+#' library(omock)
+#' library(CDMConnector)
+#' library(DBI)
+#' library(PhenotypeR)
+#' library(dplyr)
+#'
+#' cdm_local <- mockCdmReference() |>
+#'   mockPerson(nPerson = 1000) |>
+#'   mockObservationPeriod() |>
+#'   mockConditionOccurrence() |>
+#'   mockDrugExposure() |>
+#'   mockObservation() |>
+#'   mockMeasurement() |>
+#'   mockVisitOccurrence() |>
+#'   mockCohort(name = "my_cohort")
+#'
+#' con <- DBI::dbConnect(duckdb::duckdb(), ":memory:")
+#' cdm <- CDMConnector::copy_cdm_to(con = con,
+#'                                  cdm = cdm_local,
+#'                                  schema = "main")
+#' attr(cdm, "write_schema") <- "main"
+#'
+#' dateStart <- cdm$my_cohort |>
+#'   summarise(start = min(cohort_start_date, na.rm = TRUE)) |>
+#'   pull("start")
+#' dateEnd   <- cdm$my_cohort |>
+#'   summarise(start = max(cohort_start_date, na.rm = TRUE)) |>
+#'   pull("start")
+#'
+#' result <- cdm$my_cohort |>
+#'   populationDiagnostics(populationDateRange = c(dateStart, dateEnd))
+#' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
 populationDiagnostics <- function(cohort,
                                   populationSample = 1000000,
