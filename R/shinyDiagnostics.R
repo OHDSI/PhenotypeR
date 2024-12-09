@@ -24,6 +24,7 @@
 #' library(omock)
 #' library(CDMConnector)
 #' library(DBI)
+#' library(PhenotypeR)
 #'
 #' cdm_local <- mockCdmReference() |>
 #'   mockPerson(nPerson = 1000) |>
@@ -33,6 +34,7 @@
 #'   mockObservation() |>
 #'   mockMeasurement() |>
 #'   mockVisitOccurrence() |>
+#'   mockProcedureOccurrence() |>
 #'   mockCohort(name = "my_cohort")
 #'
 #' con <- DBI::dbConnect(duckdb::duckdb(), ":memory:")
@@ -72,5 +74,4 @@ shinyDiagnostics <- function(result,
   }
 
   return(invisible())
-
 }
