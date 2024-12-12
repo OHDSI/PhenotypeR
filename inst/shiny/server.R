@@ -1066,7 +1066,7 @@ server <- function(input, output, session) {
   # compare lsc ----
 
   outputLSC <- shiny::reactive({
-browser()
+
     if (is.null(dataFiltered$summarise_large_scale_characteristics)) {
       validate("No large scale characteristics in results")
     }
@@ -1271,21 +1271,7 @@ browser()
 
   ## age distribution ----
   ## output table ----
-  outputLSC <- shiny::reactive({
-    addPyramidTheme <- function(plot, colour){
-      plot +
-        theme_void() +
-        theme(
-          axis.text.x = element_text(),
-          panel.grid.major.x = element_line(color = "grey90"),
-          legend.box = "horizontal",
-          # axis.text.y  = ggplot2::element_blank(),
-          axis.title.y = ggplot2::element_blank(),
-          legend.position = "bottom",
-          legend.title = ggplot2::element_blank()
-        ) +
-        scale_fill_manual(values = colour)
-    }
+  createAgePyramid <- shiny::reactive({
 
     # Get age lables
     age_labels <- tibble(
@@ -1332,7 +1318,9 @@ browser()
         density_x >= 95 & density_x < 100 ~ "95-99",
         density_x >= 100 ~ "100+"
       )) |>
-      mutate(percent = mean(density_y, na.rm = FALSE), .by = age_group) |>
+      group_by(age_group, sex) |>
+      mutate(percent = mean(density_y, na.rm = FALSE)) |>
+      ungroup() |>
       select("age_group", "percent", "sex") |>
       mutate(percent = if_else(sex == "Female",-percent,percent)) |>
       distinct()
@@ -1344,46 +1332,32 @@ browser()
       left_join(age_pyramid,
                 by = c("age_group","sex"),
                 relationship = "many-to-many") |>
-      mutate(percent = if_else(is.na(percent), 0, percent))
+      mutate(percent = if_else(is.na(percent), 0, percent)) |>
+      mutate(age_group = factor(age_group, levels = age_labels$age_group))
 
-    max_percent <- max(age_pyramid$percent, na.rm = TRUE)
+    ggplot(age_pyramid, aes(x = percent, y = age_group, fill = sex)) +
+      geom_bar(stat = "identity") +
+      ggpol::facet_share(~sex, dir = "h", scales = "free", reverse_num = FALSE) +
+      scale_x_continuous(labels = function(x) scales::label_percent()(abs(x))) +
+      theme(
+        axis.text.x = element_text(),
+        axis.title.x = ggplot2::element_blank(),
+        panel.grid.major.x = element_line(color = "grey90"),
+        legend.box = "horizontal",
+        axis.title.y = ggplot2::element_blank(),
+        legend.position = "bottom",
+        legend.title = ggplot2::element_blank(),
+        panel.background = ggplot2::element_blank(),
+        strip.text = ggplot2::element_blank(),
+        plot.margin = margin(10, 10, 10, 10)
+      ) +
+      scale_fill_manual(values = list("Male" = "#4682B4","Female" = "#003153"))
 
-    age_pyramid_female <- age_pyramid |>
-      filter(sex == "Female") |>
-      mutate(age_group = factor(age_group, levels = age_group)) |>
-      ggplot(aes(x = percent, y = age_group, fill = sex)) +
-      geom_col() +
-      scale_x_continuous(labels = function(x) label_percent()(abs(x)),
-                         breaks = breaks_pretty(),
-                         limits = c(-max_percent, 0))
-    age_pyramid_female <- age_pyramid_female |> addPyramidTheme("#4682B4")
-
-    age_pyramid_male <- age_pyramid |>
-      filter(sex == "Male") |>
-      mutate(age_group = factor(age_group, levels = age_group)) |>
-      ggplot(aes(x = percent, y = age_group, fill = sex)) +
-      geom_col() +
-      scale_x_continuous(
-        labels = label_percent(),
-        breaks = breaks_pretty(),
-        limits = c(0, max_percent))
-    age_pyramid_male <- age_pyramid_male |> addPyramidTheme("#003153")
-
-  # cowplot::plot_grid(age_pyramid_female,
-  #                              # age_labels_plot,
-  #                              age_pyramid_male,
-  #                              ncol = 3,
-  #                              rel_widths = c(6,6))
-  #
-  #
-  #   plot <- age_pyramid_female +
-  #     age_labels_plot  +
-  #     age_pyramid_male +
-  #     plot_layout(
-  #       widths = c(7.5, 1, 7.5)
-  #     )
-
+    
   })
-
-
+  
+  output$plot_age_pyramid <- plotly::renderPlotly({
+    createAgePyramid()
+  })
+  
 }
