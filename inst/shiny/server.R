@@ -1279,7 +1279,7 @@ browser()
           axis.text.x = element_text(),
           panel.grid.major.x = element_line(color = "grey90"),
           legend.box = "horizontal",
-          axis.text.y = ggplot2::element_blank(),
+          # axis.text.y  = ggplot2::element_blank(),
           axis.title.y = ggplot2::element_blank(),
           legend.position = "bottom",
           legend.title = ggplot2::element_blank()
@@ -1369,13 +1369,19 @@ browser()
         limits = c(0, max_percent))
     age_pyramid_male <- age_pyramid_male |> addPyramidTheme("#003153")
 
-    age_pyramid_female +
-      age_labels_plot  +
-      age_pyramid_male +
-      plot_layout(
-        widths = c(7.5, 1, 7.5)
-      )
-
+  # cowplot::plot_grid(age_pyramid_female,
+  #                              # age_labels_plot,
+  #                              age_pyramid_male,
+  #                              ncol = 3,
+  #                              rel_widths = c(6,6))
+  #
+  #
+  #   plot <- age_pyramid_female +
+  #     age_labels_plot  +
+  #     age_pyramid_male +
+  #     plot_layout(
+  #       widths = c(7.5, 1, 7.5)
+  #     )
 
   })
 
