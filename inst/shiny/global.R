@@ -18,6 +18,7 @@ library(shinycssloaders)
 library(shinyWidgets)
 library(plotly)
 library(tidyr)
+library(patchwork)
 
 # ensure minimum versions
 rlang::check_installed("omopgenerics", version = "0.4")
@@ -43,8 +44,8 @@ plotComparedLsc <- function(lsc, cohorts, imputeMissings, colour = NULL, facet =
   plot_data <- lsc |>
     filter(group_level %in% c(cohorts
     )) |>
-    filter(estimate_name == "percentage") |> 
-    omopgenerics::addSettings() |> 
+    filter(estimate_name == "percentage") |>
+    omopgenerics::addSettings() |>
     select(database = cdm_name,
            cohort_name = group_level,
            variable_name,
@@ -53,16 +54,16 @@ plotComparedLsc <- function(lsc, cohorts, imputeMissings, colour = NULL, facet =
            table = table_name,
            percentage = estimate_value) |>
     mutate(percentage = if_else(percentage == "-",
-                                NA, percentage)) |> 
-    mutate(percentage = as.numeric(percentage)) |> 
+                                NA, percentage)) |>
+    mutate(percentage = as.numeric(percentage)) |>
     pivot_wider(names_from = cohort_name,
                 values_from = percentage)
 
   if(isTRUE(imputeMissings)){
-    plot_data <- plot_data |> 
+    plot_data <- plot_data |>
       mutate(across(c(cohorts[1], cohorts[2]), ~if_else(is.na(.x), 0, .x)))
   }
-  
+
     plot <- plot_data |>
     ggplot(aes(text = paste("<br>Database:", database,
                             "<br>Concept:", variable_name,

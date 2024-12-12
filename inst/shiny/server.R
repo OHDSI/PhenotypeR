@@ -608,6 +608,7 @@ server <- function(input, output, session) {
   # summarise_large_scale_characteristics -----
   ## tidy summarise_large_scale_characteristics -----
   getTidyDataSummariseLargeScaleCharacteristics <- shiny::reactive({
+
     if (is.null(dataFiltered$summarise_large_scale_characteristics)) {
       validate("No large scale characteristics in results")
     }
@@ -636,7 +637,7 @@ server <- function(input, output, session) {
   })
   output$summarise_large_scale_characteristics_tidy <- DT::renderDT({
     DT::datatable(
-      getTidyDataSummariseLargeScaleCharacteristics() |> 
+      getTidyDataSummariseLargeScaleCharacteristics() |>
         dplyr::arrange(dplyr::desc(percentage)),
       options = list(scrollX = TRUE),
       rownames = FALSE
@@ -672,8 +673,8 @@ server <- function(input, output, session) {
       dplyr::filter(cdm_name %in% input$summarise_large_scale_characteristics_grouping_cdm_name ) |>
       dplyr::filter(group_level  %in% input$summarise_large_scale_characteristics_grouping_cohort_name) |>
        dplyr::filter(variable_level  %in% input$summarise_large_scale_characteristics_grouping_time_window)
-    CohortCharacteristics::tableLargeScaleCharacteristics(lsc_data |> 
-                                                            arrange(desc(estimate_type), 
+    CohortCharacteristics::tableLargeScaleCharacteristics(lsc_data |>
+                                                            arrange(desc(estimate_type),
                                                                     desc(as.numeric(estimate_value)))
                                                           # ,
                                                           # topConcepts = input$top_n
@@ -748,18 +749,18 @@ server <- function(input, output, session) {
   ## output incidence -----
   incidenceFiltered <- shiny::reactive({
     dataFiltered$incidence |>
-      filter(cdm_name %in% 
-               input$incidence_grouping_cdm_name) |> 
-      filterGroup(outcome_cohort_name %in% 
-                    input$incidence_grouping_outcome_cohort_name) |> 
+      filter(cdm_name %in%
+               input$incidence_grouping_cdm_name) |>
+      filterGroup(outcome_cohort_name %in%
+                    input$incidence_grouping_outcome_cohort_name) |>
       filterSettings(denominator_age_group %in%
-                       input$incidence_settings_denominator_age_group, 
-                     denominator_sex %in% 
-                       input$incidence_settings_denominator_sex) |> 
+                       input$incidence_settings_denominator_age_group,
+                     denominator_sex %in%
+                       input$incidence_settings_denominator_sex) |>
       filterAdditional(analysis_interval %in%
                          input$incidence_settings_analysis_interval)
   })
-  
+
   ## output 18 -----
   createOutput18 <- shiny::reactive({
 
@@ -777,7 +778,7 @@ server <- function(input, output, session) {
       result,
       # header = input$incidence_gt_18_header,
       groupColumn = c("cdm_name", "outcome_cohort_name"),
-      hide = "denominator_cohort_name", 
+      hide = "denominator_cohort_name",
       settingsColumns = c("denominator_age_group",
                           "denominator_sex",
                           "outcome_cohort_name")
@@ -787,7 +788,7 @@ server <- function(input, output, session) {
         subtitle = "Incidence rates estimated for outcomes of interest"
       ) %>%
       tab_options(
-        heading.align = "left"  
+        heading.align = "left"
       )
   })
   output$incidence_gt_18 <- gt::render_gt({
@@ -808,21 +809,21 @@ server <- function(input, output, session) {
     }
 
     result <- incidenceFiltered()
-    
+
     if (nrow(result) == 0) {
       validate("No results found for selected inputs")
     }
-    
+
     IncidencePrevalence::plotIncidence(
       result,
       x = input$incidence_ggplot2_19_x,
       ribbon = FALSE,
       facet = input$incidence_ggplot2_19_facet,
       colour = input$incidence_ggplot2_19_colour
-    ) |> 
+    ) |>
       plotly::ggplotly()
   })
-  
+
   output$incidence_ggplot2_19 <- plotly::renderPlotly({
     createOutput19()
   })
@@ -927,18 +928,18 @@ server <- function(input, output, session) {
   # prevalence -----
   prevalenceFiltered <- shiny::reactive({
  dataFiltered$prevalence |>
-      filter(cdm_name %in% 
-               input$prevalence_grouping_cdm_name) |> 
-      filterGroup(outcome_cohort_name %in% 
-                    input$prevalence_grouping_outcome_cohort_name) |> 
+      filter(cdm_name %in%
+               input$prevalence_grouping_cdm_name) |>
+      filterGroup(outcome_cohort_name %in%
+                    input$prevalence_grouping_outcome_cohort_name) |>
       filterSettings(denominator_age_group %in%
-                       input$prevalence_settings_denominator_age_group, 
-                     denominator_sex %in% 
-                       input$prevalence_settings_denominator_sex, 
+                       input$prevalence_settings_denominator_age_group,
+                     denominator_sex %in%
+                       input$prevalence_settings_denominator_sex,
                      analysis_interval %in%
-                       input$prevalence_settings_analysis_interval) 
+                       input$prevalence_settings_analysis_interval)
   })
-  
+
   ## tidy prevalence -----
   getTidyDataPrevalence <- shiny::reactive({
     res <- dataFiltered$prevalence |>
@@ -1065,7 +1066,7 @@ server <- function(input, output, session) {
   # compare lsc ----
 
   outputLSC <- shiny::reactive({
-
+browser()
     if (is.null(dataFiltered$summarise_large_scale_characteristics)) {
       validate("No large scale characteristics in results")
     }
@@ -1082,14 +1083,14 @@ server <- function(input, output, session) {
     if (nrow(lscFiltered) == 0) {
       validate("No results found for selected inputs")
     }
-    
+
     target_cohort <- input$compare_large_scale_characteristics_grouping_cohort_1
     comparator_cohort <- input$compare_large_scale_characteristics_grouping_cohort_2
     lsc <- lscFiltered |>
       filter(group_level %in% c(target_cohort, comparator_cohort
       )) |>
-      filter(estimate_name == "percentage") |> 
-      omopgenerics::addSettings() |> 
+      filter(estimate_name == "percentage") |>
+      omopgenerics::addSettings() |>
       select(database = cdm_name,
              cohort_name = group_level,
              variable_name,
@@ -1098,16 +1099,16 @@ server <- function(input, output, session) {
              table = table_name,
              percentage = estimate_value) |>
       mutate(percentage = if_else(percentage == "-",
-                                  NA, percentage)) |> 
-      mutate(percentage = as.numeric(percentage)) |> 
+                                  NA, percentage)) |>
+      mutate(percentage = as.numeric(percentage)) |>
       pivot_wider(names_from = cohort_name,
                   values_from = percentage)
 
     if(isTRUE(input$compare_large_scale_characteristics_impute_missings)){
-      lsc <- lsc |> 
+      lsc <- lsc |>
         mutate(across(c(target_cohort, comparator_cohort), ~if_else(is.na(.x), 0, .x)))
     }
-    
+
     lsc <-lsc |>
       mutate(across(c(target_cohort, comparator_cohort), ~ as.numeric(.x)/100)) |>
       mutate(smd = (!!sym(target_cohort) - !!sym(comparator_cohort))/sqrt((!!sym(target_cohort)*(1-!!sym(target_cohort)) + !!sym(comparator_cohort)*(1-!!sym(comparator_cohort)))/2)) |>
@@ -1266,6 +1267,117 @@ server <- function(input, output, session) {
     }
   )
 
+
+
+  ## age distribution ----
+  ## output table ----
+  outputLSC <- shiny::reactive({
+    addPyramidTheme <- function(plot, colour){
+      plot +
+        theme_void() +
+        theme(
+          axis.text.x = element_text(),
+          panel.grid.major.x = element_line(color = "grey90"),
+          legend.box = "horizontal",
+          axis.text.y = ggplot2::element_blank(),
+          axis.title.y = ggplot2::element_blank(),
+          legend.position = "bottom",
+          legend.title = ggplot2::element_blank()
+        ) +
+        scale_fill_manual(values = colour)
+    }
+
+    # Get age lables
+    age_labels <- tibble(
+      min_age = c(seq(0,95,5), 100),
+      max_age = c(seq(5,100,5),350),
+      age_group = paste0(min_age,"-",max_age-1)) |>
+      mutate(age_group = if_else(age_group == "100-349", "100+", age_group)) |>
+      mutate(age_group = factor(age_group, levels = age_group))
+
+    age_labels_plot <- age_labels |>
+      ggplot(aes(x = 1, y = age_group, label = age_group)) +
+      geom_text() +
+      theme_void()
+
+    # Get age density and split it into groups
+    age_pyramid <- dataFiltered$summarise_table |>
+      filter(variable_name == "age") |>
+      filter(cdm_name == "CPRD GOLD") |>
+      filter(group_level == "overall") |>
+      select("variable_level", "estimate_name", "estimate_value", "sex" = "strata_level") |>
+      pivot_wider(names_from = "estimate_name", values_from = "estimate_value") |>
+      mutate(density_x = as.numeric(density_x),
+             density_y = as.numeric(density_y)) |>
+      mutate(age_group = case_when(
+        density_x >= 0 & density_x < 5 ~ "0-4",
+        density_x >= 5 & density_x < 10 ~ "5-9",
+        density_x >= 10 & density_x < 15 ~ "10-14",
+        density_x >= 15 & density_x < 20 ~ "15-19",
+        density_x >= 20 & density_x < 25 ~ "20-24",
+        density_x >= 25 & density_x < 30 ~ "25-29",
+        density_x >= 30 & density_x < 35 ~ "30-34",
+        density_x >= 35 & density_x < 40 ~ "35-39",
+        density_x >= 40 & density_x < 45 ~ "40-44",
+        density_x >= 45 & density_x < 50 ~ "45-49",
+        density_x >= 50 & density_x < 55 ~ "50-54",
+        density_x >= 55 & density_x < 60 ~ "55-59",
+        density_x >= 60 & density_x < 65 ~ "60-64",
+        density_x >= 65 & density_x < 70 ~ "65-69",
+        density_x >= 70 & density_x < 75 ~ "70-74",
+        density_x >= 75 & density_x < 80 ~ "75-79",
+        density_x >= 80 & density_x < 85 ~ "80-84",
+        density_x >= 85 & density_x < 90 ~ "85-89",
+        density_x >= 90 & density_x < 95 ~ "90-94",
+        density_x >= 95 & density_x < 100 ~ "95-99",
+        density_x >= 100 ~ "100+"
+      )) |>
+      mutate(percent = mean(density_y, na.rm = FALSE), .by = age_group) |>
+      select("age_group", "percent", "sex") |>
+      mutate(percent = if_else(sex == "Female",-percent,percent)) |>
+      distinct()
+
+    age_pyramid <- age_labels |>
+      select("age_group") |>
+      slice(rep(1:n(), each = 2)) |>
+      mutate(sex = if_else(row_number() == 1, "Female", "Male"), .by = age_group) |>
+      left_join(age_pyramid,
+                by = c("age_group","sex"),
+                relationship = "many-to-many") |>
+      mutate(percent = if_else(is.na(percent), 0, percent))
+
+    max_percent <- max(age_pyramid$percent, na.rm = TRUE)
+
+    age_pyramid_female <- age_pyramid |>
+      filter(sex == "Female") |>
+      mutate(age_group = factor(age_group, levels = age_group)) |>
+      ggplot(aes(x = percent, y = age_group, fill = sex)) +
+      geom_col() +
+      scale_x_continuous(labels = function(x) label_percent()(abs(x)),
+                         breaks = breaks_pretty(),
+                         limits = c(-max_percent, 0))
+    age_pyramid_female <- age_pyramid_female |> addPyramidTheme("#4682B4")
+
+    age_pyramid_male <- age_pyramid |>
+      filter(sex == "Male") |>
+      mutate(age_group = factor(age_group, levels = age_group)) |>
+      ggplot(aes(x = percent, y = age_group, fill = sex)) +
+      geom_col() +
+      scale_x_continuous(
+        labels = label_percent(),
+        breaks = breaks_pretty(),
+        limits = c(0, max_percent))
+    age_pyramid_male <- age_pyramid_male |> addPyramidTheme("#003153")
+
+    age_pyramid_female +
+      age_labels_plot  +
+      age_pyramid_male +
+      plot_layout(
+        widths = c(7.5, 1, 7.5)
+      )
+
+
+  })
 
 
 }

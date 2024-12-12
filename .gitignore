@@ -8,3 +8,4 @@ inst/doc
 .Rhistory
 inst/shiny/data/raw/*.csv
 inst/shiny/data/appData.RData
+inst/shiny/*.RData
