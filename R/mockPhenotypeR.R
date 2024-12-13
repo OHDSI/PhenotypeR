@@ -8,6 +8,7 @@
 #' @param con  A DBI connection to create the cdm mock object.
 #' @param writeSchema Name of an schema on the same connection with writing
 #' permissions.
+#' @param seed seed to use when creating the mock data.
 #'
 #' @return cdm object
 #' @export
