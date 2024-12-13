@@ -18,6 +18,8 @@ mockPhenotypeR(
 
 \item{writeSchema}{Name of an schema on the same connection with writing
 permissions.}
+
+\item{seed}{seed to use when creating the mock data.}
 }
 \value{
 cdm object
