@@ -1066,7 +1066,7 @@ server <- function(input, output, session) {
   # compare lsc ----
   
   outputLSC <- shiny::reactive({
-    browser()
+
     if (is.null(dataFiltered$summarise_large_scale_characteristics)) {
       validate("No large scale characteristics in results")
     }
@@ -1272,7 +1272,7 @@ server <- function(input, output, session) {
   ## age distribution ----
   ## output table ----
   createAgePyramid <- shiny::reactive({
-
+    
     summarise_table <- dataFiltered$summarise_table |>
       filter(cdm_name %in% input$summarise_characteristics_grouping_cdm_name,
              group_level %in% input$summarise_characteristics_grouping_cohort_name) 
