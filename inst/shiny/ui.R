@@ -432,32 +432,6 @@ ui <- bslib::page_navbar(
                                        inputId = "summarise_characteristics_include_matched",
                                        label = "Show matched cohorts",
                                        value = FALSE)
-                                   ),
-                                   bslib::accordion_panel(
-                                     title = "Table formatting",
-                                     sortable::bucket_list(
-                                       header = NULL,
-                                       sortable::add_rank_list(
-                                         text = "none",
-                                         labels = c("variable_name", "variable_level", "estimate_name"),
-                                         input_id = "summarise_characteristics_gt_7_none"
-                                       ),
-                                       sortable::add_rank_list(
-                                         text = "header",
-                                         labels = c("cdm_name", "cohort_name"),
-                                         input_id = "summarise_characteristics_gt_7_header"
-                                       ),
-                                       sortable::add_rank_list(
-                                         text = "groupColumn",
-                                         labels = NULL,
-                                         input_id = "summarise_characteristics_gt_7_groupColumn"
-                                       ),
-                                       sortable::add_rank_list(
-                                         text = "hide",
-                                         labels = character(),
-                                         input_id = "summarise_characteristics_gt_7_hide"
-                                       )
-                                     )
                                    )
                                  )
         ),
@@ -480,21 +454,62 @@ ui <- bslib::page_navbar(
                 ),
                 class = "text-end"
               ),
-              gt::gt_output("summarise_characteristics_gt_7") |> withSpinner()
+              bslib::layout_sidebar(
+                sidebar = bslib::sidebar(width = 400, open = "closed",
+                                         sortable::bucket_list(
+                                           header = NULL,
+                                           sortable::add_rank_list(
+                                             text = "none",
+                                             labels = c("variable_name", "variable_level", "estimate_name"),
+                                             input_id = "summarise_characteristics_gt_7_none"
+                                           ),
+                                           sortable::add_rank_list(
+                                             text = "header",
+                                             labels = c("cdm_name", "cohort_name"),
+                                             input_id = "summarise_characteristics_gt_7_header"
+                                           ),
+                                           sortable::add_rank_list(
+                                             text = "groupColumn",
+                                             labels = NULL,
+                                             input_id = "summarise_characteristics_gt_7_groupColumn"
+                                           ),
+                                           sortable::add_rank_list(
+                                             text = "hide",
+                                             labels = character(),
+                                             input_id = "summarise_characteristics_gt_7_hide"
+                                           )
+                                         ),
+                                         position = "right"
+                ),
+                gt::gt_output("summarise_characteristics_gt_7") |> withSpinner()
+              )
             )
           ),
           bslib::nav_panel(
-            title = "Age pyramid",
+            title = "Age distribution",
             bslib::card(
               full_screen = TRUE,
-              plotly::plotlyOutput("plot_age_pyramid") |> withSpinner()
+              bslib::card_header(
+                bslib::popover(
+                  shiny::icon("download"),
+                  shinyWidgets::pickerInput(
+                    inputId = "plot_age_pyramid_download",
+                    label = "File type",
+                    selected = "png",
+                    choices = c("docx", "png", "pdf", "html"),
+                    multiple = FALSE
+                  ),
+                  shiny::downloadButton(outputId = "plot_age_pyramid_download", label = "Download")
+                ),
+                class = "text-end"
+              ),
+              shiny::plotOutput("plot_age_pyramid")
             )
           )
         )
       )
     ),
     ## Large scale characteristics -----
-    
     bslib::nav_panel(
       title = "Large scale characteristics",
       icon = shiny::icon("arrow-up-right-dots"),
