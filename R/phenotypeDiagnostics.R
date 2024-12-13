@@ -25,29 +25,12 @@
 #'
 #' @examples
 #' \donttest{
-#' library(omock)
-#' library(CDMConnector)
-#' library(DBI)
 #' library(PhenotypeR)
 #'
-#' cdm_local <- mockCdmReference() |>
-#'   mockPerson(nPerson = 100) |>
-#'   mockObservationPeriod() |>
-#'   mockConditionOccurrence() |>
-#'   mockDrugExposure() |>
-#'   mockObservation() |>
-#'   mockMeasurement() |>
-#'   mockVisitOccurrence() |>
-#'   mockProcedureOccurrence() |>
-#'   mockCohort(name = "my_cohort")
+#' cdm <- mockPhenotypeR()
 #'
-#' con <- DBI::dbConnect(duckdb::duckdb(), ":memory:")
-#' cdm <- CDMConnector::copy_cdm_to(con = con,
-#'                                  cdm = cdm_local,
-#'                                  schema = "main")
-#' attr(cdm, "write_schema") <- "main"
+#' result <- phenotypeDiagnostics(cdm$my_cohort)
 #'
-#' result <- cdm$my_cohort |> phenotypeDiagnostics()
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
 phenotypeDiagnostics <- function(cohort,

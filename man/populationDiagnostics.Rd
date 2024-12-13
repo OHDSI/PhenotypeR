@@ -35,10 +35,21 @@ population. Diagnostics include:
 }
 \examples{
 \donttest{
-library(IncidencePrevalence)
-cdm <- mockIncidencePrevalenceRef(sampleSize = 1000)
-pop_diag <- populationDiagnostics(cohort = cdm$outcome,
-                                  populationSample = 250)
-CDMConnector::cdm_disconnect(cdm)
+library(PhenotypeR)
+library(dplyr)
+
+cdm <- mockPhenotypeR()
+
+dateStart <- cdm$my_cohort |>
+  summarise(start = min(cohort_start_date, na.rm = TRUE)) |>
+  pull("start")
+dateEnd   <- cdm$my_cohort |>
+  summarise(start = max(cohort_start_date, na.rm = TRUE)) |>
+  pull("start")
+
+result <- cdm$my_cohort |>
+  populationDiagnostics(populationDateRange = c(dateStart, dateEnd))
+
+CDMConnector::cdmDisconnect(cdm = cdm)
 }
 }

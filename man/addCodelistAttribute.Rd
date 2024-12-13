@@ -27,9 +27,13 @@ underlying assumption is that the cohort that is fed into
 }
 \examples{
 \donttest{
-library(IncidencePrevalence)
-cdm <- mockIncidencePrevalenceRef(sampleSize = 1000)
-cohort <- addCodelistAttribute(cohort = cdm$outcome, codelist = list("cohort_1" = 1L))
+library(PhenotypeR)
+
+cdm <- mockPhenotypeR()
+
+cohort <- addCodelistAttribute(cohort = cdm$my_cohort, codelist = list("cohort_1" = 1L))
+attr(cohort, "cohort_codelist")
+
 CDMConnector::cdm_disconnect(cdm)
 }
 }

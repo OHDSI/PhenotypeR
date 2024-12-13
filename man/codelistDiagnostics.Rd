@@ -25,23 +25,17 @@ the cdm so that concept counts could be derived.
 }
 \examples{
 \donttest{
-  cdm_local <- omock::mockCdmReference() |>
-  omock::mockPerson(nPerson = 100) |>
-  omock::mockObservationPeriod() |>
-  omock::mockConditionOccurrence() |>
-  omock::mockDrugExposure() |>
-  omock::mockCohort(name = "my_cohort")
+library(CohortConstructor)
+library(PhenotypeR)
 
-  db <- DBI::dbConnect(duckdb::duckdb())
+cdm <- mockPhenotypeR()
 
-  cdm <- CDMConnector::copyCdmTo(con = db,
-                                 cdm = cdm_local,
-                                 schema ="main",
-                                 overwrite = TRUE)
+cdm$arthropathies <- conceptCohort(cdm,
+                                   conceptSet = list("arthropathies" = c(40475132)),
+                                   name = "arthropathies")
 
- result <- cdm$my_cohort |>
-   codelistDiagnostics()
+result <- codelistDiagnostics(cdm$arthropathies)
 
- CDMConnector::cdmDisconnect(cdm = cdm)
+CDMConnector::cdmDisconnect(cdm = cdm)
 }
 }

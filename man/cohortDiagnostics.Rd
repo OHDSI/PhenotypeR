@@ -23,23 +23,12 @@ The diganostics include:
 }
 \examples{
 \donttest{
-cdm_local <- omock::mockCdmReference() |>
-  omock::mockPerson(nPerson = 100) |>
-  omock::mockObservationPeriod() |>
-  omock::mockConditionOccurrence() |>
-  omock::mockDrugExposure() |>
-  omock::mockObservation() |>
-  omock::mockMeasurement() |>
-  omock::mockVisitOccurrence() |>
-  omock::mockProcedureOccurrence() |>
-  omock::mockCohort(name = "my_cohort")
- db <- DBI::dbConnect(duckdb::duckdb())
- cdm <- CDMConnector::copyCdmTo(con = db,
-                                cdm = cdm_local,
-                                schema ="main",
-                                overwrite = TRUE)
+library(PhenotypeR)
 
- cdm$my_cohort |> cohortDiagnostics()
- CDMConnector::cdmDisconnect(cdm = cdm)
+cdm <- mockPhenotypeR()
+
+result <- cohortDiagnostics(cdm$my_cohort)
+
+CDMConnector::cdmDisconnect(cdm = cdm)
 }
 }
