@@ -4,13 +4,13 @@
 ui <- bslib::page_navbar(
   theme = bs_theme(bootswatch = "pulse"),
   #  zephyr
-
+  
   title = "PhenotypeR",
   bslib::nav_panel(
     title = "Background",
     icon = shiny::icon("disease"),
     shiny::includeMarkdown(path = "background.md")
-
+    
   ),
   # Database diagnostics -----
   bslib::nav_menu(
@@ -20,50 +20,50 @@ ui <- bslib::page_navbar(
     bslib::nav_panel(
       title = "Snapshot",
       icon = shiny::icon("clipboard-list"),
-            bslib::card(
-              full_screen = TRUE,
-              bslib::card_header(
-                bslib::popover(
-                  shiny::icon("download"),
-                  shinyWidgets::pickerInput(
-                    inputId = "summarise_omop_snapshot_gt_17_download_type",
-                    label = "File type",
-                    selected = "docx",
-                    choices = c("docx", "png", "pdf", "html"),
-                    multiple = FALSE
-                  ),
-                  shiny::downloadButton(outputId = "summarise_omop_snapshot_gt_17_download", label = "Download")
-                ),
-                class = "text-end"
-              ),
-                gt::gt_output("summarise_omop_snapshot_gt_17") |> withSpinner()
-            )
+      bslib::card(
+        full_screen = TRUE,
+        bslib::card_header(
+          bslib::popover(
+            shiny::icon("download"),
+            shinyWidgets::pickerInput(
+              inputId = "summarise_omop_snapshot_gt_17_download_type",
+              label = "File type",
+              selected = "docx",
+              choices = c("docx", "png", "pdf", "html"),
+              multiple = FALSE
+            ),
+            shiny::downloadButton(outputId = "summarise_omop_snapshot_gt_17_download", label = "Download")
+          ),
+          class = "text-end"
+        ),
+        gt::gt_output("summarise_omop_snapshot_gt_17") |> withSpinner()
+      )
     ),
     ## observation periods -----
     bslib::nav_panel(
       title = "Observation periods",
       icon = shiny::icon("eye"),
-        bslib::nav_panel(
-            title = "Table observation period",
-            bslib::card(
-              full_screen = TRUE,
-              bslib::card_header(
-                bslib::popover(
-                  shiny::icon("download"),
-                  shinyWidgets::pickerInput(
-                    inputId = "summarise_observation_period_gt_15_download_type",
-                    label = "File type",
-                    selected = "docx",
-                    choices = c("docx", "png", "pdf", "html"),
-                    multiple = FALSE
-                  ),
-                  shiny::downloadButton(outputId = "summarise_observation_period_gt_15_download", label = "Download")
-                ),
-                class = "text-end"
+      bslib::nav_panel(
+        title = "Table observation period",
+        bslib::card(
+          full_screen = TRUE,
+          bslib::card_header(
+            bslib::popover(
+              shiny::icon("download"),
+              shinyWidgets::pickerInput(
+                inputId = "summarise_observation_period_gt_15_download_type",
+                label = "File type",
+                selected = "docx",
+                choices = c("docx", "png", "pdf", "html"),
+                multiple = FALSE
               ),
-                gt::gt_output("summarise_observation_period_gt_15") |> withSpinner()
-            )
-          )
+              shiny::downloadButton(outputId = "summarise_observation_period_gt_15_download", label = "Download")
+            ),
+            class = "text-end"
+          ),
+          gt::gt_output("summarise_observation_period_gt_15") |> withSpinner()
+        )
+      )
     )
   ),
   # Codelist diagnostics -----
@@ -147,7 +147,7 @@ ui <- bslib::page_navbar(
         )
       )
     ),
-
+    
     ## unmapped concepts -----
     # bslib::nav_panel(
     #   title = "Unmapped concepts",
@@ -225,7 +225,7 @@ ui <- bslib::page_navbar(
     #     )
     #   )
     # ),
-
+    
     ## Orphan codes -----
     bslib::nav_panel(
       title = "Orphan codes",
@@ -297,20 +297,20 @@ ui <- bslib::page_navbar(
           ),
           gt::gt_output("orphan_gt_99") |> withSpinner()
         )
-
-
+        
+        
       ))
-
+    
   ),
-
+  
   # Cohort diagnostics -----
-
+  
   bslib::nav_menu(
     title = "Cohort diagnostics",
     icon = shiny::icon("list"),
-
+    
     ## Cohort code use -----
-
+    
     bslib::nav_panel(
       title = "Cohort code use",
       icon = shiny::icon("chart-column"),
@@ -404,63 +404,40 @@ ui <- bslib::page_navbar(
       )
     ),
     ## Cohort characteristics -----
-  bslib::nav_panel(
+    bslib::nav_panel(
       title = "Cohort characteristics",
       icon = shiny::icon("users-gear"),
       bslib::layout_sidebar(
         sidebar = bslib::sidebar(width = 400, open = "closed",
-          bslib::accordion(
-            bslib::accordion_panel(
-              title = "Settings",
-              shinyWidgets::pickerInput(
-                inputId = "summarise_characteristics_grouping_cdm_name",
-                label = "Database",
-                choices = NULL,
-                selected = NULL,
-                multiple = TRUE,
-                options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-              ),
-              shinyWidgets::pickerInput(
-                inputId = "summarise_characteristics_grouping_cohort_name",
-                label = "Cohort name",
-                choices = NULL,
-                selected = NULL,
-                multiple = TRUE,
-                options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-              ),
-              shinyWidgets::prettyCheckbox(
-                inputId = "summarise_characteristics_include_matched",
-                label = "Show matched cohorts",
-                value = FALSE)
-            ),
-            bslib::accordion_panel(
-              title = "Table formatting",
-            sortable::bucket_list(
-              header = NULL,
-              sortable::add_rank_list(
-                text = "none",
-                labels = c("variable_name", "variable_level", "estimate_name"),
-                input_id = "summarise_characteristics_gt_7_none"
-              ),
-              sortable::add_rank_list(
-                text = "header",
-                labels = c("cdm_name", "cohort_name"),
-                input_id = "summarise_characteristics_gt_7_header"
-              ),
-              sortable::add_rank_list(
-                text = "groupColumn",
-                labels = NULL,
-                input_id = "summarise_characteristics_gt_7_groupColumn"
-              ),
-              sortable::add_rank_list(
-                text = "hide",
-                labels = character(),
-                input_id = "summarise_characteristics_gt_7_hide"
-              )
-            )
-            )
-          )
+                                 bslib::accordion(
+                                   bslib::accordion_panel(
+                                     title = "Settings",
+                                     shinyWidgets::pickerInput(
+                                       inputId = "summarise_characteristics_grouping_cdm_name",
+                                       label = "Database",
+                                       choices = NULL,
+                                       selected = NULL,
+                                       multiple = TRUE,
+                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                     ),
+                                     shinyWidgets::pickerInput(
+                                       inputId = "summarise_characteristics_grouping_cohort_name",
+                                       label = "Cohort name",
+                                       choices = NULL,
+                                       selected = NULL,
+                                       multiple = TRUE,
+                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                     ),
+                                     shinyWidgets::prettyCheckbox(
+                                       inputId = "summarise_characteristics_include_matched",
+                                       label = "Show matched cohorts",
+                                       value = FALSE)
+                                   )
+                                 )
         ),
+        bslib::navset_card_tab(
+          bslib::nav_panel(
+            title = "Table",
             bslib::card(
               full_screen = TRUE,
               bslib::card_header(
@@ -477,62 +454,112 @@ ui <- bslib::page_navbar(
                 ),
                 class = "text-end"
               ),
+              bslib::layout_sidebar(
+                sidebar = bslib::sidebar(width = 400, open = "closed",
+                                         sortable::bucket_list(
+                                           header = NULL,
+                                           sortable::add_rank_list(
+                                             text = "none",
+                                             labels = c("variable_name", "variable_level", "estimate_name"),
+                                             input_id = "summarise_characteristics_gt_7_none"
+                                           ),
+                                           sortable::add_rank_list(
+                                             text = "header",
+                                             labels = c("cdm_name", "cohort_name"),
+                                             input_id = "summarise_characteristics_gt_7_header"
+                                           ),
+                                           sortable::add_rank_list(
+                                             text = "groupColumn",
+                                             labels = NULL,
+                                             input_id = "summarise_characteristics_gt_7_groupColumn"
+                                           ),
+                                           sortable::add_rank_list(
+                                             text = "hide",
+                                             labels = character(),
+                                             input_id = "summarise_characteristics_gt_7_hide"
+                                           )
+                                         ),
+                                         position = "right"
+                ),
                 gt::gt_output("summarise_characteristics_gt_7") |> withSpinner()
+              )
             )
+          ),
+          bslib::nav_panel(
+            title = "Age distribution",
+            bslib::card(
+              full_screen = TRUE,
+              bslib::card_header(
+                bslib::popover(
+                  shiny::icon("download"),
+                  shinyWidgets::pickerInput(
+                    inputId = "plot_age_pyramid_download",
+                    label = "File type",
+                    selected = "png",
+                    choices = c("docx", "png", "pdf", "html"),
+                    multiple = FALSE
+                  ),
+                  shiny::downloadButton(outputId = "plot_age_pyramid_download", label = "Download")
+                ),
+                class = "text-end"
+              ),
+              shiny::plotOutput("plot_age_pyramid")
+            )
+          )
+        )
       )
     ),
-  ## Large scale characteristics -----
-
+    ## Large scale characteristics -----
     bslib::nav_panel(
       title = "Large scale characteristics",
       icon = shiny::icon("arrow-up-right-dots"),
       bslib::layout_sidebar(
         sidebar = bslib::sidebar(width = 400, open = "closed",
-          bslib::accordion(
-            bslib::accordion_panel(
-              title = "Settings",
-              shinyWidgets::pickerInput(
-                inputId = "summarise_large_scale_characteristics_grouping_cdm_name",
-                label = "Database",
-                choices = NULL,
-                selected = NULL,
-                multiple = TRUE,
-                options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-              ),
-              shinyWidgets::pickerInput(
-                inputId = "summarise_large_scale_characteristics_grouping_cohort_name",
-                label = "Cohort name",
-                choices = NULL,
-                selected = NULL,
-                multiple = FALSE,
-                options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-              ),
-              shinyWidgets::pickerInput(
-                inputId = "summarise_large_scale_characteristics_grouping_domain",
-                label = "Domain",
-                choices = NULL,
-                selected = NULL,
-                multiple = FALSE,
-                options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-              ),
-              shinyWidgets::pickerInput(
-                inputId = "summarise_large_scale_characteristics_grouping_time_window",
-                label = "Time window",
-                choices = NULL,
-                selected = NULL,
-                multiple = FALSE,
-                options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-              ),
-              shinyWidgets::pickerInput(
-                inputId = "summarise_large_scale_characteristics_settings_analysis",
-                label = "Concept type",
-                choices = NULL,
-                selected = NULL,
-                multiple = FALSE,
-                options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-              )
-            )
-          )
+                                 bslib::accordion(
+                                   bslib::accordion_panel(
+                                     title = "Settings",
+                                     shinyWidgets::pickerInput(
+                                       inputId = "summarise_large_scale_characteristics_grouping_cdm_name",
+                                       label = "Database",
+                                       choices = NULL,
+                                       selected = NULL,
+                                       multiple = TRUE,
+                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                     ),
+                                     shinyWidgets::pickerInput(
+                                       inputId = "summarise_large_scale_characteristics_grouping_cohort_name",
+                                       label = "Cohort name",
+                                       choices = NULL,
+                                       selected = NULL,
+                                       multiple = FALSE,
+                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                     ),
+                                     shinyWidgets::pickerInput(
+                                       inputId = "summarise_large_scale_characteristics_grouping_domain",
+                                       label = "Domain",
+                                       choices = NULL,
+                                       selected = NULL,
+                                       multiple = FALSE,
+                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                     ),
+                                     shinyWidgets::pickerInput(
+                                       inputId = "summarise_large_scale_characteristics_grouping_time_window",
+                                       label = "Time window",
+                                       choices = NULL,
+                                       selected = NULL,
+                                       multiple = FALSE,
+                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                     ),
+                                     shinyWidgets::pickerInput(
+                                       inputId = "summarise_large_scale_characteristics_settings_analysis",
+                                       label = "Concept type",
+                                       choices = NULL,
+                                       selected = NULL,
+                                       multiple = FALSE,
+                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                     )
+                                   )
+                                 )
         ),
         bslib::navset_card_tab(
           bslib::nav_panel(
@@ -569,31 +596,31 @@ ui <- bslib::page_navbar(
               ),
               bslib::layout_sidebar(
                 sidebar = bslib::sidebar(width = 400, open = "closed",
-                  # numericInput("top_n", "Top n:", 10, min = 1, max = 100),
-                  sortable::bucket_list(
-                    header = NULL,
-                    sortable::add_rank_list(
-                      text = "none",
-                      labels = c("concept_id", "variable_name", "variable_level", "estimate_name", "table_name", "type", "analysis"),
-                      input_id = "summarise_large_scale_characteristics_gt_0_none"
-                    ),
-                    sortable::add_rank_list(
-                      text = "header",
-                      labels = "cdm_name",
-                      input_id = "summarise_large_scale_characteristics_gt_0_header"
-                    ),
-                    sortable::add_rank_list(
-                      text = "group",
-                      labels = "cohort_name",
-                      input_id = "summarise_large_scale_characteristics_gt_0_group"
-                    ),
-                    sortable::add_rank_list(
-                      text = "hide",
-                      labels = character(),
-                      input_id = "summarise_large_scale_characteristics_gt_0_hide"
-                    )
-                  ),
-                  position = "right"
+                                         # numericInput("top_n", "Top n:", 10, min = 1, max = 100),
+                                         sortable::bucket_list(
+                                           header = NULL,
+                                           sortable::add_rank_list(
+                                             text = "none",
+                                             labels = c("concept_id", "variable_name", "variable_level", "estimate_name", "table_name", "type", "analysis"),
+                                             input_id = "summarise_large_scale_characteristics_gt_0_none"
+                                           ),
+                                           sortable::add_rank_list(
+                                             text = "header",
+                                             labels = "cdm_name",
+                                             input_id = "summarise_large_scale_characteristics_gt_0_header"
+                                           ),
+                                           sortable::add_rank_list(
+                                             text = "group",
+                                             labels = "cohort_name",
+                                             input_id = "summarise_large_scale_characteristics_gt_0_group"
+                                           ),
+                                           sortable::add_rank_list(
+                                             text = "hide",
+                                             labels = character(),
+                                             input_id = "summarise_large_scale_characteristics_gt_0_hide"
+                                           )
+                                         ),
+                                         position = "right"
                 ),
                 gt::gt_output("summarise_large_scale_characteristics_gt_0") |> withSpinner()
               )
@@ -602,167 +629,168 @@ ui <- bslib::page_navbar(
         )
       )
     ),
-  ## Compare large scale characteristics -----
+    ## Compare large scale characteristics -----
     bslib::nav_panel(
       title = "Compare large scale characteristics",
       icon = shiny::icon("arrow-up-right-dots"),
-        bslib::layout_sidebar(
-          sidebar = bslib::sidebar(width = 400, open = "closed",
-                  bslib::accordion(
-                                     bslib::accordion_panel(
-                                       title = "Settings",
-                                       shinyWidgets::pickerInput(
-                                         inputId = "compare_large_scale_characteristics_grouping_cdm_name",
-                                         label = "Database",
-                                         choices = NULL,
-                                         selected = NULL,
-                                         multiple = TRUE,
-                                         options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                                       ),
-                                       shinyWidgets::pickerInput(
-                                         inputId = "compare_large_scale_characteristics_grouping_cohort_1",
-                                         label = "Cohort 1",
-                                         choices = NULL,
-                                         selected = NULL,
-                                         multiple = FALSE,
-                                         options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                                       ),
-                                       shinyWidgets::pickerInput(
-                                         inputId = "compare_large_scale_characteristics_grouping_cohort_2",
-                                         label = "Cohort 2",
-                                         choices = NULL,
-                                         selected = NULL,
-                                         multiple = FALSE,
-                                         options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                                       ),
-                                       shinyWidgets::pickerInput(
-                                         inputId = "compare_large_scale_characteristics_grouping_time_window",
-                                         label = "Time window",
-                                         choices = NULL,
-                                         selected = NULL,
-                                         multiple = TRUE,
-                                         options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                                       ),
-                                       shinyWidgets::pickerInput(
-                                         inputId = "compare_large_scale_characteristics_grouping_domain",
-                                         label = "Domain",
-                                         choices = NULL,
-                                         selected = NULL,
-                                         multiple = TRUE,
-                                         options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                                       ),
-                                       shinyWidgets::pickerInput(
-                                         inputId = "compare_large_scale_characteristics_settings_analysis",
-                                         label = "Concept type",
-                                         choices = NULL,
-                                         selected = NULL,
-                                         multiple = FALSE,
-                                         options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                                       ),
-                                       shinyWidgets::prettyCheckbox(
-                                         inputId = "compare_large_scale_characteristics_impute_missings",
-                                         label = "Impute missing values as 0",
-                                         value = FALSE)
-                                     )
+      bslib::layout_sidebar(
+        sidebar = bslib::sidebar(width = 400, open = "closed",
+                                 bslib::accordion(
+                                   bslib::accordion_panel(
+                                     title = "Settings",
+                                     shinyWidgets::pickerInput(
+                                       inputId = "compare_large_scale_characteristics_grouping_cdm_name",
+                                       label = "Database",
+                                       choices = NULL,
+                                       selected = NULL,
+                                       multiple = TRUE,
+                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                     ),
+                                     shinyWidgets::pickerInput(
+                                       inputId = "compare_large_scale_characteristics_grouping_cohort_1",
+                                       label = "Cohort 1",
+                                       choices = NULL,
+                                       selected = NULL,
+                                       multiple = FALSE,
+                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                     ),
+                                     shinyWidgets::pickerInput(
+                                       inputId = "compare_large_scale_characteristics_grouping_cohort_2",
+                                       label = "Cohort 2",
+                                       choices = NULL,
+                                       selected = NULL,
+                                       multiple = FALSE,
+                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                     ),
+                                     shinyWidgets::pickerInput(
+                                       inputId = "compare_large_scale_characteristics_grouping_time_window",
+                                       label = "Time window",
+                                       choices = NULL,
+                                       selected = NULL,
+                                       multiple = TRUE,
+                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                     ),
+                                     shinyWidgets::pickerInput(
+                                       inputId = "compare_large_scale_characteristics_grouping_domain",
+                                       label = "Domain",
+                                       choices = NULL,
+                                       selected = NULL,
+                                       multiple = TRUE,
+                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                     ),
+                                     shinyWidgets::pickerInput(
+                                       inputId = "compare_large_scale_characteristics_settings_analysis",
+                                       label = "Concept type",
+                                       choices = NULL,
+                                       selected = NULL,
+                                       multiple = FALSE,
+                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                     ),
+                                     shinyWidgets::prettyCheckbox(
+                                       inputId = "compare_large_scale_characteristics_impute_missings",
+                                       label = "Impute missing values as 0",
+                                       value = FALSE)
                                    )
+                                 )
         ),
         bslib::navset_card_tab(
-
+          
           bslib::nav_panel(
             title = "Table",
-          bslib::card(
-            full_screen = TRUE,
-            DT::DTOutput("gt_compare_lsc") |> withSpinner()
-          )
+            bslib::card(
+              full_screen = TRUE,
+              DT::DTOutput("gt_compare_lsc") |> withSpinner()
+            )
           ),
           bslib::nav_panel(
             title = "Plot",
-        bslib::card(
-          full_screen = TRUE,
-          bslib::layout_sidebar(
-            sidebar = bslib::sidebar(width = 400, open = "closed",
-                                     shinyWidgets::pickerInput(
-                                       inputId = "compare_large_scale_characteristics_colour_1",
-                                       label = "Colour",
-                                       selected = c("table"),
-                                       multiple = TRUE,
-                                       choices = c("table", "database", "time_window"),
-                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                                     ),
-                                     shinyWidgets::pickerInput(
-                                       inputId = "compare_large_scale_characteristics_facet_1",
-                                       label = "Facet",
-                                       selected = c("database"),
-                                       multiple = TRUE,
-                                       choices = c("table", "database", "time_window"),
-                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                                     ),
-                                     position = "right"
-            ),
-            position = "right"
-          ),
-          plotly::plotlyOutput("plotly_compare_lsc") |> withSpinner()
+            bslib::card(
+              full_screen = TRUE,
+              bslib::layout_sidebar(
+                sidebar = bslib::sidebar(width = 400, open = "closed",
+                                         shinyWidgets::pickerInput(
+                                           inputId = "compare_large_scale_characteristics_colour_1",
+                                           label = "Colour",
+                                           selected = c("table"),
+                                           multiple = TRUE,
+                                           choices = c("table", "database", "time_window"),
+                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                         ),
+                                         shinyWidgets::pickerInput(
+                                           inputId = "compare_large_scale_characteristics_facet_1",
+                                           label = "Facet",
+                                           selected = c("database"),
+                                           multiple = TRUE,
+                                           choices = c("table", "database", "time_window"),
+                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                         ),
+                                         position = "right"
+                ),
+                position = "right"
+              ),
+              plotly::plotlyOutput("plotly_compare_lsc") |> withSpinner()
+            )
           )
-          )
-      ))
-      ),
-  ## Cohort overlap -----
+        )
+      )
+    ),
+    ## Cohort overlap -----
     bslib::nav_panel(
       title = "Cohort overlap",
       icon = shiny::icon("circle-half-stroke"),
       bslib::layout_sidebar(
         sidebar = bslib::sidebar(width = 400, open = "closed",
-          bslib::accordion(
-            bslib::accordion_panel(
-              title = "Settings",
-              shinyWidgets::pickerInput(
-                inputId = "summarise_cohort_overlap_grouping_cdm_name",
-                label = "Database",
-                choices = NULL,
-                selected = NULL,
-                multiple = TRUE,
-                options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-              ),
-              shinyWidgets::pickerInput(
-                inputId = "summarise_cohort_overlap_grouping_cohort_name_reference",
-                label = "Cohort name reference",
-                choices = NULL,
-                selected = NULL,
-                multiple = TRUE,
-                options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-              ),
-              shinyWidgets::pickerInput(
-                inputId = "summarise_cohort_overlap_grouping_cohort_name_comparator",
-                label = "Cohort name comparator",
-                choices = NULL,
-                selected = NULL,
-                multiple = TRUE,
-                options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-              )
-            ),
-            bslib::accordion_panel(
-              title = "Variables",
-              shinyWidgets::pickerInput(
-                inputId = "summarise_cohort_overlap_variable_name",
-                label = "Variable name",
-                choices = NULL,
-                selected = NULL,
-                multiple = TRUE,
-                options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-              )
-            ),
-            bslib::accordion_panel(
-              title = "Estimates",
-              shinyWidgets::pickerInput(
-                inputId = "summarise_cohort_overlap_estimate_name",
-                label = "Estimate name",
-                choices = NULL,
-                selected = NULL,
-                multiple = TRUE,
-                options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-              )
-            )
-          )
+                                 bslib::accordion(
+                                   bslib::accordion_panel(
+                                     title = "Settings",
+                                     shinyWidgets::pickerInput(
+                                       inputId = "summarise_cohort_overlap_grouping_cdm_name",
+                                       label = "Database",
+                                       choices = NULL,
+                                       selected = NULL,
+                                       multiple = TRUE,
+                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                     ),
+                                     shinyWidgets::pickerInput(
+                                       inputId = "summarise_cohort_overlap_grouping_cohort_name_reference",
+                                       label = "Cohort name reference",
+                                       choices = NULL,
+                                       selected = NULL,
+                                       multiple = TRUE,
+                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                     ),
+                                     shinyWidgets::pickerInput(
+                                       inputId = "summarise_cohort_overlap_grouping_cohort_name_comparator",
+                                       label = "Cohort name comparator",
+                                       choices = NULL,
+                                       selected = NULL,
+                                       multiple = TRUE,
+                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                     )
+                                   ),
+                                   bslib::accordion_panel(
+                                     title = "Variables",
+                                     shinyWidgets::pickerInput(
+                                       inputId = "summarise_cohort_overlap_variable_name",
+                                       label = "Variable name",
+                                       choices = NULL,
+                                       selected = NULL,
+                                       multiple = TRUE,
+                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                     )
+                                   ),
+                                   bslib::accordion_panel(
+                                     title = "Estimates",
+                                     shinyWidgets::pickerInput(
+                                       inputId = "summarise_cohort_overlap_estimate_name",
+                                       label = "Estimate name",
+                                       choices = NULL,
+                                       selected = NULL,
+                                       multiple = TRUE,
+                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                     )
+                                   )
+                                 )
         ),
         bslib::navset_card_tab(
           bslib::nav_panel(
@@ -785,35 +813,35 @@ ui <- bslib::page_navbar(
               ),
               bslib::layout_sidebar(
                 sidebar = bslib::sidebar(width = 400, open = "closed",
-                  sortable::bucket_list(
-                    header = NULL,
-                    sortable::add_rank_list(
-                      text = "none",
-                      labels = c("cohort_name_reference", "cohort_name_comparator", "estimate_name"),
-                      input_id = "summarise_cohort_overlap_gt_1_none"
-                    ),
-                    sortable::add_rank_list(
-                      text = "header",
-                      labels = "variable_name",
-                      input_id = "summarise_cohort_overlap_gt_1_header"
-                    ),
-                    sortable::add_rank_list(
-                      text = "groupColumn",
-                      labels = "cdm_name",
-                      input_id = "summarise_cohort_overlap_gt_1_groupColumn"
-                    ),
-                    sortable::add_rank_list(
-                      text = "hide",
-                      labels = "variable_level",
-                      input_id = "summarise_cohort_overlap_gt_1_hide"
-                    )
-                  ),
-                  shiny::checkboxInput(
-                    inputId = "summarise_cohort_overlap_gt_1_uniqueCombinations",
-                    label = "uniqueCombinations",
-                    value = c(TRUE)
-                  ),
-                  position = "right"
+                                         sortable::bucket_list(
+                                           header = NULL,
+                                           sortable::add_rank_list(
+                                             text = "none",
+                                             labels = c("cohort_name_reference", "cohort_name_comparator", "estimate_name"),
+                                             input_id = "summarise_cohort_overlap_gt_1_none"
+                                           ),
+                                           sortable::add_rank_list(
+                                             text = "header",
+                                             labels = "variable_name",
+                                             input_id = "summarise_cohort_overlap_gt_1_header"
+                                           ),
+                                           sortable::add_rank_list(
+                                             text = "groupColumn",
+                                             labels = "cdm_name",
+                                             input_id = "summarise_cohort_overlap_gt_1_groupColumn"
+                                           ),
+                                           sortable::add_rank_list(
+                                             text = "hide",
+                                             labels = "variable_level",
+                                             input_id = "summarise_cohort_overlap_gt_1_hide"
+                                           )
+                                         ),
+                                         shiny::checkboxInput(
+                                           inputId = "summarise_cohort_overlap_gt_1_uniqueCombinations",
+                                           label = "uniqueCombinations",
+                                           value = c(TRUE)
+                                         ),
+                                         position = "right"
                 ),
                 gt::gt_output("summarise_cohort_overlap_gt_1") |> withSpinner()
               )
@@ -855,20 +883,20 @@ ui <- bslib::page_navbar(
               ),
               bslib::layout_sidebar(
                 sidebar = bslib::sidebar(width = 400, open = "closed",
-                  shinyWidgets::pickerInput(
-                    inputId = "summarise_cohort_overlap_ggplot2_2_facet",
-                    label = "facet",
-                    selected = c("cdm_name", "cohort_name_reference"),
-                    multiple = TRUE,
-                    choices = c("cdm_name", "cohort_name_reference", "cohort_name_comparator", "variable_name", "variable_level", "estimate_name"),
-                    options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                  ),
-                  shiny::checkboxInput(
-                    inputId = "summarise_cohort_overlap_ggplot2_2_uniqueCombinations",
-                    label = "uniqueCombinations",
-                    value = c(TRUE)
-                  ),
-                  position = "right"
+                                         shinyWidgets::pickerInput(
+                                           inputId = "summarise_cohort_overlap_ggplot2_2_facet",
+                                           label = "facet",
+                                           selected = c("cdm_name", "cohort_name_reference"),
+                                           multiple = TRUE,
+                                           choices = c("cdm_name", "cohort_name_reference", "cohort_name_comparator", "variable_name", "variable_level", "estimate_name"),
+                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                         ),
+                                         shiny::checkboxInput(
+                                           inputId = "summarise_cohort_overlap_ggplot2_2_uniqueCombinations",
+                                           label = "uniqueCombinations",
+                                           value = c(TRUE)
+                                         ),
+                                         position = "right"
                 ),
                 plotly::plotlyOutput("summarise_cohort_overlap_ggplot2_2")
               )
@@ -878,7 +906,7 @@ ui <- bslib::page_navbar(
       )
     )
   ),
-
+  
   # Population diagnostics -----
   bslib::nav_menu(
     title = "Population diagnostics",
@@ -889,51 +917,51 @@ ui <- bslib::page_navbar(
       icon = shiny::icon("chart-line"),
       bslib::layout_sidebar(
         sidebar = bslib::sidebar(width = 400, open = "closed",
-          bslib::accordion(
-            bslib::accordion_panel(
-              title = "Settings",
-              shinyWidgets::pickerInput(
-                inputId = "incidence_grouping_cdm_name",
-                label = "Database",
-                choices = NULL,
-                selected = NULL,
-                multiple = TRUE,
-                options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-              ),
-              shinyWidgets::pickerInput(
-                inputId = "incidence_grouping_outcome_cohort_name",
-                label = "Outcome cohort name",
-                choices = NULL,
-                selected = NULL,
-                multiple = TRUE,
-                options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-              ),
-              shinyWidgets::pickerInput(
-                inputId = "incidence_settings_analysis_interval",
-                label = "Time interval",
-                choices = NULL,
-                selected = NULL,
-                multiple = TRUE,
-                options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-              ),
-              shinyWidgets::pickerInput(
-                inputId = "incidence_settings_denominator_age_group",
-                label = "Denominator age group",
-                choices = NULL,
-                selected = NULL,
-                multiple = TRUE,
-                options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-              ),
-              shinyWidgets::pickerInput(
-                inputId = "incidence_settings_denominator_sex",
-                label = "Denominator sex",
-                choices = NULL,
-                selected = NULL,
-                multiple = TRUE,
-                options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-              )
-            )
-          )
+                                 bslib::accordion(
+                                   bslib::accordion_panel(
+                                     title = "Settings",
+                                     shinyWidgets::pickerInput(
+                                       inputId = "incidence_grouping_cdm_name",
+                                       label = "Database",
+                                       choices = NULL,
+                                       selected = NULL,
+                                       multiple = TRUE,
+                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                     ),
+                                     shinyWidgets::pickerInput(
+                                       inputId = "incidence_grouping_outcome_cohort_name",
+                                       label = "Outcome cohort name",
+                                       choices = NULL,
+                                       selected = NULL,
+                                       multiple = TRUE,
+                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                     ),
+                                     shinyWidgets::pickerInput(
+                                       inputId = "incidence_settings_analysis_interval",
+                                       label = "Time interval",
+                                       choices = NULL,
+                                       selected = NULL,
+                                       multiple = TRUE,
+                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                     ),
+                                     shinyWidgets::pickerInput(
+                                       inputId = "incidence_settings_denominator_age_group",
+                                       label = "Denominator age group",
+                                       choices = NULL,
+                                       selected = NULL,
+                                       multiple = TRUE,
+                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                     ),
+                                     shinyWidgets::pickerInput(
+                                       inputId = "incidence_settings_denominator_sex",
+                                       label = "Denominator sex",
+                                       choices = NULL,
+                                       selected = NULL,
+                                       multiple = TRUE,
+                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                     )
+                                   )
+                                 )
         ),
         bslib::navset_card_tab(
           bslib::nav_panel(
@@ -956,30 +984,30 @@ ui <- bslib::page_navbar(
               ),
               bslib::layout_sidebar(
                 sidebar = bslib::sidebar(width = 400, open = "closed",
-                  sortable::bucket_list(
-                    header = NULL,
-                    sortable::add_rank_list(
-                      text = "none",
-                      labels = c("cdm_name", "denominator_cohort_name", "incidence_start_date", "incidence_end_date", "analysis_outcome_washout", "analysis_repeated_events", "analysis_interval", "analysis_complete_database_intervals", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation", "denominator_start_date", "denominator_end_date", "denominator_time_at_risk", "denominator_target_cohort_name", "outcome_cohort_name", "variable_name", "variable_level"),
-                      input_id = "incidence_gt_18_none"
-                    ),
-                    sortable::add_rank_list(
-                      text = "header",
-                      labels = "estimate_name",
-                      input_id = "incidence_gt_18_header"
-                    ),
-                    sortable::add_rank_list(
-                      text = "groupColumn",
-                      labels = character(),
-                      input_id = "incidence_gt_18_groupColumn"
-                    ),
-                    sortable::add_rank_list(
-                      text = "hide",
-                      labels = character(),
-                      input_id = "incidence_gt_18_hide"
-                    )
-                  ),
-                  position = "right"
+                                         sortable::bucket_list(
+                                           header = NULL,
+                                           sortable::add_rank_list(
+                                             text = "none",
+                                             labels = c("cdm_name", "denominator_cohort_name", "incidence_start_date", "incidence_end_date", "analysis_outcome_washout", "analysis_repeated_events", "analysis_interval", "analysis_complete_database_intervals", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation", "denominator_start_date", "denominator_end_date", "denominator_time_at_risk", "denominator_target_cohort_name", "outcome_cohort_name", "variable_name", "variable_level"),
+                                             input_id = "incidence_gt_18_none"
+                                           ),
+                                           sortable::add_rank_list(
+                                             text = "header",
+                                             labels = "estimate_name",
+                                             input_id = "incidence_gt_18_header"
+                                           ),
+                                           sortable::add_rank_list(
+                                             text = "groupColumn",
+                                             labels = character(),
+                                             input_id = "incidence_gt_18_groupColumn"
+                                           ),
+                                           sortable::add_rank_list(
+                                             text = "hide",
+                                             labels = character(),
+                                             input_id = "incidence_gt_18_hide"
+                                           )
+                                         ),
+                                         position = "right"
                 ),
                 gt::gt_output("incidence_gt_18") |> withSpinner()
               )
@@ -1020,36 +1048,36 @@ ui <- bslib::page_navbar(
               ),
               bslib::layout_sidebar(
                 sidebar = bslib::sidebar(width = 400, open = "closed",
-                  shinyWidgets::pickerInput(
-                    inputId = "incidence_ggplot2_19_x",
-                    label = "x",
-                    selected = "incidence_start_date",
-                    multiple = FALSE,
-                    choices = c("cdm_name", "denominator_cohort_name", "incidence_start_date", "incidence_end_date", "analysis_outcome_washout", "analysis_repeated_events", "analysis_interval", "analysis_complete_database_intervals", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation", "denominator_start_date", "denominator_end_date", "denominator_time_at_risk", "denominator_target_cohort_name", "outcome_cohort_name", "variable_name", "variable_level", "estimate_name"),
-                    options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                  ),
-                  shiny::checkboxInput(
-                    inputId = "incidence_ggplot2_19_ribbon",
-                    label = "ribbon",
-                    value = c(FALSE)
-                  ),
-                  shinyWidgets::pickerInput(
-                    inputId = "incidence_ggplot2_19_facet",
-                    label = "facet",
-                    selected = NULL,
-                    multiple = TRUE,
-                    choices = c("cdm_name", "denominator_cohort_name", "incidence_start_date", "incidence_end_date", "analysis_outcome_washout", "analysis_repeated_events", "analysis_interval", "analysis_complete_database_intervals", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation", "denominator_start_date", "denominator_end_date", "denominator_time_at_risk", "denominator_target_cohort_name", "outcome_cohort_name", "variable_name", "variable_level", "estimate_name"),
-                    options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                  ),
-                  shinyWidgets::pickerInput(
-                    inputId = "incidence_ggplot2_19_colour",
-                    label = "colour",
-                    selected = NULL,
-                    multiple = TRUE,
-                    choices = c("cdm_name", "denominator_cohort_name", "incidence_start_date", "incidence_end_date", "analysis_outcome_washout", "analysis_repeated_events", "analysis_interval", "analysis_complete_database_intervals", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation", "denominator_start_date", "denominator_end_date", "denominator_time_at_risk", "denominator_target_cohort_name", "outcome_cohort_name", "variable_name", "variable_level", "estimate_name"),
-                    options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                  ),
-                  position = "right"
+                                         shinyWidgets::pickerInput(
+                                           inputId = "incidence_ggplot2_19_x",
+                                           label = "x",
+                                           selected = "incidence_start_date",
+                                           multiple = FALSE,
+                                           choices = c("cdm_name", "denominator_cohort_name", "incidence_start_date", "incidence_end_date", "analysis_outcome_washout", "analysis_repeated_events", "analysis_interval", "analysis_complete_database_intervals", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation", "denominator_start_date", "denominator_end_date", "denominator_time_at_risk", "denominator_target_cohort_name", "outcome_cohort_name", "variable_name", "variable_level", "estimate_name"),
+                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                         ),
+                                         shiny::checkboxInput(
+                                           inputId = "incidence_ggplot2_19_ribbon",
+                                           label = "ribbon",
+                                           value = c(FALSE)
+                                         ),
+                                         shinyWidgets::pickerInput(
+                                           inputId = "incidence_ggplot2_19_facet",
+                                           label = "facet",
+                                           selected = NULL,
+                                           multiple = TRUE,
+                                           choices = c("cdm_name", "denominator_cohort_name", "incidence_start_date", "incidence_end_date", "analysis_outcome_washout", "analysis_repeated_events", "analysis_interval", "analysis_complete_database_intervals", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation", "denominator_start_date", "denominator_end_date", "denominator_time_at_risk", "denominator_target_cohort_name", "outcome_cohort_name", "variable_name", "variable_level", "estimate_name"),
+                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                         ),
+                                         shinyWidgets::pickerInput(
+                                           inputId = "incidence_ggplot2_19_colour",
+                                           label = "colour",
+                                           selected = NULL,
+                                           multiple = TRUE,
+                                           choices = c("cdm_name", "denominator_cohort_name", "incidence_start_date", "incidence_end_date", "analysis_outcome_washout", "analysis_repeated_events", "analysis_interval", "analysis_complete_database_intervals", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation", "denominator_start_date", "denominator_end_date", "denominator_time_at_risk", "denominator_target_cohort_name", "outcome_cohort_name", "variable_name", "variable_level", "estimate_name"),
+                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                         ),
+                                         position = "right"
                 ),
                 plotly::plotlyOutput("incidence_ggplot2_19")
               )
@@ -1275,7 +1303,7 @@ ui <- bslib::page_navbar(
     #     )
     #   )
     # )
-
+    
     ## Prevalence -----
     bslib::nav_panel(
       title = "Prevalence",
@@ -1668,8 +1696,8 @@ ui <- bslib::page_navbar(
     #     )
     #   )
     # )
-
-
+    
+    
   ),
   # end ------
   bslib::nav_spacer(),
