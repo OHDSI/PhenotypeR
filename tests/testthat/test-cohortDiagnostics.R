@@ -60,12 +60,12 @@ test_that("run with multiple cohorts", {
 
   # Check density is calculated by cohort
   expect_identical(result |>
-      dplyr::filter(variable_name == "age") |>
-      dplyr::select("group_level") |>
-      dplyr::distinct() |>
-      dplyr::pull() |>
-      dplyr::arrange(),
-    c("cohort_1", "cohort_2"))
+                     dplyr::filter(variable_name == "age") |>
+                     dplyr::select("group_level") |>
+                     dplyr::distinct() |>
+                     dplyr::pull() |>
+                     sort(),
+                   c("cohort_1", "cohort_2"))
 
   # cohort and timing and overlap should have been estimated now we have more than one cohort
   expect_true(any(stringr::str_detect(
