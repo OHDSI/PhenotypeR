@@ -70,9 +70,12 @@ cohortDiagnostics <- function(cohort){
 
   cli::cli_bullets(c("*" = "Getting age density"))
   results[["cohort_density"]] <- cdm[[tempCohortName]] |>
+    PatientProfiles::addCohortName() |>
     PatientProfiles::summariseResult(
       strata    = "sex",
       includeOverallStrata = FALSE,
+      group     = "cohort_name",
+      includeOverallGroup  = FALSE,
       variables = "age",
       estimates = "density") |>
     suppressMessages()
