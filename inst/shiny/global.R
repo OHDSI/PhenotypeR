@@ -18,6 +18,7 @@ library(shinycssloaders)
 library(shinyWidgets)
 library(plotly)
 library(tidyr)
+library(patchwork)
 
 # ensure minimum versions
 rlang::check_installed("omopgenerics", version = "0.4")
@@ -44,8 +45,8 @@ plotComparedLsc <- function(lsc, cohorts, imputeMissings, colour = NULL, facet =
   plot_data <- lsc |>
     filter(group_level %in% c(cohorts
     )) |>
-    filter(estimate_name == "percentage") |> 
-    omopgenerics::addSettings() |> 
+    filter(estimate_name == "percentage") |>
+    omopgenerics::addSettings() |>
     select(database = cdm_name,
            cohort_name = group_level,
            variable_name,
@@ -54,13 +55,13 @@ plotComparedLsc <- function(lsc, cohorts, imputeMissings, colour = NULL, facet =
            table = table_name,
            percentage = estimate_value) |>
     mutate(percentage = if_else(percentage == "-",
-                                NA, percentage)) |> 
-    mutate(percentage = as.numeric(percentage)) |> 
+                                NA, percentage)) |>
+    mutate(percentage = as.numeric(percentage)) |>
     pivot_wider(names_from = cohort_name,
                 values_from = percentage)
 
   if(isTRUE(imputeMissings)){
-    plot_data <- plot_data |> 
+    plot_data <- plot_data |>
       mutate(across(c(cohorts[1], cohorts[2]), ~if_else(is.na(.x), 0, .x)))
   }
   
@@ -88,3 +89,67 @@ plotComparedLsc <- function(lsc, cohorts, imputeMissings, colour = NULL, facet =
   ggplotly(plot, tooltip = "Details")
 
 }
+
+plotAgeDistribution <- function(summarise_table, summarise_characteristics){
+  
+  data <- summarise_table |>
+    filter(variable_name == "age") |>
+    pivot_wider(names_from = "estimate_name", values_from = "estimate_value") |>
+    mutate(density_x = as.numeric(density_x),
+           density_y = as.numeric(density_y)) |>
+    splitStrata() |>
+    mutate(density_y = if_else(sex == "Female", -density_y, density_y)) 
+  
+  max_density <- max(data$density_y, na.rm = TRUE)
+  min_age <- (floor((data$density_x |> min())/5))*5
+  max_age <- (ceiling((data$density_x |> max())/5))*5
+  
+  iqr <- dataFiltered$summarise_characteristics |>
+    filter(variable_name == "Age",
+           strata_level %in% c("Female","Male"),
+           estimate_name %in% c("q25", "median", "q75")) |>
+    mutate(estimate_value = as.numeric(estimate_value)) |>
+    left_join(
+      data |> 
+        select("cdm_name", "strata_level" = "sex", "estimate_value" = "density_x", "density_y") |>
+        arrange(strata_level, estimate_value, density_y) |>
+        mutate(estimate_value_round = round(estimate_value)) |>
+        mutate(estimate_value_diff = estimate_value - estimate_value_round) |>
+        group_by(strata_level, estimate_value_round) |>
+        filter(estimate_value_diff == min(estimate_value_diff)) |>
+        select("cdm_name", "estimate_value" = "estimate_value_round", "density_y", "strata_level"),
+      by = c("estimate_value", "strata_level", "cdm_name")
+    ) |> 
+    rename("sex" = "strata_level")
+  
+  ggplot(data, aes(x = density_x, y = density_y, fill = sex)) +
+    geom_polygon() +
+    geom_segment(data = iqr[iqr$estimate_name == "median", ], 
+                 aes(x = estimate_value, y = 0, xend = estimate_value, yend = density_y),
+                 linewidth = 1) +
+    geom_segment(data = iqr[iqr$estimate_name != "median", ], 
+                 aes(x = estimate_value, y = 0, xend = estimate_value, yend = density_y), 
+                 linetype = 2, 
+                 linewidth = 1) +
+    scale_y_continuous(labels = function(x) scales::label_percent()(abs(x)),
+                       limits = c(-max_percentage*1.1, max_percentage*1.1)) +
+    theme_bw() +
+    theme(
+      axis.text.x = element_text(),
+      axis.title.x = ggplot2::element_blank(),
+      panel.grid.major.x = element_line(color = "grey90"),
+      panel.grid.major.y = element_line(color = "grey90"),
+      legend.box = "horizontal",
+      axis.title.y = ggplot2::element_blank(),
+      legend.position = "bottom",
+      legend.title = ggplot2::element_blank(),
+      panel.background = ggplot2::element_blank()
+    ) +
+    scale_x_continuous(labels = c(as.character(seq(min_age,max_age-5,5)), paste0(max_age,"+")),
+                       breaks = c(seq(min_age,max_age-5,5), max_age)) +
+    scale_fill_manual(values = list("Male" = "#4682B4","Female" = "#003153")) +
+    facet_wrap(c("cdm_name", "group_level")) +
+    coord_flip(clip = "off") +
+    labs(subtitle = "The solid line represents the median, while the dotted lines indicate the interquartile range.")
+}
+

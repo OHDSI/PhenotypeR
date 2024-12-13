@@ -35,7 +35,7 @@ Suggests:
     RPostgres,
     PatientProfiles (>= 1.2.2),
     ggplot2,
-    ggpubr, 
+    ggpubr,
     stringr,
     shiny,
     DiagrammeR,
@@ -46,7 +46,9 @@ Suggests:
     bslib,
     shinyWidgets,
     plotly,
-    tidyr
+    tidyr,
+    ggpol,
+    scales
 Config/testthat/edition: 3
 RoxygenNote: 7.3.2
 Imports: 
