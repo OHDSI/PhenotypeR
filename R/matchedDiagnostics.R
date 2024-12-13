@@ -34,6 +34,7 @@
 #'   mockObservation() |>
 #'   mockMeasurement() |>
 #'   mockVisitOccurrence() |>
+#'   mockProcedureOccurrence() |>
 #'   mockCohort(name = "my_cohort")
 #'
 #' con <- DBI::dbConnect(duckdb::duckdb(), ":memory:")
@@ -42,7 +43,7 @@
 #'                                  schema = "main")
 #' attr(cdm, "write_schema") <- "main"
 #'
-#' result <- cdm$my_cohort |> phenotypeDiagnostics()
+#' result <- cdm$my_cohort |> matchedDiagnostics()
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
 matchedDiagnostics <- function(cohort,
