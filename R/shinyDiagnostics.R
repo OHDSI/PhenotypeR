@@ -21,30 +21,11 @@
 #'
 #' @examples
 #' \donttest{
-#' library(omock)
-#' library(CDMConnector)
-#' library(DBI)
 #' library(PhenotypeR)
 #'
-#' cdm_local <- mockCdmReference() |>
-#'   mockPerson(nPerson = 1000) |>
-#'   mockObservationPeriod() |>
-#'   mockConditionOccurrence() |>
-#'   mockDrugExposure() |>
-#'   mockObservation() |>
-#'   mockMeasurement() |>
-#'   mockVisitOccurrence() |>
-#'   mockProcedureOccurrence() |>
-#'   mockCohort(name = "my_cohort")
+#' cdm <- mockPhenotypeR()
 #'
-#' con <- DBI::dbConnect(duckdb::duckdb(), ":memory:")
-#' cdm <- CDMConnector::copy_cdm_to(con = con,
-#'                                  cdm = cdm_local,
-#'                                  schema = "main")
-#' attr(cdm, "write_schema") <- "main"
-#'
-#' result <- cdm$my_cohort |>
-#'   phenotypeDiagnostics()
+#' result <- phenotypeDiagnostics(cdm$my_cohort)
 #'
 #' shinyDiagnostics(result, tempdir())
 #'

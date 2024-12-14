@@ -14,27 +14,12 @@
 #'
 #' @examples
 #' \donttest{
-#' library(omock)
-#' library(CDMConnector)
-#' library(DBI)
 #' library(PhenotypeR)
 #'
-#' cdm_local <- mockCdmReference() |>
-#'   mockPerson(nPerson = 100) |>
-#'   mockObservationPeriod() |>
-#'   mockConditionOccurrence() |>
-#'   mockDrugExposure() |>
-#'   mockObservation() |>
-#'   mockMeasurement() |>
-#'   mockCohort(name = "my_cohort", numberCohorts = 2)
+#' cdm <- mockPhenotypeR()
 #'
-#' con <- DBI::dbConnect(duckdb::duckdb(), ":memory:")
-#' cdm <- CDMConnector::copy_cdm_to(con = con,
-#'                                  cdm = cdm_local,
-#'                                  schema = "main")
-#' attr(cdm, "write_schema") <- "main"
+#' result <- databaseDiagnostics(cdm)
 #'
-#' db_diag <- databaseDiagnostics(cdm)
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
 databaseDiagnostics <- function(cdm){

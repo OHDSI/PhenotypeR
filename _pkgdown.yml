@@ -19,3 +19,6 @@ reference:
 - subtitle: Codelist diagnostics helper
 - contents:
   - matches("addCodelistAttribute")
+- subtitle: Mock data
+- contents:
+  - matches("mockPhenotypeR")

@@ -58,23 +58,12 @@ this includes:
 }
 \examples{
 \donttest{
-cdm_local <- omock::mockCdmReference() |>
-  omock::mockPerson(nPerson = 100) |>
-  omock::mockObservationPeriod() |>
-  omock::mockConditionOccurrence() |>
-  omock::mockDrugExposure() |>
-  omock::mockObservation() |>
-  omock::mockMeasurement() |>
-  omock::mockVisitOccurrence() |>
-  omock::mockProcedureOccurrence() |>
-  omock::mockCohort(name = "my_cohort")
+library(PhenotypeR)
 
-  db <- DBI::dbConnect(duckdb::duckdb())
-  cdm <- CDMConnector::copyCdmTo(con = db,
-                                 cdm = cdm_local,
-                                 schema ="main",
-                                 overwrite = TRUE)
-  phenotypeDiagnostics(cdm$my_cohort)
-  CDMConnector::cdm_disconnect(cdm)
+cdm <- mockPhenotypeR()
+
+result <- phenotypeDiagnostics(cdm$my_cohort)
+
+CDMConnector::cdmDisconnect(cdm = cdm)
 }
 }

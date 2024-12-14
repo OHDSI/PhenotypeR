@@ -29,23 +29,14 @@ includes:
 }
 \examples{
 \donttest{
-cdm_local <- omock::mockCdmReference() |>
-  omock::mockPerson(nPerson = 100) |>
-  omock::mockObservationPeriod() |>
-  omock::mockConditionOccurrence() |>
-  omock::mockDrugExposure() |>
-  omock::mockObservation() |>
-  omock::mockMeasurement() |>
-  omock::mockVisitOccurrence() |>
-  omock::mockProcedureOccurrence() |>
-  omock::mockCohort(name = "my_cohort")
+library(PhenotypeR)
 
-  db <- DBI::dbConnect(duckdb::duckdb())
-  cdm <- CDMConnector::copyCdmTo(con = db,
-                                 cdm = cdm_local,
-                                 schema ="main",
-                                 overwrite = TRUE)
-  my_result_cohort_diag <- cdm$my_cohort |> phenotypeDiagnostics()
-  shinyDiagnostics(my_result_cohort_diag, tempdir())
+cdm <- mockPhenotypeR()
+
+result <- phenotypeDiagnostics(cdm$my_cohort)
+
+shinyDiagnostics(result, tempdir())
+
+CDMConnector::cdmDisconnect(cdm = cdm)
 }
 }
