@@ -41,6 +41,7 @@ if(file.exists(here::here("data", "appData.RData"))){
 }
 
 plotComparedLsc <- function(lsc, cohorts, imputeMissings, colour = NULL, facet = NULL){
+
   plot_data <- lsc |>
     filter(group_level %in% c(cohorts
     )) |>
@@ -63,27 +64,29 @@ plotComparedLsc <- function(lsc, cohorts, imputeMissings, colour = NULL, facet =
     plot_data <- plot_data |>
       mutate(across(c(cohorts[1], cohorts[2]), ~if_else(is.na(.x), 0, .x)))
   }
-
-    plot <- plot_data |>
-    ggplot(aes(text = paste("<br>Database:", database,
-                            "<br>Concept:", variable_name,
-                            "<br>Concept ID:", concept_id,
-                            "<br>Time window:", time_window,
-                            "<br>Table:", table,
-                            "<br>Cohorts: "))) +
-    geom_point(aes(x = !!sym(cohorts[1]),
-                   y = !!sym(cohorts[2]),
-                   colour = !!sym(colour))
-               ) +
+  
+  plot <- plot_data |>
+    mutate("Details" = paste("<br>Database:", database,
+                             "<br>Concept:", variable_name,
+                             "<br>Concept ID:", concept_id,
+                             "<br>Time window:", time_window,
+                             "<br>Table:", table,
+                             "<br>Cohorts: ",
+                             "<br> - ", cohorts[1],": ", !!sym(cohorts[1]),
+                             "<br> - ", cohorts[2],": ", !!sym(cohorts[2]))) |>
+    visOmopResults::scatterPlot(x = cohorts[1],
+                                y = cohorts[2],
+                                colour = colour,
+                                facet  = facet,
+                                ribbon = FALSE,
+                                line   = FALSE,
+                                point  = TRUE, 
+                                label  = "Details") +
     geom_abline(slope = 1, intercept = 0,
                 color = "red", linetype = "dashed") +
     theme_bw()
-
-  if(!is.null(facet)){
-    plot <- plot +
-      ggplot2::facet_wrap(facet)
-  }
-  ggplotly(plot)
+    
+  ggplotly(plot, tooltip = "Details")
 
 }
 
