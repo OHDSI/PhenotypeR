@@ -86,7 +86,8 @@ matchedDiagnostics <- function(cohort,
                       "observation"),
     episodeInWindow = c("drug_exposure"),
     minimumFrequency = 0.0005,
-    includeSource = TRUE
+    includeSource = TRUE,
+    excludedCodes = NULL
   )
 
   results <- results |>
