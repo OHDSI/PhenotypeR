@@ -38,9 +38,16 @@ cohortDiagnostics <- function(cohort){
   results <- list()
 
   cdm[[tempCohortName]]  <- cdm[[cohortName]] |>
-    PatientProfiles::addAge(ageGroup = list(c(0, 17), c(18, 64), c(65, 150))) |>
-    PatientProfiles::addSex() |>
-    dplyr::compute(name = tempCohortName, temporary = FALSE)
+    PatientProfiles::addDemographics(age = TRUE,
+      ageGroup = list(c(0, 17), c(18, 64), c(65, 150)),
+      sex = TRUE,
+      priorObservation = FALSE,
+      futureObservation = FALSE,
+      dateOfBirth = FALSE,
+      name = tempCohortName)
+
+  cli::cli_bullets(c("*" = "Index cohort table"))
+  cdm[[tempCohortName]] <- CohortConstructor::addCohortTableIndex(cdm[[tempCohortName]])
 
   cli::cli_bullets(c("*" = "Getting cohort summary"))
   results[["cohort_summary"]] <- cdm[[tempCohortName]] |>
