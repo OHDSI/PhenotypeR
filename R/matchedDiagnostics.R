@@ -45,7 +45,7 @@ matchedDiagnostics <- function(cohort,
                                "_matched")
 
   if(!is.null(matchedSample)){
-  cli::cli_bullets(c("*" = "{.strong Taking {matchedSample} person sample of cohorts}"))
+  cli::cli_bullets(c("*" = "{.strong Sampling cohorts}"))
   cdm[[matchedCohortTable]] <- CohortConstructor::sampleCohorts(cdm[[cohortName]],
                                    n = matchedSample,
                                    name = matchedCohortTable)
