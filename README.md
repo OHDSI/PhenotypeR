@@ -5,6 +5,8 @@
 
 <!-- badges: start -->
 
+[![CRAN
+status](https://www.r-pkg.org/badges/version/PhenotypeR)](https://CRAN.R-project.org/package=PhenotypeR)
 [![R-CMD-check](https://github.com/ohdsi/PhenotypeR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ohdsi/PhenotypeR/actions/workflows/R-CMD-check.yaml)
 [![Lifecycle:Experimental](https://img.shields.io/badge/Lifecycle-Experimental-339999)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 
@@ -57,9 +59,9 @@ library(CohortConstructor)
 library(dplyr)
 
 con <- DBI::dbConnect(duckdb::duckdb(dbdir = CDMConnector::eunomiaDir()))
-cdm <- CDMConnector::cdm_from_con(con = con,
-                      cdm_schema = "main",
-                      write_schema = "main")
+cdm <- CDMConnector::cdmFromCon(con = con,
+                      cdmSchema = "main",
+                      writeSchema = "main")
 
 cdm$gibleed <- conceptCohort(cdm = cdm,
                                    conceptSet = list(gibleed = 192671L),
@@ -71,15 +73,15 @@ result <- cdm$gibleed |>
 
 ``` r
 summary(result)
-#> A summarised_result object with 18179 rows, 49 different result_id, 1 different
-#> cdm names, and 24 settings.
-#> CDM names: Synthea synthetic health database.
-#> Settings: package_name, package_version, result_type, timing, table_name,
-#> cohort_definition_id, cdm_version, vocabulary_version,
-#> analysis_outcome_washout, analysis_repeated_events, analysis_interval,
-#> analysis_complete_database_intervals, denominator_age_group, denominator_sex,
-#> denominator_days_prior_observation, denominator_start_date,
-#> denominator_end_date, denominator_target_cohort_name, …, type, and analysis.
+#> A summarised_result object with 22475 rows, 43 different result_id, 1 different
+#> cdm names, and 26 settings.
+#> CDM names: An OMOP CDM database.
+#> Settings: result_type, package_name, package_version, group, strata,
+#> additional, min_cell_count, analysis, analysis_complete_database_intervals,
+#> analysis_full_contribution, analysis_outcome_washout, analysis_repeated_events,
+#> analysis_type, cdm_version, cohort_definition_id, denominator_age_group,
+#> denominator_days_prior_observation, denominator_end_date, …, type, and
+#> vocabulary_version.
 ```
 
 Once we have our results we can quickly view them in an interactive
@@ -87,5 +89,5 @@ application. This shiny app will be saved in a new directory and can be
 further customised.
 
 ``` r
-shinyDiagnostics(result = result)
+shinyDiagnostics(result = result, directory = tempdir())
 ```
