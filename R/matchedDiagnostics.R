@@ -51,7 +51,8 @@ matchedDiagnostics <- function(cohort,
                                    name = matchedCohortTable)
   } else {
     cdm[[matchedCohortTable]] <- cdm[[cohortName]] |>
-      dplyr::compute(name = matchedCohortTable, temporary = FALSE)
+      dplyr::compute(name = matchedCohortTable, temporary = FALSE,
+                     logPrefix = "PhenotypeR_matched_")
   }
 
   cli::cli_bullets(c("*" = "{.strong Generating a age and sex matched cohorts}"))
@@ -59,9 +60,16 @@ matchedDiagnostics <- function(cohort,
                                      name = matchedCohortTable)
 
   cdm[[matchedCohortTable]]  <- cdm[[matchedCohortTable]] |>
-    PatientProfiles::addAge(ageGroup = list(c(0, 17), c(18, 64), c(65, 150))) |>
-    PatientProfiles::addSex() |>
-    dplyr::compute(name = matchedCohortTable, temporary = FALSE)
+    PatientProfiles::addDemographics(age = TRUE,
+                                     ageGroup = list(c(0, 17), c(18, 64), c(65, 150)),
+                                     sex = TRUE,
+                                     priorObservation = FALSE,
+                                     futureObservation = FALSE,
+                                     dateOfBirth = FALSE,
+                                     name = matchedCohortTable)
+
+  cli::cli_bullets(c("*" = "Index matched cohort table"))
+  cdm[[matchedCohortTable]] <- CohortConstructor::addCohortTableIndex(cdm[[matchedCohortTable]])
 
   results[["cohort_summary"]] <- cdm[[matchedCohortTable]] |>
     CohortCharacteristics::summariseCharacteristics(
