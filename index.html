@@ -23,7 +23,7 @@
 
     <a class="navbar-brand me-2" href="index.html">PhenotypeR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -95,9 +95,9 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">dbConnect</a></span><span class="op">(</span><span class="fu">duckdb</span><span class="fu">::</span><span class="fu"><a href="https://r.duckdb.org/reference/duckdb.html" class="external-link">duckdb</a></span><span class="op">(</span>dbdir <span class="op">=</span> <span class="fu">CDMConnector</span><span class="fu">::</span><span class="fu"><a href="https://darwin-eu.github.io/CDMConnector/reference/eunomiaDir.html" class="external-link">eunomiaDir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">cdm</span> <span class="op">&lt;-</span> <span class="fu">CDMConnector</span><span class="fu">::</span><span class="fu"><a href="https://darwin-eu.github.io/CDMConnector/reference/cdmFromCon.html" class="external-link">cdm_from_con</a></span><span class="op">(</span>con <span class="op">=</span> <span class="va">con</span>,</span>
-<span>                      cdm_schema <span class="op">=</span> <span class="st">"main"</span>,</span>
-<span>                      write_schema <span class="op">=</span> <span class="st">"main"</span><span class="op">)</span></span>
+<span><span class="va">cdm</span> <span class="op">&lt;-</span> <span class="fu">CDMConnector</span><span class="fu">::</span><span class="fu"><a href="https://darwin-eu.github.io/CDMConnector/reference/cdmFromCon.html" class="external-link">cdmFromCon</a></span><span class="op">(</span>con <span class="op">=</span> <span class="va">con</span>,</span>
+<span>                      cdmSchema <span class="op">=</span> <span class="st">"main"</span>,</span>
+<span>                      writeSchema <span class="op">=</span> <span class="st">"main"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">cdm</span><span class="op">$</span><span class="va">gibleed</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ohdsi.github.io/CohortConstructor/reference/conceptCohort.html" class="external-link">conceptCohort</a></span><span class="op">(</span>cdm <span class="op">=</span> <span class="va">cdm</span>,</span>
 <span>                                   conceptSet <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>gibleed <span class="op">=</span> <span class="fl">192671L</span><span class="op">)</span>,</span>
@@ -107,18 +107,18 @@
 <span>   <span class="fu"><a href="reference/phenotypeDiagnostics.html">phenotypeDiagnostics</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span>
-<span><span class="co">#&gt; A summarised_result object with 18179 rows, 49 different result_id, 1 different</span></span>
-<span><span class="co">#&gt; cdm names, and 24 settings.</span></span>
-<span><span class="co">#&gt; CDM names: Synthea synthetic health database.</span></span>
-<span><span class="co">#&gt; Settings: package_name, package_version, result_type, timing, table_name,</span></span>
-<span><span class="co">#&gt; cohort_definition_id, cdm_version, vocabulary_version,</span></span>
-<span><span class="co">#&gt; analysis_outcome_washout, analysis_repeated_events, analysis_interval,</span></span>
-<span><span class="co">#&gt; analysis_complete_database_intervals, denominator_age_group, denominator_sex,</span></span>
-<span><span class="co">#&gt; denominator_days_prior_observation, denominator_start_date,</span></span>
-<span><span class="co">#&gt; denominator_end_date, denominator_target_cohort_name, …, type, and analysis.</span></span></code></pre></div>
+<span><span class="co">#&gt; A summarised_result object with 22475 rows, 43 different result_id, 1 different</span></span>
+<span><span class="co">#&gt; cdm names, and 26 settings.</span></span>
+<span><span class="co">#&gt; CDM names: An OMOP CDM database.</span></span>
+<span><span class="co">#&gt; Settings: result_type, package_name, package_version, group, strata,</span></span>
+<span><span class="co">#&gt; additional, min_cell_count, analysis, analysis_complete_database_intervals,</span></span>
+<span><span class="co">#&gt; analysis_full_contribution, analysis_outcome_washout, analysis_repeated_events,</span></span>
+<span><span class="co">#&gt; analysis_type, cdm_version, cohort_definition_id, denominator_age_group,</span></span>
+<span><span class="co">#&gt; denominator_days_prior_observation, denominator_end_date, …, type, and</span></span>
+<span><span class="co">#&gt; vocabulary_version.</span></span></code></pre></div>
 <p>Once we have our results we can quickly view them in an interactive application. This shiny app will be saved in a new directory and can be further customised.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/shinyDiagnostics.html">shinyDiagnostics</a></span><span class="op">(</span>result <span class="op">=</span> <span class="va">result</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/shinyDiagnostics.html">shinyDiagnostics</a></span><span class="op">(</span>result <span class="op">=</span> <span class="va">result</span>, directory <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
@@ -158,6 +158,7 @@
 <div class="dev-status">
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
+<li><a href="https://CRAN.R-project.org/package=PhenotypeR" class="external-link"><img src="https://www.r-pkg.org/badges/version/PhenotypeR" alt="CRAN status"></a></li>
 <li><a href="https://github.com/ohdsi/PhenotypeR/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/ohdsi/PhenotypeR/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
 <li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/Lifecycle-Experimental-339999" alt="Lifecycle:Experimental"></a></li>
 </ul>
