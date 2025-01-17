@@ -68,6 +68,9 @@ matchedDiagnostics <- function(cohort,
                                      dateOfBirth = FALSE,
                                      name = matchedCohortTable)
 
+  cli::cli_bullets(c("*" = "Index matched cohort table"))
+  cdm[[tempCohortName]] <- CohortConstructor::addCohortTableIndex(cdm[[tempCohortName]])
+
   results[["cohort_summary"]] <- cdm[[matchedCohortTable]] |>
     CohortCharacteristics::summariseCharacteristics(
       strata = list("age_group", "sex"),
