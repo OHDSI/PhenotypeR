@@ -25,7 +25,7 @@
 #' cohort <- addCodelistAttribute(cohort = cdm$my_cohort, codelist = list("cohort_1" = 1L))
 #' attr(cohort, "cohort_codelist")
 #'
-#' CDMConnector::cdm_disconnect(cdm)
+#' CDMConnector::cdmDisconnect(cdm)
 #' }
 
 addCodelistAttribute <- function(cohort,

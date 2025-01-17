@@ -51,10 +51,10 @@ library(PhenotypeR)
 library(CohortConstructor)
 library(dplyr)
 
-con <- DBI::dbConnect(duckdb::duckdb(dbdir = CDMConnector::eunomia_dir()))
-cdm <- CDMConnector::cdm_from_con(con = con,
-                      cdm_schema = "main",
-                      write_schema = "main")
+con <- DBI::dbConnect(duckdb::duckdb(dbdir = CDMConnector::eunomiaDir()))
+cdm <- CDMConnector::cdmFromCon(con = con,
+                      cdmSchema = "main",
+                      writeSchema = "main")
 
 cdm$gibleed <- conceptCohort(cdm = cdm,
                                    conceptSet = list(gibleed = 192671L),

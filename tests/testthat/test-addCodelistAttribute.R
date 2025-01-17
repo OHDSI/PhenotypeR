@@ -119,10 +119,10 @@ test_that("test eunomia", {
   skip_if_not_installed("CirceR")
   skip_if_not(CDMConnector::eunomia_is_available())
 
-  con <- DBI::dbConnect(duckdb::duckdb(CDMConnector::eunomia_dir()))
-  cdm <- CDMConnector::cdm_from_con(
+  con <- DBI::dbConnect(duckdb::duckdb(CDMConnector::eunomiaDir()))
+  cdm <- CDMConnector::cdmFromCon(
     con = con, cdm_name = "eunomia",
-    cdm_schema = "main", write_schema = "main"
+    cdmSchema = "main", writeSchema = "main"
   )
 
   cohortSet <- CDMConnector::readCohortSet(

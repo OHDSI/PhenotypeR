@@ -41,7 +41,7 @@ mockPhenotypeR <- function(nPerson = 100,
     omock::mockProcedureOccurrence(seed = seed) |>
     omock::mockCohort(name = "my_cohort", numberCohorts = 2)
 
-  cdm <- CDMConnector::copy_cdm_to(con = con,
+  cdm <- CDMConnector::copyCdmTo(con = con,
                                    cdm = cdm_local,
                                    schema = writeSchema,
                                    overwrite = TRUE)
