@@ -117,7 +117,7 @@ test_that("test append codelist to existing", {
 test_that("test eunomia", {
   testthat::skip_on_cran()
   skip_if_not_installed("CirceR")
-  skip_if_not(CDMConnector::eunomia_is_available())
+  skip_if_not(CDMConnector::eunomiaIsAvailable())
 
   con <- DBI::dbConnect(duckdb::duckdb(CDMConnector::eunomiaDir()))
   cdm <- CDMConnector::cdmFromCon(
