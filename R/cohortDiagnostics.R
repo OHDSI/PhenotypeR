@@ -38,7 +38,7 @@ cohortDiagnostics <- function(cohort){
   results <- list()
 
   cdm[[tempCohortName]]  <- cdm[[cohortName]] |>
-    PatientProfiles::addDemographics(age = FALSE,
+    PatientProfiles::addDemographics(age = TRUE,
       ageGroup = list(c(0, 17), c(18, 64), c(65, 150)),
       sex = TRUE,
       priorObservation = FALSE,
