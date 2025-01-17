@@ -608,7 +608,7 @@ server <- function(input, output, session) {
   # summarise_large_scale_characteristics -----
   ## tidy summarise_large_scale_characteristics -----
   getTidyDataSummariseLargeScaleCharacteristics <- shiny::reactive({
-    
+
     if (is.null(dataFiltered$summarise_large_scale_characteristics)) {
       validate("No large scale characteristics in results")
     }
@@ -1071,7 +1071,8 @@ server <- function(input, output, session) {
       validate("No large scale characteristics in results")
     }
     dataFiltered$summarise_large_scale_characteristics |>
-      filter(variable_level %in% input$compare_large_scale_characteristics_grouping_time_window) |>
+      filter(variable_level %in% input$compare_large_scale_characteristics_grouping_time_window,
+             cdm_name %in% input$compare_large_scale_characteristics_grouping_cdm_name) |>
       filterSettings(table_name %in% input$compare_large_scale_characteristics_grouping_domain,
                      analysis %in% input$compare_large_scale_characteristics_settings_analysis)
     
@@ -1084,8 +1085,9 @@ server <- function(input, output, session) {
       validate("No results found for selected inputs")
     }
     
-    target_cohort <- input$compare_large_scale_characteristics_grouping_cohort_1
+    target_cohort     <- input$compare_large_scale_characteristics_grouping_cohort_1
     comparator_cohort <- input$compare_large_scale_characteristics_grouping_cohort_2
+    
     lsc <- lscFiltered |>
       filter(group_level %in% c(target_cohort, comparator_cohort
       )) |>
@@ -1109,19 +1111,19 @@ server <- function(input, output, session) {
         mutate(across(c(target_cohort, comparator_cohort), ~if_else(is.na(.x), 0, .x)))
     }
     
-    lsc <-lsc |>
+    lsc <- lsc |>
       mutate(across(c(target_cohort, comparator_cohort), ~ as.numeric(.x)/100)) |>
       mutate(smd = (!!sym(target_cohort) - !!sym(comparator_cohort))/sqrt((!!sym(target_cohort)*(1-!!sym(target_cohort)) + !!sym(comparator_cohort)*(1-!!sym(comparator_cohort)))/2)) |>
       arrange(desc(smd))  |>
       mutate(across(c(target_cohort, comparator_cohort), ~ as.numeric(.x)*100)) |>
       mutate(concept = paste0(variable_name, " (",concept_id, ")")) |>
-      select("Concept name (concept ID)" = concept,
+      select("Database" = database,
+             "Concept name (concept ID)" = concept,
              "Table" = table,
              "Time window" = time_window,
              target_cohort,
              comparator_cohort,
              "Standardised mean difference" = smd)
-    
     
     round_cols <- c("Standardised mean difference",
                     target_cohort,
@@ -1137,7 +1139,7 @@ server <- function(input, output, session) {
     if (nrow(outputLSC()) == 0) {
       validate("No data to plot")
     }
-    
+
     plotComparedLsc(lsc = outputLSC(),
                     cohorts = c(input$compare_large_scale_characteristics_grouping_cohort_1,
                                 input$compare_large_scale_characteristics_grouping_cohort_2),

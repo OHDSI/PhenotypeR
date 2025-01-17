@@ -20,34 +20,16 @@ cli::cli_inform("Importing results")
 data <- omopgenerics::importSummarisedResult(file.path(getwd(),"data", "raw"))
 cli::cli_alert_success("Results imported")
 
-
 if(nrow(data) == 0){
   cli::cli_warn("No data found in data/raw")
   choices <- list()
 } else{
-
-  data <- data |>
-    mutate(group_level = if_else(str_starts(group_level, "matched_to_"),
-                                 str_replace(group_level, "^matched_to_", "") %>%
-                                   paste0("_m1"),
-                                 group_level)) |>
-    mutate(group_level = if_else(str_detect(group_level, "_matched"),
-                                 str_replace(group_level, "_matched", "") %>%
-                                   paste0("_sampled"),
-                                 group_level))|>
-    mutate(group_level = if_else(str_detect(group_level, "_m1"),
-                                 str_replace(group_level, "_m1", "") %>%
-                                   paste0("_matched"),
-                                 group_level))
-
-
-  # cli::cli_inform("Correcting settings")
-  # data <- data |> correctSettings()
   cli::cli_inform("Getting input choices for shiny UI")
   choices <- getChoices(data, flatten = TRUE)
 }
 
 cli::cli_inform("Customising shiny app inputs")
+
 # remove matched cohorts from choices
 choices$summarise_characteristics_grouping_cohort_name <- choices$summarise_characteristics_grouping_cohort_name[
   !stringr::str_detect(choices$summarise_characteristics_grouping_cohort_name, "matched|sampled")]
@@ -82,7 +64,7 @@ selected$summarise_large_scale_characteristics_grouping_cohort_name <- selected$
 choices$compare_large_scale_characteristics_grouping_cdm_name <- choices$summarise_large_scale_characteristics_grouping_cdm_name
 choices$compare_large_scale_characteristics_grouping_cohort <- choices$summarise_large_scale_characteristics_grouping_cohort_name
 choices$compare_large_scale_characteristics_grouping_cohort <- choices$compare_large_scale_characteristics_grouping_cohort[str_detect(choices$compare_large_scale_characteristics_grouping_cohort,
-                                                                                                                                      "matched|sample", negate= TRUE)]
+                                                                                                                                      "matched|sampled", negate= TRUE)]
 choices$compare_large_scale_characteristics_grouping_cohort_1 <- choices$summarise_large_scale_characteristics_grouping_cohort_name
 choices$compare_large_scale_characteristics_grouping_cohort_2 <- choices$summarise_large_scale_characteristics_grouping_cohort_name
 choices$compare_large_scale_characteristics_grouping_domain <- choices$summarise_large_scale_characteristics_grouping_domain
@@ -222,3 +204,4 @@ save(dataFiltered,
      max_incidence_end,
      file = here::here("data", "appData.RData"))
 rm(data)
+
