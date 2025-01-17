@@ -2,10 +2,10 @@
 test_that("eunomia", {
   skip_on_cran()
   skip_on_ci()
-  con <- DBI::dbConnect(duckdb::duckdb(dbdir = CDMConnector::eunomia_dir()))
-  cdm <- CDMConnector::cdm_from_con(con = con,
-                                    cdm_schema = "main",
-                                    write_schema = "main")
+  con <- DBI::dbConnect(duckdb::duckdb(dbdir = CDMConnector::eunomiaDir()))
+  cdm <- CDMConnector::cdmFromCon(con = con,
+                                    cdmSchema = "main",
+                                    writeSchema = "main")
   meds_cs <- CodelistGenerator::getDrugIngredientCodes(
     cdm = cdm,
     name = c(
@@ -62,6 +62,6 @@ test_that("postgres test", {
   # omopViewer::exportStaticApp(results)
   expect_no_error(shinyDiagnostics(result = results, directory = tempdir()))
 
-  CDMConnector::cdm_disconnect(cdm = cdm)
+  CDMConnector::cdmDisconnect(cdm = cdm)
 
 })

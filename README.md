@@ -56,7 +56,7 @@ library(PhenotypeR)
 library(CohortConstructor)
 library(dplyr)
 
-con <- DBI::dbConnect(duckdb::duckdb(dbdir = CDMConnector::eunomia_dir()))
+con <- DBI::dbConnect(duckdb::duckdb(dbdir = CDMConnector::eunomiaDir()))
 cdm <- CDMConnector::cdm_from_con(con = con,
                       cdm_schema = "main",
                       write_schema = "main")
