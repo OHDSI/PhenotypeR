@@ -69,7 +69,7 @@ matchedDiagnostics <- function(cohort,
                                      name = matchedCohortTable)
 
   cli::cli_bullets(c("*" = "Index matched cohort table"))
-  cdm[[tempCohortName]] <- CohortConstructor::addCohortTableIndex(cdm[[tempCohortName]])
+  cdm[[matchedCohortTable]] <- CohortConstructor::addCohortTableIndex(cdm[[matchedCohortTable]])
 
   results[["cohort_summary"]] <- cdm[[matchedCohortTable]] |>
     CohortCharacteristics::summariseCharacteristics(
