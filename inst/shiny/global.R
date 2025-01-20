@@ -19,6 +19,8 @@ library(shinyWidgets)
 library(plotly)
 library(tidyr)
 library(patchwork)
+library(webshot2)
+library(chromote)
 
 # ensure minimum versions
 rlang::check_installed("omopgenerics", version = "0.4")
@@ -29,6 +31,7 @@ rlang::check_installed("IncidencePrevalence", version = "0.9.0")
 rlang::check_installed("OmopSketch", version = "0.1.2")
 
 source(here::here("scripts", "functions.R"))
+options(chromote.headless = "new")
 
 if(file.exists(here::here("data", "appData.RData"))){
   cli::cli_inform("Loading existing processed data")

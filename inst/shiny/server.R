@@ -51,11 +51,9 @@ server <- function(input, output, session) {
   output$summarise_omop_snapshot_gt_17_download <- shiny::downloadHandler(
     filename = paste0("output_gt_summarise_omop_snapshot.", input$summarise_omop_snapshot_gt_17_download_type),
     content = function(file) {
-      obj <- createOutput17()
-      gt::gtsave(data = obj, filename = file)
+      gt::gtsave(data = createOutput17(), filename = file)
     }
   )
-  
   
   # achilles_code_use -----
   
