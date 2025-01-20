@@ -794,12 +794,11 @@ server <- function(input, output, session) {
       ribbon = FALSE,
       facet = input$incidence_ggplot2_19_facet,
       colour = input$incidence_ggplot2_19_colour
-    ) |>
-      plotly::ggplotly()
+    ) 
   })
   
   output$incidence_ggplot2_19 <- plotly::renderPlotly({
-    createOutput19()
+    plotly::ggplotly(createOutput19())
   })
   output$incidence_ggplot2_19_download <- shiny::downloadHandler(
     filename = "output_ggplot2_incidence.png",
@@ -824,25 +823,24 @@ server <- function(input, output, session) {
                             facet  = input$incidence_ggplot2_20_facet,
                             colour = input$incidence_ggplot2_20_colour
                             
-    ) |>
-      plotly::ggplotly()
+    ) 
   })
   
   output$incidence_ggplot2_20 <- plotly::renderPlotly({
-    createOutput20()
+    plotly::ggplotly(createOutput20())
   })
   
-  output$incidence_ggplot2_20_download <- shiny::downloadHandler(
-    filename = paste0("output_ggplot2_incidence_population.", "png"),
+  output$incidence_population_ggplot2_20_download <- shiny::downloadHandler(
+    filename = "output_ggplot2_incidence_population.png",
     content = function(file) {
       obj <- createOutput20()
       ggplot2::ggsave(
         filename = file,
         plot = obj,
-        width = as.numeric(input$incidence_ggplot2_20_download_width),
-        height = as.numeric(input$incidence_ggplot2_20_download_height),
-        units = input$incidence_ggplot2_20_download_units,
-        dpi = as.numeric(input$incidence_ggplot2_20_download_dpi)
+        width = as.numeric(input$incidence_population_ggplot2_20_download_width),
+        height = as.numeric(input$incidence_population_ggplot2_20_download_height),
+        units = input$incidence_population_ggplot2_20_download_units,
+        dpi = as.numeric(input$incidence_population_ggplot2_20_download_dpi)
       )
     }
   )
@@ -925,11 +923,10 @@ server <- function(input, output, session) {
       ribbon = input$prevalence_ggplot2_prev2_ribbon,
       facet = input$prevalence_ggplot2_prev2_facet,
       colour = input$prevalence_ggplot2_prev2_colour
-    ) |>
-      plotly::ggplotly()
+    )
   })
   output$prevalence_ggplot2_prev2 <- plotly::renderPlotly({
-    createOutputprev2()
+    plotly::ggplotly(createOutputprev2())
   })
   output$prevalence_ggplot2_prev2_download <- shiny::downloadHandler(
     filename = "output_ggplot2_prevalence.png",
@@ -960,33 +957,31 @@ server <- function(input, output, session) {
     
     IncidencePrevalence::plotPrevalencePopulation(
       result = result,
-      x = input$prevalence_ggplot2_prev3_x,
-      y = input$prevalence_ggplot2_prev3_y,
-      facet = input$prevalence_ggplot2_prev3_facet,
-      colour = input$prevalence_ggplot2_prev3_colour
-    ) |>
-      plotly::ggplotly()
+      x = input$prevalence_population_ggplot2_prev3_x,
+      y = input$prevalence_population_ggplot2_prev3_y,
+      facet = input$prevalence_population_ggplot2_prev3_facet,
+      colour = input$prevalence_population_ggplot2_prev3_colour
+    )
   })
-  output$prevalence_ggplot2_prev3 <- plotly::renderPlotly({
-    createOutputprev3()
+  output$prevalence_population_ggplot2_prev3 <- plotly::renderPlotly({
+    plotly::ggplotly(createOutputprev3())
   })
-  output$prevalence_ggplot2_prev3_download <- shiny::downloadHandler(
-    filename = paste0("output_ggplot2_prevalence_population.", "png"),
+  output$prevalence_population_ggplot2_prev3_download <- shiny::downloadHandler(
+    filename = "output_ggplot2_prevalence_population.png",
     content = function(file) {
-      obj <- createOutputprev2()
+      obj <- createOutputprev3()
       ggplot2::ggsave(
         filename = file,
         plot = obj,
-        width = as.numeric(input$prevalence_ggplot2_prev3_download_width),
-        height = as.numeric(input$prevalence_ggplot2_prev3_download_height),
-        units = input$prevalence_ggplot2_prev3_download_units,
-        dpi = as.numeric(input$prevalence_ggplot2_prev3_download_dpi)
+        width = as.numeric(input$prevalence_population_ggplot2_prev3_download_width),
+        height = as.numeric(input$prevalence_population_ggplot2_prev3_download_height),
+        units = input$prevalence_population_ggplot2_prev3_download_units,
+        dpi = as.numeric(input$prevalence_population_ggplot2_prev3_download_dpi)
       )
     }
   )
   
   # compare lsc ----
-  
   outputLSC <- shiny::reactive({
 
     if (is.null(dataFiltered$summarise_large_scale_characteristics)) {
@@ -1000,7 +995,7 @@ server <- function(input, output, session) {
     
   })
   
-  output$gt_compare_lsc <- DT::renderDT({
+  getGtCompareLsc <- shiny::reactive({
     lscFiltered <- outputLSC()
     
     if (nrow(lscFiltered) == 0) {
@@ -1047,21 +1042,34 @@ server <- function(input, output, session) {
              comparator_cohort,
              "Standardised mean difference" = smd)
     
+  return(lsc)
+  })
+  
+  output$gt_compare_lsc <- DT::renderDT({
+    target_cohort     <- input$compare_large_scale_characteristics_grouping_cohort_1
+    comparator_cohort <- input$compare_large_scale_characteristics_grouping_cohort_2
+    
     round_cols <- c("Standardised mean difference",
                     target_cohort,
                     comparator_cohort)
     
-    DT::datatable(lsc, rownames= FALSE) %>%
+    DT::datatable(getGtCompareLsc(), rownames= FALSE) %>%
       formatRound(columns=c(round_cols), digits=2)
-    
   })
   
+  output$compare_large_scale_characteristics_tidy_download <- shiny::downloadHandler(
+    filename = "tidy_compare_large_scale_characteristics.csv",
+    content = function(file) {
+      getGtCompareLsc() |>
+        readr::write_csv(file = file)
+    }
+  )
   
-  output$plotly_compare_lsc <- renderPlotly({
+  getPlotlyCompareLsc <- shiny::reactive({
     if (nrow(outputLSC()) == 0) {
       validate("No data to plot")
     }
-
+    
     plotComparedLsc(lsc = outputLSC(),
                     cohorts = c(input$compare_large_scale_characteristics_grouping_cohort_1,
                                 input$compare_large_scale_characteristics_grouping_cohort_2),
@@ -1070,6 +1078,25 @@ server <- function(input, output, session) {
                     imputeMissings = input$compare_large_scale_characteristics_impute_missings
     )
   })
+  
+  output$plotly_compare_lsc <- renderPlotly({
+    ggplotly(getPlotlyCompareLsc(), tooltip = "Details")
+  })
+  
+  output$plot_compare_large_scale_characteristics_download <- shiny::downloadHandler(
+    filename = "output_ggplot2_compare_large_scale_characteristics.png",
+    content = function(file) {
+      obj <- getPlotlyCompareLsc()
+      ggplot2::ggsave(
+        filename = file,
+        plot = obj,
+        width = as.numeric(input$plot_compare_large_scale_characteristics_download_width),
+        height = as.numeric(input$plot_compare_large_scale_characteristics_download_height),
+        units = input$plot_compare_large_scale_characteristics_download_units,
+        dpi = as.numeric(input$plot_compare_large_scale_characteristics_download_dpi)
+      )
+    }
+  )
   
   # orphan -----
   ## tidy orphan -----

@@ -87,8 +87,8 @@ plotComparedLsc <- function(lsc, cohorts, imputeMissings, colour = NULL, facet =
     geom_abline(slope = 1, intercept = 0,
                 color = "red", linetype = "dashed") +
     theme_bw()
-    
-  ggplotly(plot, tooltip = "Details")
+  
+  return(plot)
 }
 
 plotAgeDensity <- function(summarise_table, summarise_characteristics){
