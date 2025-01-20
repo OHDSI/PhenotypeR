@@ -653,7 +653,7 @@ server <- function(input, output, session) {
   ## output summarise_large_scale_characteristics -----
   ## output 0 -----
   createOutput0 <- shiny::reactive({
-    
+
     if (is.null(dataFiltered$summarise_large_scale_characteristics)) {
       validate("No large scale characteristics in results")
     }
@@ -672,10 +672,30 @@ server <- function(input, output, session) {
                                      analysis %in% input$summarise_large_scale_characteristics_settings_analysis) |>
       dplyr::filter(cdm_name %in% input$summarise_large_scale_characteristics_grouping_cdm_name ) |>
       dplyr::filter(group_level  %in% input$summarise_large_scale_characteristics_grouping_cohort_name) |>
-      dplyr::filter(variable_level  %in% input$summarise_large_scale_characteristics_grouping_time_window)
-    CohortCharacteristics::tableLargeScaleCharacteristics(lsc_data |>
-                                                            arrange(desc(estimate_type),
-                                                                    desc(as.numeric(estimate_value)))
+      dplyr::filter(variable_level %in% input$summarise_large_scale_characteristics_grouping_time_window)
+    
+    levels <- lsc_data |>
+      dplyr::select("group_level") |>
+      dplyr::distinct() |>
+      dplyr::pull("group_level")
+    
+    if(all(sort(gsub(".*_","",levels)) == sort(rep(c("matched","sampled"),floor(length(levels)/2))))){
+      lsc_data <- lsc_data |>
+        dplyr::filter(grepl("_sampled",group_level)) |>
+        dplyr::arrange(group_level,
+                       desc(estimate_type),
+                       desc(as.numeric(estimate_value))) |>
+        rbind(lsc_data |> 
+                dplyr::filter(grepl("_matched",group_level)) |>
+                dplyr::arrange(group_level))
+    }else{
+      lsc_data <- lsc_data |>
+        dplyr::arrange(desc(estimate_type),
+                       desc(as.numeric(estimate_value)))
+    }
+    
+    lsc_data |>
+    CohortCharacteristics::tableLargeScaleCharacteristics(
                                                           # ,
                                                           # topConcepts = input$top_n
                                                           # ,
@@ -689,8 +709,7 @@ server <- function(input, output, session) {
       ) %>%
       tab_options(
         heading.align = "left"
-      )
-    
+      ) 
   })
   output$summarise_large_scale_characteristics_gt_0 <- gt::render_gt({
     createOutput0()

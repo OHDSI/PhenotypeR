@@ -56,10 +56,9 @@ if(!is.null(dataFiltered$cohort_code_use)){
   }
 }
 
-
-
 selected$summarise_characteristics_grouping_cohort_name <- selected$summarise_characteristics_grouping_cohort_name[1]
-selected$summarise_large_scale_characteristics_grouping_cohort_name <- selected$summarise_large_scale_characteristics_grouping_cohort_name[1]
+selected$summarise_large_scale_characteristics_grouping_cohort_name <- c(gsub("_matched","_sampled",selected$summarise_large_scale_characteristics_grouping_cohort_name[1]),
+                                                                         gsub("_sampled","_matched",selected$summarise_large_scale_characteristics_grouping_cohort_name[1]))
 
 choices$compare_large_scale_characteristics_grouping_cdm_name <- choices$summarise_large_scale_characteristics_grouping_cdm_name
 choices$compare_large_scale_characteristics_grouping_cohort <- choices$summarise_large_scale_characteristics_grouping_cohort_name
