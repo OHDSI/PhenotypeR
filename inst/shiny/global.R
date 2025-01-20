@@ -93,7 +93,7 @@ plotComparedLsc <- function(lsc, cohorts, imputeMissings, colour = NULL, facet =
 
 }
 
-plotAgeDistribution <- function(summarise_table, summarise_characteristics){
+plotAgeDensity <- function(summarise_table, summarise_characteristics){
   
   data <- summarise_table |>
     filter(variable_name == "age") |>
@@ -104,14 +104,15 @@ plotAgeDistribution <- function(summarise_table, summarise_characteristics){
     mutate(density_y = if_else(sex == "Female", -density_y, density_y)) 
   
   max_density <- max(data$density_y, na.rm = TRUE)
-  min_age <- (floor((data$density_x |> min())/5))*5
-  max_age <- (ceiling((data$density_x |> max())/5))*5
+  min_age <- (floor((data$density_x |> min(na.rm = TRUE))/5))*5
+  max_age <- (ceiling((data$density_x |> max(na.rm = TRUE))/5))*5
   
-  iqr <- dataFiltered$summarise_characteristics |>
+  iqr <- summarise_characteristics |>
     filter(variable_name == "Age",
            strata_level %in% c("Female","Male"),
            estimate_name %in% c("q25", "median", "q75")) |>
-    mutate(estimate_value = as.numeric(estimate_value)) |>
+    mutate(estimate_value_round = as.numeric(estimate_value)) |>
+    select(-"estimate_value") |>
     left_join(
       data |> 
         select("cdm_name", "strata_level" = "sex", "estimate_value" = "density_x", "density_y") |>
@@ -120,8 +121,8 @@ plotAgeDistribution <- function(summarise_table, summarise_characteristics){
         mutate(estimate_value_diff = estimate_value - estimate_value_round) |>
         group_by(strata_level, estimate_value_round) |>
         filter(estimate_value_diff == min(estimate_value_diff)) |>
-        select("cdm_name", "estimate_value" = "estimate_value_round", "density_y", "strata_level"),
-      by = c("estimate_value", "strata_level", "cdm_name")
+        select("cdm_name", "estimate_value_round" = "estimate_value_round", "estimate_value", "density_y", "strata_level"),
+      by = c("estimate_value_round", "strata_level", "cdm_name")
     ) |> 
     rename("sex" = "strata_level")
   
@@ -135,7 +136,7 @@ plotAgeDistribution <- function(summarise_table, summarise_characteristics){
                  linetype = 2, 
                  linewidth = 1) +
     scale_y_continuous(labels = function(x) scales::label_percent()(abs(x)),
-                       limits = c(-max_percentage*1.1, max_percentage*1.1)) +
+                       limits = c(-max_density*1.1, max_density*1.1)) +
     theme_bw() +
     theme(
       axis.text.x = element_text(),
@@ -149,8 +150,8 @@ plotAgeDistribution <- function(summarise_table, summarise_characteristics){
       panel.background = ggplot2::element_blank()
     ) +
     scale_x_continuous(labels = c(as.character(seq(min_age,max_age-5,5)), paste0(max_age,"+")),
-                       breaks = c(seq(min_age,max_age-5,5), max_age)) +
-    scale_fill_manual(values = list("Male" = "#4682B4","Female" = "#003153")) +
+                       breaks = c(seq(min_age, max_age-5,5), max_age)) +
+    scale_fill_manual(values = list("Male" = "#003153","Female" = "#4682B4")) +
     facet_wrap(c("cdm_name", "group_level")) +
     coord_flip(clip = "off") +
     labs(subtitle = "The solid line represents the median, while the dotted lines indicate the interquartile range.")
