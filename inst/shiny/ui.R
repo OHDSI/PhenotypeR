@@ -1480,6 +1480,79 @@ ui <- bslib::page_navbar(
             )
           ),
           bslib::nav_panel(
+            title = "Plot prevalence population",
+            bslib::card(
+              full_screen = TRUE,
+              bslib::card_header(
+                bslib::popover(
+                  shiny::icon("download"),
+                  shiny::numericInput(
+                    inputId = "prevalence_ggplot2_prev3_download_width",
+                    label = "Width",
+                    value = 15
+                  ),
+                  shiny::numericInput(
+                    inputId = "prevalence_ggplot2_prev3_download_height",
+                    label = "Height",
+                    value = 10
+                  ),
+                  shinyWidgets::pickerInput(
+                    inputId = "prevalence_ggplot2_prev3_download_units",
+                    label = "Units",
+                    selected = "cm",
+                    choices = c("px", "cm", "inch"),
+                    multiple = FALSE
+                  ),
+                  shiny::numericInput(
+                    inputId = "prevalence_ggplot2_prev3_download_dpi",
+                    label = "dpi",
+                    value = 300
+                  ),
+                  shiny::downloadButton(outputId = "prevalence_ggplot2_prev3_download", label = "Download")
+                ),
+                class = "text-end"
+              ),
+              bslib::layout_sidebar(
+                sidebar = bslib::sidebar(width = 400, open = "closed",
+                                         shinyWidgets::pickerInput(
+                                           inputId = "prevalence_ggplot2_prev3_x",
+                                           label = "x",
+                                           selected = "prevalence_start_date",
+                                           multiple = FALSE,
+                                           choices = c("cdm_name", "denominator_cohort_name", "prevalence_start_date", "prevalence_end_date", "analysis_outcome_washout", "analysis_repeated_events", "analysis_interval", "analysis_complete_database_intervals", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation", "denominator_start_date", "denominator_end_date", "denominator_time_at_risk", "denominator_target_cohort_name", "outcome_cohort_name", "variable_name", "variable_level", "estimate_name"),
+                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                         ),
+                                         shinyWidgets::pickerInput(
+                                           inputId = "prevalence_ggplot2_prev3_y",
+                                           label = "y",
+                                           selected = "denominator_count",
+                                           multiple = FALSE,
+                                           choices = c("denominator_count", "outcome_count"),
+                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                         ),
+                                         shinyWidgets::pickerInput(
+                                           inputId = "prevalence_ggplot2_prev3_facet",
+                                           label = "facet",
+                                           selected = NULL,
+                                           multiple = TRUE,
+                                           choices = c("cdm_name", "denominator_cohort_name", "prevalence_start_date", "prevalence_end_date", "analysis_outcome_washout", "analysis_repeated_events", "analysis_interval", "analysis_complete_database_intervals", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation", "denominator_start_date", "denominator_end_date", "denominator_time_at_risk", "denominator_target_cohort_name", "outcome_cohort_name", "variable_name", "variable_level", "estimate_name"),
+                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                         ),
+                                         shinyWidgets::pickerInput(
+                                           inputId = "prevalence_ggplot2_prev3_colour",
+                                           label = "colour",
+                                           selected = NULL,
+                                           multiple = TRUE,
+                                           choices = c("cdm_name", "denominator_cohort_name", "prevalence_start_date", "prevalence_end_date", "analysis_outcome_washout", "analysis_repeated_events", "analysis_interval", "analysis_complete_database_intervals", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation", "denominator_start_date", "denominator_end_date", "denominator_time_at_risk", "denominator_target_cohort_name", "outcome_cohort_name", "variable_name", "variable_level", "estimate_name"),
+                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                         ),
+                                         position = "right"
+                ),
+                plotly::plotlyOutput("prevalence_ggplot2_prev3")
+              )
+            )
+          ),
+          bslib::nav_panel(
             title = "Plot prevalence",
             bslib::card(
               full_screen = TRUE,
