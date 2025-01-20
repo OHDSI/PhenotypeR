@@ -705,7 +705,8 @@ server <- function(input, output, session) {
     ) %>%
       tab_header(
         title = "Large scale characteristics",
-        subtitle = "Summary of all records from clinical tables within a time window"
+        subtitle = "Summary of all records from clinical tables within a time window.
+                    The sampled cohort represents individuals from the original cohort, the matched cohort comprises individuals of similar age and sex from the database."
       ) %>%
       tab_options(
         heading.align = "left"
