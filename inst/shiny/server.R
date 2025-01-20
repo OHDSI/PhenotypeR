@@ -49,7 +49,9 @@ server <- function(input, output, session) {
     createOutput17()
   })
   output$summarise_omop_snapshot_gt_17_download <- shiny::downloadHandler(
-    filename = paste0("output_gt_summarise_omop_snapshot.", input$summarise_omop_snapshot_gt_17_download_type),
+    filename = function() {
+      paste0("output_gt_summarise_omop_snapshot.", input$summarise_omop_snapshot_gt_17_download_type)
+    },
     content = function(file) {
       gt::gtsave(data = createOutput17(), filename = file)
     }
@@ -141,7 +143,9 @@ server <- function(input, output, session) {
     createOutput15()
   })
   output$summarise_observation_period_gt_15_download <- shiny::downloadHandler(
-    filename = paste0("output_gt_summarise_observation_period.", input$summarise_observation_period_gt_15_download_type),
+    filename = function() {
+      paste0("output_gt_summarise_observation_period.", input$summarise_observation_period_gt_15_download_type)
+    },
     content = function(file) {
       obj <- createOutput15()
       gt::gtsave(data = obj, filename = file)
@@ -168,7 +172,7 @@ server <- function(input, output, session) {
     createOutput16()
   })
   output$summarise_observation_period_ggplot2_16_download <- shiny::downloadHandler(
-    filename = paste0("output_ggplot2_summarise_observation_period.", "png"),
+    filename = "output_ggplot2_summarise_observation_period.png",
     content = function(file) {
       obj <- createOutput16()
       ggplot2::ggsave(
@@ -188,7 +192,6 @@ server <- function(input, output, session) {
   getTidyDataCohortCodeUse <- shiny::reactive({
     res <- dataFiltered$cohort_code_use |>
       tidyData()
-    
     
     # pivot
     pivot <- input$cohort_code_use_tidy_pivot
@@ -248,7 +251,9 @@ server <- function(input, output, session) {
     createOutput12()
   })
   output$cohort_code_use_gt_12_download <- shiny::downloadHandler(
-    filename = paste0("output_gt_cohort_code_use.", input$cohort_code_use_gt_12_download_type),
+    filename = function() {
+      paste0("output_gt_cohort_code_use.", input$cohort_code_use_gt_12_download_type)
+    },
     content = function(file) {
       obj <- createOutput12()
       gt::gtsave(data = obj, filename = file)
@@ -293,6 +298,7 @@ server <- function(input, output, session) {
   })
   output$summarise_cohort_attrition_tidy_download <- shiny::downloadHandler(
     filename = "tidy_summarise_cohort_attrition.csv",
+    
     content = function(file) {
       getTidyDataSummariseCohortAttrition() |>
         readr::write_csv(file = file)
@@ -326,7 +332,9 @@ server <- function(input, output, session) {
     createOutput3()
   })
   output$summarise_cohort_attrition_gt_3_download <- shiny::downloadHandler(
-    filename = paste0("output_gt_summarise_cohort_attrition.", input$summarise_cohort_attrition_gt_3_download_type),
+    filename = function() {
+      paste0("output_gt_summarise_cohort_attrition.", input$summarise_cohort_attrition_gt_3_download_type)
+    },
     content = function(file) {
       obj <- createOutput3()
       gt::gtsave(data = obj, filename = file)
@@ -345,7 +353,7 @@ server <- function(input, output, session) {
     createOutput4()
   })
   output$summarise_cohort_attrition_grViz_4_download <- shiny::downloadHandler(
-    filename = paste0("output_grViz_summarise_cohort_attrition.", "png"),
+    filename = "output_grViz_summarise_cohort_attrition.png",
     content = function(file) {
       obj <- createOutput4()
       DiagrammeR::export_graph(
@@ -434,7 +442,9 @@ server <- function(input, output, session) {
     createOutput1()
   })
   output$summarise_cohort_overlap_gt_1_download <- shiny::downloadHandler(
-    filename = paste0("output_gt_summarise_cohort_overlap.", input$summarise_cohort_overlap_gt_1_download_type),
+    filename = function(){
+      paste0("output_gt_summarise_cohort_overlap.", input$summarise_cohort_overlap_gt_1_download_type)
+    },
     content = function(file) {
       obj <- createOutput1()
       gt::gtsave(data = obj, filename = file)
@@ -459,7 +469,7 @@ server <- function(input, output, session) {
     createOutput2()
   })
   output$summarise_cohort_overlap_ggplot2_2_download <- shiny::downloadHandler(
-    filename = paste0("output_ggplot2_summarise_cohort_overlap.", "png"),
+    filename = "output_ggplot2_summarise_cohort_overlap.png",
     content = function(file) {
       obj <- createOutput2()
       ggplot2::ggsave(
@@ -561,13 +571,15 @@ server <- function(input, output, session) {
     createOutput7()
   })
   output$summarise_characteristics_gt_7_download <- shiny::downloadHandler(
-    filename = paste0("output_gt_summarise_characteristics.", input$summarise_characteristics_gt_7_download_type),
+    filename = function() {
+      paste0("output_gt_summarise_characteristics.", input$summarise_characteristics_gt_7_download_type)
+    },
     content = function(file) {
       obj <- createOutput7()
       gt::gtsave(data = obj, filename = file)
     }
-  )
-  
+    )
+
   ## output 8 -----
   createOutput8 <- shiny::reactive({
     result <- dataFiltered$summarise_characteristics |>
@@ -588,7 +600,7 @@ server <- function(input, output, session) {
     createOutput8()
   })
   output$summarise_characteristics_ggplot2_8_download <- shiny::downloadHandler(
-    filename = paste0("output_ggplot2_summarise_characteristics.", "png"),
+    filename = "output_ggplot2_summarise_characteristics.png",
     content = function(file) {
       obj <- createOutput8()
       ggplot2::ggsave(
@@ -694,7 +706,9 @@ server <- function(input, output, session) {
     createOutput0()
   })
   output$summarise_large_scale_characteristics_gt_0_download <- shiny::downloadHandler(
-    filename = paste0("output_gt_summarise_large_scale_characteristics.", input$summarise_large_scale_characteristics_gt_0_download_type),
+    filename = function() {
+      paste0("output_gt_summarise_large_scale_characteristics.", input$summarise_large_scale_characteristics_gt_0_download_type)
+    },
     content = function(file) {
       obj <- createOutput0()
       gt::gtsave(data = obj, filename = file)
@@ -793,7 +807,9 @@ server <- function(input, output, session) {
     createOutput18()
   })
   output$incidence_gt_18_download <- shiny::downloadHandler(
-    filename = paste0("output_gt_incidence.", input$incidence_gt_18_download_type),
+    filename = function() {
+      paste0("output_gt_incidence.", input$incidence_gt_18_download_type)
+    },
     content = function(file) {
       obj <- createOutput18()
       gt::gtsave(data = obj, filename = file)
@@ -826,7 +842,7 @@ server <- function(input, output, session) {
     createOutput19()
   })
   output$incidence_ggplot2_19_download <- shiny::downloadHandler(
-    filename = paste0("output_ggplot2_incidence.", "png"),
+    filename = "output_ggplot2_incidence.png",
     content = function(file) {
       obj <- createOutput19()
       ggplot2::ggsave(
@@ -916,7 +932,9 @@ server <- function(input, output, session) {
     createOutput22()
   })
   output$incidence_attrition_gt_22_download <- shiny::downloadHandler(
-    filename = paste0("output_gt_incidence_attrition.", input$incidence_attrition_gt_22_download_type),
+    filename = function() {
+      paste0("output_gt_incidence_attrition.", input$incidence_attrition_gt_22_download_type)
+    },
     content = function(file) {
       obj <- createOutput22()
       gt::gtsave(data = obj, filename = file)
@@ -1013,7 +1031,9 @@ server <- function(input, output, session) {
     createOutputprev1()
   })
   output$prevalence_gt_prev1_download <- shiny::downloadHandler(
-    filename = paste0("output_gt_prevalence.", input$prevalence_gt_prev1_download_type),
+    filename = function() {
+      paste0("output_gt_prevalence.", input$prevalence_gt_prev1_download_type)
+    },
     content = function(file) {
       obj <- createOutputprev1()
       gt::gtsave(data = obj, filename = file)
@@ -1046,7 +1066,7 @@ server <- function(input, output, session) {
     createOutputprev2()
   })
   output$prevalence_ggplot2_prev2_download <- shiny::downloadHandler(
-    filename = paste0("output_ggplot2_prevalence.", "png"),
+    filename = "output_ggplot2_prevalence.png",
     content = function(file) {
       obj <- createOutputprev2()
       ggplot2::ggsave(
@@ -1225,7 +1245,9 @@ server <- function(input, output, session) {
     createOutput99()
   })
   output$orphan_gt_99_download <- shiny::downloadHandler(
-    filename = paste0("output_gt_orphan.", input$orphan_gt_99_download_type),
+    filename = function() {
+      paste0("output_gt_orphan.", input$orphan_gt_99_download_type)
+    },
     content = function(file) {
       obj <- createOutput99()
       gt::gtsave(data = obj, filename = file)
@@ -1260,7 +1282,9 @@ server <- function(input, output, session) {
     createOutputUnmapped()
   })
   output$unmapped_formatted_download <- shiny::downloadHandler(
-    filename = paste0("output_gt_orphan.", input$unmapped_formatted_download_type),
+    filename = function() {
+      paste0("output_gt_orphan.", input$unmapped_formatted_download_type)
+      },
     content = function(file) {
       obj <- createOutputUnmapped()
       gt::gtsave(data = obj, filename = file)
@@ -1290,7 +1314,7 @@ server <- function(input, output, session) {
   })
   
   output$plot_age_pyramid_download <- shiny::downloadHandler(
-    filename = paste0("output_ggplot2_age_pyramid.", "png"),
+    filename = "output_ggplot2_age_pyramid.png",
     content = function(file) {
       obj <- createAgePyramid()
       ggplot2::ggsave(

@@ -90,7 +90,6 @@ plotComparedLsc <- function(lsc, cohorts, imputeMissings, colour = NULL, facet =
     theme_bw()
     
   ggplotly(plot, tooltip = "Details")
-
 }
 
 plotAgeDensity <- function(summarise_table, summarise_characteristics){
