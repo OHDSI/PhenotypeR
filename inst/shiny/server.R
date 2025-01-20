@@ -705,50 +705,10 @@ server <- function(input, output, session) {
   
   
   # incidence -----
-  ## tidy incidence -----
-  getTidyDataIncidence <- shiny::reactive({
-    res <- dataFiltered$incidence |>
-      filterData("incidence", input) |>
-      tidyData()
-    
-    # columns to eliminate
-    colsEliminate <- colnames(res)
-    colsEliminate <- colsEliminate[!colsEliminate %in% c(
-      input$incidence_tidy_columns, "variable_name", "variable_level",
-      "estimate_name", "estimate_type", "estimate_value"
-    )]
-    
-    # pivot
-    pivot <- input$incidence_tidy_pivot
-    if (pivot != "none") {
-      vars <- switch(pivot,
-                     "estimates" = "estimate_name",
-                     "estimates and variables" = c("variable_name", "variable_level", "estimate_name")
-      )
-      res <- res |>
-        visOmopResults::pivotEstimates(pivotEstimatesBy = vars)
-    }
-    
-    res |>
-      dplyr::select(!dplyr::all_of(colsEliminate))
-  })
-  output$incidence_tidy <- DT::renderDT({
-    DT::datatable(
-      getTidyDataIncidence(),
-      options = list(scrollX = TRUE),
-      rownames = FALSE
-    )
-  })
-  output$incidence_tidy_download <- shiny::downloadHandler(
-    filename = "tidy_incidence.csv",
-    content = function(file) {
-      getTidyDataIncidence() |>
-        readr::write_csv(file = file)
-    }
-  )
   ## output incidence -----
   incidenceFiltered <- shiny::reactive({
-    dataFiltered$incidence |>
+    
+   dataFiltered$incidence |>
       filter(cdm_name %in%
                input$incidence_grouping_cdm_name) |>
       filterGroup(outcome_cohort_name %in%
@@ -773,13 +733,13 @@ server <- function(input, output, session) {
     if (nrow(result) == 0) {
       validate("No results found for selected inputs")
     }
-    
+
     IncidencePrevalence::tableIncidence(
       result,
       # header = input$incidence_gt_18_header,
       groupColumn = c("cdm_name", "outcome_cohort_name"),
       hide = "denominator_cohort_name",
-      settingsColumns = c("denominator_age_group",
+      settingsColumn = c("denominator_age_group",
                           "denominator_sex",
                           "outcome_cohort_name")
     ) %>%
@@ -813,7 +773,7 @@ server <- function(input, output, session) {
     if (nrow(result) == 0) {
       validate("No results found for selected inputs")
     }
-    
+
     IncidencePrevalence::plotIncidence(
       result,
       x = input$incidence_ggplot2_19_x,
@@ -842,91 +802,40 @@ server <- function(input, output, session) {
     }
   )
   
+  # Incidence population -----
+  createOutput20 <- shiny::reactive({
+    plotIncidencePopulation(x = input$incidence_ggplot2_20_x,
+                            y =  input$incidence_ggplot2_20_y,
+                            result = incidenceFiltered(), 
+                            facet  = input$incidence_ggplot2_20_facet,
+                            colour = input$incidence_ggplot2_20_colour
+                            
+    ) |>
+      plotly::ggplotly()
+  })
   
-  # incidence_attrition -----
-  ## tidy incidence_attrition -----
-  getTidyDataIncidenceAttrition <- shiny::reactive({
-    res <- dataFiltered$incidence |>
-      filterData("incidence_attrition", input) |>
-      tidyData()
-    
-    # columns to eliminate
-    colsEliminate <- colnames(res)
-    colsEliminate <- colsEliminate[!colsEliminate %in% c(
-      input$incidence_attrition_tidy_columns, "variable_name", "variable_level",
-      "estimate_name", "estimate_type", "estimate_value"
-    )]
-    
-    # pivot
-    pivot <- input$incidence_attrition_tidy_pivot
-    if (pivot != "none") {
-      vars <- switch(pivot,
-                     "estimates" = "estimate_name",
-                     "estimates and variables" = c("variable_name", "variable_level", "estimate_name")
-      )
-      res <- res |>
-        visOmopResults::pivotEstimates(pivotEstimatesBy = vars)
-    }
-    
-    res |>
-      dplyr::select(!dplyr::all_of(colsEliminate))
+  output$incidence_ggplot2_20 <- plotly::renderPlotly({
+    createOutput20()
   })
-  output$incidence_attrition_tidy <- DT::renderDT({
-    DT::datatable(
-      getTidyDataIncidenceAttrition(),
-      options = list(scrollX = TRUE),
-      rownames = FALSE
-    )
-  })
-  output$incidence_attrition_tidy_download <- shiny::downloadHandler(
-    filename = "tidy_incidence_attrition.csv",
+  
+  output$incidence_ggplot2_20_download <- shiny::downloadHandler(
+    filename = paste0("output_ggplot2_incidence_population.", "png"),
     content = function(file) {
-      getTidyDataIncidenceAttrition() |>
-        readr::write_csv(file = file)
-    }
-  )
-  ## output incidence_attrition -----
-  ## output 22 -----
-  createOutput22 <- shiny::reactive({
-    
-    if (is.null(dataFiltered$incidence_attrition)) {
-      validate("No incidence attrition in results")
-    }
-    
-    result <- dataFiltered$incidence_attrition |>
-      filterData("incidence_attrition", input)
-    
-    if (nrow(result) == 0) {
-      validate("No results found for selected inputs")
-    }
-    
-    IncidencePrevalence::tableIncidenceAttrition(
-      result,
-      header = input$incidence_attrition_gt_22_header,
-      groupColumn = input$incidence_attrition_gt_22_groupColumn,
-      hide = input$incidence_attrition_gt_22_hide
-    )%>%
-      tab_header(
-        title = "Incidence attrition",
-        subtitle = "Subtitle"
-      ) %>%
-      tab_options(
-        heading.align = "left"
+      obj <- createOutput20()
+      ggplot2::ggsave(
+        filename = file,
+        plot = obj,
+        width = as.numeric(input$incidence_ggplot2_20_download_width),
+        height = as.numeric(input$incidence_ggplot2_20_download_height),
+        units = input$incidence_ggplot2_20_download_units,
+        dpi = as.numeric(input$incidence_ggplot2_20_download_dpi)
       )
-  })
-  output$incidence_attrition_gt_22 <- gt::render_gt({
-    createOutput22()
-  })
-  output$incidence_attrition_gt_22_download <- shiny::downloadHandler(
-    filename = paste0("output_gt_incidence_attrition.", input$incidence_attrition_gt_22_download_type),
-    content = function(file) {
-      obj <- createOutput22()
-      gt::gtsave(data = obj, filename = file)
     }
   )
   
   # prevalence -----
   prevalenceFiltered <- shiny::reactive({
+
     dataFiltered$prevalence |>
       filter(cdm_name %in%
                input$prevalence_grouping_cdm_name) |>
@@ -935,8 +844,8 @@ server <- function(input, output, session) {
       filterSettings(denominator_age_group %in%
                        input$prevalence_settings_denominator_age_group,
                      denominator_sex %in%
-                       input$prevalence_settings_denominator_sex,
-                     analysis_interval %in%
+                       input$prevalence_settings_denominator_sex) |>
+      filterAdditional(analysis_interval %in%
                        input$prevalence_settings_analysis_interval)
   })
   
@@ -999,7 +908,7 @@ server <- function(input, output, session) {
       # header = input$prevalence_gt_prev1_header,
       groupColumn = c("cdm_name", "outcome_cohort_name"),
       hide = "denominator_cohort_name",
-      settingsColumns = c("denominator_age_group",
+      settingsColumn = c("denominator_age_group",
                           "denominator_sex",
                           "outcome_cohort_name")
     ) %>%
@@ -1074,7 +983,7 @@ server <- function(input, output, session) {
       filter(variable_level %in% input$compare_large_scale_characteristics_grouping_time_window,
              cdm_name %in% input$compare_large_scale_characteristics_grouping_cdm_name) |>
       filterSettings(table_name %in% input$compare_large_scale_characteristics_grouping_domain,
-                     analysis %in% input$compare_large_scale_characteristics_settings_analysis)
+                     analysis %in% input$compare_large_scale_characteristics_settings_analysis) 
     
   })
   

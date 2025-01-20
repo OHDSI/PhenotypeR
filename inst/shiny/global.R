@@ -25,7 +25,7 @@ rlang::check_installed("omopgenerics", version = "0.4")
 rlang::check_installed("visOmopResults", version = "0.5.0")
 rlang::check_installed("CodelistGenerator", version = "3.3.1")
 rlang::check_installed("CohortCharacteristics", version = "0.4.0")
-rlang::check_installed("IncidencePrevalence", version = "0.9.0")
+rlang::check_installed("IncidencePrevalence", version = "1.0.0")
 rlang::check_installed("OmopSketch", version = "0.1.2")
 
 source(here::here("scripts", "functions.R"))
@@ -43,8 +43,7 @@ if(file.exists(here::here("data", "appData.RData"))){
 plotComparedLsc <- function(lsc, cohorts, imputeMissings, colour = NULL, facet = NULL){
 
   plot_data <- lsc |>
-    filter(group_level %in% c(cohorts
-    )) |>
+    filter(group_level %in% c(cohorts)) |>
     filter(estimate_name == "percentage") |>
     omopgenerics::addSettings() |>
     select(database = cdm_name,
