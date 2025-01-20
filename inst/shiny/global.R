@@ -28,7 +28,7 @@ rlang::check_installed("visOmopResults", version = "0.5.0")
 rlang::check_installed("CodelistGenerator", version = "3.3.1")
 rlang::check_installed("CohortCharacteristics", version = "0.4.0")
 rlang::check_installed("IncidencePrevalence", version = "1.0.0")
-rlang::check_installed("OmopSketch", version = "0.1.2")
+rlang::check_installed("OmopSketch", version = "0.2.1")
 
 source(here::here("scripts", "functions.R"))
 options(chromote.headless = "new")
