@@ -7,7 +7,7 @@ articles:
   a03_CohortDiagnostics: a03_CohortDiagnostics.html
   a04_MatchedDiagnostics: a04_MatchedDiagnostics.html
   a05_PopulationDiagnostics: a05_PopulationDiagnostics.html
-last_built: 2025-01-20T15:01Z
+last_built: 2025-01-20T15:11Z
 urls:
   reference: https://ohdsi.github.io/PhenotypeR/reference
   article: https://ohdsi.github.io/PhenotypeR/articles
