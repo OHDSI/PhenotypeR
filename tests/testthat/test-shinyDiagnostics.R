@@ -10,7 +10,7 @@ test_that("basic working example with one cohort", {
 
   # with results
   cdm_local <- omock::mockCdmReference() |>
-    omock::mockPerson(nPerson = 100) |>
+    omock::mockPerson(nPerson = 1000) |>
     omock::mockObservationPeriod() |>
     omock::mockConditionOccurrence() |>
     omock::mockDrugExposure() |>
@@ -18,13 +18,13 @@ test_that("basic working example with one cohort", {
     omock::mockMeasurement() |>
     omock::mockVisitOccurrence() |>
     omock::mockProcedureOccurrence() |>
-    omock::mockCohort(name = "my_cohort")
+    omock::mockCohort(name = "my_cohort", numberCohorts = 2)
 
 
   db <- DBI::dbConnect(duckdb::duckdb())
   cdm <- CDMConnector::copyCdmTo(con = db, cdm = cdm_local,
                                  schema ="main", overwrite = TRUE)
-  my_result_code_diag <- cohortDiagnostics(cdm$my_cohort )
+  my_result_code_diag <- cohortDiagnostics(cdm$my_cohort)
   expect_no_error(shinyDiagnostics(my_result_code_diag,
                                    directory = tempdir()))
 
