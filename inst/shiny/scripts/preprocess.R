@@ -56,6 +56,8 @@ if(!is.null(dataFiltered$cohort_code_use)){
   }
 }
 
+selected$achilles_code_use_grouping_codelist_name <- selected$achilles_code_use_grouping_codelist_name[1]
+
 selected$summarise_characteristics_grouping_cohort_name <- selected$summarise_characteristics_grouping_cohort_name[1]
 selected$summarise_large_scale_characteristics_grouping_cohort_name <- c(gsub("_matched","_sampled",selected$summarise_large_scale_characteristics_grouping_cohort_name[1]),
                                                                          gsub("_sampled","_matched",selected$summarise_large_scale_characteristics_grouping_cohort_name[1]))
@@ -117,8 +119,8 @@ selected$incidence_settings_denominator_sex <- "Both"
 
 choices$incidence_settings_denominator_age_group <- c(
   "0 to 150",
-  "0 to 17", 
-  "18 to 64", 
+  "0 to 17",
+  "18 to 64",
   "65 to 150"
 )
 selected$incidence_settings_denominator_age_group <- c("0 to 150")
@@ -136,8 +138,8 @@ selected$prevalence_grouping_outcome_cohort_name <- selected$prevalence_grouping
 
 choices$prevalence_settings_denominator_age_group <- c(
   "0 to 150",
-  "0 to 17", 
-  "18 to 64", 
+  "0 to 17",
+  "18 to 64",
   "65 to 150"
 )
 selected$prevalence_settings_denominator_age_group <- c("0 to 150")
@@ -168,12 +170,12 @@ choices <- purrr::map(choices, sort)
 selected <- purrr::map(selected, sort)
 
 choices$summarise_large_scale_characteristics_grouping_time_window <- c(
-  "-inf to -1",  
+  "-inf to -1",
   "-inf to -366",
-  "-365 to -31", 
+  "-365 to -31",
   "-30 to -1",
-  "0 to 0", 
-  "1 to 30",     
+  "0 to 0",
+  "1 to 30",
   "1 to inf",
   "31 to 365",
   "366 to inf"
@@ -181,18 +183,17 @@ choices$summarise_large_scale_characteristics_grouping_time_window <- c(
 selected$summarise_large_scale_characteristics_grouping_time_window <-choices$summarise_large_scale_characteristics_grouping_time_window[1]
 
 choices$compare_large_scale_characteristics_grouping_time_window <- c(
-  "-inf to -1",  
+  "-inf to -1",
   "-inf to -366",
-  "-365 to -31", 
+  "-365 to -31",
   "-30 to -1",
-  "0 to 0", 
-  "1 to 30",     
+  "0 to 0",
+  "1 to 30",
   "1 to inf",
   "31 to 365",
   "366 to inf"
 )
 selected$compare_large_scale_characteristics_grouping_time_window <- choices$compare_large_scale_characteristics_grouping_time_window[1]
-
 
 
 cli::cli_inform("Saving data for shiny")
