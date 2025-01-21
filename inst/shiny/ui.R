@@ -1010,6 +1010,14 @@ ui <- bslib::page_navbar(
                                        selected = NULL,
                                        multiple = TRUE,
                                        options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                     ),
+                                     shinyWidgets::pickerInput(
+                                       inputId = "incidence_settings_denominator_days_prior_observation",
+                                       label = "Denominator days prior observation",
+                                       choices = NULL,
+                                       selected = NULL,
+                                       multiple = TRUE,
+                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                      )
                                    )
                                  )
