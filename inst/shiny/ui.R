@@ -492,12 +492,27 @@ ui <- bslib::page_navbar(
               bslib::card_header(
                 bslib::popover(
                   shiny::icon("download"),
+                  shiny::numericInput(
+                    inputId = "plot_age_pyramid_download_width",
+                    label = "Width",
+                    value = 15
+                  ),
+                  shiny::numericInput(
+                    inputId = "plot_age_pyramid_download_height",
+                    label = "Height",
+                    value = 10
+                  ),
                   shinyWidgets::pickerInput(
-                    inputId = "plot_age_pyramid_download",
-                    label = "File type",
-                    selected = "png",
-                    choices = c("docx", "png", "pdf", "html"),
+                    inputId = "plot_age_pyramid_download_units",
+                    label = "Units",
+                    selected = "cm",
+                    choices = c("px", "cm", "inch"),
                     multiple = FALSE
+                  ),
+                  shiny::numericInput(
+                    inputId = "plot_age_pyramid_download_dpi",
+                    label = "dpi",
+                    value = 300
                   ),
                   shiny::downloadButton(outputId = "plot_age_pyramid_download", label = "Download")
                 ),
@@ -699,6 +714,13 @@ ui <- bslib::page_navbar(
             title = "Table",
             bslib::card(
               full_screen = TRUE,
+              bslib::card_header(
+                bslib::popover(
+                  shiny::icon("download"),
+                  shiny::downloadButton(outputId = "compare_large_scale_characteristics_tidy_download", label = "Download csv")
+                ),
+                class = "text-end"
+              ),
               DT::DTOutput("gt_compare_lsc") |> withSpinner()
             )
           ),
@@ -706,6 +728,35 @@ ui <- bslib::page_navbar(
             title = "Plot",
             bslib::card(
               full_screen = TRUE,
+              bslib::card_header(
+                bslib::popover(
+                  shiny::icon("download"),
+                  shiny::numericInput(
+                    inputId = "plot_compare_large_scale_characteristics_download_width",
+                    label = "Width",
+                    value = 15
+                  ),
+                  shiny::numericInput(
+                    inputId = "plot_compare_large_scale_characteristics_download_height",
+                    label = "Height",
+                    value = 10
+                  ),
+                  shinyWidgets::pickerInput(
+                    inputId = "plot_compare_large_scale_characteristics_download_units",
+                    label = "Units",
+                    selected = "cm",
+                    choices = c("px", "cm", "inch"),
+                    multiple = FALSE
+                  ),
+                  shiny::numericInput(
+                    inputId = "plot_compare_large_scale_characteristics_download_dpi",
+                    label = "dpi",
+                    value = 300
+                  ),
+                  shiny::downloadButton(outputId = "plot_compare_large_scale_characteristics_download", label = "Download")
+                ),
+                class = "text-end"
+              ),
               bslib::layout_sidebar(
                 sidebar = bslib::sidebar(width = 400, open = "closed",
                                          shinyWidgets::pickerInput(
@@ -1021,28 +1072,28 @@ ui <- bslib::page_navbar(
                 bslib::popover(
                   shiny::icon("download"),
                   shiny::numericInput(
-                    inputId = "incidence_ggplot2_20_download_width",
+                    inputId = "incidence_population_ggplot2_20_download_width",
                     label = "Width",
                     value = 15
                   ),
                   shiny::numericInput(
-                    inputId = "incidence_ggplot2_20_download_height",
+                    inputId = "incidence_population_ggplot2_20_download_height",
                     label = "Height",
                     value = 10
                   ),
                   shinyWidgets::pickerInput(
-                    inputId = "incidence_ggplot2_20_download_units",
+                    inputId = "incidence_population_ggplot2_20_download_units",
                     label = "Units",
                     selected = "cm",
                     choices = c("px", "cm", "inch"),
                     multiple = FALSE
                   ),
                   shiny::numericInput(
-                    inputId = "incidence_ggplot2_20_download_dpi",
+                    inputId = "incidence_population_ggplot2_20_download_dpi",
                     label = "dpi",
                     value = 300
                   ),
-                  shiny::downloadButton(outputId = "incidence_ggplot2_20_download", label = "Download")
+                  shiny::downloadButton(outputId = "incidence_population_ggplot2_20_download", label = "Download")
                 ),
                 class = "text-end"
               ),
@@ -1487,35 +1538,35 @@ ui <- bslib::page_navbar(
                 bslib::popover(
                   shiny::icon("download"),
                   shiny::numericInput(
-                    inputId = "prevalence_ggplot2_prev3_download_width",
+                    inputId = "prevalence_population_ggplot2_prev3_download_width",
                     label = "Width",
                     value = 15
                   ),
                   shiny::numericInput(
-                    inputId = "prevalence_ggplot2_prev3_download_height",
+                    inputId = "prevalence_population_ggplot2_prev3_download_height",
                     label = "Height",
                     value = 10
                   ),
                   shinyWidgets::pickerInput(
-                    inputId = "prevalence_ggplot2_prev3_download_units",
+                    inputId = "prevalence_population_ggplot2_prev3_download_units",
                     label = "Units",
                     selected = "cm",
                     choices = c("px", "cm", "inch"),
                     multiple = FALSE
                   ),
                   shiny::numericInput(
-                    inputId = "prevalence_ggplot2_prev3_download_dpi",
+                    inputId = "prevalence_population_ggplot2_prev3_download_dpi",
                     label = "dpi",
                     value = 300
                   ),
-                  shiny::downloadButton(outputId = "prevalence_ggplot2_prev3_download", label = "Download")
+                  shiny::downloadButton(outputId = "prevalence_population_ggplot2_prev3_download", label = "Download")
                 ),
                 class = "text-end"
               ),
               bslib::layout_sidebar(
                 sidebar = bslib::sidebar(width = 400, open = "closed",
                                          shinyWidgets::pickerInput(
-                                           inputId = "prevalence_ggplot2_prev3_x",
+                                           inputId = "prevalence_population_ggplot2_prev3_x",
                                            label = "x",
                                            selected = "prevalence_start_date",
                                            multiple = FALSE,
@@ -1523,7 +1574,7 @@ ui <- bslib::page_navbar(
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                          ),
                                          shinyWidgets::pickerInput(
-                                           inputId = "prevalence_ggplot2_prev3_y",
+                                           inputId = "prevalence_population_ggplot2_prev3_y",
                                            label = "y",
                                            selected = "denominator_count",
                                            multiple = FALSE,
@@ -1531,7 +1582,7 @@ ui <- bslib::page_navbar(
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                          ),
                                          shinyWidgets::pickerInput(
-                                           inputId = "prevalence_ggplot2_prev3_facet",
+                                           inputId = "prevalence_population_ggplot2_prev3_facet",
                                            label = "facet",
                                            selected = NULL,
                                            multiple = TRUE,
@@ -1539,7 +1590,7 @@ ui <- bslib::page_navbar(
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                          ),
                                          shinyWidgets::pickerInput(
-                                           inputId = "prevalence_ggplot2_prev3_colour",
+                                           inputId = "prevalence_population_ggplot2_prev3_colour",
                                            label = "colour",
                                            selected = NULL,
                                            multiple = TRUE,
@@ -1548,7 +1599,7 @@ ui <- bslib::page_navbar(
                                          ),
                                          position = "right"
                 ),
-                plotly::plotlyOutput("prevalence_ggplot2_prev3")
+                plotly::plotlyOutput("prevalence_population_ggplot2_prev3")
               )
             )
           ),

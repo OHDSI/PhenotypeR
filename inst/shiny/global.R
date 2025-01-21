@@ -19,6 +19,8 @@ library(shinyWidgets)
 library(plotly)
 library(tidyr)
 library(patchwork)
+library(webshot2)
+library(chromote)
 
 # ensure minimum versions
 rlang::check_installed("omopgenerics", version = "0.4")
@@ -26,9 +28,10 @@ rlang::check_installed("visOmopResults", version = "0.5.0")
 rlang::check_installed("CodelistGenerator", version = "3.3.1")
 rlang::check_installed("CohortCharacteristics", version = "0.4.0")
 rlang::check_installed("IncidencePrevalence", version = "1.0.0")
-rlang::check_installed("OmopSketch", version = "0.1.2")
+rlang::check_installed("OmopSketch", version = "0.2.1")
 
 source(here::here("scripts", "functions.R"))
+options(chromote.headless = "new")
 
 if(file.exists(here::here("data", "appData.RData"))){
   cli::cli_inform("Loading existing processed data")
@@ -84,9 +87,8 @@ plotComparedLsc <- function(lsc, cohorts, imputeMissings, colour = NULL, facet =
     geom_abline(slope = 1, intercept = 0,
                 color = "red", linetype = "dashed") +
     theme_bw()
-    
-  ggplotly(plot, tooltip = "Details")
-
+  
+  return(plot)
 }
 
 plotAgeDensity <- function(summarise_table, summarise_characteristics){
