@@ -546,7 +546,7 @@ ui <- bslib::page_navbar(
                                        label = "Cohort name",
                                        choices = NULL,
                                        selected = NULL,
-                                       multiple = FALSE,
+                                       multiple = TRUE,
                                        options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                      ),
                                      shinyWidgets::pickerInput(
