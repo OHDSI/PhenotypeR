@@ -748,7 +748,9 @@ server <- function(input, output, session) {
       filterSettings(denominator_age_group %in%
                        input$incidence_settings_denominator_age_group,
                      denominator_sex %in%
-                       input$incidence_settings_denominator_sex) |>
+                       input$incidence_settings_denominator_sex,
+                     denominator_days_prior_observation %in%
+                     input$incidence_settings_denominator_days_prior_observation) |>
       filterAdditional(analysis_interval %in%
                          input$incidence_settings_analysis_interval)
   })
@@ -765,7 +767,6 @@ server <- function(input, output, session) {
     if (nrow(result) == 0) {
       validate("No results found for selected inputs")
     }
-
     IncidencePrevalence::tableIncidence(
       result,
       # header = input$incidence_gt_18_header,
@@ -773,6 +774,7 @@ server <- function(input, output, session) {
       hide = "denominator_cohort_name",
       settingsColumn = c("denominator_age_group",
                           "denominator_sex",
+                          "denominator_days_prior_observation",
                           "outcome_cohort_name")
     ) %>%
       tab_header(

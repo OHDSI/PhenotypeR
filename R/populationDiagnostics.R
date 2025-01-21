@@ -57,7 +57,7 @@ populationDiagnostics <- function(cohort,
                     c(18, 64),
                     c(65, 150)),
     sex = c("Both", "Male", "Female"),
-    daysPriorObservation = 0,
+    daysPriorObservation = c(0, 365),
     requirementInteractions = FALSE,
     cohortDateRange = populationDateRange
   )
