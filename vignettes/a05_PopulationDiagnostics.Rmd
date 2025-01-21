@@ -1,5 +1,5 @@
-d---
-title: "a05_PopulationDiagnostics"
+---
+title: "PopulationDiagnostics"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{a05_PopulationDiagnostics}
@@ -14,6 +14,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r}
 library(PhenotypeR)
 ```
