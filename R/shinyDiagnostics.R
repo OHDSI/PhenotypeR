@@ -51,6 +51,7 @@ shinyDiagnostics <- function(result,
                                        path = file.path(directory, "shiny", "data", "raw"))
   # shiny::shinyAppDir(file.path(directory, "shiny"))
   if (isTRUE(open)) {
+  rlang::check_installed("usethis")
   usethis::proj_activate(path = file.path(directory,"shiny"))
   }
 
