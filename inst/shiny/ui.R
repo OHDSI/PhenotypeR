@@ -4,13 +4,13 @@
 ui <- bslib::page_navbar(
   theme = bs_theme(bootswatch = "pulse"),
   #  zephyr
-  
+
   title = "PhenotypeR",
   bslib::nav_panel(
     title = "Background",
     icon = shiny::icon("disease"),
     shiny::includeMarkdown(path = "background.md")
-    
+
   ),
   # Database diagnostics -----
   bslib::nav_menu(
@@ -147,7 +147,7 @@ ui <- bslib::page_navbar(
         )
       )
     ),
-    
+
     ## unmapped concepts -----
     # bslib::nav_panel(
     #   title = "Unmapped concepts",
@@ -225,7 +225,7 @@ ui <- bslib::page_navbar(
     #     )
     #   )
     # ),
-    
+
     ## Orphan codes -----
     bslib::nav_panel(
       title = "Orphan codes",
@@ -297,20 +297,20 @@ ui <- bslib::page_navbar(
           ),
           gt::gt_output("orphan_gt_99") |> withSpinner()
         )
-        
-        
+
+
       ))
-    
+
   ),
-  
+
   # Cohort diagnostics -----
-  
+
   bslib::nav_menu(
     title = "Cohort diagnostics",
     icon = shiny::icon("list"),
-    
+
     ## Cohort code use -----
-    
+
     bslib::nav_panel(
       title = "Cohort code use",
       icon = shiny::icon("chart-column"),
@@ -709,7 +709,7 @@ ui <- bslib::page_navbar(
                                  )
         ),
         bslib::navset_card_tab(
-          
+
           bslib::nav_panel(
             title = "Table",
             bslib::card(
@@ -957,7 +957,7 @@ ui <- bslib::page_navbar(
       )
     )
   ),
-  
+
   # Population diagnostics -----
   bslib::nav_menu(
     title = "Population diagnostics",
@@ -1435,7 +1435,7 @@ ui <- bslib::page_navbar(
     #     )
     #   )
     # )
-    
+
     ## Prevalence -----
     bslib::nav_panel(
       title = "Prevalence",
@@ -1480,6 +1480,14 @@ ui <- bslib::page_navbar(
                                      shinyWidgets::pickerInput(
                                        inputId = "prevalence_settings_denominator_sex",
                                        label = "Denominator sex",
+                                       choices = NULL,
+                                       selected = NULL,
+                                       multiple = TRUE,
+                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                     ),
+                                     shinyWidgets::pickerInput(
+                                       inputId = "prevalence_settings_denominator_days_prior_observation",
+                                       label = "Denominator days prior observation",
                                        choices = NULL,
                                        selected = NULL,
                                        multiple = TRUE,
@@ -1901,8 +1909,8 @@ ui <- bslib::page_navbar(
     #     )
     #   )
     # )
-    
-    
+
+
   ),
   # end ------
   bslib::nav_spacer(),
