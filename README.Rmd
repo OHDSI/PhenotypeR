@@ -72,9 +72,9 @@ remotes::install_github("OHDSI/PhenotypeR")
 
 ## Example usage
 
-To illustrate the functionalities of PhenotypeR, let's create two
-cohorts using the Eunomia dataset. We'll first load the required
-packages and create the cdm reference for the data.
+To illustrate the functionalities of PhenotypeR, let's create a cohort
+using the Eunomia dataset. We'll first load the required packages and
+create the cdm reference for the data.
 
 ```{r, message=FALSE, warning=FALSE}
 
@@ -99,8 +99,8 @@ cdm <- cdmFromCon(con = con,
 # Create a code lists
 cond_codes <- list("gastrointestinal_hemorrhage" = c(192671, 4338544, 4100660, 4307661),
                    "asthma" = c(317009, 257581))
-# Instantiate cohorts with CohortConstructor
 
+# Instantiate cohorts with CohortConstructor
 cdm$conditions <- conceptCohort(cdm = cdm,
                                 conceptSet = cond_codes, 
                                 exit = "event_end_date",
@@ -108,10 +108,12 @@ cdm$conditions <- conceptCohort(cdm = cdm,
                                 name = "conditions")
 ```
 
+We can easily run all the analyses explained above (**database
+diagnostics**, **codelist diagnostics**, **cohort diagnostics**,
+**matched diagnostics**, and **population diagnostics**) using
+`phenotypeDiagnostics()`:
 
-We can easily run all the analyses explained above (*database diagnostics*, *codelist diagnostics*, *cohort diagnostics*, *matched diagnostics*, and *population diagnostics*) using `phenotypeDiagnostics()`: 
-
-```{r, message = TRUE}
+```{r, message = FALSE}
 
 result <- phenotypeDiagnostics(cdm$conditions)
 
@@ -132,7 +134,9 @@ shinyDiagnostics(result = result, directory = tempdir())
 
 ```
 
-See the shiny app generated from the example cohort in (here)[https://dpa-pde-oxford.shinyapps.io/Readme_PhenotypeR/].
+See the shiny app generated from the example cohort in
+[here](https://dpa-pde-oxford.shinyapps.io/Readme_PhenotypeR/).
 
-## More information
-To see more details regarding each one of the analyses, please refer to the package vignettes.
+### More information
+To see more details regarding each one of the analyses, please refer to
+the package vignettes.
