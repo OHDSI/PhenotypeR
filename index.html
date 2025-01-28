@@ -90,125 +90,79 @@
 <div class="section level2">
 <h2 id="example-usage">Example usage<a class="anchor" aria-label="anchor" href="#example-usage"></a>
 </h2>
-<p>To illustrate the functionalities of PhenotypeR, let’s create two cohorts using the Eunomia dataset. We’ll first load the required packages and create the cdm reference for the data.</p>
+<p>To illustrate the functionality of PhenotypeR, let’s create a cohort using the Eunomia Synpuf dataset. We’ll first load the required packages and create the cdm reference for the data.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://darwin-eu.github.io/CDMConnector/" class="external-link">CDMConnector</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ohdsi.github.io/PhenotypeR/">PhenotypeR</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://darwin-eu.github.io/CodelistGenerator/" class="external-link">CodelistGenerator</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ohdsi.github.io/CohortConstructor/" class="external-link">CohortConstructor</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://OHDSI.github.io/OmopSketch/" class="external-link">OmopSketch</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://darwin-eu.github.io/CohortCharacteristics/" class="external-link">CohortCharacteristics</a></span><span class="op">)</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ohdsi.github.io/PhenotypeR/">PhenotypeR</a></span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Connect to the database and create the cdm object</span></span>
-<span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">dbConnect</a></span><span class="op">(</span><span class="fu">duckdb</span><span class="fu">::</span><span class="fu"><a href="https://r.duckdb.org/reference/duckdb.html" class="external-link">duckdb</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="https://darwin-eu.github.io/CDMConnector/reference/eunomiaDir.html" class="external-link">eunomiaDir</a></span><span class="op">(</span><span class="st">"synpuf-1k"</span>, <span class="st">"5.3"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">cdm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://darwin-eu.github.io/CDMConnector/reference/cdmFromCon.html" class="external-link">cdmFromCon</a></span><span class="op">(</span>con <span class="op">=</span> <span class="va">con</span>, </span>
-<span>                  cdmSchema   <span class="op">=</span> <span class="st">"main"</span>,</span>
-<span>                  writeSchema <span class="op">=</span> <span class="st">"main"</span>, </span>
-<span>                  achillesSchema <span class="op">=</span> <span class="st">"main"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Create a code lists</span></span>
+<span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">dbConnect</a></span><span class="op">(</span><span class="fu">duckdb</span><span class="fu">::</span><span class="fu"><a href="https://r.duckdb.org/reference/duckdb.html" class="external-link">duckdb</a></span><span class="op">(</span><span class="op">)</span>, </span>
+<span>                      <span class="fu">CDMConnector</span><span class="fu">::</span><span class="fu"><a href="https://darwin-eu.github.io/CDMConnector/reference/eunomiaDir.html" class="external-link">eunomiaDir</a></span><span class="op">(</span><span class="st">"synpuf-1k"</span>, <span class="st">"5.3"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">cdm</span> <span class="op">&lt;-</span> <span class="fu">CDMConnector</span><span class="fu">::</span><span class="fu"><a href="https://darwin-eu.github.io/CDMConnector/reference/cdmFromCon.html" class="external-link">cdmFromCon</a></span><span class="op">(</span>con <span class="op">=</span> <span class="va">con</span>, </span>
+<span>                       cdmSchema   <span class="op">=</span> <span class="st">"main"</span>,</span>
+<span>                       writeSchema <span class="op">=</span> <span class="st">"main"</span>, </span>
+<span>                       achillesSchema <span class="op">=</span> <span class="st">"main"</span><span class="op">)</span></span></code></pre></div>
+<p>Note that we’ve included achilles results in our cdm reference. Where we can we’ll use these precomputed counts to speed up our analysis.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">cdm</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── # OMOP CDM reference (duckdb) of An OMOP CDM database ───────────────────────</span></span>
+<span><span class="co">#&gt; • omop tables: person, observation_period, visit_occurrence, visit_detail,</span></span>
+<span><span class="co">#&gt; condition_occurrence, drug_exposure, procedure_occurrence, device_exposure,</span></span>
+<span><span class="co">#&gt; measurement, observation, death, note, note_nlp, specimen, fact_relationship,</span></span>
+<span><span class="co">#&gt; location, care_site, provider, payer_plan_period, cost, drug_era, dose_era,</span></span>
+<span><span class="co">#&gt; condition_era, metadata, cdm_source, concept, vocabulary, domain,</span></span>
+<span><span class="co">#&gt; concept_class, concept_relationship, relationship, concept_synonym,</span></span>
+<span><span class="co">#&gt; concept_ancestor, source_to_concept_map, drug_strength, cohort_definition,</span></span>
+<span><span class="co">#&gt; attribute_definition</span></span>
+<span><span class="co">#&gt; • cohort tables: -</span></span>
+<span><span class="co">#&gt; • achilles tables: achilles_analysis, achilles_results, achilles_results_dist</span></span>
+<span><span class="co">#&gt; • other tables: -</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Create a code lists</span></span>
 <span><span class="va">cond_codes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"gastrointestinal_hemorrhage"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">192671</span>, <span class="fl">4338544</span>, <span class="fl">4100660</span>, <span class="fl">4307661</span><span class="op">)</span>,</span>
 <span>                   <span class="st">"asthma"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">317009</span>, <span class="fl">257581</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co"># Instantiate cohorts with CohortConstructor</span></span>
 <span></span>
+<span><span class="co"># Instantiate cohorts with CohortConstructor</span></span>
 <span><span class="va">cdm</span><span class="op">$</span><span class="va">conditions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ohdsi.github.io/CohortConstructor/reference/conceptCohort.html" class="external-link">conceptCohort</a></span><span class="op">(</span>cdm <span class="op">=</span> <span class="va">cdm</span>,</span>
 <span>                                conceptSet <span class="op">=</span> <span class="va">cond_codes</span>, </span>
 <span>                                exit <span class="op">=</span> <span class="st">"event_end_date"</span>,</span>
 <span>                                overlap <span class="op">=</span> <span class="st">"merge"</span>,</span>
 <span>                                name <span class="op">=</span> <span class="st">"conditions"</span><span class="op">)</span></span></code></pre></div>
-<p>We can easily run all the analyses explained above (<em>database diagnostics</em>, <em>codelist diagnostics</em>, <em>cohort diagnostics</em>, <em>matched diagnostics</em>, and <em>population diagnostics</em>) using <code><a href="reference/phenotypeDiagnostics.html">phenotypeDiagnostics()</a></code>:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/phenotypeDiagnostics.html">phenotypeDiagnostics</a></span><span class="op">(</span><span class="va">cdm</span><span class="op">$</span><span class="va">conditions</span><span class="op">)</span></span>
-<span><span class="co">#&gt; • Getting codelists from cohorts</span></span>
-<span><span class="co">#&gt; • Getting index event breakdown</span></span>
-<span><span class="co">#&gt; Getting counts of asthma codes for cohort asthmaGetting counts of gastrointestinal_hemorrhage codes for cohort• Getting code counts in database based on achilles</span></span>
-<span><span class="co">#&gt; Using achilles results from version 1.7.2 which was run on 2024-08-26• Getting orphan concepts</span></span>
-<span><span class="co">#&gt; PHOEBE results not available</span></span>
-<span><span class="co">#&gt; ℹ The concept_recommended table is not present in the cdm.Getting orphan codes for asthmaGetting orphan codes for gastrointestinal_hemorrhageUsing achilles results from version 1.7.2 which was run on 2024-08-26• Index cohort table</span></span>
-<span><span class="co">#&gt; • Getting cohort summary</span></span>
-<span><span class="co">#&gt; ℹ adding demographics columns</span></span>
-<span><span class="co">#&gt; ℹ adding tableIntersectCount 1/1ℹ summarising data</span></span>
-<span><span class="co">#&gt; ✔ summariseCharacteristics finished!</span></span>
-<span><span class="co">#&gt; • Getting age density</span></span>
-<span><span class="co">#&gt; • Getting cohort attrition</span></span>
-<span><span class="co">#&gt; • Getting cohort overlap</span></span>
-<span><span class="co">#&gt; • Getting cohort timing</span></span>
-<span><span class="co">#&gt; ℹ The following estimates will be computed:</span></span>
-<span><span class="co">#&gt; • days_between_cohort_entries: density→ Start summary of data, at 2025-01-28 15:37:16.379303</span></span>
-<span><span class="co">#&gt; ✔ Summary finished, at 2025-01-28 15:37:16.513745• Creating denominator for incidence and prevalence</span></span>
-<span><span class="co">#&gt; • Sampling person table to 1e+06</span></span>
-<span><span class="co">#&gt; ℹ Creating denominator cohorts</span></span>
-<span><span class="co">#&gt;  -- getting cohort dates for ■■■■■■■■■■■■■■                   3 of 7 cohorts -- getting cohort dates for ■■■■■■■■■■■■■■■■■■               4 of 7 cohorts -- getting cohort dates for ■■■■■■■■■■■■■■■■■■■■■■           5 of 7 cohorts -- getting cohort dates for ■■■■■■■■■■■■■■■■■■■■■■■■■■■      6 of 7 cohorts                                                                             ! cohort columns will be reordered to match the expected order:</span></span>
-<span><span class="co">#&gt;   cohort_definition_id, subject_id, cohort_start_date, and cohort_end_date.✔ Cohorts created in 0 min and 15 sec</span></span>
-<span><span class="co">#&gt; • Estimating incidence</span></span>
-<span><span class="co">#&gt; ℹ Getting incidence for analysis 1 of 12</span></span>
-<span><span class="co">#&gt; ℹ Getting incidence for analysis 2 of 12</span></span>
-<span><span class="co">#&gt; ℹ Getting incidence for analysis 3 of 12</span></span>
-<span><span class="co">#&gt; ℹ Getting incidence for analysis 4 of 12</span></span>
-<span><span class="co">#&gt; ℹ Getting incidence for analysis 5 of 12</span></span>
-<span><span class="co">#&gt; ℹ Getting incidence for analysis 6 of 12</span></span>
-<span><span class="co">#&gt; ℹ Getting incidence for analysis 7 of 12</span></span>
-<span><span class="co">#&gt; ℹ Getting incidence for analysis 8 of 12</span></span>
-<span><span class="co">#&gt; ℹ Getting incidence for analysis 9 of 12</span></span>
-<span><span class="co">#&gt; ℹ Getting incidence for analysis 10 of 12</span></span>
-<span><span class="co">#&gt; ℹ Getting incidence for analysis 11 of 12</span></span>
-<span><span class="co">#&gt; ℹ Getting incidence for analysis 12 of 12</span></span>
-<span><span class="co">#&gt; ✔ Overall time taken: 0 mins and 13 secs</span></span>
-<span><span class="co">#&gt; • Estimating prevalence</span></span>
-<span><span class="co">#&gt; ℹ Getting prevalence for analysis 1 of 12</span></span>
-<span><span class="co">#&gt; ℹ Getting prevalence for analysis 2 of 12</span></span>
-<span><span class="co">#&gt; ℹ Getting prevalence for analysis 3 of 12</span></span>
-<span><span class="co">#&gt; ℹ Getting prevalence for analysis 4 of 12</span></span>
-<span><span class="co">#&gt; ℹ Getting prevalence for analysis 5 of 12</span></span>
-<span><span class="co">#&gt; ℹ Getting prevalence for analysis 6 of 12</span></span>
-<span><span class="co">#&gt; ℹ Getting prevalence for analysis 7 of 12</span></span>
-<span><span class="co">#&gt; ℹ Getting prevalence for analysis 8 of 12</span></span>
-<span><span class="co">#&gt; ℹ Getting prevalence for analysis 9 of 12</span></span>
-<span><span class="co">#&gt; ℹ Getting prevalence for analysis 10 of 12</span></span>
-<span><span class="co">#&gt; ℹ Getting prevalence for analysis 11 of 12</span></span>
-<span><span class="co">#&gt; ℹ Getting prevalence for analysis 12 of 12</span></span>
-<span><span class="co">#&gt; ✔ Time taken: 0 mins and 3 secs</span></span>
-<span><span class="co">#&gt; • Sampling cohorts</span></span>
-<span><span class="co">#&gt; • Generating a age and sex matched cohorts</span></span>
-<span><span class="co">#&gt; Starting matchingℹ Creating copy of target cohort.• 2 cohorts to be matched.ℹ Creating controls cohorts.ℹ Excluding cases from controls• Matching by gender_concept_id and year_of_birth• Removing controls that were not in observation at index date• Excluding target records whose pair is not in observation• Adjusting ratioBinding cohorts✔ Done• Index matched cohort table</span></span>
-<span><span class="co">#&gt; ℹ adding demographics columns</span></span>
-<span><span class="co">#&gt; ℹ adding tableIntersectCount 1/1ℹ summarising data</span></span>
-<span><span class="co">#&gt; ✔ summariseCharacteristics finished!</span></span>
-<span><span class="co">#&gt; • Running large scale characterisation</span></span>
-<span><span class="co">#&gt; ℹ Summarising large scale characteristics </span></span>
-<span><span class="co">#&gt;  - getting characteristics from table condition_occurrence (1 of 6) - getting characteristics from table visit_occurrence (2 of 6)     - getting characteristics from table measurement (3 of 6)      - getting characteristics from table procedure_occurrence (4 of 6) - getting characteristics from table observation (5 of 6)          - getting characteristics from table drug_exposure (6 of 6)                                                             </span></span>
-<span></span>
-<span><span class="co"># See all the results generated:</span></span>
-<span><span class="va">result</span> <span class="op">|&gt;</span> </span>
+<p>We can easily run all the analyses explained above (<strong>database diagnostics</strong>, <strong>codelist diagnostics</strong>, <strong>cohort diagnostics</strong>, <strong>matched diagnostics</strong>, and <strong>population diagnostics</strong>) using <code><a href="reference/phenotypeDiagnostics.html">phenotypeDiagnostics()</a></code>:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/phenotypeDiagnostics.html">phenotypeDiagnostics</a></span><span class="op">(</span><span class="va">cdm</span><span class="op">$</span><span class="va">conditions</span><span class="op">)</span></span></code></pre></div>
+<p>We can see all the results generated like so:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">result</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://darwin-eu.github.io/omopgenerics/reference/settings.html" class="external-link">settings</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="st">"result_type"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 48 × 1</span></span>
-<span><span class="co">#&gt;    result_type                 </span></span>
-<span><span class="co">#&gt;    &lt;chr&gt;                       </span></span>
-<span><span class="co">#&gt;  1 summarise_omop_snapshot     </span></span>
-<span><span class="co">#&gt;  2 summarise_observation_period</span></span>
-<span><span class="co">#&gt;  3 cohort_code_use             </span></span>
-<span><span class="co">#&gt;  4 achilles_code_use           </span></span>
-<span><span class="co">#&gt;  5 orphan_code_use             </span></span>
-<span><span class="co">#&gt;  6 summarise_characteristics   </span></span>
-<span><span class="co">#&gt;  7 summarise_table             </span></span>
-<span><span class="co">#&gt;  8 summarise_cohort_attrition  </span></span>
-<span><span class="co">#&gt;  9 summarise_cohort_attrition  </span></span>
-<span><span class="co">#&gt; 10 summarise_cohort_overlap    </span></span>
-<span><span class="co">#&gt; # ℹ 38 more rows</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="st">"result_type"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [1] "summarise_omop_snapshot"              </span></span>
+<span><span class="co">#&gt;  [2] "summarise_observation_period"         </span></span>
+<span><span class="co">#&gt;  [3] "cohort_code_use"                      </span></span>
+<span><span class="co">#&gt;  [4] "achilles_code_use"                    </span></span>
+<span><span class="co">#&gt;  [5] "orphan_code_use"                      </span></span>
+<span><span class="co">#&gt;  [6] "summarise_characteristics"            </span></span>
+<span><span class="co">#&gt;  [7] "summarise_table"                      </span></span>
+<span><span class="co">#&gt;  [8] "summarise_cohort_attrition"           </span></span>
+<span><span class="co">#&gt;  [9] "summarise_cohort_overlap"             </span></span>
+<span><span class="co">#&gt; [10] "summarise_cohort_timing"              </span></span>
+<span><span class="co">#&gt; [11] "incidence"                            </span></span>
+<span><span class="co">#&gt; [12] "incidence_attrition"                  </span></span>
+<span><span class="co">#&gt; [13] "prevalence"                           </span></span>
+<span><span class="co">#&gt; [14] "prevalence_attrition"                 </span></span>
+<span><span class="co">#&gt; [15] "summarise_large_scale_characteristics"</span></span></code></pre></div>
 <p>Once we have our results we can quickly view them in an interactive application. This shiny app will be saved in a new directory and can be further customised using the <code>directory</code> input.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="fu"><a href="reference/shinyDiagnostics.html">shinyDiagnostics</a></span><span class="op">(</span>result <span class="op">=</span> <span class="va">result</span>, directory <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>See the shiny app generated from the example cohort in (here)[<a href="https://dpa-pde-oxford.shinyapps.io/Readme_PhenotypeR/" class="external-link uri">https://dpa-pde-oxford.shinyapps.io/Readme_PhenotypeR/</a>].</p>
-</div>
-<div class="section level2">
-<h2 id="more-information">More information<a class="anchor" aria-label="anchor" href="#more-information"></a>
-</h2>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/shinyDiagnostics.html">shinyDiagnostics</a></span><span class="op">(</span>result <span class="op">=</span> <span class="va">result</span>, directory <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>See the shiny app generated from the example cohort in <a href="https://dpa-pde-oxford.shinyapps.io/Readme_PhenotypeR/" class="external-link">here</a>.</p>
+<div class="section level3">
+<h3 id="more-information">More information<a class="anchor" aria-label="anchor" href="#more-information"></a>
+</h3>
 <p>To see more details regarding each one of the analyses, please refer to the package vignettes.</p>
+</div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
