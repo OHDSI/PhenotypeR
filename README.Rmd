@@ -19,56 +19,120 @@ knitr::opts_chunk$set(
 # PhenotypeR <img src="man/figures/logo.png" align="right" height="180"/>
 
 <!-- badges: start -->
-[![CRAN status](https://www.r-pkg.org/badges/version/PhenotypeR)](https://CRAN.R-project.org/package=PhenotypeR)
+
+[![CRAN
+status](https://www.r-pkg.org/badges/version/PhenotypeR)](https://CRAN.R-project.org/package=PhenotypeR)
 [![R-CMD-check](https://github.com/ohdsi/PhenotypeR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ohdsi/PhenotypeR/actions/workflows/R-CMD-check.yaml)
 [![Lifecycle:Experimental](https://img.shields.io/badge/Lifecycle-Experimental-339999)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 
 <!-- badges: end -->
 
-The PhenotypeR package helps us to assess the research-readiness of a set of cohorts we have defined. This assessment includes:  
+The PhenotypeR package helps us to assess the research-readiness of a
+set of cohorts we have defined. This assessment includes:
 
-- ___Database diagnostics___ which help us to better understand the database in which they have been created. This includes information about the size of the data, the time period covered, the number of people in the data as a whole. More granular information that may influence analytic decisions, such as the number of observation periods per person, is also described.  
-- ___Codelist diagnostics___ which help to answer questions like what concepts from our codelist are used in the database? What concepts were present led to individuals' entry in the cohort? Are there any concepts being used in the database that we didn't include in our codelist but maybe we should have?  
-- ___Cohort diagnostics___ which help to answer questions like how many individuals did we include in our cohort and how many were excluded because of our inclusion criteria? If we have multiple cohorts, is there overlap between them and when do people enter one cohort relative to another? What is the incidence of cohort entry and what is the prevalence of the cohort in the database?  
-- ___Matched diagnostics___ which compares our study cohorts to the overall population in the database. By matching people in the cohorts to people with a similar age and sex in the database we can see how our cohorts differ from the general database population.  
-- ___Population diagnostics___ which estimates the frequency of our study cohorts in the database in terms of their incidence rates and prevalence.
+-   ***Database diagnostics*** which help us to better understand the
+    database in which they have been created. This includes information
+    about the size of the data, the time period covered, the number of
+    people in the data as a whole. More granular information that may
+    influence analytic decisions, such as the number of observation
+    periods per person, is also described.\
+-   ***Codelist diagnostics*** which help to answer questions like what
+    concepts from our codelist are used in the database? What concepts
+    were present led to individuals' entry in the cohort? Are there any
+    concepts being used in the database that we didn't include in our
+    codelist but maybe we should have?\
+-   ***Cohort diagnostics*** which help to answer questions like how
+    many individuals did we include in our cohort and how many were
+    excluded because of our inclusion criteria? If we have multiple
+    cohorts, is there overlap between them and when do people enter one
+    cohort relative to another? What is the incidence of cohort entry
+    and what is the prevalence of the cohort in the database?\
+-   ***Matched diagnostics*** which compares our study cohorts to the
+    overall population in the database. By matching people in the
+    cohorts to people with a similar age and sex in the database we can
+    see how our cohorts differ from the general database population.\
+-   ***Population diagnostics*** which estimates the frequency of our
+    study cohorts in the database in terms of their incidence rates and
+    prevalence.
 
 ## Installation
 
-You can install PhenotypeR from GitHub:
+You can install PhenotypeR from CRAN:
+
+```{r, eval = FALSE}
+install.packages("PhenotypeR")
+```
+
+Or you can install the development version from GitHub:
 
 ```{r, eval = FALSE}
 # install.packages("remotes")
-remotes::install_github("ohdsi/PhenotypeR")
+remotes::install_github("OHDSI/PhenotypeR")
 ```
 
 ## Example usage
 
+To illustrate the functionalities of PhenotypeR, let's create two
+cohorts using the Eunomia dataset. We'll first load the required
+packages and create the cdm reference for the data.
+
 ```{r, message=FALSE, warning=FALSE}
-library(omopgenerics)
+
 library(CDMConnector)
 library(PhenotypeR)
+library(CodelistGenerator)
 library(CohortConstructor)
 library(dplyr)
+library(OmopSketch)
+library(CohortCharacteristics)
 
-con <- DBI::dbConnect(duckdb::duckdb(dbdir = CDMConnector::eunomiaDir()))
-cdm <- CDMConnector::cdmFromCon(con = con,
-                      cdmSchema = "main",
-                      writeSchema = "main")
-
-cdm$gibleed <- conceptCohort(cdm = cdm,
-                                   conceptSet = list(gibleed = 192671L),
-                                   name = "gibleed")
-
-result <- cdm$gibleed |>
-   phenotypeDiagnostics()
 ```
+
+```{r, message=FALSE, warning=FALSE}
+# Connect to the database and create the cdm object
+con <- DBI::dbConnect(duckdb::duckdb(), eunomiaDir("synpuf-1k", "5.3"))
+cdm <- cdmFromCon(con = con, 
+                  cdmSchema   = "main",
+                  writeSchema = "main", 
+                  achillesSchema = "main")
+
+# Create a code lists
+cond_codes <- list("gastrointestinal_hemorrhage" = c(192671, 4338544, 4100660, 4307661),
+                   "asthma" = c(317009, 257581))
+# Instantiate cohorts with CohortConstructor
+
+cdm$conditions <- conceptCohort(cdm = cdm,
+                                conceptSet = cond_codes, 
+                                exit = "event_end_date",
+                                overlap = "merge",
+                                name = "conditions")
+```
+
+
+We can easily run all the analyses explained above (*database diagnostics*, *codelist diagnostics*, *cohort diagnostics*, *matched diagnostics*, and *population diagnostics*) using `phenotypeDiagnostics()`: 
 
 ```{r, message = TRUE}
-summary(result)
+
+result <- phenotypeDiagnostics(cdm$conditions)
+
+# See all the results generated:
+result |> 
+  settings() |>
+  select("result_type")
+
 ```
 
-Once we have our results we can quickly view them in an interactive application. This shiny app will be saved in a new directory and can be further customised.
+Once we have our results we can quickly view them in an interactive
+application. This shiny app will be saved in a new directory and can be
+further customised using the `directory` input.
+
 ```{r, eval=FALSE}
+
 shinyDiagnostics(result = result, directory = tempdir())
+
 ```
+
+See the shiny app generated from the example cohort in (here)[https://dpa-pde-oxford.shinyapps.io/Readme_PhenotypeR/].
+
+## More information
+To see more details regarding each one of the analyses, please refer to the package vignettes.
