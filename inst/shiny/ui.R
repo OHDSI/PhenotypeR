@@ -102,17 +102,17 @@ ui <- bslib::page_navbar(
                                        header = NULL,
                                        sortable::add_rank_list(
                                          text = "none",
-                                         labels = c( "codelist_name"),
+                                         labels = c("codelist_name"),
                                          input_id = "achilles_code_use_none"
                                        ),
                                        sortable::add_rank_list(
                                          text = "header",
-                                         labels = c("cdm_name", "estimate_name"),
+                                         labels = c("cdm_name"),
                                          input_id = "achilles_code_use_header"
                                        ),
                                        sortable::add_rank_list(
                                          text = "groupColumn",
-                                         labels = NULL,
+                                         labels = c("estimate_name"),
                                          input_id = "achilles_code_use_groupColumn"
                                        ),
                                        sortable::add_rank_list(
@@ -258,17 +258,17 @@ ui <- bslib::page_navbar(
                                        header = NULL,
                                        sortable::add_rank_list(
                                          text = "none",
-                                         labels = c("variable_name", "variable_level"),
+                                         labels = c("variable_name", "cohort_name", "variable_level"),
                                          input_id = "orphan_gt_99_none"
                                        ),
                                        sortable::add_rank_list(
                                          text = "header",
-                                         labels = c("cdm_name", "cohort_name", "estimate_name"),
+                                         labels = c("cdm_name"),
                                          input_id = "orphan_gt_99_header"
                                        ),
                                        sortable::add_rank_list(
                                          text = "groupColumn",
-                                         labels = NULL,
+                                         labels = c("estimate_name"),
                                          input_id = "orphan_gt_99_groupColumn"
                                        ),
                                        sortable::add_rank_list(
