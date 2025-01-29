@@ -1254,8 +1254,23 @@ server <- function(input, output, session) {
   createAgePyramid <- shiny::reactive({
 
     summarise_table <- dataFiltered$summarise_table |>
-      filter(cdm_name %in% input$summarise_characteristics_grouping_cdm_name,
-             group_level %in% input$summarise_characteristics_grouping_cohort_name)
+      filter(cdm_name %in% input$summarise_characteristics_grouping_cdm_name)
+
+    if(isTRUE(input$summarise_characteristics_include_matched)){
+      summarise_table <- summarise_table |>
+        filter(group_level %in%
+                 c(
+                   input$summarise_characteristics_grouping_cohort_name,
+                   paste0("matched_to_", input$summarise_characteristics_grouping_cohort_name),
+                   paste0(input$summarise_characteristics_grouping_cohort_name, "_sampled"),
+                   paste0(input$summarise_characteristics_grouping_cohort_name, "_matched")
+                 )
+        )
+    } else {
+      summarise_table <- summarise_table |>
+        filter(group_level %in%
+                 input$summarise_characteristics_grouping_cohort_name)
+    }
 
     summarise_characteristics <- dataFiltered$summarise_characteristics |>
       filter(cdm_name %in% input$summarise_characteristics_grouping_cdm_name,

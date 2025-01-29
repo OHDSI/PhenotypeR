@@ -82,6 +82,18 @@ matchedDiagnostics <- function(cohort,
       )
     )
 
+  cli::cli_bullets(c("*" = "Getting age density"))
+  results[["cohort_density"]] <- cdm[[matchedCohortTable]] |>
+    PatientProfiles::addCohortName() |>
+    PatientProfiles::summariseResult(
+      strata    = "sex",
+      includeOverallStrata = FALSE,
+      group     = "cohort_name",
+      includeOverallGroup  = FALSE,
+      variables = "age",
+      estimates = "density") |>
+    suppressMessages()
+
   cli::cli_bullets(c("*" = "{.strong Running large scale characterisation}"))
   results[["lsc"]] <- CohortCharacteristics::summariseLargeScaleCharacteristics(
     cohort = cdm[[matchedCohortTable]],
