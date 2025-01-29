@@ -87,9 +87,10 @@ library(PhenotypeR)
 con <- DBI::dbConnect(duckdb::duckdb(), 
                       CDMConnector::eunomiaDir("synpuf-1k", "5.3"))
 cdm <- CDMConnector::cdmFromCon(con = con, 
-                       cdmSchema   = "main",
-                       writeSchema = "main", 
-                       achillesSchema = "main")
+                                cdmName = "Mock PhenotypeR",
+                                cdmSchema   = "main",
+                                writeSchema = "main", 
+                                achillesSchema = "main")
 ```
 
 Note that we've included achilles results in our cdm reference. Where we can we'll use these precomputed counts to speed up our analysis.
@@ -100,15 +101,16 @@ cdm
 
 ```{r, message=FALSE, warning=FALSE}
 # Create a code lists
-cond_codes <- list("gastrointestinal_hemorrhage" = c(192671, 4338544, 4100660, 4307661),
-                   "asthma" = c(317009, 257581))
+codes <- list("warfarin" = c(1310149, 40163554),
+              "acetaminophen" = c(1125315, 1127078, 1127433, 40229134, 40231925, 40162522, 19133768),
+              "morphine" = c(1110410, 35605858, 40169988))
 
 # Instantiate cohorts with CohortConstructor
-cdm$conditions <- conceptCohort(cdm = cdm,
-                                conceptSet = cond_codes, 
-                                exit = "event_end_date",
-                                overlap = "merge",
-                                name = "conditions")
+cdm$my_cohort <- conceptCohort(cdm = cdm,
+                               conceptSet = codes, 
+                               exit = "event_end_date",
+                               overlap = "merge",
+                               name = "my_cohort")
 ```
 
 We can easily run all the analyses explained above (**database
@@ -117,7 +119,7 @@ diagnostics**, **codelist diagnostics**, **cohort diagnostics**,
 `phenotypeDiagnostics()`:
 
 ```{r, message = FALSE}
-result <- phenotypeDiagnostics(cdm$conditions)
+result <- phenotypeDiagnostics(cdm$my_cohort)
 ```
 
 We can see all the results generated like so:

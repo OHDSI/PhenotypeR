@@ -89,7 +89,6 @@ server <- function(input, output, session) {
   )
   
   
- 
   # achilles_code_use -----
   ## Table achilles_code_use ----
   createTableAchillesCodeUse <- shiny::reactive({
@@ -124,6 +123,7 @@ server <- function(input, output, session) {
     }
   )
  
+  
   # orphan_codes -----
   ## Tidy orphan_codes -----
   getTidyDataOrphanCodes <- shiny::reactive({
@@ -211,8 +211,6 @@ server <- function(input, output, session) {
   )
   
   
-  
-  
   # unmapped codes -----
   createOutputUnmapped <- shiny::reactive({
     if (is.null(dataFiltered$unmapped_codes)) {
@@ -247,7 +245,7 @@ server <- function(input, output, session) {
       gt::gtsave(data = obj, filename = file)
     }
   )
-  
+
   
   # cohort_code_use -----
   ## Tidy cohort_code_use -----
@@ -296,9 +294,9 @@ server <- function(input, output, session) {
     
     CodelistGenerator::tableCohortCodeUse(
       result,
-      header = input$cohort_code_use_gt_12_header,
-      groupColumn = input$cohort_code_use_gt_12_groupColumn,
-      hide = input$cohort_code_use_gt_12_hide
+      header = input$cohort_code_use_gt_header,
+      groupColumn = input$cohort_code_use_gt_groupColumn,
+      hide = input$cohort_code_use_gt_hide
     )%>%
       tab_header(
         title = "Summary of cohort code use",
@@ -320,11 +318,7 @@ server <- function(input, output, session) {
       gt::gtsave(data = obj, filename = file)
     }
   )
-  
-  
-  
-  
- 
+
   # summarise_cohort_attrition -----
   ## Table summarise_cohort_attrition ----
   createTableCohortAttrition <- shiny::reactive({
@@ -358,7 +352,6 @@ server <- function(input, output, session) {
       gt::gtsave(data = obj, filename = file)
     }
   )
-
   ## Diagram summarise_cohort_attrition -----
   createDiagramCohortAttrition <- shiny::reactive({
     result <- dataFiltered$summarise_cohort_attrition |>
@@ -488,6 +481,7 @@ server <- function(input, output, session) {
   
   
   
+  
   # summarise_large_scale_characteristics -----
   ## Tidy summarise_large_scale_characteristics -----
   getTidyDataSummariseLargeScaleCharacteristics <- shiny::reactive({
@@ -592,6 +586,7 @@ server <- function(input, output, session) {
       gt::gtsave(data = obj, filename = file)
     }
   )
+  
   
   
   # compare large_scale_characteristics ----
@@ -716,9 +711,11 @@ server <- function(input, output, session) {
   
   
   
+  
   # summarise_cohort_overlap -----
-  ## tableCohortOverlap -----
+  ## Table cohort_overlap -----
   createTableCohortOverlap <- shiny::reactive({
+
     if (is.null(dataFiltered$summarise_cohort_overlap)) {
       validate("No cohort overlap in results")
     }
@@ -735,7 +732,7 @@ server <- function(input, output, session) {
       uniqueCombinations = input$summarise_cohort_overlap_gt_uniqueCombinations,
       header = input$summarise_cohort_overlap_gt_header,
       groupColumn = input$summarise_cohort_overlap_gt_groupColumn,
-      hide = input$summarise_cohort_overlap_g1_hide
+      hide = input$summarise_cohort_overlap_gt_hide
     )%>%
       tab_header(
         title = "Cohort overlap",
@@ -790,9 +787,80 @@ server <- function(input, output, session) {
     }
   )
 
+  
+  # summarise_cohort_timing ----
+  ## Table cohort_timing -----
+  createTableCohortTiming <- shiny::reactive({
 
- 
- 
+    if (is.null(dataFiltered$summarise_cohort_timing)) {
+      validate("No cohort timing in results")
+    }
+    
+    result <- dataFiltered$summarise_cohort_timing |>
+      filterData("summarise_cohort_timing", input)
+    
+    if (nrow(result) == 0) {
+      validate("No results found for selected inputs")
+    }
+    
+    CohortCharacteristics::tableCohortTiming(
+      result,
+      timeScale = input$summarise_cohort_timing_gt_time_scale,
+      uniqueCombinations = input$summarise_cohort_timing_gt_uniqueCombinations,
+    ) %>%
+      tab_header(
+        title = "Cohort timing",
+        subtitle = "Cohort timing refers to the time between an individual entering one cohort and another cohort."
+      ) %>%
+      tab_options(
+        heading.align = "left"
+      )
+  })
+  output$summarise_cohort_timing_gt <- gt::render_gt({
+    createTableCohortTiming()
+  })
+  output$summarise_cohort_timing_gt_download <- shiny::downloadHandler(
+    filename = function(){
+      paste0("summarise_cohort_timing_gt.", input$summarise_cohort_timing_gt_download_type)
+    },
+    content = function(file) {
+      obj <- createTableCohortTiming()
+      gt::gtsave(data = obj, filename = file)
+    }
+  )
+  
+  ## Plot cohort_timing -----
+  createPlotCohortTiming <- shiny::reactive({
+    if (is.null(dataFiltered$summarise_cohort_timing)) {
+      validate("No cohort timing in results")
+    }
+    
+    result <- dataFiltered$summarise_cohort_timing |>
+      filterData("summarise_cohort_timing", input)
+    CohortCharacteristics::plotCohortTiming(
+      result,
+      facet = input$summarise_cohort_timing_plot_facet,
+      uniqueCombinations = input$summarise_cohort_timing_plot_uniqueCombinations
+    )
+  })
+  output$summarise_cohort_timing_plot <- plotly::renderPlotly({
+    createPlotCohortTiming()
+  })
+  output$summarise_cohort_timing_plot_download <- shiny::downloadHandler(
+    filename = "summarise_cohort_timing_plot.png",
+    content = function(file) {
+      obj <- createPlotCohortTiming()
+      ggplot2::ggsave(
+        filename = file,
+        plot = obj,
+        width = as.numeric(input$summarise_cohort_timing_plot_download_width),
+        height = as.numeric(input$summarise_cohort_timing_plot_download_height),
+        units = input$summarise_cohort_timing_plot_download_units,
+        dpi = as.numeric(input$summarise_cohort_timing_plot_download_dpi)
+      )
+    }
+  )
+  
   
   # incidence -----
   incidenceFiltered <- shiny::reactive({
@@ -923,7 +991,8 @@ server <- function(input, output, session) {
 
   
   
-  # prevalence -----
+ 
+   # prevalence -----
   prevalenceFiltered <- shiny::reactive({
 
     dataFiltered$prevalence |>
