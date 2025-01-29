@@ -98,6 +98,9 @@ ui <- bslib::page_navbar(
                                    ),
                                    bslib::accordion_panel(
                                      title = "Table formatting",
+                                     materialSwitch(inputId = "achilles_interactive",
+                                                    label = "Interactive",
+                                                    status = "primary"),
                                      sortable::bucket_list(
                                        header = NULL,
                                        sortable::add_rank_list(
@@ -254,6 +257,9 @@ ui <- bslib::page_navbar(
                                    ),
                                    bslib::accordion_panel(
                                      title = "Table formatting",
+                                     materialSwitch(inputId = "orphan_interactive",
+                                                    label = "Interactive",
+                                                    status = "primary"),
                                      sortable::bucket_list(
                                        header = NULL,
                                        sortable::add_rank_list(
@@ -354,6 +360,9 @@ ui <- bslib::page_navbar(
                                    ),
                                    bslib::accordion_panel(
                                      title = "Table formatting",
+                                     materialSwitch(inputId = "cohort_code_use_interactive",
+                                                    label = "Interactive",
+                                                    status = "primary"),
                                      sortable::bucket_list(
                                        header = NULL,
                                        sortable::add_rank_list(
@@ -456,6 +465,9 @@ ui <- bslib::page_navbar(
               ),
               bslib::layout_sidebar(
                 sidebar = bslib::sidebar(width = 400, open = "closed",
+                                         materialSwitch(inputId = "summarise_characteristics_interactive",
+                                                        label = "Interactive",
+                                                        status = "primary"),
                                          sortable::bucket_list(
                                            header = NULL,
                                            sortable::add_rank_list(
@@ -612,6 +624,9 @@ ui <- bslib::page_navbar(
               bslib::layout_sidebar(
                 sidebar = bslib::sidebar(width = 400, open = "closed",
                                          # numericInput("top_n", "Top n:", 10, min = 1, max = 100),
+                                         materialSwitch(inputId = "summarise_large_scale_characteristics_interactive",
+                                                        label = "Interactive",
+                                                        status = "primary"),
                                          sortable::bucket_list(
                                            header = NULL,
                                            sortable::add_rank_list(
@@ -864,6 +879,9 @@ ui <- bslib::page_navbar(
               ),
               bslib::layout_sidebar(
                 sidebar = bslib::sidebar(width = 400, open = "closed",
+                                         materialSwitch(inputId = "summarise_cohort_overlap_interactive",
+                                                        label = "Interactive",
+                                                        status = "primary"),
                                          sortable::bucket_list(
                                            header = NULL,
                                            sortable::add_rank_list(
@@ -1043,6 +1061,9 @@ ui <- bslib::page_navbar(
               ),
               bslib::layout_sidebar(
                 sidebar = bslib::sidebar(width = 400, open = "closed",
+                                         materialSwitch(inputId = "incidence_interactive",
+                                                        label = "Interactive",
+                                                        status = "primary"),
                                          sortable::bucket_list(
                                            header = NULL,
                                            sortable::add_rank_list(
@@ -1517,6 +1538,9 @@ ui <- bslib::page_navbar(
               ),
               bslib::layout_sidebar(
                 sidebar = bslib::sidebar(width = 400, open = "closed",
+                                         materialSwitch(inputId = "prevalence_interactive",
+                                                        label = "Interactive",
+                                                        status = "primary"),
                                          sortable::bucket_list(
                                            header = NULL,
                                            sortable::add_rank_list(
