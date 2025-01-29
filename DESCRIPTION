@@ -39,6 +39,8 @@ Suggests:
     stringr,
     shiny,
     DiagrammeR,
+    DiagrammeRsvg,
+    rsvg,
     sortable,
     shinycssloaders,
     here,

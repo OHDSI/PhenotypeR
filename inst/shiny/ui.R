@@ -4,13 +4,13 @@
 ui <- bslib::page_navbar(
   theme = bs_theme(bootswatch = "pulse"),
   #  zephyr
-
+  
   title = "PhenotypeR",
   bslib::nav_panel(
     title = "Background",
     icon = shiny::icon("disease"),
     shiny::includeMarkdown(path = "background.md")
-
+    
   ),
   # Database diagnostics -----
   bslib::nav_menu(
@@ -26,17 +26,17 @@ ui <- bslib::page_navbar(
           bslib::popover(
             shiny::icon("download"),
             shinyWidgets::pickerInput(
-              inputId = "summarise_omop_snapshot_gt_17_download_type",
+              inputId = "summarise_omop_snapshot_gt_download_type",
               label = "File type",
               selected = "docx",
               choices = c("docx", "png", "pdf", "html"),
               multiple = FALSE
             ),
-            shiny::downloadButton(outputId = "summarise_omop_snapshot_gt_17_download", label = "Download")
+            shiny::downloadButton(outputId = "summarise_omop_snapshot_gt_download", label = "Download")
           ),
           class = "text-end"
         ),
-        gt::gt_output("summarise_omop_snapshot_gt_17") |> withSpinner()
+        gt::gt_output("summarise_omop_snapshot_gt") |> withSpinner()
       )
     ),
     ## observation periods -----
@@ -51,17 +51,17 @@ ui <- bslib::page_navbar(
             bslib::popover(
               shiny::icon("download"),
               shinyWidgets::pickerInput(
-                inputId = "summarise_observation_period_gt_15_download_type",
+                inputId = "summarise_observation_period_gt_download_type",
                 label = "File type",
                 selected = "docx",
                 choices = c("docx", "png", "pdf", "html"),
                 multiple = FALSE
               ),
-              shiny::downloadButton(outputId = "summarise_observation_period_gt_15_download", label = "Download")
+              shiny::downloadButton(outputId = "summarise_observation_period_gt_download", label = "Download")
             ),
             class = "text-end"
           ),
-          gt::gt_output("summarise_observation_period_gt_15") |> withSpinner()
+          gt::gt_output("summarise_observation_period_gt") |> withSpinner()
         )
       )
     )
@@ -135,13 +135,13 @@ ui <- bslib::page_navbar(
               bslib::popover(
                 shiny::icon("download"),
                 shinyWidgets::pickerInput(
-                  inputId = "achilles_code_use_formatted_download_type",
+                  inputId = "achilles_code_use_gt_download_type",
                   label = "File type",
                   selected = "docx",
                   choices = c("docx", "png", "pdf", "html"),
                   multiple = FALSE
                 ),
-                shiny::downloadButton(outputId = "achilles_code_use_formatted_download", label = "Download")
+                shiny::downloadButton(outputId = "achilles_code_use_gt_download", label = "Download")
               ),
               class = "text-end"
             ),
@@ -150,7 +150,6 @@ ui <- bslib::page_navbar(
         )
       )
     ),
-
     ## unmapped concepts -----
     # bslib::nav_panel(
     #   title = "Unmapped concepts",
@@ -228,7 +227,6 @@ ui <- bslib::page_navbar(
     #     )
     #   )
     # ),
-
     ## Orphan codes -----
     bslib::nav_panel(
       title = "Orphan codes",
@@ -265,58 +263,53 @@ ui <- bslib::page_navbar(
                                        sortable::add_rank_list(
                                          text = "none",
                                          labels = c("variable_name", "cohort_name", "variable_level"),
-                                         input_id = "orphan_gt_99_none"
+                                         input_id = "orphan_codes_gt_none"
                                        ),
                                        sortable::add_rank_list(
                                          text = "header",
                                          labels = c("cdm_name"),
-                                         input_id = "orphan_gt_99_header"
+                                         input_id = "orphan_codes_gt_header"
                                        ),
                                        sortable::add_rank_list(
                                          text = "groupColumn",
                                          labels = c("estimate_name"),
-                                         input_id = "orphan_gt_99_groupColumn"
+                                         input_id = "orphan_codes_gt_groupColumn"
                                        ),
                                        sortable::add_rank_list(
                                          text = "hide",
                                          labels = character(),
-                                         input_id = "orphan_gt_99_hide"
+                                         input_id = "orphan_codes_gt_hide"
                                        )
                                      )
                                    )
-                                 )),
+                                 )
+        ),
         bslib::card(
           full_screen = TRUE,
           bslib::card_header(
             bslib::popover(
               shiny::icon("download"),
               shinyWidgets::pickerInput(
-                inputId = "orphan_gt_99_download_type",
+                inputId = "orphan_codes_gt_download_type",
                 label = "File type",
                 selected = "docx",
                 choices = c("docx", "png", "pdf", "html"),
                 multiple = FALSE
               ),
-              shiny::downloadButton(outputId = "orphan_gt_99_download", label = "Download")
+              shiny::downloadButton(outputId = "orphan_codes_gt_download", label = "Download")
             ),
             class = "text-end"
           ),
-          gt::gt_output("orphan_gt_99") |> withSpinner()
+          gt::gt_output("orphan_codes_gt") |> withSpinner()
         )
-
-
-      ))
-
+      )
+    )
   ),
-
   # Cohort diagnostics -----
-
   bslib::nav_menu(
     title = "Cohort diagnostics",
     icon = shiny::icon("list"),
-
     ## Cohort code use -----
-
     bslib::nav_panel(
       title = "Cohort code use",
       icon = shiny::icon("chart-column"),
@@ -412,6 +405,83 @@ ui <- bslib::page_navbar(
         )
       )
     ),
+    ## Cohort attrition ----
+    bslib::nav_panel(
+      title = "Cohort attrition",
+      icon = shiny::icon("person"),
+      bslib::layout_sidebar(
+        sidebar = bslib::sidebar(width = 400, open = "closed",
+                                 bslib::accordion(
+                                   bslib::accordion_panel(
+                                     title = "Settings",
+                                     shinyWidgets::pickerInput(
+                                       inputId = "summarise_cohort_attrition_grouping_cdm_name",
+                                       label = "Database",
+                                       choices = NULL,
+                                       selected = NULL,
+                                       multiple = TRUE,
+                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                     ),
+                                     shinyWidgets::pickerInput(
+                                       inputId = "summarise_cohort_attrition_grouping_cohort_name",
+                                       label = "Cohort name",
+                                       choices = NULL,
+                                       selected = NULL,
+                                       multiple = FALSE,
+                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                     )
+                                   )
+                                 )
+        ),
+        bslib::navset_card_tab(
+          bslib::nav_panel(
+            title = "Table",
+            bslib::card(
+              full_screen = TRUE,
+              bslib::card_header(
+                bslib::popover(
+                  shiny::icon("download"),
+                  shinyWidgets::pickerInput(
+                    inputId = "summarise_cohort_attrition_gt_download_type",
+                    label = "File type",
+                    selected = "docx",
+                    choices = c("docx", "png", "pdf", "html"),
+                    multiple = FALSE
+                  ),
+                  shiny::downloadButton(outputId = "summarise_cohort_attrition_gt_download", label = "Download")
+                ),
+                class = "text-end"
+              ),
+              gt::gt_output("summarise_cohort_attrition_gt") |> withSpinner()
+            )
+          ),
+          bslib::nav_panel(
+            title = "Plot",
+            bslib::card(
+              full_screen = TRUE,
+              bslib::card_header(
+                bslib::popover(
+                  shiny::icon("download"),
+                  shiny::numericInput(
+                    inputId = "summarise_cohort_attrition_grViz_download_width",
+                    label = "Width",
+                    value = 15
+                  ),
+                  shiny::numericInput(
+                    inputId = "summarise_cohort_attrition_grViz_download_height",
+                    label = "Height",
+                    value = 10
+                  ),
+                  shiny::downloadButton(outputId = "summarise_cohort_attrition_grViz_download", label = "Download")
+                ),
+                class = "text-end"
+              ),
+              DiagrammeR::grVizOutput("summarise_cohort_attrition_grViz") |> withSpinner()
+            )
+          )
+        )
+      )
+    ),
     ## Cohort characteristics -----
     bslib::nav_panel(
       title = "Cohort characteristics",
@@ -453,13 +523,13 @@ ui <- bslib::page_navbar(
                 bslib::popover(
                   shiny::icon("download"),
                   shinyWidgets::pickerInput(
-                    inputId = "summarise_characteristics_gt_7_download_type",
+                    inputId = "summarise_characteristics_gt_download_type",
                     label = "File type",
                     selected = "docx",
                     choices = c("docx", "png", "pdf", "html"),
                     multiple = FALSE
                   ),
-                  shiny::downloadButton(outputId = "summarise_characteristics_gt_7_download", label = "Download")
+                  shiny::downloadButton(outputId = "summarise_characteristics_gt_download", label = "Download")
                 ),
                 class = "text-end"
               ),
@@ -473,27 +543,27 @@ ui <- bslib::page_navbar(
                                            sortable::add_rank_list(
                                              text = "none",
                                              labels = c("variable_name", "variable_level", "estimate_name"),
-                                             input_id = "summarise_characteristics_gt_7_none"
+                                             input_id = "summarise_characteristics_gt_none"
                                            ),
                                            sortable::add_rank_list(
                                              text = "header",
                                              labels = c("cdm_name", "cohort_name"),
-                                             input_id = "summarise_characteristics_gt_7_header"
+                                             input_id = "summarise_characteristics_gt_header"
                                            ),
                                            sortable::add_rank_list(
                                              text = "groupColumn",
                                              labels = NULL,
-                                             input_id = "summarise_characteristics_gt_7_groupColumn"
+                                             input_id = "summarise_characteristics_gt_groupColumn"
                                            ),
                                            sortable::add_rank_list(
                                              text = "hide",
                                              labels = character(),
-                                             input_id = "summarise_characteristics_gt_7_hide"
+                                             input_id = "summarise_characteristics_gt_hide"
                                            )
                                          ),
                                          position = "right"
                 ),
-                gt::gt_output("summarise_characteristics_gt_7") |> withSpinner()
+                gt::gt_output("summarise_characteristics_gt") |> withSpinner()
               )
             )
           ),
@@ -611,49 +681,17 @@ ui <- bslib::page_navbar(
                 bslib::popover(
                   shiny::icon("download"),
                   shinyWidgets::pickerInput(
-                    inputId = "summarise_large_scale_characteristics_gt_0_download_type",
+                    inputId = "summarise_large_scale_characteristics_gt_download_type",
                     label = "File type",
                     selected = "docx",
                     choices = c("docx", "png", "pdf", "html"),
                     multiple = FALSE
                   ),
-                  shiny::downloadButton(outputId = "summarise_large_scale_characteristics_gt_0_download", label = "Download")
+                  shiny::downloadButton(outputId = "summarise_large_scale_characteristics_gt_download", label = "Download")
                 ),
                 class = "text-end"
               ),
-              bslib::layout_sidebar(
-                sidebar = bslib::sidebar(width = 400, open = "closed",
-                                         # numericInput("top_n", "Top n:", 10, min = 1, max = 100),
-                                         materialSwitch(inputId = "summarise_large_scale_characteristics_interactive",
-                                                        label = "Interactive",
-                                                        status = "primary"),
-                                         sortable::bucket_list(
-                                           header = NULL,
-                                           sortable::add_rank_list(
-                                             text = "none",
-                                             labels = c("concept_id", "variable_name", "variable_level", "estimate_name", "table_name", "type", "analysis"),
-                                             input_id = "summarise_large_scale_characteristics_gt_0_none"
-                                           ),
-                                           sortable::add_rank_list(
-                                             text = "header",
-                                             labels = "cdm_name",
-                                             input_id = "summarise_large_scale_characteristics_gt_0_header"
-                                           ),
-                                           sortable::add_rank_list(
-                                             text = "group",
-                                             labels = "cohort_name",
-                                             input_id = "summarise_large_scale_characteristics_gt_0_group"
-                                           ),
-                                           sortable::add_rank_list(
-                                             text = "hide",
-                                             labels = character(),
-                                             input_id = "summarise_large_scale_characteristics_gt_0_hide"
-                                           )
-                                         ),
-                                         position = "right"
-                ),
-                gt::gt_output("summarise_large_scale_characteristics_gt_0") |> withSpinner()
-              )
+              gt::gt_output("summarise_large_scale_characteristics_gt") |> withSpinner()
             )
           )
         )
@@ -724,7 +762,6 @@ ui <- bslib::page_navbar(
                                  )
         ),
         bslib::navset_card_tab(
-
           bslib::nav_panel(
             title = "Table",
             bslib::card(
@@ -736,7 +773,7 @@ ui <- bslib::page_navbar(
                 ),
                 class = "text-end"
               ),
-              DT::DTOutput("gt_compare_lsc") |> withSpinner()
+              DT::DTOutput("compare_large_scale_characteristics_tidy") |> withSpinner()
             )
           ),
           bslib::nav_panel(
@@ -867,13 +904,13 @@ ui <- bslib::page_navbar(
                 bslib::popover(
                   shiny::icon("download"),
                   shinyWidgets::pickerInput(
-                    inputId = "summarise_cohort_overlap_gt_1_download_type",
+                    inputId = "summarise_cohort_overlap_gt_download_type",
                     label = "File type",
                     selected = "docx",
                     choices = c("docx", "png", "pdf", "html"),
                     multiple = FALSE
                   ),
-                  shiny::downloadButton(outputId = "summarise_cohort_overlap_gt_1_download", label = "Download")
+                  shiny::downloadButton(outputId = "summarise_cohort_overlap_gt_download", label = "Download")
                 ),
                 class = "text-end"
               ),
@@ -887,32 +924,32 @@ ui <- bslib::page_navbar(
                                            sortable::add_rank_list(
                                              text = "none",
                                              labels = c("cohort_name_reference", "cohort_name_comparator", "estimate_name"),
-                                             input_id = "summarise_cohort_overlap_gt_1_none"
+                                             input_id = "summarise_cohort_overlap_gt_none"
                                            ),
                                            sortable::add_rank_list(
                                              text = "header",
                                              labels = "variable_name",
-                                             input_id = "summarise_cohort_overlap_gt_1_header"
+                                             input_id = "summarise_cohort_overlap_gt_header"
                                            ),
                                            sortable::add_rank_list(
                                              text = "groupColumn",
                                              labels = "cdm_name",
-                                             input_id = "summarise_cohort_overlap_gt_1_groupColumn"
+                                             input_id = "summarise_cohort_overlap_gt_groupColumn"
                                            ),
                                            sortable::add_rank_list(
                                              text = "hide",
                                              labels = "variable_level",
-                                             input_id = "summarise_cohort_overlap_gt_1_hide"
+                                             input_id = "summarise_cohort_overlap_gt_hide"
                                            )
                                          ),
                                          shiny::checkboxInput(
-                                           inputId = "summarise_cohort_overlap_gt_1_uniqueCombinations",
+                                           inputId = "summarise_cohort_overlap_gt_uniqueCombinations",
                                            label = "uniqueCombinations",
                                            value = c(TRUE)
                                          ),
                                          position = "right"
                 ),
-                gt::gt_output("summarise_cohort_overlap_gt_1") |> withSpinner()
+                gt::gt_output("summarise_cohort_overlap_gt") |> withSpinner()
               )
             )
           ),
@@ -925,35 +962,35 @@ ui <- bslib::page_navbar(
                 bslib::popover(
                   shiny::icon("download"),
                   shiny::numericInput(
-                    inputId = "summarise_cohort_overlap_ggplot2_2_download_width",
+                    inputId = "summarise_cohort_overlap_plot_download_width",
                     label = "Width",
                     value = 15
                   ),
                   shiny::numericInput(
-                    inputId = "summarise_cohort_overlap_ggplot2_2_download_height",
+                    inputId = "summarise_cohort_overlap_plot_download_height",
                     label = "Height",
                     value = 10
                   ),
                   shinyWidgets::pickerInput(
-                    inputId = "summarise_cohort_overlap_ggplot2_2_download_units",
+                    inputId = "summarise_cohort_overlap_plot_download_units",
                     label = "Units",
                     selected = "cm",
                     choices = c("px", "cm", "inch"),
                     multiple = FALSE
                   ),
                   shiny::numericInput(
-                    inputId = "summarise_cohort_overlap_ggplot2_2_download_dpi",
+                    inputId = "summarise_cohort_overlap_plot_download_dpi",
                     label = "dpi",
                     value = 300
                   ),
-                  shiny::downloadButton(outputId = "summarise_cohort_overlap_ggplot2_2_download", label = "Download")
+                  shiny::downloadButton(outputId = "summarise_cohort_overlap_plot_download", label = "Download")
                 ),
                 class = "text-end"
               ),
               bslib::layout_sidebar(
                 sidebar = bslib::sidebar(width = 400, open = "closed",
                                          shinyWidgets::pickerInput(
-                                           inputId = "summarise_cohort_overlap_ggplot2_2_facet",
+                                           inputId = "summarise_cohort_overlap_plot_facet",
                                            label = "facet",
                                            selected = c("cdm_name", "cohort_name_reference"),
                                            multiple = TRUE,
@@ -961,13 +998,13 @@ ui <- bslib::page_navbar(
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                          ),
                                          shiny::checkboxInput(
-                                           inputId = "summarise_cohort_overlap_ggplot2_2_uniqueCombinations",
+                                           inputId = "summarise_cohort_overlap_plot_uniqueCombinations",
                                            label = "uniqueCombinations",
                                            value = c(TRUE)
                                          ),
                                          position = "right"
                 ),
-                plotly::plotlyOutput("summarise_cohort_overlap_ggplot2_2")
+                plotly::plotlyOutput("summarise_cohort_overlap_plot")
               )
             )
           )
@@ -975,7 +1012,7 @@ ui <- bslib::page_navbar(
       )
     )
   ),
-
+  
   # Population diagnostics -----
   bslib::nav_menu(
     title = "Population diagnostics",
@@ -1049,48 +1086,17 @@ ui <- bslib::page_navbar(
                 bslib::popover(
                   shiny::icon("download"),
                   shinyWidgets::pickerInput(
-                    inputId = "incidence_gt_18_download_type",
+                    inputId = "incidence_gt_download_type",
                     label = "File type",
                     selected = "docx",
                     choices = c("docx", "png", "pdf", "html"),
                     multiple = FALSE
                   ),
-                  shiny::downloadButton(outputId = "incidence_gt_18_download", label = "Download")
+                  shiny::downloadButton(outputId = "incidence_gt_download", label = "Download")
                 ),
                 class = "text-end"
               ),
-              bslib::layout_sidebar(
-                sidebar = bslib::sidebar(width = 400, open = "closed",
-                                         materialSwitch(inputId = "incidence_interactive",
-                                                        label = "Interactive",
-                                                        status = "primary"),
-                                         sortable::bucket_list(
-                                           header = NULL,
-                                           sortable::add_rank_list(
-                                             text = "none",
-                                             labels = c("cdm_name", "denominator_cohort_name", "incidence_start_date", "incidence_end_date", "analysis_outcome_washout", "analysis_repeated_events", "analysis_interval", "analysis_complete_database_intervals", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation", "denominator_start_date", "denominator_end_date", "denominator_time_at_risk", "denominator_target_cohort_name", "outcome_cohort_name", "variable_name", "variable_level"),
-                                             input_id = "incidence_gt_18_none"
-                                           ),
-                                           sortable::add_rank_list(
-                                             text = "header",
-                                             labels = "estimate_name",
-                                             input_id = "incidence_gt_18_header"
-                                           ),
-                                           sortable::add_rank_list(
-                                             text = "groupColumn",
-                                             labels = character(),
-                                             input_id = "incidence_gt_18_groupColumn"
-                                           ),
-                                           sortable::add_rank_list(
-                                             text = "hide",
-                                             labels = character(),
-                                             input_id = "incidence_gt_18_hide"
-                                           )
-                                         ),
-                                         position = "right"
-                ),
-                gt::gt_output("incidence_gt_18") |> withSpinner()
-              )
+              gt::gt_output("incidence_gt") |> withSpinner()
             )
           ),
           bslib::nav_panel(
@@ -1101,35 +1107,35 @@ ui <- bslib::page_navbar(
                 bslib::popover(
                   shiny::icon("download"),
                   shiny::numericInput(
-                    inputId = "incidence_population_ggplot2_20_download_width",
+                    inputId = "incidence_population_plot_download_width",
                     label = "Width",
                     value = 15
                   ),
                   shiny::numericInput(
-                    inputId = "incidence_population_ggplot2_20_download_height",
+                    inputId = "incidence_population_plot_download_height",
                     label = "Height",
                     value = 10
                   ),
                   shinyWidgets::pickerInput(
-                    inputId = "incidence_population_ggplot2_20_download_units",
+                    inputId = "incidence_population_plot_download_units",
                     label = "Units",
                     selected = "cm",
                     choices = c("px", "cm", "inch"),
                     multiple = FALSE
                   ),
                   shiny::numericInput(
-                    inputId = "incidence_population_ggplot2_20_download_dpi",
+                    inputId = "incidence_population_plot_download_dpi",
                     label = "dpi",
                     value = 300
                   ),
-                  shiny::downloadButton(outputId = "incidence_population_ggplot2_20_download", label = "Download")
+                  shiny::downloadButton(outputId = "incidence_population_plot_download", label = "Download")
                 ),
                 class = "text-end"
               ),
               bslib::layout_sidebar(
                 sidebar = bslib::sidebar(width = 400, open = "closed",
                                          shinyWidgets::pickerInput(
-                                           inputId = "incidence_ggplot2_20_x",
+                                           inputId = "incidence_population_plot_x",
                                            label = "x",
                                            selected = "incidence_start_date",
                                            multiple = FALSE,
@@ -1137,7 +1143,7 @@ ui <- bslib::page_navbar(
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                          ),
                                          shinyWidgets::pickerInput(
-                                           inputId = "incidence_ggplot2_20_y",
+                                           inputId = "incidence_population_plot_y",
                                            label = "y",
                                            selected = "denominator_count",
                                            multiple = FALSE,
@@ -1145,7 +1151,7 @@ ui <- bslib::page_navbar(
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                          ),
                                          shinyWidgets::pickerInput(
-                                           inputId = "incidence_ggplot2_20_facet",
+                                           inputId = "incidence_population_plot_facet",
                                            label = "facet",
                                            selected = NULL,
                                            multiple = TRUE,
@@ -1153,7 +1159,7 @@ ui <- bslib::page_navbar(
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                          ),
                                          shinyWidgets::pickerInput(
-                                           inputId = "incidence_ggplot2_20_colour",
+                                           inputId = "incidence_population_plot_colour",
                                            label = "colour",
                                            selected = NULL,
                                            multiple = TRUE,
@@ -1162,7 +1168,7 @@ ui <- bslib::page_navbar(
                                          ),
                                          position = "right"
                 ),
-                plotly::plotlyOutput("incidence_ggplot2_20")
+                plotly::plotlyOutput("incidence_population_plot")
               )
             )
           ),
@@ -1174,35 +1180,35 @@ ui <- bslib::page_navbar(
                 bslib::popover(
                   shiny::icon("download"),
                   shiny::numericInput(
-                    inputId = "incidence_ggplot2_19_download_width",
+                    inputId = "incidence_plot_download_width",
                     label = "Width",
                     value = 15
                   ),
                   shiny::numericInput(
-                    inputId = "incidence_ggplot2_19_download_height",
+                    inputId = "incidence_plot_download_height",
                     label = "Height",
                     value = 10
                   ),
                   shinyWidgets::pickerInput(
-                    inputId = "incidence_ggplot2_19_download_units",
+                    inputId = "incidence_plot_download_units",
                     label = "Units",
                     selected = "cm",
                     choices = c("px", "cm", "inch"),
                     multiple = FALSE
                   ),
                   shiny::numericInput(
-                    inputId = "incidence_ggplot2_19_download_dpi",
+                    inputId = "incidence_plot_download_dpi",
                     label = "dpi",
                     value = 300
                   ),
-                  shiny::downloadButton(outputId = "incidence_ggplot2_19_download", label = "Download")
+                  shiny::downloadButton(outputId = "incidence_plot_download", label = "Download")
                 ),
                 class = "text-end"
               ),
               bslib::layout_sidebar(
                 sidebar = bslib::sidebar(width = 400, open = "closed",
                                          shinyWidgets::pickerInput(
-                                           inputId = "incidence_ggplot2_19_x",
+                                           inputId = "incidence_plot_x",
                                            label = "x",
                                            selected = "incidence_start_date",
                                            multiple = FALSE,
@@ -1210,12 +1216,12 @@ ui <- bslib::page_navbar(
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                          ),
                                          shiny::checkboxInput(
-                                           inputId = "incidence_ggplot2_19_ribbon",
+                                           inputId = "incidence_plot_ribbon",
                                            label = "ribbon",
                                            value = c(FALSE)
                                          ),
                                          shinyWidgets::pickerInput(
-                                           inputId = "incidence_ggplot2_19_facet",
+                                           inputId = "incidence_plot_facet",
                                            label = "facet",
                                            selected = NULL,
                                            multiple = TRUE,
@@ -1223,7 +1229,7 @@ ui <- bslib::page_navbar(
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                          ),
                                          shinyWidgets::pickerInput(
-                                           inputId = "incidence_ggplot2_19_colour",
+                                           inputId = "incidence_plot_colour",
                                            label = "colour",
                                            selected = NULL,
                                            multiple = TRUE,
@@ -1232,231 +1238,13 @@ ui <- bslib::page_navbar(
                                          ),
                                          position = "right"
                 ),
-                plotly::plotlyOutput("incidence_ggplot2_19")
+                plotly::plotlyOutput("incidence_plot")
               )
             )
           )
         )
       )
     ),
-    # ,
-    # bslib::nav_panel(
-    #   title = "Attrition",
-    #   icon = shiny::icon("layer-group"),
-    #   bslib::layout_sidebar(
-    #     sidebar = bslib::sidebar(width = 400, open = "closed",
-    #       bslib::accordion(
-    #         bslib::accordion_panel(
-    #           title = "Information",
-    #           icon = shiny::icon("info"),
-    #           shiny::p("")
-    #         ),
-    #         bslib::accordion_panel(
-    #           title = "Settings",
-    #           shinyWidgets::pickerInput(
-    #             inputId = "incidence_attrition_settings_analysis_outcome_washout",
-    #             label = "Analysis outcome washout",
-    #             choices = NULL,
-    #             selected = NULL,
-    #             multiple = TRUE,
-    #             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-    #           ),
-    #           shinyWidgets::pickerInput(
-    #             inputId = "incidence_attrition_settings_analysis_interval",
-    #             label = "Analysis interval",
-    #             choices = NULL,
-    #             selected = NULL,
-    #             multiple = TRUE,
-    #             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-    #           ),
-    #           shinyWidgets::pickerInput(
-    #             inputId = "incidence_attrition_settings_denominator_age_group",
-    #             label = "Denominator age group",
-    #             choices = NULL,
-    #             selected = NULL,
-    #             multiple = TRUE,
-    #             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-    #           ),
-    #           shinyWidgets::pickerInput(
-    #             inputId = "incidence_attrition_settings_denominator_sex",
-    #             label = "Denominator sex",
-    #             choices = NULL,
-    #             selected = NULL,
-    #             multiple = TRUE,
-    #             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-    #           ),
-    #           shinyWidgets::pickerInput(
-    #             inputId = "incidence_attrition_settings_denominator_start_date",
-    #             label = "Denominator start date",
-    #             choices = NULL,
-    #             selected = NULL,
-    #             multiple = TRUE,
-    #             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-    #           ),
-    #           shinyWidgets::pickerInput(
-    #             inputId = "incidence_attrition_settings_denominator_end_date",
-    #             label = "Denominator end date",
-    #             choices = NULL,
-    #             selected = NULL,
-    #             multiple = TRUE,
-    #             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-    #           ),
-    #           shinyWidgets::pickerInput(
-    #             inputId = "incidence_attrition_settings_outcome_cohort_name",
-    #             label = "Outcome cohort name",
-    #             choices = NULL,
-    #             selected = NULL,
-    #             multiple = TRUE,
-    #             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-    #           )
-    #         ),
-    #         bslib::accordion_panel(
-    #           title = "Settings",
-    #           shinyWidgets::pickerInput(
-    #             inputId = "incidence_attrition_grouping_cdm_name",
-    #             label = "Database",
-    #             choices = NULL,
-    #             selected = NULL,
-    #             multiple = TRUE,
-    #             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-    #           ),
-    #           shinyWidgets::pickerInput(
-    #             inputId = "incidence_attrition_grouping_denominator_cohort_name",
-    #             label = "Denominator cohort name",
-    #             choices = NULL,
-    #             selected = NULL,
-    #             multiple = TRUE,
-    #             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-    #           ),
-    #           shinyWidgets::pickerInput(
-    #             inputId = "incidence_attrition_grouping_reason",
-    #             label = "Reason",
-    #             choices = NULL,
-    #             selected = NULL,
-    #             multiple = TRUE,
-    #             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-    #           ),
-    #           shinyWidgets::pickerInput(
-    #             inputId = "incidence_attrition_grouping_reason_id",
-    #             label = "Reason id",
-    #             choices = NULL,
-    #             selected = NULL,
-    #             multiple = TRUE,
-    #             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-    #           )
-    #         ),
-    #         bslib::accordion_panel(
-    #           title = "Variables",
-    #           shinyWidgets::pickerInput(
-    #             inputId = "incidence_attrition_variable_name",
-    #             label = "Variable name",
-    #             choices = NULL,
-    #             selected = NULL,
-    #             multiple = TRUE,
-    #             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-    #           )
-    #         ),
-    #         bslib::accordion_panel(
-    #           title = "Estimates",
-    #           shinyWidgets::pickerInput(
-    #             inputId = "incidence_attrition_estimate_name",
-    #             label = "Estimate name",
-    #             choices = NULL,
-    #             selected = NULL,
-    #             multiple = TRUE,
-    #             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-    #           )
-    #         )
-    #       )
-    #     ),
-    #     bslib::navset_card_tab(
-    #       bslib::nav_panel(
-    #         title = "Tidy",
-    #         bslib::card(
-    #           full_screen = TRUE,
-    #           bslib::card_header(
-    #             bslib::popover(
-    #               shiny::icon("download"),
-    #               shiny::downloadButton(outputId = "incidence_attrition_tidy_download", label = "Download csv")
-    #             ),
-    #             class = "text-end"
-    #           ),
-    #           bslib::layout_sidebar(
-    #             sidebar = bslib::sidebar(width = 400, open = "closed",
-    #               shinyWidgets::pickerInput(
-    #                 inputId = "incidence_attrition_tidy_columns",
-    #                 label = "Columns",
-    #                 choices = NULL,
-    #                 selected = NULL,
-    #                 multiple = TRUE,
-    #                 options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-    #               ),
-    #               shiny::radioButtons(
-    #                 inputId = "incidence_attrition_tidy_pivot",
-    #                 label = "Pivot estimates/variables",
-    #                 choices = c("none", "estimates", "estimates and variables"),
-    #                 selected = "none"
-    #               ),
-    #               position = "right"
-    #             ),
-    #             DT::dataTableOutput("incidence_attrition_tidy")
-    #           )
-    #         )
-    #       )
-    #       # ,
-    #       # bslib::nav_panel(
-    #       #   title = "Table incidence attrition",
-    #       #   bslib::card(
-    #       #     full_screen = TRUE,
-    #       #     bslib::card_header(
-    #       #       bslib::popover(
-    #       #         shiny::icon("download"),
-    #       #         shinyWidgets::pickerInput(
-    #       #           inputId = "incidence_attrition_gt_22_download_type",
-    #       #           label = "File type",
-    #       #           selected = "docx",
-    #       #           choices = c("docx", "png", "pdf", "html"),
-    #       #           multiple = FALSE
-    #       #         ),
-    #       #         shiny::downloadButton(outputId = "incidence_attrition_gt_22_download", label = "Download")
-    #       #       ),
-    #       #       class = "text-end"
-    #       #     ),
-    #       #     bslib::layout_sidebar(
-    #       #       sidebar = bslib::sidebar(width = 400, open = "closed",
-    #       #         sortable::bucket_list(
-    #       #           header = NULL,
-    #       #           sortable::add_rank_list(
-    #       #             text = "none",
-    #       #             labels = c("denominator_cohort_name", "reason", "reason_id", "analysis_outcome_washout", "analysis_repeated_events", "analysis_interval", "analysis_complete_database_intervals", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation", "denominator_start_date", "denominator_end_date", "denominator_time_at_risk", "denominator_target_cohort_name", "outcome_cohort_name"),
-    #       #             input_id = "incidence_attrition_gt_22_none"
-    #       #           ),
-    #       #           sortable::add_rank_list(
-    #       #             text = "header",
-    #       #             labels = "variable_name",
-    #       #             input_id = "incidence_attrition_gt_22_header"
-    #       #           ),
-    #       #           sortable::add_rank_list(
-    #       #             text = "groupColumn",
-    #       #             labels = c("cdm_name", "variable_level"),
-    #       #             input_id = "incidence_attrition_gt_22_groupColumn"
-    #       #           ),
-    #       #           sortable::add_rank_list(
-    #       #             text = "hide",
-    #       #             labels = "estimate_name",
-    #       #             input_id = "incidence_attrition_gt_22_hide"
-    #       #           )
-    #       #         ),
-    #       #         position = "right"
-    #       #       ),
-    #       #       gt::gt_output("incidence_attrition_gt_22") |> withSpinner()
-    #       #     )
-    #       #   )
-    #       # )
-    #     )
-    #   )
-    # )
-
     ## Prevalence -----
     bslib::nav_panel(
       title = "Prevalence",
@@ -1526,48 +1314,17 @@ ui <- bslib::page_navbar(
                 bslib::popover(
                   shiny::icon("download"),
                   shinyWidgets::pickerInput(
-                    inputId = "prevalence_gt_prev1_download_type",
+                    inputId = "prevalence_gt_download_type",
                     label = "File type",
                     selected = "docx",
                     choices = c("docx", "png", "pdf", "html"),
                     multiple = FALSE
                   ),
-                  shiny::downloadButton(outputId = "prevalence_gt_prev1_download", label = "Download")
+                  shiny::downloadButton(outputId = "prevalence_gt_download", label = "Download")
                 ),
                 class = "text-end"
               ),
-              bslib::layout_sidebar(
-                sidebar = bslib::sidebar(width = 400, open = "closed",
-                                         materialSwitch(inputId = "prevalence_interactive",
-                                                        label = "Interactive",
-                                                        status = "primary"),
-                                         sortable::bucket_list(
-                                           header = NULL,
-                                           sortable::add_rank_list(
-                                             text = "none",
-                                             labels = c("cdm_name", "denominator_cohort_name", "prevalence_start_date", "prevalence_end_date", "analysis_outcome_washout", "analysis_repeated_events", "analysis_interval", "analysis_complete_database_intervals", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation", "denominator_start_date", "denominator_end_date", "denominator_time_at_risk", "denominator_target_cohort_name", "outcome_cohort_name", "variable_name", "variable_level"),
-                                             input_id = "prevalence_gt_prev1_none"
-                                           ),
-                                           sortable::add_rank_list(
-                                             text = "header",
-                                             labels = "estimate_name",
-                                             input_id = "prevalence_gt_prev1_header"
-                                           ),
-                                           sortable::add_rank_list(
-                                             text = "groupColumn",
-                                             labels = character(),
-                                             input_id = "prevalence_gt_prev1_groupColumn"
-                                           ),
-                                           sortable::add_rank_list(
-                                             text = "hide",
-                                             labels = character(),
-                                             input_id = "prevalence_gt_prev1_hide"
-                                           )
-                                         ),
-                                         position = "right"
-                ),
-                gt::gt_output("prevalence_gt_prev1") |> withSpinner()
-              )
+              gt::gt_output("prevalence_gt") |> withSpinner()
             )
           ),
           bslib::nav_panel(
@@ -1578,35 +1335,35 @@ ui <- bslib::page_navbar(
                 bslib::popover(
                   shiny::icon("download"),
                   shiny::numericInput(
-                    inputId = "prevalence_population_ggplot2_prev3_download_width",
+                    inputId = "prevalence_population_plot_download_width",
                     label = "Width",
                     value = 15
                   ),
                   shiny::numericInput(
-                    inputId = "prevalence_population_ggplot2_prev3_download_height",
+                    inputId = "prevalence_population_plot_download_height",
                     label = "Height",
                     value = 10
                   ),
                   shinyWidgets::pickerInput(
-                    inputId = "prevalence_population_ggplot2_prev3_download_units",
+                    inputId = "prevalence_population_plot_download_units",
                     label = "Units",
                     selected = "cm",
                     choices = c("px", "cm", "inch"),
                     multiple = FALSE
                   ),
                   shiny::numericInput(
-                    inputId = "prevalence_population_ggplot2_prev3_download_dpi",
+                    inputId = "prevalence_population_plot_download_dpi",
                     label = "dpi",
                     value = 300
                   ),
-                  shiny::downloadButton(outputId = "prevalence_population_ggplot2_prev3_download", label = "Download")
+                  shiny::downloadButton(outputId = "prevalence_population_plot_download", label = "Download")
                 ),
                 class = "text-end"
               ),
               bslib::layout_sidebar(
                 sidebar = bslib::sidebar(width = 400, open = "closed",
                                          shinyWidgets::pickerInput(
-                                           inputId = "prevalence_population_ggplot2_prev3_x",
+                                           inputId = "prevalence_population_plot_x",
                                            label = "x",
                                            selected = "prevalence_start_date",
                                            multiple = FALSE,
@@ -1614,7 +1371,7 @@ ui <- bslib::page_navbar(
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                          ),
                                          shinyWidgets::pickerInput(
-                                           inputId = "prevalence_population_ggplot2_prev3_y",
+                                           inputId = "prevalence_population_plot_y",
                                            label = "y",
                                            selected = "denominator_count",
                                            multiple = FALSE,
@@ -1622,7 +1379,7 @@ ui <- bslib::page_navbar(
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                          ),
                                          shinyWidgets::pickerInput(
-                                           inputId = "prevalence_population_ggplot2_prev3_facet",
+                                           inputId = "prevalence_population_plot_facet",
                                            label = "facet",
                                            selected = NULL,
                                            multiple = TRUE,
@@ -1630,7 +1387,7 @@ ui <- bslib::page_navbar(
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                          ),
                                          shinyWidgets::pickerInput(
-                                           inputId = "prevalence_population_ggplot2_prev3_colour",
+                                           inputId = "prevalence_population_plot_colour",
                                            label = "colour",
                                            selected = NULL,
                                            multiple = TRUE,
@@ -1639,7 +1396,7 @@ ui <- bslib::page_navbar(
                                          ),
                                          position = "right"
                 ),
-                plotly::plotlyOutput("prevalence_population_ggplot2_prev3")
+                plotly::plotlyOutput("prevalence_population_plot")
               )
             )
           ),
@@ -1651,35 +1408,35 @@ ui <- bslib::page_navbar(
                 bslib::popover(
                   shiny::icon("download"),
                   shiny::numericInput(
-                    inputId = "prevalence_ggplot2_prev2_download_width",
+                    inputId = "prevalence_plot_download_width",
                     label = "Width",
                     value = 15
                   ),
                   shiny::numericInput(
-                    inputId = "prevalence_ggplot2_prev2_download_height",
+                    inputId = "prevalence_plot_download_height",
                     label = "Height",
                     value = 10
                   ),
                   shinyWidgets::pickerInput(
-                    inputId = "prevalence_ggplot2_prev2_download_units",
+                    inputId = "prevalence_plot_download_units",
                     label = "Units",
                     selected = "cm",
                     choices = c("px", "cm", "inch"),
                     multiple = FALSE
                   ),
                   shiny::numericInput(
-                    inputId = "prevalence_ggplot2_prev2_download_dpi",
+                    inputId = "prevalence_plot_download_dpi",
                     label = "dpi",
                     value = 300
                   ),
-                  shiny::downloadButton(outputId = "prevalence_ggplot2_prev2_download", label = "Download")
+                  shiny::downloadButton(outputId = "prevalence_plot_download", label = "Download")
                 ),
                 class = "text-end"
               ),
               bslib::layout_sidebar(
                 sidebar = bslib::sidebar(width = 400, open = "closed",
                                          shinyWidgets::pickerInput(
-                                           inputId = "prevalence_ggplot2_prev2_x",
+                                           inputId = "prevalence_plot_x",
                                            label = "x",
                                            selected = "prevalence_start_date",
                                            multiple = FALSE,
@@ -1687,12 +1444,12 @@ ui <- bslib::page_navbar(
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                          ),
                                          shiny::checkboxInput(
-                                           inputId = "prevalence_ggplot2_prev2_ribbon",
+                                           inputId = "prevalence_plot_ribbon",
                                            label = "ribbon",
                                            value = c(FALSE)
                                          ),
                                          shinyWidgets::pickerInput(
-                                           inputId = "prevalence_ggplot2_prev2_facet",
+                                           inputId = "prevalence_plot_facet",
                                            label = "facet",
                                            selected = NULL,
                                            multiple = TRUE,
@@ -1700,7 +1457,7 @@ ui <- bslib::page_navbar(
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                          ),
                                          shinyWidgets::pickerInput(
-                                           inputId = "prevalence_ggplot2_prev2_colour",
+                                           inputId = "prevalence_plot_colour",
                                            label = "colour",
                                            selected = NULL,
                                            multiple = TRUE,
@@ -1709,232 +1466,13 @@ ui <- bslib::page_navbar(
                                          ),
                                          position = "right"
                 ),
-                plotly::plotlyOutput("prevalence_ggplot2_prev2")
+                plotly::plotlyOutput("prevalence_plot")
               )
             )
           )
         )
       )
-    ),
-    # ,
-    # bslib::nav_panel(
-    #   title = "Attrition",
-    #   icon = shiny::icon("layer-group"),
-    #   bslib::layout_sidebar(
-    #     sidebar = bslib::sidebar(width = 400, open = "closed",
-    #       bslib::accordion(
-    #         bslib::accordion_panel(
-    #           title = "Information",
-    #           icon = shiny::icon("info"),
-    #           shiny::p("")
-    #         ),
-    #         bslib::accordion_panel(
-    #           title = "Settings",
-    #           shinyWidgets::pickerInput(
-    #             inputId = "prevalence_attrition_settings_analysis_outcome_washout",
-    #             label = "Analysis outcome washout",
-    #             choices = NULL,
-    #             selected = NULL,
-    #             multiple = TRUE,
-    #             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-    #           ),
-    #           shinyWidgets::pickerInput(
-    #             inputId = "prevalence_attrition_settings_analysis_interval",
-    #             label = "Analysis interval",
-    #             choices = NULL,
-    #             selected = NULL,
-    #             multiple = TRUE,
-    #             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-    #           ),
-    #           shinyWidgets::pickerInput(
-    #             inputId = "prevalence_attrition_settings_denominator_age_group",
-    #             label = "Denominator age group",
-    #             choices = NULL,
-    #             selected = NULL,
-    #             multiple = TRUE,
-    #             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-    #           ),
-    #           shinyWidgets::pickerInput(
-    #             inputId = "prevalence_attrition_settings_denominator_sex",
-    #             label = "Denominator sex",
-    #             choices = NULL,
-    #             selected = NULL,
-    #             multiple = TRUE,
-    #             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-    #           ),
-    #           shinyWidgets::pickerInput(
-    #             inputId = "prevalence_attrition_settings_denominator_start_date",
-    #             label = "Denominator start date",
-    #             choices = NULL,
-    #             selected = NULL,
-    #             multiple = TRUE,
-    #             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-    #           ),
-    #           shinyWidgets::pickerInput(
-    #             inputId = "prevalence_attrition_settings_denominator_end_date",
-    #             label = "Denominator end date",
-    #             choices = NULL,
-    #             selected = NULL,
-    #             multiple = TRUE,
-    #             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-    #           ),
-    #           shinyWidgets::pickerInput(
-    #             inputId = "prevalence_attrition_settings_outcome_cohort_name",
-    #             label = "Outcome cohort name",
-    #             choices = NULL,
-    #             selected = NULL,
-    #             multiple = TRUE,
-    #             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-    #           )
-    #         ),
-    #         bslib::accordion_panel(
-    #           title = "Settings",
-    #           shinyWidgets::pickerInput(
-    #             inputId = "prevalence_attrition_grouping_cdm_name",
-    #             label = "Database",
-    #             choices = NULL,
-    #             selected = NULL,
-    #             multiple = TRUE,
-    #             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-    #           ),
-    #           shinyWidgets::pickerInput(
-    #             inputId = "prevalence_attrition_grouping_denominator_cohort_name",
-    #             label = "Denominator cohort name",
-    #             choices = NULL,
-    #             selected = NULL,
-    #             multiple = TRUE,
-    #             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-    #           ),
-    #           shinyWidgets::pickerInput(
-    #             inputId = "prevalence_attrition_grouping_reason",
-    #             label = "Reason",
-    #             choices = NULL,
-    #             selected = NULL,
-    #             multiple = TRUE,
-    #             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-    #           ),
-    #           shinyWidgets::pickerInput(
-    #             inputId = "prevalence_attrition_grouping_reason_id",
-    #             label = "Reason id",
-    #             choices = NULL,
-    #             selected = NULL,
-    #             multiple = TRUE,
-    #             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-    #           )
-    #         ),
-    #         bslib::accordion_panel(
-    #           title = "Variables",
-    #           shinyWidgets::pickerInput(
-    #             inputId = "prevalence_attrition_variable_name",
-    #             label = "Variable name",
-    #             choices = NULL,
-    #             selected = NULL,
-    #             multiple = TRUE,
-    #             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-    #           )
-    #         ),
-    #         bslib::accordion_panel(
-    #           title = "Estimates",
-    #           shinyWidgets::pickerInput(
-    #             inputId = "prevalence_attrition_estimate_name",
-    #             label = "Estimate name",
-    #             choices = NULL,
-    #             selected = NULL,
-    #             multiple = TRUE,
-    #             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-    #           )
-    #         )
-    #       )
-    #     ),
-    #     bslib::navset_card_tab(
-    #       bslib::nav_panel(
-    #         title = "Tidy",
-    #         bslib::card(
-    #           full_screen = TRUE,
-    #           bslib::card_header(
-    #             bslib::popover(
-    #               shiny::icon("download"),
-    #               shiny::downloadButton(outputId = "prevalence_attrition_tidy_download", label = "Download csv")
-    #             ),
-    #             class = "text-end"
-    #           ),
-    #           bslib::layout_sidebar(
-    #             sidebar = bslib::sidebar(width = 400, open = "closed",
-    #               shinyWidgets::pickerInput(
-    #                 inputId = "prevalence_attrition_tidy_columns",
-    #                 label = "Columns",
-    #                 choices = NULL,
-    #                 selected = NULL,
-    #                 multiple = TRUE,
-    #                 options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-    #               ),
-    #               shiny::radioButtons(
-    #                 inputId = "prevalence_attrition_tidy_pivot",
-    #                 label = "Pivot estimates/variables",
-    #                 choices = c("none", "estimates", "estimates and variables"),
-    #                 selected = "none"
-    #               ),
-    #               position = "right"
-    #             ),
-    #             DT::dataTableOutput("prevalence_attrition_tidy")
-    #           )
-    #         )
-    #       )
-    #       # ,
-    #       # bslib::nav_panel(
-    #       #   title = "Table prevalence attrition",
-    #       #   bslib::card(
-    #       #     full_screen = TRUE,
-    #       #     bslib::card_header(
-    #       #       bslib::popover(
-    #       #         shiny::icon("download"),
-    #       #         shinyWidgets::pickerInput(
-    #       #           inputId = "prevalence_attrition_gt_22_download_type",
-    #       #           label = "File type",
-    #       #           selected = "docx",
-    #       #           choices = c("docx", "png", "pdf", "html"),
-    #       #           multiple = FALSE
-    #       #         ),
-    #       #         shiny::downloadButton(outputId = "prevalence_attrition_gt_22_download", label = "Download")
-    #       #       ),
-    #       #       class = "text-end"
-    #       #     ),
-    #       #     bslib::layout_sidebar(
-    #       #       sidebar = bslib::sidebar(width = 400, open = "closed",
-    #       #         sortable::bucket_list(
-    #       #           header = NULL,
-    #       #           sortable::add_rank_list(
-    #       #             text = "none",
-    #       #             labels = c("denominator_cohort_name", "reason", "reason_id", "analysis_outcome_washout", "analysis_repeated_events", "analysis_interval", "analysis_complete_database_intervals", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation", "denominator_start_date", "denominator_end_date", "denominator_time_at_risk", "denominator_target_cohort_name", "outcome_cohort_name"),
-    #       #             input_id = "prevalence_attrition_gt_22_none"
-    #       #           ),
-    #       #           sortable::add_rank_list(
-    #       #             text = "header",
-    #       #             labels = "variable_name",
-    #       #             input_id = "prevalence_attrition_gt_22_header"
-    #       #           ),
-    #       #           sortable::add_rank_list(
-    #       #             text = "groupColumn",
-    #       #             labels = c("cdm_name", "variable_level"),
-    #       #             input_id = "prevalence_attrition_gt_22_groupColumn"
-    #       #           ),
-    #       #           sortable::add_rank_list(
-    #       #             text = "hide",
-    #       #             labels = "estimate_name",
-    #       #             input_id = "prevalence_attrition_gt_22_hide"
-    #       #           )
-    #       #         ),
-    #       #         position = "right"
-    #       #       ),
-    #       #       gt::gt_output("prevalence_attrition_gt_22") |> withSpinner()
-    #       #     )
-    #       #   )
-    #       # )
-    #     )
-    #   )
-    # )
-
-
+    )
   ),
   # end ------
   bslib::nav_spacer(),
