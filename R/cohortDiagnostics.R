@@ -86,7 +86,7 @@ cohortDiagnostics <- function(cohort){
 
     cli::cli_bullets(c("*" = "Getting cohort timing"))
     results[["cohort_timing"]] <- cdm[[cohortName]] |>
-      CohortCharacteristics::summariseCohortTiming(estimates = "density")
+      CohortCharacteristics::summariseCohortTiming(estimates = c("median", "q25", "q75", "min", "max", "density"))
     }
 
   results <- results |>

@@ -835,12 +835,13 @@ server <- function(input, output, session) {
       validate("No cohort timing in results")
     }
     
-    result <- dataFiltered$summarise_cohort_timing |>
-      filterData("summarise_cohort_timing", input)
-    CohortCharacteristics::plotCohortTiming(
-      result,
-      facet = input$summarise_cohort_timing_plot_facet,
-      uniqueCombinations = input$summarise_cohort_timing_plot_uniqueCombinations
+    dataFiltered$summarise_cohort_timing |>
+      filterData("summarise_cohort_timing", input) |>
+      CohortCharacteristics::plotCohortTiming(
+        plotType = "densityplot",
+        facet = input$summarise_cohort_timing_plot_facet,
+        uniqueCombinations = input$summarise_cohort_timing_plot_uniqueCombinations,
+        timeScale = input$summarise_cohort_timing_gt_time_scale,
     )
   })
   output$summarise_cohort_timing_plot <- plotly::renderPlotly({
