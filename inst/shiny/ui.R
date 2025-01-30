@@ -4,13 +4,13 @@
 ui <- bslib::page_navbar(
   theme = bs_theme(bootswatch = "pulse"),
   #  zephyr
-  
+
   title = "PhenotypeR",
   bslib::nav_panel(
     title = "Background",
     icon = shiny::icon("disease"),
     shiny::includeMarkdown(path = "background.md")
-    
+
   ),
   # Database diagnostics -----
   bslib::nav_menu(
@@ -145,7 +145,7 @@ ui <- bslib::page_navbar(
               ),
               class = "text-end"
             ),
-            gt::gt_output("achilles_code_use_gt") |> withSpinner()
+            uiOutput("achilles_code_use_tbl") |> withSpinner()
           )
         )
       )
@@ -1181,7 +1181,7 @@ ui <- bslib::page_navbar(
         )
       )
     )
-  ),  
+  ),
   # Population diagnostics -----
   bslib::nav_menu(
     title = "Population diagnostics",
