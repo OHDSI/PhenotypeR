@@ -87,7 +87,7 @@ library(PhenotypeR)
 con <- DBI::dbConnect(duckdb::duckdb(), 
                       CDMConnector::eunomiaDir("synpuf-1k", "5.3"))
 cdm <- CDMConnector::cdmFromCon(con = con, 
-                                cdmName = "Mock PhenotypeR",
+                                cdmName = "Eunomia Synpuf",
                                 cdmSchema   = "main",
                                 writeSchema = "main", 
                                 achillesSchema = "main")
@@ -135,7 +135,7 @@ application. This shiny app will be saved in a new directory and can be
 further customised using the `directory` input.
 
 ```{r, eval=FALSE}
-shinyDiagnostics(result = result, directory = tempdir())
+shinyDiagnostics(result = result, minCellCount = 10, directory = tempdir())
 ```
 
 See the shiny app generated from the example cohort in

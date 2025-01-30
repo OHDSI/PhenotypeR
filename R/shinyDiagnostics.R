@@ -12,6 +12,7 @@
 #'
 #'
 #' @inheritParams resultDoc
+#' @param minCellCount Minimum cell count for suppression when exporting results.
 #' @inheritParams directoryDoc
 #' @param open If TRUE, the shiny app will be launched in a new session. If
 #' FALSE, the shiny app will be created but not launched.
@@ -32,6 +33,7 @@
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
 shinyDiagnostics <- function(result,
+                             minCellCount,
                              directory,
                              open = rlang::is_interactive()){
 
@@ -47,6 +49,7 @@ shinyDiagnostics <- function(result,
             overwrite = TRUE)
 
   omopgenerics::exportSummarisedResult(result,
+                                       minCellCount = minCellCount,
                                        fileName = "result.csv",
                                        path = file.path(directory, "shiny", "data", "raw"))
   # shiny::shinyAppDir(file.path(directory, "shiny"))

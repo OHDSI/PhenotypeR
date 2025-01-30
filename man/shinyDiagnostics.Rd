@@ -4,10 +4,17 @@
 \alias{shinyDiagnostics}
 \title{Create a shiny app summarising your phenotyping results}
 \usage{
-shinyDiagnostics(result, directory, open = rlang::is_interactive())
+shinyDiagnostics(
+  result,
+  minCellCount,
+  directory,
+  open = rlang::is_interactive()
+)
 }
 \arguments{
 \item{result}{A summarised result}
+
+\item{minCellCount}{Minimum cell count for suppression when exporting results.}
 
 \item{directory}{Directory where to save report}
 
