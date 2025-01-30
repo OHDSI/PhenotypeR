@@ -145,7 +145,7 @@ ui <- bslib::page_navbar(
               ),
               class = "text-end"
             ),
-            gt::gt_output("achilles_code_use_gt") |> withSpinner()
+            uiOutput("achilles_code_use_tbl") |> withSpinner()
           )
         )
       )
