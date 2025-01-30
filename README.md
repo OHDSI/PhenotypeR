@@ -72,9 +72,10 @@ library(PhenotypeR)
 con <- DBI::dbConnect(duckdb::duckdb(), 
                       CDMConnector::eunomiaDir("synpuf-1k", "5.3"))
 cdm <- CDMConnector::cdmFromCon(con = con, 
-                       cdmSchema   = "main",
-                       writeSchema = "main", 
-                       achillesSchema = "main")
+                                cdmName = "Eunomia Synpuf",
+                                cdmSchema   = "main",
+                                writeSchema = "main", 
+                                achillesSchema = "main")
 ```
 
 Note that we’ve included achilles results in our cdm reference. Where we
@@ -83,7 +84,7 @@ can we’ll use these precomputed counts to speed up our analysis.
 ``` r
 cdm
 #> 
-#> ── # OMOP CDM reference (duckdb) of An OMOP CDM database ───────────────────────
+#> ── # OMOP CDM reference (duckdb) of Eunomia Synpuf ─────────────────────────────
 #> • omop tables: person, observation_period, visit_occurrence, visit_detail,
 #> condition_occurrence, drug_exposure, procedure_occurrence, device_exposure,
 #> measurement, observation, death, note, note_nlp, specimen, fact_relationship,
@@ -99,15 +100,16 @@ cdm
 
 ``` r
 # Create a code lists
-cond_codes <- list("gastrointestinal_hemorrhage" = c(192671, 4338544, 4100660, 4307661),
-                   "asthma" = c(317009, 257581))
+codes <- list("warfarin" = c(1310149, 40163554),
+              "acetaminophen" = c(1125315, 1127078, 1127433, 40229134, 40231925, 40162522, 19133768),
+              "morphine" = c(1110410, 35605858, 40169988))
 
 # Instantiate cohorts with CohortConstructor
-cdm$conditions <- conceptCohort(cdm = cdm,
-                                conceptSet = cond_codes, 
-                                exit = "event_end_date",
-                                overlap = "merge",
-                                name = "conditions")
+cdm$my_cohort <- conceptCohort(cdm = cdm,
+                               conceptSet = codes, 
+                               exit = "event_end_date",
+                               overlap = "merge",
+                               name = "my_cohort")
 ```
 
 We can easily run all the analyses explained above (**database
@@ -116,7 +118,7 @@ diagnostics**, **codelist diagnostics**, **cohort diagnostics**,
 `phenotypeDiagnostics()`:
 
 ``` r
-result <- phenotypeDiagnostics(cdm$conditions)
+result <- phenotypeDiagnostics(cdm$my_cohort)
 ```
 
 We can see all the results generated like so:
@@ -148,7 +150,7 @@ application. This shiny app will be saved in a new directory and can be
 further customised using the `directory` input.
 
 ``` r
-shinyDiagnostics(result = result, directory = tempdir())
+shinyDiagnostics(result = result, minCellCount = 10, directory = tempdir())
 ```
 
 See the shiny app generated from the example cohort in

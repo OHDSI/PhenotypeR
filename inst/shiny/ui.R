@@ -757,7 +757,7 @@ ui <- bslib::page_navbar(
                                      shinyWidgets::prettyCheckbox(
                                        inputId = "compare_large_scale_characteristics_impute_missings",
                                        label = "Impute missing values as 0",
-                                       value = FALSE)
+                                       value = TRUE)
                                    )
                                  )
         ),
@@ -773,7 +773,7 @@ ui <- bslib::page_navbar(
                 ),
                 class = "text-end"
               ),
-              DT::DTOutput("compare_large_scale_characteristics_tidy") |> withSpinner()
+              reactable::reactableOutput("compare_large_scale_characteristics_tidy") |> withSpinner()
             )
           ),
           bslib::nav_panel(

@@ -125,6 +125,10 @@ server <- function(input, output, session) {
                     "count" = "desc")
       names(order)[2] <- names(tbl)[7]
 
+      # suppressed to NA
+      tbl <- tbl |>
+        purrr::map_df(~ ifelse(grepl("^<", .), NA, .))
+
       tbl <- reactable(tbl,
                        defaultSorted = order,
                        filterable = TRUE,
@@ -132,7 +136,8 @@ server <- function(input, output, session) {
                        defaultPageSize = 25,
                        highlight = TRUE,
                        striped = TRUE,
-                       compact = TRUE)
+                       compact = TRUE,
+                       showSortable = TRUE)
 
       return(tbl)
     }
@@ -244,6 +249,10 @@ server <- function(input, output, session) {
                     "count" = "desc")
       names(order)[2] <- names(tbl)[7]
 
+      # suppressed to NA
+      tbl <- tbl |>
+        purrr::map_df(~ ifelse(grepl("^<", .), NA, .))
+
       tbl <- reactable(tbl,
                        defaultSorted = order,
                        filterable = TRUE,
@@ -251,7 +260,8 @@ server <- function(input, output, session) {
                        defaultPageSize = 25,
                        highlight = TRUE,
                        striped = TRUE,
-                       compact = TRUE)
+                       compact = TRUE,
+                       showSortable = TRUE)
 
 
     }
@@ -387,6 +397,10 @@ server <- function(input, output, session) {
                     "count" = "desc")
       names(order)[2] <- names(tbl)[9]
 
+      # suppressed to NA
+      tbl <- tbl |>
+        purrr::map_df(~ ifelse(grepl("^<", .), NA, .))
+
       tbl <- reactable(tbl,
                        defaultSorted = order,
                        filterable = TRUE,
@@ -394,7 +408,8 @@ server <- function(input, output, session) {
                        defaultPageSize = 25,
                        highlight = TRUE,
                        striped = TRUE,
-                       compact = TRUE)
+                       compact = TRUE,
+                       showSortable = TRUE)
 
 
     }
@@ -733,6 +748,7 @@ server <- function(input, output, session) {
     lsc <- lsc |>
       mutate(across(c(target_cohort, comparator_cohort), ~ as.numeric(.x)/100)) |>
       mutate(smd = (!!sym(target_cohort) - !!sym(comparator_cohort))/sqrt((!!sym(target_cohort)*(1-!!sym(target_cohort)) + !!sym(comparator_cohort)*(1-!!sym(comparator_cohort)))/2)) |>
+      mutate(smd = round(smd, 2)) |>
       arrange(desc(smd))  |>
       mutate(across(c(target_cohort, comparator_cohort), ~ as.numeric(.x)*100)) |>
       mutate(concept = paste0(variable_name, " (",concept_id, ")")) |>
@@ -747,16 +763,37 @@ server <- function(input, output, session) {
     return(lsc)
   })
 
-  output$compare_large_scale_characteristics_tidy <- DT::renderDT({
+  output$compare_large_scale_characteristics_tidy <- reactable::renderReactable({
     target_cohort     <- input$compare_large_scale_characteristics_grouping_cohort_1
     comparator_cohort <- input$compare_large_scale_characteristics_grouping_cohort_2
+
+    tbl <- createTidyDataCompareLargeScaleCharacteristics()
 
     round_cols <- c("Standardised mean difference",
                     target_cohort,
                     comparator_cohort)
 
-    DT::datatable(createTidyDataCompareLargeScaleCharacteristics(), rownames= FALSE) %>%
-      formatRound(columns=c(round_cols), digits=2)
+    cols <- list(target_cohort= colDef(name = target_cohort,
+                                       sortNALast = TRUE),
+                 comparator_cohort = colDef(name = comparator_cohort,
+                                            sortNALast = TRUE),
+                 "Standardised mean difference" = colDef(name = "Standardised mean difference",
+                                                         sortNALast = TRUE)
+    )
+    names(cols)[1] <- target_cohort
+    names(cols)[2] <- comparator_cohort
+
+    reactable::reactable(tbl,
+                         defaultSorted = list("Standardised mean difference"  = "desc"),
+                         columns = cols,
+                         filterable = TRUE,
+                         searchable = TRUE,
+                         defaultPageSize = 25,
+                         highlight = TRUE,
+                         striped = TRUE,
+                         compact = TRUE,
+                         showSortable = TRUE)
+
   })
 
   output$compare_large_scale_characteristics_tidy_download <- shiny::downloadHandler(
