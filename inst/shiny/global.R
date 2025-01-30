@@ -21,6 +21,7 @@ library(tidyr)
 library(patchwork)
 library(webshot2)
 library(chromote)
+library(reactable)
 
 # ensure minimum versions
 rlang::check_installed("omopgenerics", version = "0.4")
