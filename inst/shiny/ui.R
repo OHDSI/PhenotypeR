@@ -4,13 +4,13 @@
 ui <- bslib::page_navbar(
   theme = bs_theme(bootswatch = "pulse"),
   #  zephyr
-  
+
   title = "PhenotypeR",
   bslib::nav_panel(
     title = "Background",
     icon = shiny::icon("disease"),
     shiny::includeMarkdown(path = "background.md")
-    
+
   ),
   # Database diagnostics -----
   bslib::nav_menu(
@@ -110,12 +110,12 @@ ui <- bslib::page_navbar(
                                        ),
                                        sortable::add_rank_list(
                                          text = "header",
-                                         labels = c("cdm_name"),
+                                         labels = c("cdm_name", "estimate_name"),
                                          input_id = "achilles_code_use_header"
                                        ),
                                        sortable::add_rank_list(
                                          text = "groupColumn",
-                                         labels = c("estimate_name"),
+                                         labels = character(),
                                          input_id = "achilles_code_use_groupColumn"
                                        ),
                                        sortable::add_rank_list(
@@ -267,12 +267,12 @@ ui <- bslib::page_navbar(
                                        ),
                                        sortable::add_rank_list(
                                          text = "header",
-                                         labels = c("cdm_name"),
+                                         labels = c("cdm_name", "estimate_name"),
                                          input_id = "orphan_codes_gt_header"
                                        ),
                                        sortable::add_rank_list(
                                          text = "groupColumn",
-                                         labels = c("estimate_name"),
+                                         labels = character(),
                                          input_id = "orphan_codes_gt_groupColumn"
                                        ),
                                        sortable::add_rank_list(
@@ -365,12 +365,12 @@ ui <- bslib::page_navbar(
                                        ),
                                        sortable::add_rank_list(
                                          text = "header",
-                                         labels = c("cdm_name"),
+                                         labels = c("cdm_name", "estimate_name"),
                                          input_id = "cohort_code_use_gt_header"
                                        ),
                                        sortable::add_rank_list(
                                          text = "groupColumn",
-                                         labels = "estimate_name",
+                                         labels =  character(),
                                          input_id = "cohort_code_use_gt_groupColumn"
                                        ),
                                        sortable::add_rank_list(
@@ -1181,7 +1181,7 @@ ui <- bslib::page_navbar(
         )
       )
     )
-  ),  
+  ),
   # Population diagnostics -----
   bslib::nav_menu(
     title = "Population diagnostics",
