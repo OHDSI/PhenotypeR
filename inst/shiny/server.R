@@ -195,7 +195,7 @@ server <- function(input, output, session) {
     }
   )
   ## Table orphan_codes -----
-  createTableOrphanCodes <- shiny::reactive({
+  output$orphan_codes_tbl <- shiny::renderUI({
 
     if (is.null(dataFiltered$prevalence)) {
       validate("No orphan codes in results")
@@ -208,13 +208,14 @@ server <- function(input, output, session) {
     result <- dataFiltered$orphan_code_use |>
       dplyr::filter(cdm_name %in% input$orphan_grouping_cdm_name,
                     group_level %in% input$orphan_grouping_codelist_name)
+
+    if(isFALSE(input$orphan_interactive)){
     tbl <- CodelistGenerator::tableOrphanCodes(
       result,
       header = input$orphan_codes_gt_header,
       groupColumn = input$orphan_codes_gt_groupColumn,
       hide = input$orphan_codes_gt_hide
     )
-
     tbl %>%
       tab_header(
         title = "Summary of orphan codes",
@@ -223,11 +224,42 @@ server <- function(input, output, session) {
       tab_options(
         heading.align = "left"
       )
+    } else {
+      tbl <- CodelistGenerator::tableOrphanCodes(
+        result,
+        header = input$orphan_codes_gt_header,
+        groupColumn = input$orphan_codes_gt_groupColumn,
+        hide = input$orphan_codes_gt_hide,
+        type = "tibble"
+      )
+      names(tbl) <-stringr::str_remove_all(names(tbl),
+                                           "\\[header_name\\]Database name\\n\\[header_level\\]")
+      names(tbl) <- stringr::str_remove_all(names(tbl),
+                                            "Estimate name\n\\[header_level\\]")
+      names(tbl) <- stringr::str_replace_all(names(tbl),
+                                             "\n\\[header_name\\]",
+                                             ": ")
+      # column ordering by codelist and first column with a count
+      order <- list("Codelist name"  = "asc",
+                    "count" = "desc")
+      names(order)[2] <- names(tbl)[7]
+
+      tbl <- reactable(tbl,
+                       defaultSorted = order,
+                       filterable = TRUE,
+                       searchable = TRUE,
+                       defaultPageSize = 25,
+                       highlight = TRUE,
+                       striped = TRUE,
+                       compact = TRUE)
+
+
+    }
+
 
   })
-  output$orphan_codes_gt <- gt::render_gt({
-    createTableOrphanCodes()
-  })
+
+
   output$orphan_codes_gt_download <- shiny::downloadHandler(
     filename = function() {
       paste0("orphan_codes_gt.", input$orphan_codes_gt_download_type)
@@ -309,7 +341,7 @@ server <- function(input, output, session) {
     }
   )
   ## Table cohort_code_use -----
-  createTableCohortCodeUse <- shiny::reactive({
+  output$cohort_code_use_tbl <- shiny::renderUI({
     if (is.null(dataFiltered$cohort_code_use)) {
       validate("No cohort code use in results")
     }
@@ -320,12 +352,13 @@ server <- function(input, output, session) {
       validate("No results found for selected inputs")
     }
 
+    if(isFALSE(input$cohort_code_use_interactive)){
     CodelistGenerator::tableCohortCodeUse(
       result,
       header = input$cohort_code_use_gt_header,
       groupColumn = input$cohort_code_use_gt_groupColumn,
       hide = input$cohort_code_use_gt_hide
-    )%>%
+    ) %>%
       tab_header(
         title = "Summary of cohort code use",
         subtitle = "Codes from codelist observed on day of cohort entry. Note more than one code could be seen for a person on this day (both of which would have led to inclusion)."
@@ -333,10 +366,43 @@ server <- function(input, output, session) {
       tab_options(
         heading.align = "left"
       )
+
+    } else {
+      tbl <-  CodelistGenerator::tableCohortCodeUse(
+        result,
+        header = input$cohort_code_use_gt_header,
+        groupColumn = input$cohort_code_use_gt_groupColumn,
+        hide = input$cohort_code_use_gt_hide,
+        type = "tibble"
+      )
+      names(tbl) <-stringr::str_remove_all(names(tbl),
+                                           "\\[header_name\\]Database name\\n\\[header_level\\]")
+      names(tbl) <- stringr::str_remove_all(names(tbl),
+                                            "Estimate name\n\\[header_level\\]")
+      names(tbl) <- stringr::str_replace_all(names(tbl),
+                                             "\n\\[header_name\\]",
+                                             ": ")
+      # column ordering by codelist and first column with a count
+      order <- list("Cohort name"  = "asc",
+                    "count" = "desc")
+      names(order)[2] <- names(tbl)[9]
+
+      tbl <- reactable(tbl,
+                       defaultSorted = order,
+                       filterable = TRUE,
+                       searchable = TRUE,
+                       defaultPageSize = 25,
+                       highlight = TRUE,
+                       striped = TRUE,
+                       compact = TRUE)
+
+
+    }
+
+
   })
-  output$cohort_code_use_gt <- gt::render_gt({
-    createTableCohortCodeUse()
-  })
+
+
   output$cohort_code_use_gt_download <- shiny::downloadHandler(
     filename = function() {
       paste0("cohort_code_use_gt.", input$cohort_code_use_gt_download_type)
