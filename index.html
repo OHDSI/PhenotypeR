@@ -100,14 +100,15 @@
 <span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">dbConnect</a></span><span class="op">(</span><span class="fu">duckdb</span><span class="fu">::</span><span class="fu"><a href="https://r.duckdb.org/reference/duckdb.html" class="external-link">duckdb</a></span><span class="op">(</span><span class="op">)</span>, </span>
 <span>                      <span class="fu">CDMConnector</span><span class="fu">::</span><span class="fu"><a href="https://darwin-eu.github.io/CDMConnector/reference/eunomiaDir.html" class="external-link">eunomiaDir</a></span><span class="op">(</span><span class="st">"synpuf-1k"</span>, <span class="st">"5.3"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">cdm</span> <span class="op">&lt;-</span> <span class="fu">CDMConnector</span><span class="fu">::</span><span class="fu"><a href="https://darwin-eu.github.io/CDMConnector/reference/cdmFromCon.html" class="external-link">cdmFromCon</a></span><span class="op">(</span>con <span class="op">=</span> <span class="va">con</span>, </span>
-<span>                       cdmSchema   <span class="op">=</span> <span class="st">"main"</span>,</span>
-<span>                       writeSchema <span class="op">=</span> <span class="st">"main"</span>, </span>
-<span>                       achillesSchema <span class="op">=</span> <span class="st">"main"</span><span class="op">)</span></span></code></pre></div>
+<span>                                cdmName <span class="op">=</span> <span class="st">"Eunomia Synpuf"</span>,</span>
+<span>                                cdmSchema   <span class="op">=</span> <span class="st">"main"</span>,</span>
+<span>                                writeSchema <span class="op">=</span> <span class="st">"main"</span>, </span>
+<span>                                achillesSchema <span class="op">=</span> <span class="st">"main"</span><span class="op">)</span></span></code></pre></div>
 <p>Note that we’ve included achilles results in our cdm reference. Where we can we’ll use these precomputed counts to speed up our analysis.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cdm</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; ── # OMOP CDM reference (duckdb) of An OMOP CDM database ───────────────────────</span></span>
+<span><span class="co">#&gt; ── # OMOP CDM reference (duckdb) of Eunomia Synpuf ─────────────────────────────</span></span>
 <span><span class="co">#&gt; • omop tables: person, observation_period, visit_occurrence, visit_detail,</span></span>
 <span><span class="co">#&gt; condition_occurrence, drug_exposure, procedure_occurrence, device_exposure,</span></span>
 <span><span class="co">#&gt; measurement, observation, death, note, note_nlp, specimen, fact_relationship,</span></span>
@@ -121,18 +122,19 @@
 <span><span class="co">#&gt; • other tables: -</span></span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create a code lists</span></span>
-<span><span class="va">cond_codes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"gastrointestinal_hemorrhage"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">192671</span>, <span class="fl">4338544</span>, <span class="fl">4100660</span>, <span class="fl">4307661</span><span class="op">)</span>,</span>
-<span>                   <span class="st">"asthma"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">317009</span>, <span class="fl">257581</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">codes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"warfarin"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1310149</span>, <span class="fl">40163554</span><span class="op">)</span>,</span>
+<span>              <span class="st">"acetaminophen"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1125315</span>, <span class="fl">1127078</span>, <span class="fl">1127433</span>, <span class="fl">40229134</span>, <span class="fl">40231925</span>, <span class="fl">40162522</span>, <span class="fl">19133768</span><span class="op">)</span>,</span>
+<span>              <span class="st">"morphine"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1110410</span>, <span class="fl">35605858</span>, <span class="fl">40169988</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Instantiate cohorts with CohortConstructor</span></span>
-<span><span class="va">cdm</span><span class="op">$</span><span class="va">conditions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ohdsi.github.io/CohortConstructor/reference/conceptCohort.html" class="external-link">conceptCohort</a></span><span class="op">(</span>cdm <span class="op">=</span> <span class="va">cdm</span>,</span>
-<span>                                conceptSet <span class="op">=</span> <span class="va">cond_codes</span>, </span>
-<span>                                exit <span class="op">=</span> <span class="st">"event_end_date"</span>,</span>
-<span>                                overlap <span class="op">=</span> <span class="st">"merge"</span>,</span>
-<span>                                name <span class="op">=</span> <span class="st">"conditions"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">cdm</span><span class="op">$</span><span class="va">my_cohort</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ohdsi.github.io/CohortConstructor/reference/conceptCohort.html" class="external-link">conceptCohort</a></span><span class="op">(</span>cdm <span class="op">=</span> <span class="va">cdm</span>,</span>
+<span>                               conceptSet <span class="op">=</span> <span class="va">codes</span>, </span>
+<span>                               exit <span class="op">=</span> <span class="st">"event_end_date"</span>,</span>
+<span>                               overlap <span class="op">=</span> <span class="st">"merge"</span>,</span>
+<span>                               name <span class="op">=</span> <span class="st">"my_cohort"</span><span class="op">)</span></span></code></pre></div>
 <p>We can easily run all the analyses explained above (<strong>database diagnostics</strong>, <strong>codelist diagnostics</strong>, <strong>cohort diagnostics</strong>, <strong>matched diagnostics</strong>, and <strong>population diagnostics</strong>) using <code><a href="reference/phenotypeDiagnostics.html">phenotypeDiagnostics()</a></code>:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/phenotypeDiagnostics.html">phenotypeDiagnostics</a></span><span class="op">(</span><span class="va">cdm</span><span class="op">$</span><span class="va">conditions</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/phenotypeDiagnostics.html">phenotypeDiagnostics</a></span><span class="op">(</span><span class="va">cdm</span><span class="op">$</span><span class="va">my_cohort</span><span class="op">)</span></span></code></pre></div>
 <p>We can see all the results generated like so:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result</span> <span class="op">|&gt;</span> </span>
@@ -156,7 +158,7 @@
 <span><span class="co">#&gt; [15] "summarise_large_scale_characteristics"</span></span></code></pre></div>
 <p>Once we have our results we can quickly view them in an interactive application. This shiny app will be saved in a new directory and can be further customised using the <code>directory</code> input.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/shinyDiagnostics.html">shinyDiagnostics</a></span><span class="op">(</span>result <span class="op">=</span> <span class="va">result</span>, directory <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/shinyDiagnostics.html">shinyDiagnostics</a></span><span class="op">(</span>result <span class="op">=</span> <span class="va">result</span>, minCellCount <span class="op">=</span> <span class="fl">10</span>, directory <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>See the shiny app generated from the example cohort in <a href="https://dpa-pde-oxford.shinyapps.io/Readme_PhenotypeR/" class="external-link">here</a>.</p>
 <div class="section level3">
 <h3 id="more-information">More information<a class="anchor" aria-label="anchor" href="#more-information"></a>
