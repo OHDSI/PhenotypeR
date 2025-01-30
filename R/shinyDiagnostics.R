@@ -12,8 +12,8 @@
 #'
 #'
 #' @inheritParams resultDoc
-#' @param minCellCount Minimum cell count for suppression when exporting results.
 #' @inheritParams directoryDoc
+#' @param minCellCount Minimum cell count for suppression when exporting results.
 #' @param open If TRUE, the shiny app will be launched in a new session. If
 #' FALSE, the shiny app will be created but not launched.
 #'
@@ -33,8 +33,8 @@
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
 shinyDiagnostics <- function(result,
-                             minCellCount,
                              directory,
+                             minCellCount = 5,
                              open = rlang::is_interactive()){
 
   if(file.exists(file.path(directory, "shiny"))){

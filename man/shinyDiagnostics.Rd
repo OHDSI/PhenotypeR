@@ -6,17 +6,17 @@
 \usage{
 shinyDiagnostics(
   result,
-  minCellCount,
   directory,
+  minCellCount = 5,
   open = rlang::is_interactive()
 )
 }
 \arguments{
 \item{result}{A summarised result}
 
-\item{minCellCount}{Minimum cell count for suppression when exporting results.}
-
 \item{directory}{Directory where to save report}
+
+\item{minCellCount}{Minimum cell count for suppression when exporting results.}
 
 \item{open}{If TRUE, the shiny app will be launched in a new session. If
 FALSE, the shiny app will be created but not launched.}
