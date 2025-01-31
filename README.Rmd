@@ -135,7 +135,7 @@ application. This shiny app will be saved in a new directory and can be
 further customised using the `directory` input.
 
 ```{r, eval=FALSE}
-shinyDiagnostics(result = result, minCellCount = 0, directory = tempdir())
+shinyDiagnostics(result = result, minCellCount = 10, directory = tempdir())
 ```
 
 See the shiny app generated from the example cohort in
