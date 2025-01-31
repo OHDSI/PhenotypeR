@@ -916,6 +916,11 @@ ui <- bslib::page_navbar(
               ),
               bslib::layout_sidebar(
                 sidebar = bslib::sidebar(width = 400, open = "closed",
+
+                                         materialSwitch(inputId = "overlap_plot_interactive",
+                                                        value = TRUE,
+                                                        label = "Interactive",
+                                                        status = "primary"),
                                          sortable::bucket_list(
                                            header = NULL,
                                            sortable::add_rank_list(
@@ -1297,6 +1302,10 @@ ui <- bslib::page_navbar(
               ),
               bslib::layout_sidebar(
                 sidebar = bslib::sidebar(width = 400, open = "closed",
+                                         materialSwitch(inputId = "incidence_population_plot_interactive",
+                                                        value = TRUE,
+                                                        label = "Interactive",
+                                                        status = "primary"),
                                          shinyWidgets::pickerInput(
                                            inputId = "incidence_population_plot_x",
                                            label = "x",
@@ -1370,6 +1379,10 @@ ui <- bslib::page_navbar(
               ),
               bslib::layout_sidebar(
                 sidebar = bslib::sidebar(width = 400, open = "closed",
+                                         materialSwitch(inputId = "incidence_plot_interactive",
+                                                        value = TRUE,
+                                                        label = "Interactive",
+                                                        status = "primary"),
                                          shinyWidgets::pickerInput(
                                            inputId = "incidence_plot_x",
                                            label = "x",
@@ -1525,6 +1538,10 @@ ui <- bslib::page_navbar(
               ),
               bslib::layout_sidebar(
                 sidebar = bslib::sidebar(width = 400, open = "closed",
+                                         materialSwitch(inputId = "prevalence_population_plot_interactive",
+                                                        value = TRUE,
+                                                        label = "Interactive",
+                                                        status = "primary"),
                                          shinyWidgets::pickerInput(
                                            inputId = "prevalence_population_plot_x",
                                            label = "x",
@@ -1598,6 +1615,10 @@ ui <- bslib::page_navbar(
               ),
               bslib::layout_sidebar(
                 sidebar = bslib::sidebar(width = 400, open = "closed",
+                                         materialSwitch(inputId = "prevalence_plot_interactive",
+                                                        value = TRUE,
+                                                        label = "Interactive",
+                                                        status = "primary"),
                                          shinyWidgets::pickerInput(
                                            inputId = "prevalence_plot_x",
                                            label = "x",
