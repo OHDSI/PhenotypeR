@@ -1169,8 +1169,8 @@ server <- function(input, output, session) {
                      denominator_sex %in%
                        input$prevalence_settings_denominator_sex,
                      denominator_days_prior_observation %in%
-                       input$prevalence_settings_denominator_days_prior_observation) |>
-      filterAdditional(analysis_interval %in%
+                       input$prevalence_settings_denominator_days_prior_observation,
+                     analysis_interval %in%
                          input$prevalence_settings_analysis_interval)
   })
   ## Table prevalence ----
