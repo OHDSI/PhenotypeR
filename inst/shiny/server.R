@@ -129,8 +129,16 @@ server <- function(input, output, session) {
       tbl <- tbl |>
         purrr::map_df(~ ifelse(grepl("^<", .), NA, .))
 
+      cols <- list()
+      for(i in seq_along(names(tbl))){
+        working_col <- names(tbl)[i]
+        cols[[working_col]] <- colDef(name = working_col,
+                                      sortNALast = TRUE)
+      }
+
       tbl <- reactable(tbl,
                        defaultSorted = order,
+                       columns = cols,
                        filterable = TRUE,
                        searchable = TRUE,
                        defaultPageSize = 25,
@@ -215,20 +223,20 @@ server <- function(input, output, session) {
                     group_level %in% input$orphan_grouping_codelist_name)
 
     if(isFALSE(input$orphan_interactive)){
-    tbl <- CodelistGenerator::tableOrphanCodes(
-      result,
-      header = input$orphan_codes_gt_header,
-      groupColumn = input$orphan_codes_gt_groupColumn,
-      hide = input$orphan_codes_gt_hide
-    )
-    tbl %>%
-      tab_header(
-        title = "Summary of orphan codes",
-        subtitle = "Orphan codes refer to concepts present in the database that are not in a codelist but are related to included codes."
-      ) %>%
-      tab_options(
-        heading.align = "left"
+      tbl <- CodelistGenerator::tableOrphanCodes(
+        result,
+        header = input$orphan_codes_gt_header,
+        groupColumn = input$orphan_codes_gt_groupColumn,
+        hide = input$orphan_codes_gt_hide
       )
+      tbl %>%
+        tab_header(
+          title = "Summary of orphan codes",
+          subtitle = "Orphan codes refer to concepts present in the database that are not in a codelist but are related to included codes."
+        ) %>%
+        tab_options(
+          heading.align = "left"
+        )
     } else {
       tbl <- CodelistGenerator::tableOrphanCodes(
         result,
@@ -253,7 +261,15 @@ server <- function(input, output, session) {
       tbl <- tbl |>
         purrr::map_df(~ ifelse(grepl("^<", .), NA, .))
 
+      cols <- list()
+      for(i in seq_along(names(tbl))){
+        working_col <- names(tbl)[i]
+        cols[[working_col]] <- colDef(name = working_col,
+                                      sortNALast = TRUE)
+      }
+
       tbl <- reactable(tbl,
+                       columns = cols,
                        defaultSorted = order,
                        filterable = TRUE,
                        searchable = TRUE,
@@ -363,19 +379,19 @@ server <- function(input, output, session) {
     }
 
     if(isFALSE(input$cohort_code_use_interactive)){
-    CodelistGenerator::tableCohortCodeUse(
-      result,
-      header = input$cohort_code_use_gt_header,
-      groupColumn = input$cohort_code_use_gt_groupColumn,
-      hide = input$cohort_code_use_gt_hide
-    ) %>%
-      tab_header(
-        title = "Summary of cohort code use",
-        subtitle = "Codes from codelist observed on day of cohort entry. Note more than one code could be seen for a person on this day (both of which would have led to inclusion)."
+      CodelistGenerator::tableCohortCodeUse(
+        result,
+        header = input$cohort_code_use_gt_header,
+        groupColumn = input$cohort_code_use_gt_groupColumn,
+        hide = input$cohort_code_use_gt_hide
       ) %>%
-      tab_options(
-        heading.align = "left"
-      )
+        tab_header(
+          title = "Summary of cohort code use",
+          subtitle = "Codes from codelist observed on day of cohort entry. Note more than one code could be seen for a person on this day (both of which would have led to inclusion)."
+        ) %>%
+        tab_options(
+          heading.align = "left"
+        )
 
     } else {
       tbl <-  CodelistGenerator::tableCohortCodeUse(
