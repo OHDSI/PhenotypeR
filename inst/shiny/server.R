@@ -6,8 +6,9 @@ server <- function(input, output, session) {
   output$download_raw <- shiny::downloadHandler(
     filename = "results.csv",
     content = function(file) {
-      omopgenerics::exportSummarisedResult(data, fileName = file)
-    }
+      rawData <- omopgenerics::importSummarisedResult(file.path(getwd(),"data", "raw"))
+      omopgenerics::exportSummarisedResult(rawData, fileName = file)
+      }
   )
   # fill selectise variables ----
   shiny::observe({
