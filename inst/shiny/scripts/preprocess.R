@@ -116,6 +116,7 @@ selected$incidence_grouping_outcome_cohort_name <- selected$incidence_grouping_o
 selected$incidence_settings_analysis_interval <- "overall"
 selected$incidence_settings_denominator_age_group <- selected$incidence_settings_denominator_age_group[1]
 selected$incidence_settings_denominator_sex <- "Both"
+selected$incidence_settings_denominator_days_prior_observation <-  selected$incidence_settings_denominator_days_prior_observation[1]
 
 choices$incidence_settings_denominator_age_group <- c(
   "0 to 150",
@@ -133,6 +134,7 @@ selected$incidence_settings_analysis_interval <- "years"
 
 choices$prevalence_settings_analysis_interval <- c("overall", "years")
 selected$prevalence_settings_analysis_interval <- "years"
+selected$prevalence_settings_denominator_days_prior_observation <-  selected$prevalence_settings_denominator_days_prior_observation[1]
 
 selected$prevalence_grouping_outcome_cohort_name <- selected$prevalence_grouping_outcome_cohort_name[1]
 
