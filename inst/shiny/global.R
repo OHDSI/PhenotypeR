@@ -102,6 +102,14 @@ plotAgeDensity <- function(summarise_table, summarise_characteristics){
     splitStrata() |>
     mutate(density_y = if_else(sex == "Female", -density_y, density_y))
 
+  data <- data |>
+    filter(!is.na(data$density_x),
+           !is.na(data$density_y))
+
+  if (nrow(data) == 0) {
+    validate("No results found for age density")
+  }
+
   max_density <- max(data$density_y, na.rm = TRUE)
   min_age <- (floor((data$density_x |> min(na.rm = TRUE))/5))*5
   max_age <- (ceiling((data$density_x |> max(na.rm = TRUE))/5))*5
@@ -125,6 +133,11 @@ plotAgeDensity <- function(summarise_table, summarise_characteristics){
     ) |>
     rename("sex" = "strata_level")
 
+  # keep only estimates for cohorts with density
+  iqr <- iqr |>
+    inner_join(data |>
+                 select(group_level) |> distinct())
+
   ggplot(data, aes(x = density_x, y = density_y, fill = sex)) +
     geom_polygon() +
     geom_segment(data = iqr[iqr$estimate_name == "median", ],
@@ -136,7 +149,7 @@ plotAgeDensity <- function(summarise_table, summarise_characteristics){
                  linewidth = 1) +
     scale_y_continuous(labels = function(x) scales::label_percent()(abs(x)),
                        limits = c(-max_density*1.1, max_density*1.1)) +
-    theme_bw() +
+    themeVisOmop() +
     theme(
       axis.text.x = element_text(),
       axis.title.x = ggplot2::element_blank(),

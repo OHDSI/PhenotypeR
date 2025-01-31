@@ -544,6 +544,12 @@ server <- function(input, output, session) {
 
     summarise_table <- dataFiltered$summarise_table |>
       filter(cdm_name %in% input$summarise_characteristics_grouping_cdm_name)
+    summarise_characteristics <-  dataFiltered$summarise_characteristics |>
+      filter(cdm_name %in% input$summarise_characteristics_grouping_cdm_name)
+
+    if (nrow(summarise_table) == 0 || nrow(summarise_characteristics) == 0 ) {
+      validate("No results found for selected inputs")
+    }
 
     if(isTRUE(input$summarise_characteristics_include_matched)){
       summarise_table <- summarise_table |>
@@ -555,15 +561,25 @@ server <- function(input, output, session) {
                    paste0(input$summarise_characteristics_grouping_cohort_name, "_matched")
                  )
         )
+      summarise_characteristics <- dataFiltered$summarise_characteristics |>
+        filter(group_level %in%
+                 c(
+                   input$summarise_characteristics_grouping_cohort_name,
+                   paste0("matched_to_", input$summarise_characteristics_grouping_cohort_name),
+                   paste0(input$summarise_characteristics_grouping_cohort_name, "_sampled"),
+                   paste0(input$summarise_characteristics_grouping_cohort_name, "_matched")
+                 ))
     } else {
       summarise_table <- summarise_table |>
         filter(group_level %in%
                  input$summarise_characteristics_grouping_cohort_name)
+      summarise_characteristics <- dataFiltered$summarise_characteristics |>
+        filter(group_level %in% input$summarise_characteristics_grouping_cohort_name)
     }
 
-    summarise_characteristics <- dataFiltered$summarise_characteristics |>
-      filter(cdm_name %in% input$summarise_characteristics_grouping_cdm_name,
-             group_level %in% input$summarise_characteristics_grouping_cohort_name)
+    if (nrow(summarise_table) == 0 || nrow(summarise_characteristics) == 0 ) {
+      validate("No results found for selected inputs")
+    }
 
     plotAgeDensity(summarise_table, summarise_characteristics)
 
