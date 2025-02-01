@@ -99,6 +99,21 @@ server <- function(input, output, session) {
     achillesFiltered <- dataFiltered$achilles_code_use  |>
       filterData("achilles_code_use", input)
 
+    if (is.null(dataFiltered$achilles_code_use)) {
+      validate("No achilles code use in results")
+    }
+    achillesFiltered <- dataFiltered$achilles_code_use  |>
+      filterData("achilles_code_use", input)
+
+    if(isFALSE(input$achilles_person_count)){
+      achillesFiltered <- achillesFiltered  |>
+        filter(estimate_name != "person_count")
+    }
+    if(isFALSE(input$achilles_record_count)){
+      achillesFiltered <- achillesFiltered  |>
+        filter(estimate_name != "record_count")
+    }
+
     if (nrow(achillesFiltered) == 0) {
       validate("No results found for selected inputs")
     }
@@ -211,10 +226,6 @@ server <- function(input, output, session) {
   ## Table orphan_codes -----
   output$orphan_codes_tbl <- shiny::renderUI({
 
-    if (is.null(dataFiltered$prevalence)) {
-      validate("No orphan codes in results")
-    }
-
     if (is.null(dataFiltered$orphan_code_use)) {
       validate("No orphan codes in results")
     }
@@ -222,6 +233,20 @@ server <- function(input, output, session) {
     result <- dataFiltered$orphan_code_use |>
       dplyr::filter(cdm_name %in% input$orphan_grouping_cdm_name,
                     group_level %in% input$orphan_grouping_codelist_name)
+
+    if(isFALSE(input$orphan_person_count)){
+      result <- result  |>
+        filter(estimate_name != "person_count")
+    }
+    if(isFALSE(input$orphan_record_count)){
+      result <- result  |>
+        filter(estimate_name != "record_count")
+    }
+
+    if (nrow(result) == 0) {
+      validate("No orphan codes in results")
+    }
+
 
     if(isFALSE(input$orphan_interactive)){
       tbl <- CodelistGenerator::tableOrphanCodes(
@@ -374,6 +399,15 @@ server <- function(input, output, session) {
     }
     result <- dataFiltered$cohort_code_use |>
       filterData("cohort_code_use", input)
+
+    if(isFALSE(input$cohort_code_use_person_count)){
+      result <- result  |>
+        filter(estimate_name != "person_count")
+    }
+    if(isFALSE(input$cohort_code_use_record_count)){
+      result <- result  |>
+        filter(estimate_name != "record_count")
+    }
 
     if (nrow(result) == 0) {
       validate("No results found for selected inputs")
