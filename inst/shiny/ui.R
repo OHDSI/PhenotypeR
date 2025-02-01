@@ -94,6 +94,20 @@ ui <- bslib::page_navbar(
                                        selected = NULL,
                                        multiple = TRUE,
                                        options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                     ),
+                                     div(style="display: flex; justify-content: space-between;",
+                                         div(style="flex: 1;", prettyCheckbox(inputId = "achilles_person_count",
+                                                                              label = "Person count",
+                                                                              value = TRUE,
+                                                                              status = "primary",
+                                                                              shape = "curve",
+                                                                              outline = TRUE)),
+                                         div(style="flex: 1;", prettyCheckbox(inputId = "achilles_record_count",
+                                                                              label = "Record count",
+                                                                              value = TRUE,
+                                                                              status = "primary",
+                                                                              shape = "curve",
+                                                                              outline = TRUE))
                                      )
                                    ),
                                    bslib::accordion_panel(
@@ -252,6 +266,20 @@ ui <- bslib::page_navbar(
                                        selected = NULL,
                                        multiple = TRUE,
                                        options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                     ),
+                                     div(style="display: flex; justify-content: space-between;",
+                                         div(style="flex: 1;", prettyCheckbox(inputId = "orphan_person_count",
+                                                                              label = "Person count",
+                                                                              value = TRUE,
+                                                                              status = "primary",
+                                                                              shape = "curve",
+                                                                              outline = TRUE)),
+                                         div(style="flex: 1;", prettyCheckbox(inputId = "orphan_record_count",
+                                                                              label = "Record count",
+                                                                              value = TRUE,
+                                                                              status = "primary",
+                                                                              shape = "curve",
+                                                                              outline = TRUE))
                                      )
                                    ),
                                    bslib::accordion_panel(
@@ -344,13 +372,19 @@ ui <- bslib::page_navbar(
                                        multiple = TRUE,
                                        options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                      ),
-                                     shinyWidgets::pickerInput(
-                                       inputId = "cohort_code_use_estimate_name",
-                                       label = "Estimate",
-                                       choices = NULL,
-                                       selected = NULL,
-                                       multiple = TRUE,
-                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                     div(style="display: flex; justify-content: space-between;",
+                                         div(style="flex: 1;", prettyCheckbox(inputId = "cohort_code_use_person_count",
+                                                                              label = "Person count",
+                                                                              value = TRUE,
+                                                                              status = "primary",
+                                                                              shape = "curve",
+                                                                              outline = TRUE)),
+                                         div(style="flex: 1;", prettyCheckbox(inputId = "cohort_code_use_record_count",
+                                                                              label = "Record count",
+                                                                              value = TRUE,
+                                                                              status = "primary",
+                                                                              shape = "curve",
+                                                                              outline = TRUE))
                                      )
                                    ),
                                    bslib::accordion_panel(
