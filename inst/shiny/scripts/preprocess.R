@@ -44,6 +44,9 @@ for(i in seq_along(settingsUsed)){
 
 selected <- choices
 
+choices$cohort_code_use_grouping_source_concept_value <- NULL
+selected$cohort_code_use_grouping_source_concept_value <- NULL
+
 if(!is.null(dataFiltered$cohort_code_use)){
   if(nrow(dataFiltered$cohort_code_use)>0){
     codeUseCohorts <- unique(dataFiltered$cohort_code_use |>
