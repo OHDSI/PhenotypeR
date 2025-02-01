@@ -1096,8 +1096,13 @@ server <- function(input, output, session) {
     )
   })
 
-  output$incidence_population_plot <- plotly::renderPlotly({
-    plotly::ggplotly(createPlotIncidencePopulation())
+  output$incidence_population_plot <- renderUI({
+    if(isTRUE(input$incidence_population_plot_interactive)){
+      plot <- plotly::ggplotly(createPlotIncidencePopulation())
+    } else {
+      plot <- renderPlot(createPlotIncidencePopulation())
+    }
+    plot
   })
 
   output$incidence_population_plot_download <- shiny::downloadHandler(
@@ -1136,8 +1141,13 @@ server <- function(input, output, session) {
     )
   })
 
-  output$incidence_plot <- plotly::renderPlotly({
-    plotly::ggplotly(createPlotIncidence())
+  output$incidence_plot <- renderUI({
+    if(isTRUE(input$incidence_plot_interactive)){
+      plot <- plotly::ggplotly(createPlotIncidence())
+    } else {
+      plot <- renderPlot(createPlotIncidence())
+    }
+    plot
   })
   output$incidence_plot_download <- shiny::downloadHandler(
     filename = "incidence_plot.png",
@@ -1216,7 +1226,7 @@ server <- function(input, output, session) {
     }
   )
   ## Plot population_prevalence ----
-  createPlotPrevalence <- shiny::reactive({
+  createPlotPrevalencePopulation <- shiny::reactive({
 
     if (is.null(dataFiltered$prevalence)) {
       validate("No prevalence in results")
@@ -1236,8 +1246,13 @@ server <- function(input, output, session) {
       colour = input$prevalence_population_plot_colour
     )
   })
-  output$prevalence_population_plot <- plotly::renderPlotly({
-    plotly::ggplotly(createPlotPrevalence())
+  output$prevalence_population_plot <- renderUI({
+    if(isTRUE(input$prevalence_population_plot_interactive)){
+      plot <- plotly::ggplotly(createPlotPrevalencePopulation())
+    } else {
+      plot <- renderPlot(createPlotPrevalencePopulation())
+    }
+    plot
   })
   output$prevalence_population_plot_download <- shiny::downloadHandler(
     filename = "prevalence_population_plot.png",
@@ -1274,8 +1289,14 @@ server <- function(input, output, session) {
       colour = input$prevalence_plot_colour
     )
   })
-  output$prevalence_plot <- plotly::renderPlotly({
-    plotly::ggplotly(createPlotPrevalence())
+  output$prevalence_plot <- renderUI({
+    if(isTRUE(input$prevalence_plot_interactive)){
+      plot <- plotly::ggplotly(createPlotPrevalence())
+    } else {
+      plot <- renderPlot(createPlotPrevalence())
+    }
+    plot
+
   })
   output$prevalence_plot_download <- shiny::downloadHandler(
     filename = "prevalence_plot.png",
