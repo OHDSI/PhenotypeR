@@ -1374,7 +1374,7 @@ ui <- bslib::page_navbar(
                                          ),
                                          position = "right"
                 ),
-                plotly::plotlyOutput("incidence_population_plot")
+                uiOutput("incidence_population_plot")
               )
             )
           ),
@@ -1448,7 +1448,7 @@ ui <- bslib::page_navbar(
                                          ),
                                          position = "right"
                 ),
-                plotly::plotlyOutput("incidence_plot")
+                uiOutput("incidence_plot")
               )
             )
           )
@@ -1610,7 +1610,7 @@ ui <- bslib::page_navbar(
                                          ),
                                          position = "right"
                 ),
-                plotly::plotlyOutput("prevalence_population_plot")
+                uiOutput("prevalence_population_plot")
               )
             )
           ),
@@ -1684,7 +1684,7 @@ ui <- bslib::page_navbar(
                                          ),
                                          position = "right"
                 ),
-                plotly::plotlyOutput("prevalence_plot")
+                uiOutput("prevalence_plot")
               )
             )
           )
