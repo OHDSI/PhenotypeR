@@ -1121,6 +1121,18 @@ server <- function(input, output, session) {
   )
   ## Plot incidence_population -----
   createPlotIncidencePopulation <- shiny::reactive({
+
+      if(!is.null(input$incidence_population_plot_facet) &&
+         isTRUE(input$incidence_population_plot_facet_free)){
+    plotIncidencePopulation(x = input$incidence_population_plot_x,
+                            y =  input$incidence_population_plot_y,
+                            result = incidenceFiltered(),
+                            facet  = NULL,
+                            colour = input$incidence_population_plot_colour
+
+    ) +
+      facet_wrap(facets = input$incidence_population_plot_facet, scales = "free")
+  } else {
     plotIncidencePopulation(x = input$incidence_population_plot_x,
                             y =  input$incidence_population_plot_y,
                             result = incidenceFiltered(),
@@ -1128,6 +1140,10 @@ server <- function(input, output, session) {
                             colour = input$incidence_population_plot_colour
 
     )
+  }
+
+
+
   })
 
   output$incidence_population_plot <- renderUI({
@@ -1166,13 +1182,25 @@ server <- function(input, output, session) {
       validate("No results found for selected inputs")
     }
 
-    IncidencePrevalence::plotIncidence(
-      result,
-      x = input$incidence_plot_x,
-      ribbon = FALSE,
-      facet = input$incidence_plot_facet,
-      colour = input$incidence_plot_colour
-    )
+    if(!is.null(input$incidence_plot_facet) &&
+       isTRUE(input$incidence_plot_facet_free)){
+      IncidencePrevalence::plotIncidence(
+        result,
+        x = input$incidence_plot_x,
+        ribbon = FALSE,
+        facet = input$incidence_plot_facet,
+        colour = input$incidence_plot_colour
+      ) +
+        facet_wrap(facets = input$incidence_plot_facet, scales = "free")
+    } else {
+      IncidencePrevalence::plotIncidence(
+        result,
+        x = input$incidence_plot_x,
+        ribbon = FALSE,
+        facet = input$incidence_plot_facet,
+        colour = input$incidence_plot_colour
+      )
+    }
   })
 
   output$incidence_plot <- renderUI({
@@ -1272,6 +1300,17 @@ server <- function(input, output, session) {
       validate("No results found for selected inputs")
     }
 
+    if(!is.null(input$prevalence_population_plot_facet) &&
+       isTRUE(input$prevalence_population_plot_facet_free)){
+    IncidencePrevalence::plotPrevalencePopulation(
+      result = result,
+      x = input$prevalence_population_plot_x,
+      y = input$prevalence_population_plot_y,
+      facet = NULL,
+      colour = input$prevalence_population_plot_colour
+    ) +
+      facet_wrap(facets = input$prevalence_population_plot_facet, scales = "free")
+  } else {
     IncidencePrevalence::plotPrevalencePopulation(
       result = result,
       x = input$prevalence_population_plot_x,
@@ -1279,6 +1318,8 @@ server <- function(input, output, session) {
       facet = input$prevalence_population_plot_facet,
       colour = input$prevalence_population_plot_colour
     )
+  }
+
   })
   output$prevalence_population_plot <- renderUI({
     if(isTRUE(input$prevalence_population_plot_interactive)){
@@ -1315,13 +1356,27 @@ server <- function(input, output, session) {
       validate("No results found for selected inputs")
     }
 
-    IncidencePrevalence::plotPrevalence(
-      result,
-      x = input$prevalence_plot_x,
-      ribbon = input$prevalence_plot_ribbon,
-      facet = input$prevalence_plot_facet,
-      colour = input$prevalence_plot_colour
-    )
+    if(!is.null(input$prevalence_plot_facet) &&
+       isTRUE(input$prevalence_plot_facet_free)){
+      IncidencePrevalence::plotPrevalence(
+        result,
+        x = input$prevalence_plot_x,
+        ribbon = FALSE,
+        facet = input$prevalence_plot_facet,
+        colour = input$prevalence_plot_colour
+      ) +
+        facet_wrap(facets = input$prevalence_plot_facet, scales = "free")
+    } else {
+      IncidencePrevalence::plotPrevalence(
+        result,
+        x = input$prevalence_plot_x,
+        ribbon = FALSE,
+        facet = input$prevalence_plot_facet,
+        colour = input$prevalence_plot_colour
+      )
+    }
+
+
   })
   output$prevalence_plot <- renderUI({
     if(isTRUE(input$prevalence_plot_interactive)){
