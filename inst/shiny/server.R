@@ -765,6 +765,7 @@ server <- function(input, output, session) {
   })
   ## Tidy large_scale_characteristics ----
   createTidyDataCompareLargeScaleCharacteristics <- shiny::reactive({
+
     lscFiltered <- filterLargeScaleCharacteristics()
 
     if (nrow(lscFiltered) == 0) {
@@ -825,16 +826,22 @@ server <- function(input, output, session) {
                     target_cohort,
                     comparator_cohort)
 
-    cols <- list(target_cohort= colDef(name = target_cohort,
-                                       sortNALast = TRUE),
+    cols <- list(target_cohort = colDef(name = target_cohort,
+                                        sortNALast = TRUE),
                  comparator_cohort = colDef(name = comparator_cohort,
                                             sortNALast = TRUE),
+                 "Concept name (concept ID)" = colDef(name = "Concept name (concept ID)",
+                                                      cell = function(value){
+                                                        value_concept <- gsub(".*\\(|\\)","",value)
+                                                        url   <- sprintf("https://athena.ohdsi.org/search-terms/terms/%s", value_concept)
+                                                        htmltools::tags$a(href = url, target = "_blank", as.character(value))
+                                                      }),
                  "Standardised mean difference" = colDef(name = "Standardised mean difference",
                                                          sortNALast = TRUE)
     )
     names(cols)[1] <- target_cohort
     names(cols)[2] <- comparator_cohort
-
+    
     reactable::reactable(tbl,
                          defaultSorted = list("Standardised mean difference"  = "desc"),
                          columns = cols,
