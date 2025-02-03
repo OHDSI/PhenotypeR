@@ -626,7 +626,7 @@ server <- function(input, output, session) {
   # summarise_large_scale_characteristics -----
   ## Tidy summarise_large_scale_characteristics -----
   getTidyDataSummariseLargeScaleCharacteristics <- shiny::reactive({
-browser()
+
     if (is.null(dataFiltered$summarise_large_scale_characteristics)) {
       validate("No large scale characteristics in results")
     }
