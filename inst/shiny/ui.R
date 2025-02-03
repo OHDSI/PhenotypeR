@@ -61,7 +61,7 @@ ui <- bslib::page_navbar(
                                      title = "Settings",
                                      shinyWidgets::pickerInput(
                                        inputId = "achilles_code_use_grouping_cdm_name",
-                                       label = "Database",
+                                       label = "CDM name",
                                        choices = NULL,
                                        selected = NULL,
                                        multiple = TRUE,
@@ -223,7 +223,7 @@ ui <- bslib::page_navbar(
                                      title = "Settings",
                                      shinyWidgets::pickerInput(
                                        inputId = "orphan_grouping_cdm_name",
-                                       label = "Database",
+                                       label = "CDM name",
                                        choices = NULL,
                                        selected = NULL,
                                        multiple = TRUE,
@@ -310,7 +310,7 @@ ui <- bslib::page_navbar(
                                      title = "Settings",
                                      shinyWidgets::pickerInput(
                                        inputId = "cohort_code_use_grouping_cdm_name",
-                                       label = "Database",
+                                       label = "CDM name",
                                        choices = NULL,
                                        selected = NULL,
                                        multiple = TRUE,
@@ -326,7 +326,7 @@ ui <- bslib::page_navbar(
                                      ),
                                      shinyWidgets::pickerInput(
                                        inputId = "cohort_code_use_grouping_domain_id",
-                                       label = "Domain id",
+                                       label = "Domain",
                                        choices = NULL,
                                        selected = NULL,
                                        multiple = TRUE,
@@ -403,7 +403,7 @@ ui <- bslib::page_navbar(
                                      title = "Settings",
                                      shinyWidgets::pickerInput(
                                        inputId = "summarise_cohort_attrition_grouping_cdm_name",
-                                       label = "Database",
+                                       label = "CDM name",
                                        choices = NULL,
                                        selected = NULL,
                                        multiple = TRUE,
@@ -470,7 +470,7 @@ ui <- bslib::page_navbar(
                                      title = "Settings",
                                      shinyWidgets::pickerInput(
                                        inputId = "summarise_characteristics_grouping_cdm_name",
-                                       label = "Database",
+                                       label = "CDM name",
                                        choices = NULL,
                                        selected = NULL,
                                        multiple = TRUE,
@@ -581,7 +581,7 @@ ui <- bslib::page_navbar(
                                      title = "Settings",
                                      shinyWidgets::pickerInput(
                                        inputId = "summarise_large_scale_characteristics_grouping_cdm_name",
-                                       label = "Database",
+                                       label = "CDM name",
                                        choices = NULL,
                                        selected = NULL,
                                        multiple = TRUE,
@@ -659,7 +659,7 @@ ui <- bslib::page_navbar(
                                      title = "Settings",
                                      shinyWidgets::pickerInput(
                                        inputId = "compare_large_scale_characteristics_grouping_cdm_name",
-                                       label = "Database",
+                                       label = "CDM name",
                                        choices = NULL,
                                        selected = NULL,
                                        multiple = TRUE,
@@ -796,7 +796,7 @@ ui <- bslib::page_navbar(
                                      title = "Settings",
                                      shinyWidgets::pickerInput(
                                        inputId = "summarise_cohort_overlap_grouping_cdm_name",
-                                       label = "Database",
+                                       label = "CDM name",
                                        choices = NULL,
                                        selected = NULL,
                                        multiple = TRUE,
@@ -961,7 +961,7 @@ ui <- bslib::page_navbar(
                                      title = "Settings",
                                      shinyWidgets::pickerInput(
                                        inputId = "summarise_cohort_timing_grouping_cdm_name",
-                                       label = "Database",
+                                       label = "CDM name",
                                        choices = NULL,
                                        selected = NULL,
                                        multiple = TRUE,
@@ -1124,7 +1124,7 @@ ui <- bslib::page_navbar(
                                      title = "Settings",
                                      shinyWidgets::pickerInput(
                                        inputId = "incidence_grouping_cdm_name",
-                                       label = "Database",
+                                       label = "CDM name",
                                        choices = NULL,
                                        selected = NULL,
                                        multiple = TRUE,
@@ -1227,9 +1227,9 @@ ui <- bslib::page_navbar(
                                          shinyWidgets::pickerInput(
                                            inputId = "incidence_plot_y",
                                            label = "Vertical axis",
-                                           selected = "incidence_estimates",
+                                           selected = "Incidence",
                                            multiple = FALSE,
-                                           choices = c("incidence_estimates", "denominator_count", "outcome_count", "person_days", "person_years"),
+                                           choices = c("Incidence", "Denominator count", "Denominator person years", "Outcome count"),
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                          ),
                                          shinyWidgets::pickerInput(
@@ -1237,7 +1237,13 @@ ui <- bslib::page_navbar(
                                            label = "Horizontal axis",
                                            selected = "incidence_start_date",
                                            multiple = FALSE,
-                                           choices = c("cdm_name", "denominator_cohort_name", "incidence_start_date", "incidence_end_date", "analysis_outcome_washout", "analysis_repeated_events", "analysis_interval", "analysis_complete_database_intervals", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation", "denominator_start_date", "denominator_end_date", "denominator_time_at_risk", "denominator_target_cohort_name", "outcome_cohort_name", "variable_name", "variable_level", "estimate_name"),
+                                           choices = c("cdm_name",
+                                                       "incidence_start_date",
+                                                       "analysis_outcome_washout",
+                                                       "denominator_age_group",
+                                                       "denominator_sex",
+                                                       "denominator_days_prior_observation",
+                                                       "outcome_cohort_name"),
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                          ),
                                          shinyWidgets::pickerInput(
@@ -1245,7 +1251,13 @@ ui <- bslib::page_navbar(
                                            label = "Facet",
                                            selected = NULL,
                                            multiple = TRUE,
-                                           choices = c("cdm_name", "denominator_cohort_name", "incidence_start_date", "incidence_end_date", "analysis_outcome_washout", "analysis_repeated_events", "analysis_interval", "analysis_complete_database_intervals", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation", "denominator_start_date", "denominator_end_date", "denominator_time_at_risk", "denominator_target_cohort_name", "outcome_cohort_name", "variable_name", "variable_level", "estimate_name"),
+                                           choices = c("cdm_name",
+                                                       "incidence_start_date",
+                                                       "analysis_outcome_washout",
+                                                       "denominator_age_group",
+                                                       "denominator_sex",
+                                                       "denominator_days_prior_observation",
+                                                       "outcome_cohort_name"),
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                          ),
                                          shiny::checkboxInput(
@@ -1258,7 +1270,13 @@ ui <- bslib::page_navbar(
                                            label = "Colour",
                                            selected = NULL,
                                            multiple = TRUE,
-                                           choices = c("cdm_name", "denominator_cohort_name", "incidence_start_date", "incidence_end_date", "analysis_outcome_washout", "analysis_repeated_events", "analysis_interval", "analysis_complete_database_intervals", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation", "denominator_start_date", "denominator_end_date", "denominator_time_at_risk", "denominator_target_cohort_name", "outcome_cohort_name", "variable_name", "variable_level", "estimate_name"),
+                                           choices = c("cdm_name",
+                                                       "incidence_start_date",
+                                                       "analysis_outcome_washout",
+                                                       "denominator_age_group",
+                                                       "denominator_sex",
+                                                       "denominator_days_prior_observation",
+                                                       "outcome_cohort_name"),
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                          ),
                                          position = "right"
@@ -1281,7 +1299,7 @@ ui <- bslib::page_navbar(
                                      title = "Settings",
                                      shinyWidgets::pickerInput(
                                        inputId = "prevalence_grouping_cdm_name",
-                                       label = "Database",
+                                       label = "CDM",
                                        choices = NULL,
                                        selected = NULL,
                                        multiple = TRUE,
@@ -1384,9 +1402,9 @@ ui <- bslib::page_navbar(
                                          shinyWidgets::pickerInput(
                                            inputId = "prevalence_plot_y",
                                            label = "Vertical axis",
-                                           selected = "prevalence_estimates",
+                                           selected = "Prevalence",
                                            multiple = FALSE,
-                                           choices = c("prevalence_estimates", "denominator_count", "outcome_count"),
+                                           choices = c("Prevalence", "Denominator count", "Outcome count"),
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                          ),
                                          shinyWidgets::pickerInput(
@@ -1394,7 +1412,12 @@ ui <- bslib::page_navbar(
                                            label = "Horizontal axis",
                                            selected = "prevalence_start_date",
                                            multiple = FALSE,
-                                           choices = c("cdm_name", "denominator_cohort_name", "prevalence_start_date", "prevalence_end_date", "analysis_outcome_washout", "analysis_repeated_events", "analysis_interval", "analysis_complete_database_intervals", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation", "denominator_start_date", "denominator_end_date", "denominator_time_at_risk", "denominator_target_cohort_name", "outcome_cohort_name", "variable_name", "variable_level", "estimate_name"),
+                                           choices = c("cdm_name",
+                                                       "prevalence_start_date",
+                                                       "denominator_age_group",
+                                                       "denominator_sex",
+                                                       "denominator_days_prior_observation",
+                                                       "outcome_cohort_name"),
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                          ),
                                          shinyWidgets::pickerInput(
@@ -1402,7 +1425,12 @@ ui <- bslib::page_navbar(
                                            label = "Facet",
                                            selected = NULL,
                                            multiple = TRUE,
-                                           choices = c("cdm_name", "denominator_cohort_name", "prevalence_start_date", "prevalence_end_date", "analysis_outcome_washout", "analysis_repeated_events", "analysis_interval", "analysis_complete_database_intervals", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation", "denominator_start_date", "denominator_end_date", "denominator_time_at_risk", "denominator_target_cohort_name", "outcome_cohort_name", "variable_name", "variable_level", "estimate_name"),
+                                           choices = c("cdm_name",
+                                                       "prevalence_start_date",
+                                                       "denominator_age_group",
+                                                       "denominator_sex",
+                                                       "denominator_days_prior_observation",
+                                                       "outcome_cohort_name"),
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                          ),
                                          shiny::checkboxInput(
@@ -1415,7 +1443,12 @@ ui <- bslib::page_navbar(
                                            label = "Colour",
                                            selected = NULL,
                                            multiple = TRUE,
-                                           choices = c("cdm_name", "denominator_cohort_name", "prevalence_start_date", "prevalence_end_date", "analysis_outcome_washout", "analysis_repeated_events", "analysis_interval", "analysis_complete_database_intervals", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation", "denominator_start_date", "denominator_end_date", "denominator_time_at_risk", "denominator_target_cohort_name", "outcome_cohort_name", "variable_name", "variable_level", "estimate_name"),
+                                           choices = c("cdm_name",
+                                                       "prevalence_start_date",
+                                                       "denominator_age_group",
+                                                       "denominator_sex",
+                                                       "denominator_days_prior_observation",
+                                                       "outcome_cohort_name"),
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                          ),
                                          position = "right"

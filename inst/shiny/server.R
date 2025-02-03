@@ -804,7 +804,7 @@ server <- function(input, output, session) {
       arrange(desc(smd))  |>
       mutate(across(c(target_cohort, comparator_cohort), ~ as.numeric(.x)*100)) |>
       mutate(concept = paste0(variable_name, " (",concept_id, ")")) |>
-      select("Database" = database,
+      select("CDM name" = database,
              "Concept name (concept ID)" = concept,
              "Table" = table,
              "Time window" = time_window,
@@ -1115,7 +1115,7 @@ server <- function(input, output, session) {
     colour     <- input$incidence_plot_colour
 
     # Plot incidence estimates
-    if(y == "incidence_estimates"){
+    if(y == "Incidence"){
       plot <- IncidencePrevalence::plotIncidence(
         result,
         x = x,
@@ -1130,9 +1130,14 @@ server <- function(input, output, session) {
       }
     }else{
       # Plot incidence population
+      y_input <- case_when(
+        y == "Denominator count" ~ "denominator_count",
+        y == "Denominator person years" ~ "person_years",
+        y == "Outcome count" ~ "outcome_count"
+      )
       if(!is.null(facet) && isTRUE(facet_free)){
         plot <- plotIncidencePopulation(x = x,
-                                        y =  y,
+                                        y =  y_input,
                                         result = result,
                                         facet  = NULL,
                                         colour = colour
@@ -1141,7 +1146,7 @@ server <- function(input, output, session) {
           facet_wrap(facets = facet, scales = "free")
       } else {
         plot <- plotIncidencePopulation(x = x,
-                                        y =  y,
+                                        y =  y_input,
                                         result = result,
                                         facet  = facet,
                                         colour = colour
@@ -1242,7 +1247,7 @@ server <- function(input, output, session) {
     facet_free <- input$prevalence_plot_facet_free
     colour <- input$prevalence_plot_colour
 
-    if(y == "prevalence_estimates"){
+    if(y == "Prevalence"){
       plot <- IncidencePrevalence::plotPrevalence(
         result,
         x = x,
@@ -1256,11 +1261,15 @@ server <- function(input, output, session) {
           facet_wrap(facets = facet, scales = "free")
       }
     }else{
+      y_input <- case_when(
+        y == "Denominator count" ~ "denominator_count",
+        y == "Outcome count" ~ "outcome_count"
+      )
       if(!is.null(facet) && isTRUE(input$facet_free)){
         plot <- IncidencePrevalence::plotPrevalencePopulation(
           result = result,
           x = x,
-          y = y,
+          y = y_input,
           facet = NULL,
           colour = colour) +
           facet_wrap(facets = facet, scales = "free")
@@ -1268,7 +1277,7 @@ server <- function(input, output, session) {
         plot <- IncidencePrevalence::plotPrevalencePopulation(
           result = result,
           x = x,
-          y = y,
+          y = y_input,
           facet = facet,
           colour = colour
         )
