@@ -129,7 +129,7 @@ server <- function(input, output, session) {
                                                      groupColumn = input$achilles_code_use_groupColumn,
                                                      hide = input$achilles_code_use_hide,
                                                      type = "tibble")
-      names(tbl) <-stringr::str_remove_all(names(tbl),
+      names(tbl) <- stringr::str_remove_all(names(tbl),
                                            "\\[header_name\\]Database name\\n\\[header_level\\]")
       names(tbl) <- stringr::str_remove_all(names(tbl),
                                             "Estimate name\n\\[header_level\\]")
@@ -144,17 +144,10 @@ server <- function(input, output, session) {
       # suppressed to NA
       tbl <- tbl |>
         purrr::map_df(~ ifelse(grepl("^<", .), NA, .))
-
-      cols <- list()
-      for(i in seq_along(names(tbl))){
-        working_col <- names(tbl)[i]
-        cols[[working_col]] <- colDef(name = working_col,
-                                      sortNALast = TRUE)
-      }
-
+      
       tbl <- reactable(tbl,
                        defaultSorted = order,
-                       columns = cols,
+                       columns = getColsForTbl(tbl),
                        filterable = TRUE,
                        searchable = TRUE,
                        defaultPageSize = 25,
@@ -162,13 +155,11 @@ server <- function(input, output, session) {
                        striped = TRUE,
                        compact = TRUE,
                        showSortable = TRUE)
-
+      
       return(tbl)
     }
 
   })
-
-
 
   output$achilles_code_use_gt_download <- shiny::downloadHandler(
     filename = function() {
@@ -287,15 +278,8 @@ server <- function(input, output, session) {
       tbl <- tbl |>
         purrr::map_df(~ ifelse(grepl("^<", .), NA, .))
 
-      cols <- list()
-      for(i in seq_along(names(tbl))){
-        working_col <- names(tbl)[i]
-        cols[[working_col]] <- colDef(name = working_col,
-                                      sortNALast = TRUE)
-      }
-
       tbl <- reactable(tbl,
-                       columns = cols,
+                       columns = getColsForTbl(tbl),
                        defaultSorted = order,
                        filterable = TRUE,
                        searchable = TRUE,
@@ -394,6 +378,7 @@ server <- function(input, output, session) {
   )
   ## Table cohort_code_use -----
   output$cohort_code_use_tbl <- shiny::renderUI({
+
     if (is.null(dataFiltered$cohort_code_use)) {
       validate("No cohort code use in results")
     }
@@ -436,7 +421,7 @@ server <- function(input, output, session) {
         hide = input$cohort_code_use_gt_hide,
         type = "tibble"
       )
-      names(tbl) <-stringr::str_remove_all(names(tbl),
+      names(tbl) <- stringr::str_remove_all(names(tbl),
                                            "\\[header_name\\]Database name\\n\\[header_level\\]")
       names(tbl) <- stringr::str_remove_all(names(tbl),
                                             "Estimate name\n\\[header_level\\]")
@@ -453,6 +438,7 @@ server <- function(input, output, session) {
         purrr::map_df(~ ifelse(grepl("^<", .), NA, .))
 
       tbl <- reactable(tbl,
+                       columns = getColsForTbl(tbl, sortNALast = FALSE, names = c("Standard concept ID", "Source concept ID")),
                        defaultSorted = order,
                        filterable = TRUE,
                        searchable = TRUE,
@@ -464,7 +450,6 @@ server <- function(input, output, session) {
 
 
     }
-
 
   })
 
@@ -661,7 +646,7 @@ server <- function(input, output, session) {
   # summarise_large_scale_characteristics -----
   ## Tidy summarise_large_scale_characteristics -----
   getTidyDataSummariseLargeScaleCharacteristics <- shiny::reactive({
-
+browser()
     if (is.null(dataFiltered$summarise_large_scale_characteristics)) {
       validate("No large scale characteristics in results")
     }
@@ -740,7 +725,7 @@ server <- function(input, output, session) {
     }
 
     lsc_data |>
-      CohortCharacteristics::tableLargeScaleCharacteristics() %>%
+      CohortCharacteristics::tableLargeScaleCharacteristics(topConcepts = 10) %>%
       tab_header(
         title = "Large scale characteristics",
         subtitle = "Summary of all records from clinical tables within a time window.
