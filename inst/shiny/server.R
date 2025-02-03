@@ -50,9 +50,7 @@ server <- function(input, output, session) {
     createTableOmopSnapshot()
   })
   output$summarise_omop_snapshot_gt_download <- shiny::downloadHandler(
-    filename = function() {
-      paste0("summarise_omop_snapshot_gt.", input$summarise_omop_snapshot_gt_download_type)
-    },
+    filename = "summarise_omop_snapshot_gt.docx",
     content = function(file) {
       gt::gtsave(data = createTableOmopSnapshot(), filename = file)
     }
@@ -80,9 +78,7 @@ server <- function(input, output, session) {
     createTableObservationPeriod()
   })
   output$summarise_observation_period_gt_download <- shiny::downloadHandler(
-    filename = function() {
-      paste0("summarise_observation_period_gt.", input$summarise_observation_period_gt_download_type)
-    },
+    filename = "summarise_observation_period_gt.docx",
     content = function(file) {
       obj <- createTableObservationPeriod()
       gt::gtsave(data = obj, filename = file)
@@ -91,20 +87,19 @@ server <- function(input, output, session) {
 
 
   # achilles_code_use -----
-  ## Table achilles_code_use ----
-  output$achilles_code_use_tbl <- shiny::renderUI({
+  filterAchillesCodeUse <- shiny::reactive({ 
     if (is.null(dataFiltered$achilles_code_use)) {
       validate("No achilles code use in results")
     }
     achillesFiltered <- dataFiltered$achilles_code_use  |>
       filterData("achilles_code_use", input)
-
+    
     if (is.null(dataFiltered$achilles_code_use)) {
       validate("No achilles code use in results")
     }
     achillesFiltered <- dataFiltered$achilles_code_use  |>
       filterData("achilles_code_use", input)
-
+    
     if(isFALSE(input$achilles_person_count)){
       achillesFiltered <- achillesFiltered  |>
         filter(estimate_name != "person_count")
@@ -113,34 +108,54 @@ server <- function(input, output, session) {
       achillesFiltered <- achillesFiltered  |>
         filter(estimate_name != "record_count")
     }
-
+    
     if (nrow(achillesFiltered) == 0) {
       validate("No results found for selected inputs")
     }
+    
+    return(achillesFiltered)
+  })
+  
+  ## Table achilles_code_use ----
+  createAchillesCodeUseGT <- shiny::reactive({ 
+    tbl <- CodelistGenerator::tableAchillesCodeUse(filterAchillesCodeUse(),
+                                                   header = input$achilles_code_use_header,
+                                                   groupColumn = input$achilles_code_use_groupColumn,
+                                                   hide = input$achilles_code_use_hide)
+    return(tbl)
+  })
+  createAchillesCodeUseInteractive <- shiny::reactive({
+    tbl <- CodelistGenerator::tableAchillesCodeUse(filterAchillesCodeUse(),
+                                                   header = input$achilles_code_use_header,
+                                                   groupColumn = input$achilles_code_use_groupColumn,
+                                                   hide = input$achilles_code_use_hide,
+                                                   type = "tibble")
+    names(tbl) <- stringr::str_remove_all(names(tbl),
+                                         "\\[header_name\\]Database name\\n\\[header_level\\]")
+    names(tbl) <- stringr::str_remove_all(names(tbl),
+                                          "Estimate name\n\\[header_level\\]")
+    names(tbl) <- stringr::str_replace_all(names(tbl),
+                                           "\n\\[header_name\\]",
+                                           ": ")
+    return(tbl)
+  })
+  
+  output$achilles_code_use_tbl <- shiny::renderUI({
+
+  
     if(isFALSE(input$achilles_interactive)){
-      tbl <- CodelistGenerator::tableAchillesCodeUse(achillesFiltered,
-                                                     header = input$achilles_code_use_header,
-                                                     groupColumn = input$achilles_code_use_groupColumn,
-                                                     hide = input$achilles_code_use_hide)
+      tbl <- createAchillesCodeUseGT()
       return(tbl)
+      
     } else {
-      tbl <- CodelistGenerator::tableAchillesCodeUse(achillesFiltered,
-                                                     header = input$achilles_code_use_header,
-                                                     groupColumn = input$achilles_code_use_groupColumn,
-                                                     hide = input$achilles_code_use_hide,
-                                                     type = "tibble")
-      names(tbl) <- stringr::str_remove_all(names(tbl),
-                                           "\\[header_name\\]Database name\\n\\[header_level\\]")
-      names(tbl) <- stringr::str_remove_all(names(tbl),
-                                            "Estimate name\n\\[header_level\\]")
-      names(tbl) <- stringr::str_replace_all(names(tbl),
-                                             "\n\\[header_name\\]",
-                                             ": ")
+
+      tbl <- createAchillesCodeUseInteractive()
+      
       # column ordering by codelist and first column with a count
       order <- list("Codelist name"  = "asc",
                     "count" = "desc")
       names(order)[2] <- names(tbl)[7]
-
+      
       # suppressed to NA
       tbl <- tbl |>
         purrr::map_df(~ ifelse(grepl("^<", .), NA, .))
@@ -158,73 +173,37 @@ server <- function(input, output, session) {
       
       return(tbl)
     }
-
   })
 
-  output$achilles_code_use_gt_download <- shiny::downloadHandler(
-    filename = function() {
-      paste0("summarise_achilles_code_use_gt.", input$achilles_code_use_gt_download_type)
+  output$achilles_code_use_download <- shiny::downloadHandler(
+    filename = function(){
+      if(isFALSE(input$achilles_interactive)){
+        "summarise_achilles_code_use_gt.docx"
+      }else{
+        "summarise_achilles_code_use_tbl.csv"
+      }
     },
-    content = function(file) {
-      obj <- createTableObservationPeriod()
-      gt::gtsave(data = obj, filename = file)
+    content = function(file){
+      if(isFALSE(input$achilles_interactive)){
+        gt::gtsave(data = createAchillesCodeUseGT(), filename = file)
+      }else{
+        readr::write_csv(createAchillesCodeUseInteractive(), file = file)
+      }
     }
   )
 
 
   # orphan_codes -----
-  ## Tidy orphan_codes -----
-  getTidyDataOrphanCodes <- shiny::reactive({
-    res <- dataFiltered$orphan |>
-      filterData("orphan", input) |>
-      tidyData()
-
-    # columns to eliminate
-    colsEliminate <- colnames(res)
-    colsEliminate <- colsEliminate[!colsEliminate %in% c(
-      input$orphan_tidy_columns, "variable_name", "variable_level",
-      "estimate_name", "estimate_type", "estimate_value"
-    )]
-
-    # pivot
-    pivot <- input$orphan_tidy_pivot
-    if (pivot != "none") {
-      vars <- switch(pivot,
-                     "estimates" = "estimate_name",
-                     "estimates and variables" = c("variable_name", "variable_level", "estimate_name")
-      )
-      res <- res |>
-        visOmopResults::pivotEstimates(pivotEstimatesBy = vars)
-    }
-
-    res |>
-      dplyr::select(!dplyr::all_of(colsEliminate))
-  })
-  output$orphan_tidy <- DT::renderDT({
-    DT::datatable(
-      getTidyDataSummariseCharacteristics(),
-      options = list(scrollX = TRUE),
-      rownames = FALSE
-    )
-  })
-  output$orphan_tidy_download <- shiny::downloadHandler(
-    filename = "tidy_orphan.csv",
-    content = function(file) {
-      getTidyDataSummariseCharacteristics() |>
-        readr::write_csv(file = file)
-    }
-  )
-  ## Table orphan_codes -----
-  output$orphan_codes_tbl <- shiny::renderUI({
-
+  filterOrphanCodes <-  shiny::reactive({ 
+    
     if (is.null(dataFiltered$orphan_code_use)) {
       validate("No orphan codes in results")
     }
-
+    
     result <- dataFiltered$orphan_code_use |>
       dplyr::filter(cdm_name %in% input$orphan_grouping_cdm_name,
                     group_level %in% input$orphan_grouping_codelist_name)
-
+    
     if(isFALSE(input$orphan_person_count)){
       result <- result  |>
         filter(estimate_name != "person_count")
@@ -233,42 +212,58 @@ server <- function(input, output, session) {
       result <- result  |>
         filter(estimate_name != "record_count")
     }
-
+    
     if (nrow(result) == 0) {
       validate("No orphan codes in results")
     }
+    
+    return(result)
+  })
 
-
+  ## Table orphan_codes -----
+  createOrphanCodesGT <- shiny::reactive({ 
+    tbl <- CodelistGenerator::tableOrphanCodes(
+      filterOrphanCodes(),
+      header = input$orphan_codes_gt_header,
+      groupColumn = input$orphan_codes_gt_groupColumn,
+      hide = input$orphan_codes_gt_hide
+    )
+    tbl %>%
+      tab_header(
+        title = "Summary of orphan codes",
+        subtitle = "Orphan codes refer to concepts present in the database that are not in a codelist but are related to included codes."
+      ) %>%
+      tab_options(
+        heading.align = "left"
+      )
+    
+    return(tbl)
+  })
+  createOrphanCodesInteractive <- shiny::reactive({
+    tbl <- CodelistGenerator::tableOrphanCodes(
+      filterOrphanCodes(),
+      header = input$orphan_codes_gt_header,
+      groupColumn = input$orphan_codes_gt_groupColumn,
+      hide = input$orphan_codes_gt_hide,
+      type = "tibble"
+    )
+    names(tbl) <-stringr::str_remove_all(names(tbl),
+                                         "\\[header_name\\]Database name\\n\\[header_level\\]")
+    names(tbl) <- stringr::str_remove_all(names(tbl),
+                                          "Estimate name\n\\[header_level\\]")
+    names(tbl) <- stringr::str_replace_all(names(tbl),
+                                           "\n\\[header_name\\]",
+                                           ": ")
+    
+    return(tbl)
+  })
+  output$orphan_codes_tbl <- shiny::renderUI({
+ 
     if(isFALSE(input$orphan_interactive)){
-      tbl <- CodelistGenerator::tableOrphanCodes(
-        result,
-        header = input$orphan_codes_gt_header,
-        groupColumn = input$orphan_codes_gt_groupColumn,
-        hide = input$orphan_codes_gt_hide
-      )
-      tbl %>%
-        tab_header(
-          title = "Summary of orphan codes",
-          subtitle = "Orphan codes refer to concepts present in the database that are not in a codelist but are related to included codes."
-        ) %>%
-        tab_options(
-          heading.align = "left"
-        )
+      tbl <- createOrphanCodesGT()
+      return(tbl)
     } else {
-      tbl <- CodelistGenerator::tableOrphanCodes(
-        result,
-        header = input$orphan_codes_gt_header,
-        groupColumn = input$orphan_codes_gt_groupColumn,
-        hide = input$orphan_codes_gt_hide,
-        type = "tibble"
-      )
-      names(tbl) <-stringr::str_remove_all(names(tbl),
-                                           "\\[header_name\\]Database name\\n\\[header_level\\]")
-      names(tbl) <- stringr::str_remove_all(names(tbl),
-                                            "Estimate name\n\\[header_level\\]")
-      names(tbl) <- stringr::str_replace_all(names(tbl),
-                                             "\n\\[header_name\\]",
-                                             ": ")
+      tbl <- createOrphanCodesInteractive()
       # column ordering by codelist and first column with a count
       order <- list("Codelist name"  = "asc",
                     "count" = "desc")
@@ -288,103 +283,68 @@ server <- function(input, output, session) {
                        striped = TRUE,
                        compact = TRUE,
                        showSortable = TRUE)
-
-
+      return(tbl)
     }
-
-
   })
 
-
-  output$orphan_codes_gt_download <- shiny::downloadHandler(
-    filename = function() {
-      paste0("orphan_codes_gt.", input$orphan_codes_gt_download_type)
+  output$orphan_codes_download <- shiny::downloadHandler(
+    filename = function(){
+      if(isFALSE(input$orphan_interactive)){
+        "summarise_orphan_codes_gt.docx"
+      }else{
+        "summarise_orphan_codes_tbl.csv"
+      }
     },
-    content = function(file) {
-      obj <- createTableOrphanCodes()
-      gt::gtsave(data = obj, filename = file)
+    content = function(file){
+      if(isFALSE(input$orphan_interactive)){
+        gt::gtsave(data = createOrphanCodesGT(), filename = file)
+      }else{
+        readr::write_csv(createOrphanCodesInteractive(), file = file)
+      }
     }
   )
-
 
   # unmapped codes -----
-  createOutputUnmapped <- shiny::reactive({
-    if (is.null(dataFiltered$unmapped_codes)) {
-      validate("No unmapped codes in results")
-    }
-
-    CodelistGenerator::tableUnmappedCodes(
-      dataFiltered$unmapped_codes |>
-        dplyr::filter(cdm_name %in% input$unmapped_grouping_cdm_name,
-                      group_level %in% input$unmapped_grouping_codelist_name),
-      header = input$unmapped_header,
-      groupColumn = input$unmapped_groupColumn,
-      hide = input$unmapped_hide
-    ) %>%
-      tab_header(
-        title = "Summary of unmapped codes",
-        subtitle = "These codes are recorded as source concepts that are mapped to 0"
-      ) %>%
-      tab_options(
-        heading.align = "left"
-      )
-  })
-  output$unmapped_formatted <- gt::render_gt({
-    createOutputUnmapped()
-  })
-  output$unmapped_formatted_download <- shiny::downloadHandler(
-    filename = function() {
-      paste0("output_gt_orphan.", input$unmapped_formatted_download_type)
-    },
-    content = function(file) {
-      obj <- createOutputUnmapped()
-      gt::gtsave(data = obj, filename = file)
-    }
-  )
-
+  # createOutputUnmapped <- shiny::reactive({
+  #   if (is.null(dataFiltered$unmapped_codes)) {
+  #     validate("No unmapped codes in results")
+  #   }
+  # 
+  #   CodelistGenerator::tableUnmappedCodes(
+  #     dataFiltered$unmapped_codes |>
+  #       dplyr::filter(cdm_name %in% input$unmapped_grouping_cdm_name,
+  #                     group_level %in% input$unmapped_grouping_codelist_name),
+  #     header = input$unmapped_header,
+  #     groupColumn = input$unmapped_groupColumn,
+  #     hide = input$unmapped_hide
+  #   ) %>%
+  #     tab_header(
+  #       title = "Summary of unmapped codes",
+  #       subtitle = "These codes are recorded as source concepts that are mapped to 0"
+  #     ) %>%
+  #     tab_options(
+  #       heading.align = "left"
+  #     )
+  # })
+  # output$unmapped_formatted <- gt::render_gt({
+  #   createOutputUnmapped()
+  # })
+  # output$unmapped_formatted_download <- shiny::downloadHandler(
+  #   filename = "output_gt_orphan.docx",
+  #   content = function(file) {
+  #     obj <- createOutputUnmapped()
+  #     gt::gtsave(data = obj, filename = file)
+  #   }
+  # )
 
   # cohort_code_use -----
-  ## Tidy cohort_code_use -----
-  getTidyDataCohortCodeUse <- shiny::reactive({
-    res <- dataFiltered$cohort_code_use |>
-      tidyData()
-
-    # pivot
-    pivot <- input$cohort_code_use_tidy_pivot
-    if (pivot != "none") {
-      vars <- switch(pivot,
-                     "estimates" = "estimate_name",
-                     "estimates and variables" = c("variable_name", "variable_level", "estimate_name")
-      )
-      res <- res |>
-        visOmopResults::pivotEstimates(pivotEstimatesBy = vars)
-    }
-
-    res
-  })
-  output$cohort_code_use_tidy <- DT::renderDT({
-    DT::datatable(
-      getTidyDataCohortCodeUse(),
-      options = list(scrollX = TRUE),
-      rownames = FALSE
-    )
-  })
-  output$cohort_code_use_tidy_download <- shiny::downloadHandler(
-    filename = "tidy_cohort_code_use.csv",
-    content = function(file) {
-      getTidyDataCohortCodeUse() |>
-        readr::write_csv(file = file)
-    }
-  )
-  ## Table cohort_code_use -----
-  output$cohort_code_use_tbl <- shiny::renderUI({
-
+  filterCohortCodeUse <- shiny::reactive({
     if (is.null(dataFiltered$cohort_code_use)) {
       validate("No cohort code use in results")
     }
     result <- dataFiltered$cohort_code_use |>
       filterData("cohort_code_use", input)
-
+    
     if(isFALSE(input$cohort_code_use_person_count)){
       result <- result  |>
         filter(estimate_name != "person_count")
@@ -393,50 +353,65 @@ server <- function(input, output, session) {
       result <- result  |>
         filter(estimate_name != "record_count")
     }
-
+    
     if (nrow(result) == 0) {
       validate("No results found for selected inputs")
     }
-
-    if(isFALSE(input$cohort_code_use_interactive)){
-      CodelistGenerator::tableCohortCodeUse(
-        result,
-        header = input$cohort_code_use_gt_header,
-        groupColumn = input$cohort_code_use_gt_groupColumn,
-        hide = input$cohort_code_use_gt_hide
+    
+    return(result)
+  })
+  ## Table cohort_code_use -----
+  createCohortCodeUseGT <- shiny::reactive({
+    tbl <- CodelistGenerator::tableCohortCodeUse(
+      filterCohortCodeUse(),
+      header = input$cohort_code_use_gt_header,
+      groupColumn = input$cohort_code_use_gt_groupColumn,
+      hide = input$cohort_code_use_gt_hide
+    ) %>%
+      tab_header(
+        title = "Summary of cohort code use",
+        subtitle = "Codes from codelist observed on day of cohort entry. Note more than one code could be seen for a person on this day (both of which would have led to inclusion)."
       ) %>%
-        tab_header(
-          title = "Summary of cohort code use",
-          subtitle = "Codes from codelist observed on day of cohort entry. Note more than one code could be seen for a person on this day (both of which would have led to inclusion)."
-        ) %>%
-        tab_options(
-          heading.align = "left"
-        )
-
-    } else {
-      tbl <-  CodelistGenerator::tableCohortCodeUse(
-        result,
-        header = input$cohort_code_use_gt_header,
-        groupColumn = input$cohort_code_use_gt_groupColumn,
-        hide = input$cohort_code_use_gt_hide,
-        type = "tibble"
+      tab_options(
+        heading.align = "left"
       )
-      names(tbl) <- stringr::str_remove_all(names(tbl),
-                                           "\\[header_name\\]Database name\\n\\[header_level\\]")
-      names(tbl) <- stringr::str_remove_all(names(tbl),
-                                            "Estimate name\n\\[header_level\\]")
-      names(tbl) <- stringr::str_replace_all(names(tbl),
-                                             "\n\\[header_name\\]",
-                                             ": ")
+
+    return(tbl)
+  })
+  createCohortCodeUseInteractive <- shiny::reactive({
+    tbl <-  CodelistGenerator::tableCohortCodeUse(
+      filterCohortCodeUse(),
+      header = input$cohort_code_use_gt_header,
+      groupColumn = input$cohort_code_use_gt_groupColumn,
+      hide = input$cohort_code_use_gt_hide,
+      type = "tibble"
+    )
+    names(tbl) <-stringr::str_remove_all(names(tbl),
+                                         "\\[header_name\\]Database name\\n\\[header_level\\]")
+    names(tbl) <- stringr::str_remove_all(names(tbl),
+                                          "Estimate name\n\\[header_level\\]")
+    names(tbl) <- stringr::str_replace_all(names(tbl),
+                                           "\n\\[header_name\\]",
+                                           ": ")
+    return(tbl)
+  })
+  output$cohort_code_use_tbl <- shiny::renderUI({
+    
+    if(isFALSE(input$cohort_code_use_interactive)){
+      tbl <- createCohortCodeUseGT()
+      return(tbl)
+    } else {
+      tbl <- createCohortCodeUseInteractive()
+
       # column ordering by codelist and first column with a count
       order <- list("Cohort name"  = "asc",
                     "count" = "desc")
       names(order)[2] <- names(tbl)[9]
-
+      
       # suppressed to NA
       tbl <- tbl |>
         purrr::map_df(~ ifelse(grepl("^<", .), NA, .))
-
+      
       tbl <- reactable(tbl,
                        columns = getColsForTbl(tbl, sortNALast = FALSE, names = c("Standard concept ID", "Source concept ID")),
                        defaultSorted = order,
@@ -447,20 +422,25 @@ server <- function(input, output, session) {
                        striped = TRUE,
                        compact = TRUE,
                        showSortable = TRUE)
-
-
+      return(tbl)
     }
-
   })
 
-
-  output$cohort_code_use_gt_download <- shiny::downloadHandler(
-    filename = function() {
-      paste0("cohort_code_use_gt.", input$cohort_code_use_gt_download_type)
+  output$cohort_code_use_download <- shiny::downloadHandler(
+    filename = function(){
+      if(isFALSE(input$cohort_code_use_interactive)){
+        file <- "summarise_cohort_code_use_gt.docx"
+      }else{
+        file <- "summarise_cohort_code_use_tbl.csv"
+      }
+      return(file)
     },
-    content = function(file) {
-      obj <- createTableCohortCodeUse()
-      gt::gtsave(data = obj, filename = file)
+    content = function(file){
+      if(isFALSE(input$cohort_code_use_interactive)){
+        gt::gtsave(data = createCohortCodeUseGT(), filename = file)
+      }else{
+        readr::write_csv(createCohortCodeUseInteractive(), file = file)
+      }
     }
   )
 
@@ -489,9 +469,7 @@ server <- function(input, output, session) {
     createTableCohortAttrition()
   })
   output$summarise_cohort_attrition_gt_download <- shiny::downloadHandler(
-    filename = function() {
-      paste0("summarise_cohort_attrition_gt.", input$summarise_cohort_attrition_gt_download_type)
-    },
+    filename = "summarise_cohort_attrition_gt.docx",
     content = function(file) {
       obj <- createTableCohortAttrition()
       gt::gtsave(data = obj, filename = file)
@@ -566,9 +544,7 @@ server <- function(input, output, session) {
     createTableSummariseCharacteristics()
   })
   output$summarise_characteristics_gt_download <- shiny::downloadHandler(
-    filename = function() {
-      paste0("summarise_characteristics_gt.", input$summarise_characteristics_gt_download_type)
-    },
+    filename = "summarise_characteristics_gt.docx", 
     content = function(file) {
       obj <- createTableSummariseCharacteristics()
       gt::gtsave(data = obj, filename = file)
@@ -640,9 +616,6 @@ server <- function(input, output, session) {
     }
   )
 
-
-
-
   # summarise_large_scale_characteristics -----
   ## Tidy summarise_large_scale_characteristics -----
   getTidyDataSummariseLargeScaleCharacteristics <- shiny::reactive({
@@ -668,6 +641,7 @@ server <- function(input, output, session) {
       mutate(concept = paste0(variable_name, " (",
                               concept_id, ")")) |>
       dplyr::select("cdm_name",
+                    "cohort_name",
                     "concept",
                     "count",
                     "percentage")
@@ -739,9 +713,7 @@ server <- function(input, output, session) {
     createTableLargeScaleCharacteristics()
   })
   output$summarise_large_scale_characteristics_gt_download <- shiny::downloadHandler(
-    filename = function() {
-      paste0("summarise_large_scale_characteristics_gt.", input$summarise_large_scale_characteristics_gt_download_type)
-    },
+    filename = "summarise_large_scale_characteristics_gt.docx",
     content = function(file) {
       obj <- createTableLargeScaleCharacteristics()
       gt::gtsave(data = obj, filename = file)
@@ -936,9 +908,7 @@ server <- function(input, output, session) {
     createTableCohortOverlap()
   })
   output$summarise_cohort_overlap_gt_download <- shiny::downloadHandler(
-    filename = function(){
-      paste0("summarise_cohort_overlap_gt.", input$summarise_cohort_overlap_gt_download_type)
-    },
+    filename = "summarise_cohort_overlap_gt.docx",
     content = function(file) {
       obj <- createTableCohortOverlap()
       gt::gtsave(data = obj, filename = file)
@@ -1010,9 +980,7 @@ server <- function(input, output, session) {
     createTableCohortTiming()
   })
   output$summarise_cohort_timing_gt_download <- shiny::downloadHandler(
-    filename = function(){
-      paste0("summarise_cohort_timing_gt.", input$summarise_cohort_timing_gt_download_type)
-    },
+    filename = "summarise_cohort_timing_gt.docx",
     content = function(file) {
       obj <- createTableCohortTiming()
       gt::gtsave(data = obj, filename = file)
@@ -1103,9 +1071,7 @@ server <- function(input, output, session) {
     createTableIncidence()
   })
   output$incidence_gt_download <- shiny::downloadHandler(
-    filename = function() {
-      paste0("incidence_gt.", input$incidence_gt_download_type)
-    },
+    filename = "incidence_gt.docx",
     content = function(file) {
       obj <- createTableIncidence()
       gt::gtsave(data = obj, filename = file)
@@ -1233,9 +1199,7 @@ server <- function(input, output, session) {
     createTablePrevalence()
   })
   output$prevalence_gt_download <- shiny::downloadHandler(
-    filename = function() {
-      paste0("prevalence_gt.", input$prevalence_gt_download_type)
-    },
+    filename = "prevalence_gt.docx",
     content = function(file) {
       obj <- createTablePrevalence()
       gt::gtsave(data = obj, filename = file)

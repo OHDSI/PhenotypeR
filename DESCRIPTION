@@ -50,8 +50,6 @@ Suggests:
     plotly,
     tidyr,
     scales,
-    webshot2,
-    chromote,
     usethis
 Config/testthat/edition: 3
 RoxygenNote: 7.3.2
