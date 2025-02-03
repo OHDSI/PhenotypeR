@@ -87,19 +87,19 @@ server <- function(input, output, session) {
 
 
   # achilles_code_use -----
-  filterAchillesCodeUse <- shiny::reactive({ 
+  filterAchillesCodeUse <- shiny::reactive({
     if (is.null(dataFiltered$achilles_code_use)) {
       validate("No achilles code use in results")
     }
     achillesFiltered <- dataFiltered$achilles_code_use  |>
       filterData("achilles_code_use", input)
-    
+
     if (is.null(dataFiltered$achilles_code_use)) {
       validate("No achilles code use in results")
     }
     achillesFiltered <- dataFiltered$achilles_code_use  |>
       filterData("achilles_code_use", input)
-    
+
     if(isFALSE(input$achilles_person_count)){
       achillesFiltered <- achillesFiltered  |>
         filter(estimate_name != "person_count")
@@ -108,16 +108,16 @@ server <- function(input, output, session) {
       achillesFiltered <- achillesFiltered  |>
         filter(estimate_name != "record_count")
     }
-    
+
     if (nrow(achillesFiltered) == 0) {
       validate("No results found for selected inputs")
     }
-    
+
     return(achillesFiltered)
   })
-  
+
   ## Table achilles_code_use ----
-  createAchillesCodeUseGT <- shiny::reactive({ 
+  createAchillesCodeUseGT <- shiny::reactive({
     tbl <- CodelistGenerator::tableAchillesCodeUse(filterAchillesCodeUse(),
                                                    header = input$achilles_code_use_header,
                                                    groupColumn = input$achilles_code_use_groupColumn,
@@ -139,27 +139,27 @@ server <- function(input, output, session) {
                                            ": ")
     return(tbl)
   })
-  
+
   output$achilles_code_use_tbl <- shiny::renderUI({
 
-  
+
     if(isFALSE(input$achilles_interactive)){
       tbl <- createAchillesCodeUseGT()
       return(tbl)
-      
+
     } else {
 
       tbl <- createAchillesCodeUseInteractive()
-      
+
       # column ordering by codelist and first column with a count
       order <- list("Codelist name"  = "asc",
                     "count" = "desc")
       names(order)[2] <- names(tbl)[7]
-      
+
       # suppressed to NA
       tbl <- tbl |>
         purrr::map_df(~ ifelse(grepl("^<", .), NA, .)) |>
-        dplyr::mutate(dplyr::across(c(ends_with("Record count"), ends_with("Person count")), 
+        dplyr::mutate(dplyr::across(c(ends_with("Record count"), ends_with("Person count")),
                                     ~ suppressWarnings(as.numeric(.))))
       tbl <- reactable(tbl,
                        defaultSorted = order,
@@ -171,7 +171,7 @@ server <- function(input, output, session) {
                        striped = TRUE,
                        compact = TRUE,
                        showSortable = TRUE)
-      
+
       return(tbl)
     }
   })
@@ -195,16 +195,16 @@ server <- function(input, output, session) {
 
 
   # orphan_codes -----
-  filterOrphanCodes <-  shiny::reactive({ 
-    
+  filterOrphanCodes <-  shiny::reactive({
+
     if (is.null(dataFiltered$orphan_code_use)) {
       validate("No orphan codes in results")
     }
-    
+
     result <- dataFiltered$orphan_code_use |>
       dplyr::filter(cdm_name %in% input$orphan_grouping_cdm_name,
                     group_level %in% input$orphan_grouping_codelist_name)
-    
+
     if(isFALSE(input$orphan_person_count)){
       result <- result  |>
         filter(estimate_name != "person_count")
@@ -213,16 +213,16 @@ server <- function(input, output, session) {
       result <- result  |>
         filter(estimate_name != "record_count")
     }
-    
+
     if (nrow(result) == 0) {
       validate("No orphan codes in results")
     }
-    
+
     return(result)
   })
 
   ## Table orphan_codes -----
-  createOrphanCodesGT <- shiny::reactive({ 
+  createOrphanCodesGT <- shiny::reactive({
     tbl <- CodelistGenerator::tableOrphanCodes(
       filterOrphanCodes(),
       header = input$orphan_codes_gt_header,
@@ -237,7 +237,7 @@ server <- function(input, output, session) {
       tab_options(
         heading.align = "left"
       )
-    
+
     return(tbl)
   })
   createOrphanCodesInteractive <- shiny::reactive({
@@ -255,11 +255,11 @@ server <- function(input, output, session) {
     names(tbl) <- stringr::str_replace_all(names(tbl),
                                            "\n\\[header_name\\]",
                                            ": ")
-    
+
     return(tbl)
   })
   output$orphan_codes_tbl <- shiny::renderUI({
- 
+
     if(isFALSE(input$orphan_interactive)){
       tbl <- createOrphanCodesGT()
       return(tbl)
@@ -273,7 +273,7 @@ server <- function(input, output, session) {
       # suppressed to NA
       tbl <- tbl |>
         purrr::map_df(~ ifelse(grepl("^<", .), NA, .)) |>
-        dplyr::mutate(dplyr::across(c(ends_with("Record count"), ends_with("Person count")), 
+        dplyr::mutate(dplyr::across(c(ends_with("Record count"), ends_with("Person count")),
                                     ~ suppressWarnings(as.numeric(.))))
 
       tbl <- reactable(tbl,
@@ -312,7 +312,7 @@ server <- function(input, output, session) {
   #   if (is.null(dataFiltered$unmapped_codes)) {
   #     validate("No unmapped codes in results")
   #   }
-  # 
+  #
   #   CodelistGenerator::tableUnmappedCodes(
   #     dataFiltered$unmapped_codes |>
   #       dplyr::filter(cdm_name %in% input$unmapped_grouping_cdm_name,
@@ -347,7 +347,7 @@ server <- function(input, output, session) {
     }
     result <- dataFiltered$cohort_code_use |>
       filterData("cohort_code_use", input)
-    
+
     if(isFALSE(input$cohort_code_use_person_count)){
       result <- result  |>
         filter(estimate_name != "person_count")
@@ -356,11 +356,11 @@ server <- function(input, output, session) {
       result <- result  |>
         filter(estimate_name != "record_count")
     }
-    
+
     if (nrow(result) == 0) {
       validate("No results found for selected inputs")
     }
-    
+
     return(result)
   })
   ## Table cohort_code_use -----
@@ -405,21 +405,21 @@ server <- function(input, output, session) {
       return(tbl)
     } else {
       tbl <- createCohortCodeUseInteractive() |>
-        dplyr::mutate(dplyr::across(c(ends_with("Record count"), ends_with("Person count")), 
+        dplyr::mutate(dplyr::across(c(ends_with("Record count"), ends_with("Person count")),
                                     ~ suppressWarnings(as.numeric(.))))
 
       # column ordering by codelist and first column with a count
       order <- list("Cohort name"  = "asc",
                     "count" = "desc")
       names(order)[2] <- names(tbl)[9]
-      
+
       # suppressed to NA
       tbl <- tbl |>
-        purrr::map_df(~ ifelse(grepl("^<", .), NA, .)) 
-      
+        purrr::map_df(~ ifelse(grepl("^<", .), NA, .))
+
       tbl <- reactable(tbl,
-                       columns = getColsForTbl(tbl, 
-                                               sortNALast = FALSE, 
+                       columns = getColsForTbl(tbl,
+                                               sortNALast = FALSE,
                                                names = c("Standard concept ID", "Source concept ID")),
                        defaultSorted = order,
                        filterable = TRUE,
@@ -429,7 +429,7 @@ server <- function(input, output, session) {
                        striped = TRUE,
                        compact = TRUE,
                        showSortable = TRUE)
-      
+
       return(tbl)
     }
   })
@@ -552,7 +552,7 @@ server <- function(input, output, session) {
     createTableSummariseCharacteristics()
   })
   output$summarise_characteristics_gt_download <- shiny::downloadHandler(
-    filename = "summarise_characteristics_gt.docx", 
+    filename = "summarise_characteristics_gt.docx",
     content = function(file) {
       obj <- createTableSummariseCharacteristics()
       gt::gtsave(data = obj, filename = file)
@@ -655,13 +655,32 @@ server <- function(input, output, session) {
                     "percentage")
 
   })
-  output$summarise_large_scale_characteristics_tidy <- DT::renderDT({
-    DT::datatable(
-      getTidyDataSummariseLargeScaleCharacteristics() |>
-        dplyr::arrange(dplyr::desc(percentage)),
-      options = list(scrollX = TRUE),
-      rownames = FALSE
+  output$summarise_large_scale_characteristics_tidy <- renderUI({
+
+    tbl_data <- getTidyDataSummariseLargeScaleCharacteristics()
+    tbl_data <- tbl_data |>
+      rename("CDM name" = "cdm_name",
+             "Cohort" = "cohort_name",
+             "Concept name (concept ID)" = "concept")
+    cols <- list("Concept name (concept ID)" = colDef(name = "Concept name (concept ID)",
+                                                      cell = function(value){
+                                                        value_concept <- gsub(".*\\(|\\)","",value)
+                                                        url   <- sprintf("https://athena.ohdsi.org/search-terms/terms/%s", value_concept)
+                                                        htmltools::tags$a(href = url, target = "_blank", as.character(value))
+                                                      })
     )
+
+    reactable(tbl_data,
+              defaultSorted = list("percentage"  = "desc"),
+              columns = cols,
+              filterable = TRUE,
+              searchable = TRUE,
+              defaultPageSize = 25,
+              highlight = TRUE,
+              striped = TRUE,
+              compact = TRUE,
+              showSortable = TRUE)
+
   })
   output$summarise_large_scale_characteristics_tidy_download <- shiny::downloadHandler(
     filename = "summarise_large_scale_characteristics_tidy.csv",
@@ -821,7 +840,7 @@ server <- function(input, output, session) {
     )
     names(cols)[1] <- target_cohort
     names(cols)[2] <- comparator_cohort
-    
+
     reactable::reactable(tbl,
                          defaultSorted = list("Standardised mean difference"  = "desc"),
                          columns = cols,
@@ -1034,7 +1053,7 @@ server <- function(input, output, session) {
     if (is.null(dataFiltered$incidence)) {
       validate("No incidence in results")
     }
-    
+
     result <- dataFiltered$incidence |>
       filter(cdm_name %in%
                input$incidence_grouping_cdm_name) |>
@@ -1048,13 +1067,13 @@ server <- function(input, output, session) {
                        input$incidence_settings_denominator_days_prior_observation) |>
       filterAdditional(analysis_interval %in%
                          input$incidence_settings_analysis_interval)
-    
+
     if (nrow(result) == 0) {
       validate("No results found for selected inputs")
     }
     return(result)
   })
-  
+
   ## Table incidence -----
   createTableIncidence <- shiny::reactive({
 
@@ -1088,13 +1107,13 @@ server <- function(input, output, session) {
   ## Plot incidence -----
   createPlotIncidence <- shiny::reactive({
     result <- filterIncidence()
- 
+
     x <- input$incidence_plot_x
     y <- input$incidence_plot_y
     facet      <- input$incidence_plot_facet
     facet_free <- input$incidence_plot_facet_free
     colour     <- input$incidence_plot_colour
-    
+
     # Plot incidence estimates
     if(y == "incidence_estimates"){
       plot <- IncidencePrevalence::plotIncidence(
@@ -1104,7 +1123,7 @@ server <- function(input, output, session) {
         facet = facet,
         colour = colour
       )
-      
+
       if(!is.null(facet) && isTRUE(facet_free)){
         plot <- plot +
           facet_wrap(facets = facet, scales = "free")
@@ -1117,7 +1136,7 @@ server <- function(input, output, session) {
                                         result = result,
                                         facet  = NULL,
                                         colour = colour
-                                        
+
         ) +
           facet_wrap(facets = facet, scales = "free")
       } else {
@@ -1126,13 +1145,13 @@ server <- function(input, output, session) {
                                         result = result,
                                         facet  = facet,
                                         colour = colour
-                                        
+
         )
       }
     }
     return(plot)
   })
-  
+
   output$incidence_plot <- renderUI({
     if(isTRUE(input$incidence_plot_interactive)){
       plot <- plotly::ggplotly(createPlotIncidence())
@@ -1155,13 +1174,13 @@ server <- function(input, output, session) {
       )
     }
   )
- 
+
   # prevalence -----
   filterPrevalence <- shiny::reactive({
     if (is.null(dataFiltered$prevalence)) {
       validate("No prevalence in results")
     }
-    
+
     result <- dataFiltered$prevalence |>
       filter(cdm_name %in%
                input$prevalence_grouping_cdm_name) |>
@@ -1175,11 +1194,11 @@ server <- function(input, output, session) {
                        input$prevalence_settings_denominator_days_prior_observation) |>
       filterAdditional(analysis_interval %in%
                          input$prevalence_settings_analysis_interval)
-    
+
     if (nrow(result) == 0) {
       validate("No results found for selected inputs")
     }
-    
+
     return(result)
   })
   ## Table prevalence ----
@@ -1222,7 +1241,7 @@ server <- function(input, output, session) {
     facet <- input$prevalence_plot_facet
     facet_free <- input$prevalence_plot_facet_free
     colour <- input$prevalence_plot_colour
-    
+
     if(y == "prevalence_estimates"){
       plot <- IncidencePrevalence::plotPrevalence(
         result,
@@ -1231,7 +1250,7 @@ server <- function(input, output, session) {
         facet = facet,
         colour = colour
       )
-      
+
       if(!is.null(facet) && isTRUE(facet_free)){
         plot <- plot +
           facet_wrap(facets = facet, scales = "free")
@@ -1255,11 +1274,11 @@ server <- function(input, output, session) {
         )
       }
     }
-    
+
     return(plot)
-    
+
   })
-  
+
   output$prevalence_plot <- renderUI({
     if(isTRUE(input$prevalence_plot_interactive)){
       plot <- plotly::ggplotly(createPlotPrevalence())
