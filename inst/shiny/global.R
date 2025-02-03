@@ -32,7 +32,6 @@ rlang::check_installed("IncidencePrevalence", version = "1.0.0")
 rlang::check_installed("OmopSketch", version = "0.2.1")
 
 source(here::here("scripts", "functions.R"))
-options(chromote.headless = "new")
 
 if(file.exists(here::here("data", "appData.RData"))){
   cli::cli_inform("Loading existing processed data")
