@@ -1302,88 +1302,6 @@ ui <- bslib::page_navbar(
             )
           ),
           bslib::nav_panel(
-            title = "Plot incidence population",
-            bslib::card(
-              full_screen = TRUE,
-              bslib::card_header(
-                bslib::popover(
-                  shiny::icon("download"),
-                  shiny::numericInput(
-                    inputId = "incidence_population_plot_download_width",
-                    label = "Width",
-                    value = 15
-                  ),
-                  shiny::numericInput(
-                    inputId = "incidence_population_plot_download_height",
-                    label = "Height",
-                    value = 10
-                  ),
-                  shinyWidgets::pickerInput(
-                    inputId = "incidence_population_plot_download_units",
-                    label = "Units",
-                    selected = "cm",
-                    choices = c("px", "cm", "inch"),
-                    multiple = FALSE
-                  ),
-                  shiny::numericInput(
-                    inputId = "incidence_population_plot_download_dpi",
-                    label = "dpi",
-                    value = 300
-                  ),
-                  shiny::downloadButton(outputId = "incidence_population_plot_download", label = "Download")
-                ),
-                class = "text-end"
-              ),
-              bslib::layout_sidebar(
-                sidebar = bslib::sidebar(width = 400, open = "closed",
-                                         materialSwitch(inputId = "incidence_population_plot_interactive",
-                                                        value = TRUE,
-                                                        label = "Interactive",
-                                                        status = "primary"),
-                                         shinyWidgets::pickerInput(
-                                           inputId = "incidence_population_plot_x",
-                                           label = "x",
-                                           selected = "incidence_start_date",
-                                           multiple = FALSE,
-                                           choices = c("cdm_name", "denominator_cohort_name", "incidence_start_date", "incidence_end_date", "analysis_outcome_washout", "analysis_repeated_events", "analysis_interval", "analysis_complete_database_intervals", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation", "denominator_start_date", "denominator_end_date", "denominator_time_at_risk", "denominator_target_cohort_name", "outcome_cohort_name", "variable_name", "variable_level", "estimate_name"),
-                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                                         ),
-                                         shinyWidgets::pickerInput(
-                                           inputId = "incidence_population_plot_y",
-                                           label = "y",
-                                           selected = "denominator_count",
-                                           multiple = FALSE,
-                                           choices = c("denominator_count", "outcome_count", "person_days", "person_years"),
-                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                                         ),
-                                         shinyWidgets::pickerInput(
-                                           inputId = "incidence_population_plot_facet",
-                                           label = "facet",
-                                           selected = NULL,
-                                           multiple = TRUE,
-                                           choices = c("cdm_name", "denominator_cohort_name", "incidence_start_date", "incidence_end_date", "analysis_outcome_washout", "analysis_repeated_events", "analysis_interval", "analysis_complete_database_intervals", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation", "denominator_start_date", "denominator_end_date", "denominator_time_at_risk", "denominator_target_cohort_name", "outcome_cohort_name", "variable_name", "variable_level", "estimate_name"),
-                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                                         ),
-                                         shiny::checkboxInput(
-                                           inputId = "incidence_population_plot_facet_free",
-                                           label = "Free scales",
-                                           value = c(FALSE)
-                                         ),
-                                         shinyWidgets::pickerInput(
-                                           inputId = "incidence_population_plot_colour",
-                                           label = "colour",
-                                           selected = NULL,
-                                           multiple = TRUE,
-                                           choices = c("cdm_name", "denominator_cohort_name", "incidence_start_date", "incidence_end_date", "analysis_outcome_washout", "analysis_repeated_events", "analysis_interval", "analysis_complete_database_intervals", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation", "denominator_start_date", "denominator_end_date", "denominator_time_at_risk", "denominator_target_cohort_name", "outcome_cohort_name", "variable_name", "variable_level", "estimate_name"),
-                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                                         ),
-                                         position = "right"
-                ),
-                uiOutput("incidence_population_plot")
-              )
-            )
-          ),
-          bslib::nav_panel(
             title = "Plot incidence",
             bslib::card(
               full_screen = TRUE,
@@ -1417,14 +1335,22 @@ ui <- bslib::page_navbar(
                 class = "text-end"
               ),
               bslib::layout_sidebar(
-                sidebar = bslib::sidebar(width = 400, open = "closed",
+                sidebar = bslib::sidebar(width = 400, open = "open",
                                          materialSwitch(inputId = "incidence_plot_interactive",
                                                         value = TRUE,
                                                         label = "Interactive",
                                                         status = "primary"),
                                          shinyWidgets::pickerInput(
+                                           inputId = "incidence_plot_y",
+                                           label = "Vertical axis",
+                                           selected = "incidence_estimates",
+                                           multiple = FALSE,
+                                           choices = c("incidence_estimates", "denominator_count", "outcome_count", "person_days", "person_years"),
+                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                         ),
+                                         shinyWidgets::pickerInput(
                                            inputId = "incidence_plot_x",
-                                           label = "x",
+                                           label = "Horizontal axis",
                                            selected = "incidence_start_date",
                                            multiple = FALSE,
                                            choices = c("cdm_name", "denominator_cohort_name", "incidence_start_date", "incidence_end_date", "analysis_outcome_washout", "analysis_repeated_events", "analysis_interval", "analysis_complete_database_intervals", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation", "denominator_start_date", "denominator_end_date", "denominator_time_at_risk", "denominator_target_cohort_name", "outcome_cohort_name", "variable_name", "variable_level", "estimate_name"),
@@ -1432,7 +1358,7 @@ ui <- bslib::page_navbar(
                                          ),
                                          shinyWidgets::pickerInput(
                                            inputId = "incidence_plot_facet",
-                                           label = "facet",
+                                           label = "Facet",
                                            selected = NULL,
                                            multiple = TRUE,
                                            choices = c("cdm_name", "denominator_cohort_name", "incidence_start_date", "incidence_end_date", "analysis_outcome_washout", "analysis_repeated_events", "analysis_interval", "analysis_complete_database_intervals", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation", "denominator_start_date", "denominator_end_date", "denominator_time_at_risk", "denominator_target_cohort_name", "outcome_cohort_name", "variable_name", "variable_level", "estimate_name"),
@@ -1445,7 +1371,7 @@ ui <- bslib::page_navbar(
                                          ),
                                          shinyWidgets::pickerInput(
                                            inputId = "incidence_plot_colour",
-                                           label = "colour",
+                                           label = "Colour",
                                            selected = NULL,
                                            multiple = TRUE,
                                            choices = c("cdm_name", "denominator_cohort_name", "incidence_start_date", "incidence_end_date", "analysis_outcome_washout", "analysis_repeated_events", "analysis_interval", "analysis_complete_database_intervals", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation", "denominator_start_date", "denominator_end_date", "denominator_time_at_risk", "denominator_target_cohort_name", "outcome_cohort_name", "variable_name", "variable_level", "estimate_name"),
@@ -1543,88 +1469,6 @@ ui <- bslib::page_navbar(
             )
           ),
           bslib::nav_panel(
-            title = "Plot prevalence population",
-            bslib::card(
-              full_screen = TRUE,
-              bslib::card_header(
-                bslib::popover(
-                  shiny::icon("download"),
-                  shiny::numericInput(
-                    inputId = "prevalence_population_plot_download_width",
-                    label = "Width",
-                    value = 15
-                  ),
-                  shiny::numericInput(
-                    inputId = "prevalence_population_plot_download_height",
-                    label = "Height",
-                    value = 10
-                  ),
-                  shinyWidgets::pickerInput(
-                    inputId = "prevalence_population_plot_download_units",
-                    label = "Units",
-                    selected = "cm",
-                    choices = c("px", "cm", "inch"),
-                    multiple = FALSE
-                  ),
-                  shiny::numericInput(
-                    inputId = "prevalence_population_plot_download_dpi",
-                    label = "dpi",
-                    value = 300
-                  ),
-                  shiny::downloadButton(outputId = "prevalence_population_plot_download", label = "Download")
-                ),
-                class = "text-end"
-              ),
-              bslib::layout_sidebar(
-                sidebar = bslib::sidebar(width = 400, open = "closed",
-                                         materialSwitch(inputId = "prevalence_population_plot_interactive",
-                                                        value = TRUE,
-                                                        label = "Interactive",
-                                                        status = "primary"),
-                                         shinyWidgets::pickerInput(
-                                           inputId = "prevalence_population_plot_x",
-                                           label = "x",
-                                           selected = "prevalence_start_date",
-                                           multiple = FALSE,
-                                           choices = c("cdm_name", "denominator_cohort_name", "prevalence_start_date", "prevalence_end_date", "analysis_outcome_washout", "analysis_repeated_events", "analysis_interval", "analysis_complete_database_intervals", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation", "denominator_start_date", "denominator_end_date", "denominator_time_at_risk", "denominator_target_cohort_name", "outcome_cohort_name", "variable_name", "variable_level", "estimate_name"),
-                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                                         ),
-                                         shinyWidgets::pickerInput(
-                                           inputId = "prevalence_population_plot_y",
-                                           label = "y",
-                                           selected = "denominator_count",
-                                           multiple = FALSE,
-                                           choices = c("denominator_count", "outcome_count"),
-                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                                         ),
-                                         shinyWidgets::pickerInput(
-                                           inputId = "prevalence_population_plot_facet",
-                                           label = "facet",
-                                           selected = NULL,
-                                           multiple = TRUE,
-                                           choices = c("cdm_name", "denominator_cohort_name", "prevalence_start_date", "prevalence_end_date", "analysis_outcome_washout", "analysis_repeated_events", "analysis_interval", "analysis_complete_database_intervals", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation", "denominator_start_date", "denominator_end_date", "denominator_time_at_risk", "denominator_target_cohort_name", "outcome_cohort_name", "variable_name", "variable_level", "estimate_name"),
-                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                                         ),
-                                         shiny::checkboxInput(
-                                           inputId = "prevalence_population_plot_facet_free",
-                                           label = "Free scales",
-                                           value = c(FALSE)
-                                         ),
-                                         shinyWidgets::pickerInput(
-                                           inputId = "prevalence_population_plot_colour",
-                                           label = "colour",
-                                           selected = NULL,
-                                           multiple = TRUE,
-                                           choices = c("cdm_name", "denominator_cohort_name", "prevalence_start_date", "prevalence_end_date", "analysis_outcome_washout", "analysis_repeated_events", "analysis_interval", "analysis_complete_database_intervals", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation", "denominator_start_date", "denominator_end_date", "denominator_time_at_risk", "denominator_target_cohort_name", "outcome_cohort_name", "variable_name", "variable_level", "estimate_name"),
-                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                                         ),
-                                         position = "right"
-                ),
-                uiOutput("prevalence_population_plot")
-              )
-            )
-          ),
-          bslib::nav_panel(
             title = "Plot prevalence",
             bslib::card(
               full_screen = TRUE,
@@ -1658,14 +1502,22 @@ ui <- bslib::page_navbar(
                 class = "text-end"
               ),
               bslib::layout_sidebar(
-                sidebar = bslib::sidebar(width = 400, open = "closed",
+                sidebar = bslib::sidebar(width = 400, open = "opened",
                                          materialSwitch(inputId = "prevalence_plot_interactive",
                                                         value = TRUE,
                                                         label = "Interactive",
                                                         status = "primary"),
                                          shinyWidgets::pickerInput(
+                                           inputId = "prevalence_plot_y",
+                                           label = "Vertical axis",
+                                           selected = "prevalence_estimates",
+                                           multiple = FALSE,
+                                           choices = c("prevalence_estimates", "denominator_count", "outcome_count"),
+                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                         ),
+                                         shinyWidgets::pickerInput(
                                            inputId = "prevalence_plot_x",
-                                           label = "x",
+                                           label = "Horizontal axis",
                                            selected = "prevalence_start_date",
                                            multiple = FALSE,
                                            choices = c("cdm_name", "denominator_cohort_name", "prevalence_start_date", "prevalence_end_date", "analysis_outcome_washout", "analysis_repeated_events", "analysis_interval", "analysis_complete_database_intervals", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation", "denominator_start_date", "denominator_end_date", "denominator_time_at_risk", "denominator_target_cohort_name", "outcome_cohort_name", "variable_name", "variable_level", "estimate_name"),
@@ -1673,7 +1525,7 @@ ui <- bslib::page_navbar(
                                          ),
                                          shinyWidgets::pickerInput(
                                            inputId = "prevalence_plot_facet",
-                                           label = "facet",
+                                           label = "Facet",
                                            selected = NULL,
                                            multiple = TRUE,
                                            choices = c("cdm_name", "denominator_cohort_name", "prevalence_start_date", "prevalence_end_date", "analysis_outcome_washout", "analysis_repeated_events", "analysis_interval", "analysis_complete_database_intervals", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation", "denominator_start_date", "denominator_end_date", "denominator_time_at_risk", "denominator_target_cohort_name", "outcome_cohort_name", "variable_name", "variable_level", "estimate_name"),
@@ -1686,7 +1538,7 @@ ui <- bslib::page_navbar(
                                          ),
                                          shinyWidgets::pickerInput(
                                            inputId = "prevalence_plot_colour",
-                                           label = "colour",
+                                           label = "Colour",
                                            selected = NULL,
                                            multiple = TRUE,
                                            choices = c("cdm_name", "denominator_cohort_name", "prevalence_start_date", "prevalence_end_date", "analysis_outcome_washout", "analysis_repeated_events", "analysis_interval", "analysis_complete_database_intervals", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation", "denominator_start_date", "denominator_end_date", "denominator_time_at_risk", "denominator_target_cohort_name", "outcome_cohort_name", "variable_name", "variable_level", "estimate_name"),

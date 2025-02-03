@@ -646,7 +646,7 @@ server <- function(input, output, session) {
   # summarise_large_scale_characteristics -----
   ## Tidy summarise_large_scale_characteristics -----
   getTidyDataSummariseLargeScaleCharacteristics <- shiny::reactive({
-browser()
+
     if (is.null(dataFiltered$summarise_large_scale_characteristics)) {
       validate("No large scale characteristics in results")
     }
@@ -1047,9 +1047,12 @@ browser()
 
 
   # incidence -----
-  incidenceFiltered <- shiny::reactive({
-
-    dataFiltered$incidence |>
+  filterIncidence <- shiny::reactive({
+    if (is.null(dataFiltered$incidence)) {
+      validate("No incidence in results")
+    }
+    
+    result <- dataFiltered$incidence |>
       filter(cdm_name %in%
                input$incidence_grouping_cdm_name) |>
       filterGroup(outcome_cohort_name %in%
@@ -1062,21 +1065,18 @@ browser()
                        input$incidence_settings_denominator_days_prior_observation) |>
       filterAdditional(analysis_interval %in%
                          input$incidence_settings_analysis_interval)
-  })
-  ## Table incidence -----
-  createTableIncidence <- shiny::reactive({
-
-    if (is.null(dataFiltered$incidence)) {
-      validate("No incidence in results")
-    }
-
-    result <- incidenceFiltered()
-
+    
     if (nrow(result) == 0) {
       validate("No results found for selected inputs")
     }
+    return(result)
+  })
+  
+  ## Table incidence -----
+  createTableIncidence <- shiny::reactive({
+
     IncidencePrevalence::tableIncidence(
-      result,
+      filterIncidence(),
       groupColumn = c("cdm_name", "outcome_cohort_name"),
       hide = "denominator_cohort_name",
       settingsColumn = c("denominator_age_group",
@@ -1104,90 +1104,54 @@ browser()
       gt::gtsave(data = obj, filename = file)
     }
   )
-  ## Plot incidence_population -----
-  createPlotIncidencePopulation <- shiny::reactive({
-
-      if(!is.null(input$incidence_population_plot_facet) &&
-         isTRUE(input$incidence_population_plot_facet_free)){
-    plotIncidencePopulation(x = input$incidence_population_plot_x,
-                            y =  input$incidence_population_plot_y,
-                            result = incidenceFiltered(),
-                            facet  = NULL,
-                            colour = input$incidence_population_plot_colour
-
-    ) +
-      facet_wrap(facets = input$incidence_population_plot_facet, scales = "free")
-  } else {
-    plotIncidencePopulation(x = input$incidence_population_plot_x,
-                            y =  input$incidence_population_plot_y,
-                            result = incidenceFiltered(),
-                            facet  = input$incidence_population_plot_facet,
-                            colour = input$incidence_population_plot_colour
-
-    )
-  }
-
-
-
-  })
-
-  output$incidence_population_plot <- renderUI({
-    if(isTRUE(input$incidence_population_plot_interactive)){
-      plot <- plotly::ggplotly(createPlotIncidencePopulation())
-    } else {
-      plot <- renderPlot(createPlotIncidencePopulation())
-    }
-    plot
-  })
-
-  output$incidence_population_plot_download <- shiny::downloadHandler(
-    filename = "incidence_population_plot.png",
-    content = function(file) {
-      obj <- createPlotIncidencePopulation()
-      ggplot2::ggsave(
-        filename = file,
-        plot = obj,
-        width = as.numeric(input$incidence_population_plot_download_width),
-        height = as.numeric(input$incidence_population_plot_download_height),
-        units = input$incidence_population_plot_download_units,
-        dpi = as.numeric(input$incidence_population_plot_download_dpi)
-      )
-    }
-  )
-
   ## Plot incidence -----
   createPlotIncidence <- shiny::reactive({
-    if (is.null(dataFiltered$incidence)) {
-      validate("No incidence in results")
-    }
-
-    result <- incidenceFiltered()
-
-    if (nrow(result) == 0) {
-      validate("No results found for selected inputs")
-    }
-
-    if(!is.null(input$incidence_plot_facet) &&
-       isTRUE(input$incidence_plot_facet_free)){
-      IncidencePrevalence::plotIncidence(
+    result <- filterIncidence()
+ 
+    x <- input$incidence_plot_x
+    y <- input$incidence_plot_y
+    facet      <- input$incidence_plot_facet
+    facet_free <- input$incidence_plot_facet_free
+    colour     <- input$incidence_plot_colour
+    
+    # Plot incidence estimates
+    if(y == "incidence_estimates"){
+      plot <- IncidencePrevalence::plotIncidence(
         result,
-        x = input$incidence_plot_x,
+        x = x,
         ribbon = FALSE,
-        facet = input$incidence_plot_facet,
-        colour = input$incidence_plot_colour
-      ) +
-        facet_wrap(facets = input$incidence_plot_facet, scales = "free")
-    } else {
-      IncidencePrevalence::plotIncidence(
-        result,
-        x = input$incidence_plot_x,
-        ribbon = FALSE,
-        facet = input$incidence_plot_facet,
-        colour = input$incidence_plot_colour
+        facet = facet,
+        colour = colour
       )
+      
+      if(!is.null(facet) && isTRUE(facet_free)){
+        plot <- plot +
+          facet_wrap(facets = facet, scales = "free")
+      }
+    }else{
+      # Plot incidence population
+      if(!is.null(facet) && isTRUE(facet_free)){
+        plot <- plotIncidencePopulation(x = x,
+                                        y =  y,
+                                        result = result,
+                                        facet  = NULL,
+                                        colour = colour
+                                        
+        ) +
+          facet_wrap(facets = facet, scales = "free")
+      } else {
+        plot <- plotIncidencePopulation(x = x,
+                                        y =  y,
+                                        result = result,
+                                        facet  = facet,
+                                        colour = colour
+                                        
+        )
+      }
     }
+    return(plot)
   })
-
+  
   output$incidence_plot <- renderUI({
     if(isTRUE(input$incidence_plot_interactive)){
       plot <- plotly::ggplotly(createPlotIncidence())
@@ -1210,14 +1174,14 @@ browser()
       )
     }
   )
-
-
-
-
+ 
   # prevalence -----
-  prevalenceFiltered <- shiny::reactive({
-
-    dataFiltered$prevalence |>
+  filterPrevalence <- shiny::reactive({
+    if (is.null(dataFiltered$prevalence)) {
+      validate("No prevalence in results")
+    }
+    
+    result <- dataFiltered$prevalence |>
       filter(cdm_name %in%
                input$prevalence_grouping_cdm_name) |>
       filterGroup(outcome_cohort_name %in%
@@ -1230,18 +1194,16 @@ browser()
                        input$prevalence_settings_denominator_days_prior_observation) |>
       filterAdditional(analysis_interval %in%
                          input$prevalence_settings_analysis_interval)
-  })
-  ## Table prevalence ----
-  createTablePrevalence <- shiny::reactive({
-    if (is.null(dataFiltered$prevalence)) {
-      validate("No prevalence in results")
-    }
-
-    result <- prevalenceFiltered()
-
+    
     if (nrow(result) == 0) {
       validate("No results found for selected inputs")
     }
+    
+    return(result)
+  })
+  ## Table prevalence ----
+  createTablePrevalence <- shiny::reactive({
+    result <- filterPrevalence()
 
     IncidencePrevalence::tablePrevalence(
       result,
@@ -1272,97 +1234,53 @@ browser()
       gt::gtsave(data = obj, filename = file)
     }
   )
-  ## Plot population_prevalence ----
-  createPlotPrevalencePopulation <- shiny::reactive({
-
-    if (is.null(dataFiltered$prevalence)) {
-      validate("No prevalence in results")
-    }
-
-    result <- prevalenceFiltered()
-
-    if (nrow(result) == 0) {
-      validate("No results found for selected inputs")
-    }
-
-    if(!is.null(input$prevalence_population_plot_facet) &&
-       isTRUE(input$prevalence_population_plot_facet_free)){
-    IncidencePrevalence::plotPrevalencePopulation(
-      result = result,
-      x = input$prevalence_population_plot_x,
-      y = input$prevalence_population_plot_y,
-      facet = NULL,
-      colour = input$prevalence_population_plot_colour
-    ) +
-      facet_wrap(facets = input$prevalence_population_plot_facet, scales = "free")
-  } else {
-    IncidencePrevalence::plotPrevalencePopulation(
-      result = result,
-      x = input$prevalence_population_plot_x,
-      y = input$prevalence_population_plot_y,
-      facet = input$prevalence_population_plot_facet,
-      colour = input$prevalence_population_plot_colour
-    )
-  }
-
-  })
-  output$prevalence_population_plot <- renderUI({
-    if(isTRUE(input$prevalence_population_plot_interactive)){
-      plot <- plotly::ggplotly(createPlotPrevalencePopulation())
-    } else {
-      plot <- renderPlot(createPlotPrevalencePopulation())
-    }
-    plot
-  })
-  output$prevalence_population_plot_download <- shiny::downloadHandler(
-    filename = "prevalence_population_plot.png",
-    content = function(file) {
-      obj <- createPlotPrevalence()
-      ggplot2::ggsave(
-        filename = file,
-        plot = obj,
-        width = as.numeric(input$prevalence_population_plot_download_width),
-        height = as.numeric(input$prevalence_population_plot_download_height),
-        units = input$prevalence_population_plot_download_units,
-        dpi = as.numeric(input$prevalence_population_plot_download_dpi)
-      )
-    }
-  )
-  ## Plot prevalence -----
+  ## Plot prevalence ----
   createPlotPrevalence <- shiny::reactive({
+    result <- filterPrevalence()
 
-    if (is.null(dataFiltered$prevalence)) {
-      validate("No prevalence in results")
-    }
-
-    result <- prevalenceFiltered()
-
-    if (nrow(result) == 0) {
-      validate("No results found for selected inputs")
-    }
-
-    if(!is.null(input$prevalence_plot_facet) &&
-       isTRUE(input$prevalence_plot_facet_free)){
-      IncidencePrevalence::plotPrevalence(
+    x <- input$prevalence_plot_x
+    y <- input$prevalence_plot_y
+    facet <- input$prevalence_plot_facet
+    facet_free <- input$prevalence_plot_facet_free
+    colour <- input$prevalence_plot_colour
+    
+    if(y == "prevalence_estimates"){
+      plot <- IncidencePrevalence::plotPrevalence(
         result,
-        x = input$prevalence_plot_x,
+        x = x,
         ribbon = FALSE,
-        facet = input$prevalence_plot_facet,
-        colour = input$prevalence_plot_colour
-      ) +
-        facet_wrap(facets = input$prevalence_plot_facet, scales = "free")
-    } else {
-      IncidencePrevalence::plotPrevalence(
-        result,
-        x = input$prevalence_plot_x,
-        ribbon = FALSE,
-        facet = input$prevalence_plot_facet,
-        colour = input$prevalence_plot_colour
+        facet = facet,
+        colour = colour
       )
+      
+      if(!is.null(facet) && isTRUE(facet_free)){
+        plot <- plot +
+          facet_wrap(facets = facet, scales = "free")
+      }
+    }else{
+      if(!is.null(facet) && isTRUE(input$facet_free)){
+        plot <- IncidencePrevalence::plotPrevalencePopulation(
+          result = result,
+          x = x,
+          y = y,
+          facet = NULL,
+          colour = colour) +
+          facet_wrap(facets = facet, scales = "free")
+      } else {
+        plot <- IncidencePrevalence::plotPrevalencePopulation(
+          result = result,
+          x = x,
+          y = y,
+          facet = facet,
+          colour = colour
+        )
+      }
     }
-
-
+    
+    return(plot)
+    
   })
+  
   output$prevalence_plot <- renderUI({
     if(isTRUE(input$prevalence_plot_interactive)){
       plot <- plotly::ggplotly(createPlotPrevalence())
