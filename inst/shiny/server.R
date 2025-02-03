@@ -158,8 +158,9 @@ server <- function(input, output, session) {
       
       # suppressed to NA
       tbl <- tbl |>
-        purrr::map_df(~ ifelse(grepl("^<", .), NA, .))
-      
+        purrr::map_df(~ ifelse(grepl("^<", .), NA, .)) |>
+        dplyr::mutate(dplyr::across(c(ends_with("Record count"), ends_with("Person count")), 
+                                    ~ suppressWarnings(as.numeric(.))))
       tbl <- reactable(tbl,
                        defaultSorted = order,
                        columns = getColsForTbl(tbl),
@@ -271,7 +272,9 @@ server <- function(input, output, session) {
 
       # suppressed to NA
       tbl <- tbl |>
-        purrr::map_df(~ ifelse(grepl("^<", .), NA, .))
+        purrr::map_df(~ ifelse(grepl("^<", .), NA, .)) |>
+        dplyr::mutate(dplyr::across(c(ends_with("Record count"), ends_with("Person count")), 
+                                    ~ suppressWarnings(as.numeric(.))))
 
       tbl <- reactable(tbl,
                        columns = getColsForTbl(tbl),
@@ -396,12 +399,14 @@ server <- function(input, output, session) {
     return(tbl)
   })
   output$cohort_code_use_tbl <- shiny::renderUI({
-    
+
     if(isFALSE(input$cohort_code_use_interactive)){
       tbl <- createCohortCodeUseGT()
       return(tbl)
     } else {
-      tbl <- createCohortCodeUseInteractive()
+      tbl <- createCohortCodeUseInteractive() |>
+        dplyr::mutate(dplyr::across(c(ends_with("Record count"), ends_with("Person count")), 
+                                    ~ suppressWarnings(as.numeric(.))))
 
       # column ordering by codelist and first column with a count
       order <- list("Cohort name"  = "asc",
@@ -410,10 +415,12 @@ server <- function(input, output, session) {
       
       # suppressed to NA
       tbl <- tbl |>
-        purrr::map_df(~ ifelse(grepl("^<", .), NA, .))
+        purrr::map_df(~ ifelse(grepl("^<", .), NA, .)) 
       
       tbl <- reactable(tbl,
-                       columns = getColsForTbl(tbl, sortNALast = FALSE, names = c("Standard concept ID", "Source concept ID")),
+                       columns = getColsForTbl(tbl, 
+                                               sortNALast = FALSE, 
+                                               names = c("Standard concept ID", "Source concept ID")),
                        defaultSorted = order,
                        filterable = TRUE,
                        searchable = TRUE,
@@ -422,6 +429,7 @@ server <- function(input, output, session) {
                        striped = TRUE,
                        compact = TRUE,
                        showSortable = TRUE)
+      
       return(tbl)
     }
   })
