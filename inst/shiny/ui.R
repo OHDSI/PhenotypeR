@@ -1502,7 +1502,7 @@ ui <- bslib::page_navbar(
                 class = "text-end"
               ),
               bslib::layout_sidebar(
-                sidebar = bslib::sidebar(width = 400, open = "closed",
+                sidebar = bslib::sidebar(width = 400, open = "opened",
                                          materialSwitch(inputId = "prevalence_plot_interactive",
                                                         value = TRUE,
                                                         label = "Interactive",
