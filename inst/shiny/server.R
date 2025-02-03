@@ -148,6 +148,7 @@ server <- function(input, output, session) {
       return(tbl)
       
     } else {
+
       tbl <- createAchillesCodeUseInteractive()
       
       # column ordering by codelist and first column with a count
@@ -159,16 +160,9 @@ server <- function(input, output, session) {
       tbl <- tbl |>
         purrr::map_df(~ ifelse(grepl("^<", .), NA, .))
       
-      cols <- list()
-      for(i in seq_along(names(tbl))){
-        working_col <- names(tbl)[i]
-        cols[[working_col]] <- colDef(name = working_col,
-                                      sortNALast = TRUE)
-      }
-
       tbl <- reactable(tbl,
                        defaultSorted = order,
-                       columns = cols,
+                       columns = getColsForTbl(tbl),
                        filterable = TRUE,
                        searchable = TRUE,
                        defaultPageSize = 25,
@@ -176,7 +170,7 @@ server <- function(input, output, session) {
                        striped = TRUE,
                        compact = TRUE,
                        showSortable = TRUE)
-
+      
       return(tbl)
     }
   })
@@ -279,15 +273,8 @@ server <- function(input, output, session) {
       tbl <- tbl |>
         purrr::map_df(~ ifelse(grepl("^<", .), NA, .))
 
-      cols <- list()
-      for(i in seq_along(names(tbl))){
-        working_col <- names(tbl)[i]
-        cols[[working_col]] <- colDef(name = working_col,
-                                      sortNALast = TRUE)
-      }
-
       tbl <- reactable(tbl,
-                       columns = cols,
+                       columns = getColsForTbl(tbl),
                        defaultSorted = order,
                        filterable = TRUE,
                        searchable = TRUE,
@@ -352,7 +339,6 @@ server <- function(input, output, session) {
     }
   )
 
-
   # cohort_code_use -----
   filterCohortCodeUse <- shiny::reactive({
     if (is.null(dataFiltered$cohort_code_use)) {
@@ -391,6 +377,7 @@ server <- function(input, output, session) {
       tab_options(
         heading.align = "left"
       )
+
     return(tbl)
   })
   createCohortCodeUseInteractive <- shiny::reactive({
@@ -417,6 +404,7 @@ server <- function(input, output, session) {
       return(tbl)
     } else {
       tbl <- createCohortCodeUseInteractive()
+
       # column ordering by codelist and first column with a count
       order <- list("Cohort name"  = "asc",
                     "count" = "desc")
@@ -427,6 +415,7 @@ server <- function(input, output, session) {
         purrr::map_df(~ ifelse(grepl("^<", .), NA, .))
       
       tbl <- reactable(tbl,
+                       columns = getColsForTbl(tbl, sortNALast = FALSE, names = c("Standard concept ID", "Source concept ID")),
                        defaultSorted = order,
                        filterable = TRUE,
                        searchable = TRUE,
@@ -637,7 +626,7 @@ server <- function(input, output, session) {
   # summarise_large_scale_characteristics -----
   ## Tidy summarise_large_scale_characteristics -----
   getTidyDataSummariseLargeScaleCharacteristics <- shiny::reactive({
-
+browser()
     if (is.null(dataFiltered$summarise_large_scale_characteristics)) {
       validate("No large scale characteristics in results")
     }
@@ -716,7 +705,7 @@ server <- function(input, output, session) {
     }
 
     lsc_data |>
-      CohortCharacteristics::tableLargeScaleCharacteristics() %>%
+      CohortCharacteristics::tableLargeScaleCharacteristics(topConcepts = 10) %>%
       tab_header(
         title = "Large scale characteristics",
         subtitle = "Summary of all records from clinical tables within a time window.
@@ -1097,6 +1086,18 @@ server <- function(input, output, session) {
   )
   ## Plot incidence_population -----
   createPlotIncidencePopulation <- shiny::reactive({
+
+      if(!is.null(input$incidence_population_plot_facet) &&
+         isTRUE(input$incidence_population_plot_facet_free)){
+    plotIncidencePopulation(x = input$incidence_population_plot_x,
+                            y =  input$incidence_population_plot_y,
+                            result = incidenceFiltered(),
+                            facet  = NULL,
+                            colour = input$incidence_population_plot_colour
+
+    ) +
+      facet_wrap(facets = input$incidence_population_plot_facet, scales = "free")
+  } else {
     plotIncidencePopulation(x = input$incidence_population_plot_x,
                             y =  input$incidence_population_plot_y,
                             result = incidenceFiltered(),
@@ -1104,6 +1105,10 @@ server <- function(input, output, session) {
                             colour = input$incidence_population_plot_colour
 
     )
+  }
+
+
+
   })
 
   output$incidence_population_plot <- renderUI({
@@ -1142,13 +1147,25 @@ server <- function(input, output, session) {
       validate("No results found for selected inputs")
     }
 
-    IncidencePrevalence::plotIncidence(
-      result,
-      x = input$incidence_plot_x,
-      ribbon = FALSE,
-      facet = input$incidence_plot_facet,
-      colour = input$incidence_plot_colour
-    )
+    if(!is.null(input$incidence_plot_facet) &&
+       isTRUE(input$incidence_plot_facet_free)){
+      IncidencePrevalence::plotIncidence(
+        result,
+        x = input$incidence_plot_x,
+        ribbon = FALSE,
+        facet = input$incidence_plot_facet,
+        colour = input$incidence_plot_colour
+      ) +
+        facet_wrap(facets = input$incidence_plot_facet, scales = "free")
+    } else {
+      IncidencePrevalence::plotIncidence(
+        result,
+        x = input$incidence_plot_x,
+        ribbon = FALSE,
+        facet = input$incidence_plot_facet,
+        colour = input$incidence_plot_colour
+      )
+    }
   })
 
   output$incidence_plot <- renderUI({
@@ -1248,6 +1265,17 @@ server <- function(input, output, session) {
       validate("No results found for selected inputs")
     }
 
+    if(!is.null(input$prevalence_population_plot_facet) &&
+       isTRUE(input$prevalence_population_plot_facet_free)){
+    IncidencePrevalence::plotPrevalencePopulation(
+      result = result,
+      x = input$prevalence_population_plot_x,
+      y = input$prevalence_population_plot_y,
+      facet = NULL,
+      colour = input$prevalence_population_plot_colour
+    ) +
+      facet_wrap(facets = input$prevalence_population_plot_facet, scales = "free")
+  } else {
     IncidencePrevalence::plotPrevalencePopulation(
       result = result,
       x = input$prevalence_population_plot_x,
@@ -1255,6 +1283,8 @@ server <- function(input, output, session) {
       facet = input$prevalence_population_plot_facet,
       colour = input$prevalence_population_plot_colour
     )
+  }
+
   })
   output$prevalence_population_plot <- renderUI({
     if(isTRUE(input$prevalence_population_plot_interactive)){
@@ -1291,13 +1321,27 @@ server <- function(input, output, session) {
       validate("No results found for selected inputs")
     }
 
-    IncidencePrevalence::plotPrevalence(
-      result,
-      x = input$prevalence_plot_x,
-      ribbon = input$prevalence_plot_ribbon,
-      facet = input$prevalence_plot_facet,
-      colour = input$prevalence_plot_colour
-    )
+    if(!is.null(input$prevalence_plot_facet) &&
+       isTRUE(input$prevalence_plot_facet_free)){
+      IncidencePrevalence::plotPrevalence(
+        result,
+        x = input$prevalence_plot_x,
+        ribbon = FALSE,
+        facet = input$prevalence_plot_facet,
+        colour = input$prevalence_plot_colour
+      ) +
+        facet_wrap(facets = input$prevalence_plot_facet, scales = "free")
+    } else {
+      IncidencePrevalence::plotPrevalence(
+        result,
+        x = input$prevalence_plot_x,
+        ribbon = FALSE,
+        facet = input$prevalence_plot_facet,
+        colour = input$prevalence_plot_colour
+      )
+    }
+
+
   })
   output$prevalence_plot <- renderUI({
     if(isTRUE(input$prevalence_plot_interactive)){

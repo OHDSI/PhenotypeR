@@ -1329,6 +1329,11 @@ ui <- bslib::page_navbar(
                                            choices = c("cdm_name", "denominator_cohort_name", "incidence_start_date", "incidence_end_date", "analysis_outcome_washout", "analysis_repeated_events", "analysis_interval", "analysis_complete_database_intervals", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation", "denominator_start_date", "denominator_end_date", "denominator_time_at_risk", "denominator_target_cohort_name", "outcome_cohort_name", "variable_name", "variable_level", "estimate_name"),
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                          ),
+                                         shiny::checkboxInput(
+                                           inputId = "incidence_population_plot_facet_free",
+                                           label = "Free scales",
+                                           value = c(FALSE)
+                                         ),
                                          shinyWidgets::pickerInput(
                                            inputId = "incidence_population_plot_colour",
                                            label = "colour",
@@ -1390,11 +1395,6 @@ ui <- bslib::page_navbar(
                                            choices = c("cdm_name", "denominator_cohort_name", "incidence_start_date", "incidence_end_date", "analysis_outcome_washout", "analysis_repeated_events", "analysis_interval", "analysis_complete_database_intervals", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation", "denominator_start_date", "denominator_end_date", "denominator_time_at_risk", "denominator_target_cohort_name", "outcome_cohort_name", "variable_name", "variable_level", "estimate_name"),
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                          ),
-                                         shiny::checkboxInput(
-                                           inputId = "incidence_plot_ribbon",
-                                           label = "ribbon",
-                                           value = c(FALSE)
-                                         ),
                                          shinyWidgets::pickerInput(
                                            inputId = "incidence_plot_facet",
                                            label = "facet",
@@ -1402,6 +1402,11 @@ ui <- bslib::page_navbar(
                                            multiple = TRUE,
                                            choices = c("cdm_name", "denominator_cohort_name", "incidence_start_date", "incidence_end_date", "analysis_outcome_washout", "analysis_repeated_events", "analysis_interval", "analysis_complete_database_intervals", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation", "denominator_start_date", "denominator_end_date", "denominator_time_at_risk", "denominator_target_cohort_name", "outcome_cohort_name", "variable_name", "variable_level", "estimate_name"),
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                         ),
+                                         shiny::checkboxInput(
+                                           inputId = "incidence_plot_facet_free",
+                                           label = "Free scales",
+                                           value = c(FALSE)
                                          ),
                                          shinyWidgets::pickerInput(
                                            inputId = "incidence_plot_colour",
@@ -1565,6 +1570,11 @@ ui <- bslib::page_navbar(
                                            choices = c("cdm_name", "denominator_cohort_name", "prevalence_start_date", "prevalence_end_date", "analysis_outcome_washout", "analysis_repeated_events", "analysis_interval", "analysis_complete_database_intervals", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation", "denominator_start_date", "denominator_end_date", "denominator_time_at_risk", "denominator_target_cohort_name", "outcome_cohort_name", "variable_name", "variable_level", "estimate_name"),
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                          ),
+                                         shiny::checkboxInput(
+                                           inputId = "prevalence_population_plot_facet_free",
+                                           label = "Free scales",
+                                           value = c(FALSE)
+                                         ),
                                          shinyWidgets::pickerInput(
                                            inputId = "prevalence_population_plot_colour",
                                            label = "colour",
@@ -1626,11 +1636,6 @@ ui <- bslib::page_navbar(
                                            choices = c("cdm_name", "denominator_cohort_name", "prevalence_start_date", "prevalence_end_date", "analysis_outcome_washout", "analysis_repeated_events", "analysis_interval", "analysis_complete_database_intervals", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation", "denominator_start_date", "denominator_end_date", "denominator_time_at_risk", "denominator_target_cohort_name", "outcome_cohort_name", "variable_name", "variable_level", "estimate_name"),
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                          ),
-                                         shiny::checkboxInput(
-                                           inputId = "prevalence_plot_ribbon",
-                                           label = "ribbon",
-                                           value = c(FALSE)
-                                         ),
                                          shinyWidgets::pickerInput(
                                            inputId = "prevalence_plot_facet",
                                            label = "facet",
@@ -1638,6 +1643,11 @@ ui <- bslib::page_navbar(
                                            multiple = TRUE,
                                            choices = c("cdm_name", "denominator_cohort_name", "prevalence_start_date", "prevalence_end_date", "analysis_outcome_washout", "analysis_repeated_events", "analysis_interval", "analysis_complete_database_intervals", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation", "denominator_start_date", "denominator_end_date", "denominator_time_at_risk", "denominator_target_cohort_name", "outcome_cohort_name", "variable_name", "variable_level", "estimate_name"),
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                         ),
+                                         shiny::checkboxInput(
+                                           inputId = "prevalence_plot_facet_free",
+                                           label = "Free scales",
+                                           value = c(FALSE)
                                          ),
                                          shinyWidgets::pickerInput(
                                            inputId = "prevalence_plot_colour",
