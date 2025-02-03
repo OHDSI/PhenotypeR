@@ -25,14 +25,7 @@ ui <- bslib::page_navbar(
         bslib::card_header(
           bslib::popover(
             shiny::icon("download"),
-            shinyWidgets::pickerInput(
-              inputId = "summarise_omop_snapshot_gt_download_type",
-              label = "File type",
-              selected = "docx",
-              choices = c("docx", "png", "pdf", "html"),
-              multiple = FALSE
-            ),
-            shiny::downloadButton(outputId = "summarise_omop_snapshot_gt_download", label = "Download")
+            shiny::downloadButton(outputId = "summarise_omop_snapshot_gt_download", label = "Download docx"),
           ),
           class = "text-end"
         ),
@@ -50,14 +43,7 @@ ui <- bslib::page_navbar(
           bslib::card_header(
             bslib::popover(
               shiny::icon("download"),
-              shinyWidgets::pickerInput(
-                inputId = "summarise_observation_period_gt_download_type",
-                label = "File type",
-                selected = "docx",
-                choices = c("docx", "png", "pdf", "html"),
-                multiple = FALSE
-              ),
-              shiny::downloadButton(outputId = "summarise_observation_period_gt_download", label = "Download")
+              shiny::downloadButton(outputId = "summarise_observation_period_gt_download", label = "Download docx")
             ),
             class = "text-end"
           ),
@@ -149,14 +135,7 @@ ui <- bslib::page_navbar(
             bslib::card_header(
               bslib::popover(
                 shiny::icon("download"),
-                shinyWidgets::pickerInput(
-                  inputId = "achilles_code_use_gt_download_type",
-                  label = "File type",
-                  selected = "docx",
-                  choices = c("docx", "png", "pdf", "html"),
-                  multiple = FALSE
-                ),
-                shiny::downloadButton(outputId = "achilles_code_use_gt_download", label = "Download")
+                shiny::downloadButton(outputId = "achilles_code_use_download", label = "Download")
               ),
               class = "text-end"
             ),
@@ -319,14 +298,7 @@ ui <- bslib::page_navbar(
           bslib::card_header(
             bslib::popover(
               shiny::icon("download"),
-              shinyWidgets::pickerInput(
-                inputId = "orphan_codes_gt_download_type",
-                label = "File type",
-                selected = "docx",
-                choices = c("docx", "png", "pdf", "html"),
-                multiple = FALSE
-              ),
-              shiny::downloadButton(outputId = "orphan_codes_gt_download", label = "Download")
+              shiny::downloadButton(outputId = "orphan_codes_download", label = "Download")
             ),
             class = "text-end"
           ),
@@ -426,14 +398,7 @@ ui <- bslib::page_navbar(
             bslib::card_header(
               bslib::popover(
                 shiny::icon("download"),
-                shinyWidgets::pickerInput(
-                  inputId = "cohort_code_use_gt_download_type",
-                  label = "File type",
-                  selected = "docx",
-                  choices = c("docx", "png", "pdf", "html"),
-                  multiple = FALSE
-                ),
-                shiny::downloadButton(outputId = "cohort_code_use_gt_download", label = "Download")
+                shiny::downloadButton(outputId = "cohort_code_use_download", label = "Download")
               ),
               class = "text-end"
             ),
