@@ -121,33 +121,10 @@ diagnostics**, **codelist diagnostics**, **cohort diagnostics**,
 result <- phenotypeDiagnostics(cdm$my_cohort)
 ```
 
-We can see all the results generated like so:
-
-``` r
-result |> 
-  settings() |>
-  pull("result_type") |> 
-  unique()
-#>  [1] "summarise_omop_snapshot"              
-#>  [2] "summarise_observation_period"         
-#>  [3] "cohort_code_use"                      
-#>  [4] "achilles_code_use"                    
-#>  [5] "orphan_code_use"                      
-#>  [6] "summarise_characteristics"            
-#>  [7] "summarise_table"                      
-#>  [8] "summarise_cohort_attrition"           
-#>  [9] "summarise_cohort_overlap"             
-#> [10] "summarise_cohort_timing"              
-#> [11] "incidence"                            
-#> [12] "incidence_attrition"                  
-#> [13] "prevalence"                           
-#> [14] "prevalence_attrition"                 
-#> [15] "summarise_large_scale_characteristics"
-```
-
 Once we have our results we can quickly view them in an interactive
-application. This shiny app will be saved in a new directory and can be
-further customised using the `directory` input.
+application. Here we’ll apply a minimum cell count of 10 to our results
+and save our shiny app to a temporary directory, but you will likely
+want to save this shiny app to a local directory of your choice.
 
 ``` r
 shinyDiagnostics(result = result, minCellCount = 10, directory = tempdir())

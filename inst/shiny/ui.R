@@ -433,7 +433,7 @@ ui <- bslib::page_navbar(
             )
           ),
           bslib::nav_panel(
-            title = "Plot",
+            title = "Flowchart",
             bslib::card(
               full_screen = TRUE,
               bslib::card_header(

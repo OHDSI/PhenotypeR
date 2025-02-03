@@ -122,17 +122,8 @@ diagnostics**, **codelist diagnostics**, **cohort diagnostics**,
 result <- phenotypeDiagnostics(cdm$my_cohort)
 ```
 
-We can see all the results generated like so:
-```{r, message = FALSE}
-result |> 
-  settings() |>
-  pull("result_type") |> 
-  unique()
-```
-
 Once we have our results we can quickly view them in an interactive
-application. This shiny app will be saved in a new directory and can be
-further customised using the `directory` input.
+application. Here we'll apply a minimum cell count of 10 to our results and save our shiny app to a temporary directory, but you will likely want to save this shiny app to a local directory of your choice.
 
 ```{r, eval=FALSE}
 shinyDiagnostics(result = result, minCellCount = 10, directory = tempdir())
