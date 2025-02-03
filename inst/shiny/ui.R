@@ -631,7 +631,7 @@ ui <- bslib::page_navbar(
                 shiny::downloadButton(outputId = "summarise_large_scale_characteristics_tidy_download", label = ""),,
                 class = "text-end"
               ),
-              DT::dataTableOutput("summarise_large_scale_characteristics_tidy")
+              uiOutput("summarise_large_scale_characteristics_tidy") |> withSpinner()
             )
           ),
           bslib::nav_panel(
@@ -1263,7 +1263,7 @@ ui <- bslib::page_navbar(
                                          ),
                                          position = "right"
                 ),
-                uiOutput("incidence_plot")
+                uiOutput("incidence_plot") |> withSpinner()
               )
             )
           )
@@ -1420,7 +1420,7 @@ ui <- bslib::page_navbar(
                                          ),
                                          position = "right"
                 ),
-                uiOutput("prevalence_plot")
+                uiOutput("prevalence_plot") |> withSpinner()
               )
             )
           )
