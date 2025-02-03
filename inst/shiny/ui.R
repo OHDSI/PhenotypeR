@@ -23,10 +23,7 @@ ui <- bslib::page_navbar(
       bslib::card(
         full_screen = TRUE,
         bslib::card_header(
-          bslib::popover(
-            shiny::icon("download"),
-            shiny::downloadButton(outputId = "summarise_omop_snapshot_gt_download", label = "Download docx"),
-          ),
+          shiny::downloadButton(outputId = "summarise_omop_snapshot_gt_download", label = ""),
           class = "text-end"
         ),
         gt::gt_output("summarise_omop_snapshot_gt") |> withSpinner()
@@ -41,10 +38,7 @@ ui <- bslib::page_navbar(
         bslib::card(
           full_screen = TRUE,
           bslib::card_header(
-            bslib::popover(
-              shiny::icon("download"),
-              shiny::downloadButton(outputId = "summarise_observation_period_gt_download", label = "Download docx")
-            ),
+            shiny::downloadButton(outputId = "summarise_observation_period_gt_download", label = ""),
             class = "text-end"
           ),
           gt::gt_output("summarise_observation_period_gt") |> withSpinner()
@@ -133,10 +127,7 @@ ui <- bslib::page_navbar(
           bslib::card(
             full_screen = TRUE,
             bslib::card_header(
-              bslib::popover(
-                shiny::icon("download"),
-                shiny::downloadButton(outputId = "achilles_code_use_download", label = "Download")
-              ),
+              shiny::downloadButton(outputId = "achilles_code_use_download", label = ""),
               class = "text-end"
             ),
             uiOutput("achilles_code_use_tbl") |> withSpinner()
@@ -296,10 +287,7 @@ ui <- bslib::page_navbar(
         bslib::card(
           full_screen = TRUE,
           bslib::card_header(
-            bslib::popover(
-              shiny::icon("download"),
-              shiny::downloadButton(outputId = "orphan_codes_download", label = "Download")
-            ),
+            shiny::downloadButton(outputId = "orphan_codes_download", label = ""),
             class = "text-end"
           ),
           uiOutput("orphan_codes_tbl") |> withSpinner()
@@ -396,10 +384,7 @@ ui <- bslib::page_navbar(
           bslib::card(
             full_screen = TRUE,
             bslib::card_header(
-              bslib::popover(
-                shiny::icon("download"),
-                shiny::downloadButton(outputId = "cohort_code_use_download", label = "Download")
-              ),
+              shiny::downloadButton(outputId = "cohort_code_use_download", label = ""),
               class = "text-end"
             ),
             uiOutput("cohort_code_use_tbl") |> withSpinner()
@@ -441,10 +426,7 @@ ui <- bslib::page_navbar(
             bslib::card(
               full_screen = TRUE,
               bslib::card_header(
-                bslib::popover(
-                  shiny::icon("download"),
-                  shiny::downloadButton(outputId = "summarise_cohort_attrition_gt_download", label = "Download")
-                ),
+                shiny::downloadButton(outputId = "summarise_cohort_attrition_gt_download", label = ""),
                 class = "text-end"
               ),
               gt::gt_output("summarise_cohort_attrition_gt") |> withSpinner()
@@ -515,10 +497,7 @@ ui <- bslib::page_navbar(
             bslib::card(
               full_screen = TRUE,
               bslib::card_header(
-                bslib::popover(
-                  shiny::icon("download"),
-                  shiny::downloadButton(outputId = "summarise_characteristics_gt_download", label = "Download")
-                ),
+                shiny::downloadButton(outputId = "summarise_characteristics_gt_download", label = ""),
                 class = "text-end"
               ),
               bslib::layout_sidebar(
@@ -649,10 +628,7 @@ ui <- bslib::page_navbar(
             bslib::card(
               full_screen = TRUE,
               bslib::card_header(
-                bslib::popover(
-                  shiny::icon("download"),
-                  shiny::downloadButton(outputId = "summarise_large_scale_characteristics_tidy_download", label = "Download csv")
-                ),
+                shiny::downloadButton(outputId = "summarise_large_scale_characteristics_tidy_download", label = ""),,
                 class = "text-end"
               ),
               DT::dataTableOutput("summarise_large_scale_characteristics_tidy")
@@ -663,10 +639,7 @@ ui <- bslib::page_navbar(
             bslib::card(
               full_screen = TRUE,
               bslib::card_header(
-                bslib::popover(
-                  shiny::icon("download"),
-                  shiny::downloadButton(outputId = "summarise_large_scale_characteristics_gt_download", label = "Download")
-                ),
+                shiny::downloadButton(outputId = "summarise_large_scale_characteristics_gt_download", label = ""),
                 class = "text-end"
               ),
               gt::gt_output("summarise_large_scale_characteristics_gt") |> withSpinner()
@@ -745,10 +718,7 @@ ui <- bslib::page_navbar(
             bslib::card(
               full_screen = TRUE,
               bslib::card_header(
-                bslib::popover(
-                  shiny::icon("download"),
-                  shiny::downloadButton(outputId = "compare_large_scale_characteristics_tidy_download", label = "Download csv")
-                ),
+                shiny::downloadButton(outputId = "compare_large_scale_characteristics_tidy_download", label = ""),
                 class = "text-end"
               ),
               reactable::reactableOutput("compare_large_scale_characteristics_tidy") |> withSpinner()
@@ -879,10 +849,7 @@ ui <- bslib::page_navbar(
             bslib::card(
               full_screen = TRUE,
               bslib::card_header(
-                bslib::popover(
-                  shiny::icon("download"),
-                  shiny::downloadButton(outputId = "summarise_cohort_overlap_gt_download", label = "Download")
-                ),
+                shiny::downloadButton(outputId = "summarise_cohort_overlap_gt_download", label = ""),
                 class = "text-end"
               ),
               bslib::layout_sidebar(
@@ -1036,10 +1003,7 @@ ui <- bslib::page_navbar(
             bslib::card(
               full_screen = TRUE,
               bslib::card_header(
-                bslib::popover(
-                  shiny::icon("download"),
-                  shiny::downloadButton(outputId = "summarise_cohort_timing_gt_download", label = "Download")
-                ),
+                shiny::downloadButton(outputId = "summarise_cohort_timing_gt_download", label = ""),
                 class = "text-end"
               ),
               bslib::layout_sidebar(
@@ -1215,10 +1179,7 @@ ui <- bslib::page_navbar(
             bslib::card(
               full_screen = TRUE,
               bslib::card_header(
-                bslib::popover(
-                  shiny::icon("download"),
-                  shiny::downloadButton(outputId = "incidence_gt_download", label = "Download")
-                ),
+                shiny::downloadButton(outputId = "incidence_gt_download", label = ""),
                 class = "text-end"
               ),
               gt::gt_output("incidence_gt") |> withSpinner()
@@ -1375,10 +1336,7 @@ ui <- bslib::page_navbar(
             bslib::card(
               full_screen = TRUE,
               bslib::card_header(
-                bslib::popover(
-                  shiny::icon("download"),
-                  shiny::downloadButton(outputId = "prevalence_gt_download", label = "Download")
-                ),
+                shiny::downloadButton(outputId = "prevalence_gt_download", label = ""),
                 class = "text-end"
               ),
               gt::gt_output("prevalence_gt") |> withSpinner()
@@ -1418,7 +1376,7 @@ ui <- bslib::page_navbar(
                 class = "text-end"
               ),
               bslib::layout_sidebar(
-                sidebar = bslib::sidebar(width = 400, open = "opened",
+                sidebar = bslib::sidebar(width = 400, open = "open",
                                          materialSwitch(inputId = "prevalence_plot_interactive",
                                                         value = TRUE,
                                                         label = "Interactive",
