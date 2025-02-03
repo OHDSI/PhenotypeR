@@ -159,7 +159,9 @@ server <- function(input, output, session) {
       # suppressed to NA
       tbl <- tbl |>
         purrr::map_df(~ ifelse(grepl("^<", .), NA, .)) |>
-        dplyr::mutate(dplyr::across(c(ends_with("Record count"), ends_with("Person count")),
+        dplyr::mutate(dplyr::across(c(ends_with("count")),
+                                    ~ gsub(",", "", .))) |>
+        dplyr::mutate(dplyr::across(c(ends_with("count")),
                                     ~ suppressWarnings(as.numeric(.))))
       tbl <- reactable(tbl,
                        defaultSorted = order,
@@ -273,7 +275,9 @@ server <- function(input, output, session) {
       # suppressed to NA
       tbl <- tbl |>
         purrr::map_df(~ ifelse(grepl("^<", .), NA, .)) |>
-        dplyr::mutate(dplyr::across(c(ends_with("Record count"), ends_with("Person count")),
+      dplyr::mutate(dplyr::across(c(ends_with("count")),
+                                  ~ gsub(",", "", .))) |>
+        dplyr::mutate(dplyr::across(c(ends_with("count")),
                                     ~ suppressWarnings(as.numeric(.))))
 
       tbl <- reactable(tbl,
@@ -405,7 +409,9 @@ server <- function(input, output, session) {
       return(tbl)
     } else {
       tbl <- createCohortCodeUseInteractive() |>
-        dplyr::mutate(dplyr::across(c(ends_with("Record count"), ends_with("Person count")),
+        dplyr::mutate(dplyr::across(c(ends_with("count")),
+                                    ~ gsub(",", "", .))) |>
+        dplyr::mutate(dplyr::across(c(ends_with("count")),
                                     ~ suppressWarnings(as.numeric(.))))
 
       # column ordering by codelist and first column with a count
