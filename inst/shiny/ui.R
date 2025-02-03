@@ -443,13 +443,6 @@ ui <- bslib::page_navbar(
               bslib::card_header(
                 bslib::popover(
                   shiny::icon("download"),
-                  shinyWidgets::pickerInput(
-                    inputId = "summarise_cohort_attrition_gt_download_type",
-                    label = "File type",
-                    selected = "docx",
-                    choices = c("docx", "png", "pdf", "html"),
-                    multiple = FALSE
-                  ),
                   shiny::downloadButton(outputId = "summarise_cohort_attrition_gt_download", label = "Download")
                 ),
                 class = "text-end"
@@ -524,13 +517,6 @@ ui <- bslib::page_navbar(
               bslib::card_header(
                 bslib::popover(
                   shiny::icon("download"),
-                  shinyWidgets::pickerInput(
-                    inputId = "summarise_characteristics_gt_download_type",
-                    label = "File type",
-                    selected = "docx",
-                    choices = c("docx", "png", "pdf", "html"),
-                    multiple = FALSE
-                  ),
                   shiny::downloadButton(outputId = "summarise_characteristics_gt_download", label = "Download")
                 ),
                 class = "text-end"
@@ -679,13 +665,6 @@ ui <- bslib::page_navbar(
               bslib::card_header(
                 bslib::popover(
                   shiny::icon("download"),
-                  shinyWidgets::pickerInput(
-                    inputId = "summarise_large_scale_characteristics_gt_download_type",
-                    label = "File type",
-                    selected = "docx",
-                    choices = c("docx", "png", "pdf", "html"),
-                    multiple = FALSE
-                  ),
                   shiny::downloadButton(outputId = "summarise_large_scale_characteristics_gt_download", label = "Download")
                 ),
                 class = "text-end"
@@ -902,13 +881,6 @@ ui <- bslib::page_navbar(
               bslib::card_header(
                 bslib::popover(
                   shiny::icon("download"),
-                  shinyWidgets::pickerInput(
-                    inputId = "summarise_cohort_overlap_gt_download_type",
-                    label = "File type",
-                    selected = "docx",
-                    choices = c("docx", "png", "pdf", "html"),
-                    multiple = FALSE
-                  ),
                   shiny::downloadButton(outputId = "summarise_cohort_overlap_gt_download", label = "Download")
                 ),
                 class = "text-end"
@@ -1066,13 +1038,6 @@ ui <- bslib::page_navbar(
               bslib::card_header(
                 bslib::popover(
                   shiny::icon("download"),
-                  shinyWidgets::pickerInput(
-                    inputId = "summarise_cohort_timing_gt_download_type",
-                    label = "File type",
-                    selected = "docx",
-                    choices = c("docx", "png", "pdf", "html"),
-                    multiple = FALSE
-                  ),
                   shiny::downloadButton(outputId = "summarise_cohort_timing_gt_download", label = "Download")
                 ),
                 class = "text-end"
@@ -1252,13 +1217,6 @@ ui <- bslib::page_navbar(
               bslib::card_header(
                 bslib::popover(
                   shiny::icon("download"),
-                  shinyWidgets::pickerInput(
-                    inputId = "incidence_gt_download_type",
-                    label = "File type",
-                    selected = "docx",
-                    choices = c("docx", "png", "pdf", "html"),
-                    multiple = FALSE
-                  ),
                   shiny::downloadButton(outputId = "incidence_gt_download", label = "Download")
                 ),
                 class = "text-end"
@@ -1493,13 +1451,6 @@ ui <- bslib::page_navbar(
               bslib::card_header(
                 bslib::popover(
                   shiny::icon("download"),
-                  shinyWidgets::pickerInput(
-                    inputId = "prevalence_gt_download_type",
-                    label = "File type",
-                    selected = "docx",
-                    choices = c("docx", "png", "pdf", "html"),
-                    multiple = FALSE
-                  ),
                   shiny::downloadButton(outputId = "prevalence_gt_download", label = "Download")
                 ),
                 class = "text-end"

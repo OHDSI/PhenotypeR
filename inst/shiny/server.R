@@ -289,14 +289,14 @@ server <- function(input, output, session) {
 
   output$orphan_codes_download <- shiny::downloadHandler(
     filename = function(){
-      if(isFALSE(input$input$orphan_interactive)){
+      if(isFALSE(input$orphan_interactive)){
         "summarise_orphan_codes_gt.docx"
       }else{
         "summarise_orphan_codes_tbl.csv"
       }
     },
     content = function(file){
-      if(isFALSE(input$input$orphan_interactive)){
+      if(isFALSE(input$orphan_interactive)){
         gt::gtsave(data = createOrphanCodesGT(), filename = file)
       }else{
         readr::write_csv(createOrphanCodesInteractive(), file = file)
@@ -305,39 +305,37 @@ server <- function(input, output, session) {
   )
 
   # unmapped codes -----
-  createOutputUnmapped <- shiny::reactive({
-    if (is.null(dataFiltered$unmapped_codes)) {
-      validate("No unmapped codes in results")
-    }
-
-    CodelistGenerator::tableUnmappedCodes(
-      dataFiltered$unmapped_codes |>
-        dplyr::filter(cdm_name %in% input$unmapped_grouping_cdm_name,
-                      group_level %in% input$unmapped_grouping_codelist_name),
-      header = input$unmapped_header,
-      groupColumn = input$unmapped_groupColumn,
-      hide = input$unmapped_hide
-    ) %>%
-      tab_header(
-        title = "Summary of unmapped codes",
-        subtitle = "These codes are recorded as source concepts that are mapped to 0"
-      ) %>%
-      tab_options(
-        heading.align = "left"
-      )
-  })
-  output$unmapped_formatted <- gt::render_gt({
-    createOutputUnmapped()
-  })
-  output$unmapped_formatted_download <- shiny::downloadHandler(
-    filename = function() {
-      paste0("output_gt_orphan.", input$unmapped_formatted_download_type)
-    },
-    content = function(file) {
-      obj <- createOutputUnmapped()
-      gt::gtsave(data = obj, filename = file)
-    }
-  )
+  # createOutputUnmapped <- shiny::reactive({
+  #   if (is.null(dataFiltered$unmapped_codes)) {
+  #     validate("No unmapped codes in results")
+  #   }
+  # 
+  #   CodelistGenerator::tableUnmappedCodes(
+  #     dataFiltered$unmapped_codes |>
+  #       dplyr::filter(cdm_name %in% input$unmapped_grouping_cdm_name,
+  #                     group_level %in% input$unmapped_grouping_codelist_name),
+  #     header = input$unmapped_header,
+  #     groupColumn = input$unmapped_groupColumn,
+  #     hide = input$unmapped_hide
+  #   ) %>%
+  #     tab_header(
+  #       title = "Summary of unmapped codes",
+  #       subtitle = "These codes are recorded as source concepts that are mapped to 0"
+  #     ) %>%
+  #     tab_options(
+  #       heading.align = "left"
+  #     )
+  # })
+  # output$unmapped_formatted <- gt::render_gt({
+  #   createOutputUnmapped()
+  # })
+  # output$unmapped_formatted_download <- shiny::downloadHandler(
+  #   filename = "output_gt_orphan.docx",
+  #   content = function(file) {
+  #     obj <- createOutputUnmapped()
+  #     gt::gtsave(data = obj, filename = file)
+  #   }
+  # )
 
   # cohort_code_use -----
   filterCohortCodeUse <- shiny::reactive({
@@ -424,16 +422,18 @@ server <- function(input, output, session) {
                        striped = TRUE,
                        compact = TRUE,
                        showSortable = TRUE)
+      return(tbl)
     }
   })
 
   output$cohort_code_use_download <- shiny::downloadHandler(
     filename = function(){
       if(isFALSE(input$cohort_code_use_interactive)){
-        "summarise_cohort_code_use_gt.docx"
+        file <- "summarise_cohort_code_use_gt.docx"
       }else{
-        "summarise_cohort_code_use_tbl.csv"
+        file <- "summarise_cohort_code_use_tbl.csv"
       }
+      return(file)
     },
     content = function(file){
       if(isFALSE(input$cohort_code_use_interactive)){
@@ -469,9 +469,7 @@ server <- function(input, output, session) {
     createTableCohortAttrition()
   })
   output$summarise_cohort_attrition_gt_download <- shiny::downloadHandler(
-    filename = function() {
-      paste0("summarise_cohort_attrition_gt.", input$summarise_cohort_attrition_gt_download_type)
-    },
+    filename = "summarise_cohort_attrition_gt.docx",
     content = function(file) {
       obj <- createTableCohortAttrition()
       gt::gtsave(data = obj, filename = file)
@@ -546,9 +544,7 @@ server <- function(input, output, session) {
     createTableSummariseCharacteristics()
   })
   output$summarise_characteristics_gt_download <- shiny::downloadHandler(
-    filename = function() {
-      paste0("summarise_characteristics_gt.", input$summarise_characteristics_gt_download_type)
-    },
+    filename = "summarise_characteristics_gt.docx", 
     content = function(file) {
       obj <- createTableSummariseCharacteristics()
       gt::gtsave(data = obj, filename = file)
@@ -620,9 +616,6 @@ server <- function(input, output, session) {
     }
   )
 
-
-
-
   # summarise_large_scale_characteristics -----
   ## Tidy summarise_large_scale_characteristics -----
   getTidyDataSummariseLargeScaleCharacteristics <- shiny::reactive({
@@ -648,6 +641,7 @@ server <- function(input, output, session) {
       mutate(concept = paste0(variable_name, " (",
                               concept_id, ")")) |>
       dplyr::select("cdm_name",
+                    "cohort_name",
                     "concept",
                     "count",
                     "percentage")
@@ -719,9 +713,7 @@ server <- function(input, output, session) {
     createTableLargeScaleCharacteristics()
   })
   output$summarise_large_scale_characteristics_gt_download <- shiny::downloadHandler(
-    filename = function() {
-      paste0("summarise_large_scale_characteristics_gt.", input$summarise_large_scale_characteristics_gt_download_type)
-    },
+    filename = "summarise_large_scale_characteristics_gt.docx",
     content = function(file) {
       obj <- createTableLargeScaleCharacteristics()
       gt::gtsave(data = obj, filename = file)
@@ -909,9 +901,7 @@ server <- function(input, output, session) {
     createTableCohortOverlap()
   })
   output$summarise_cohort_overlap_gt_download <- shiny::downloadHandler(
-    filename = function(){
-      paste0("summarise_cohort_overlap_gt.", input$summarise_cohort_overlap_gt_download_type)
-    },
+    filename = "summarise_cohort_overlap_gt.docx",
     content = function(file) {
       obj <- createTableCohortOverlap()
       gt::gtsave(data = obj, filename = file)
@@ -983,9 +973,7 @@ server <- function(input, output, session) {
     createTableCohortTiming()
   })
   output$summarise_cohort_timing_gt_download <- shiny::downloadHandler(
-    filename = function(){
-      paste0("summarise_cohort_timing_gt.", input$summarise_cohort_timing_gt_download_type)
-    },
+    filename = "summarise_cohort_timing_gt.docx",
     content = function(file) {
       obj <- createTableCohortTiming()
       gt::gtsave(data = obj, filename = file)
@@ -1076,9 +1064,7 @@ server <- function(input, output, session) {
     createTableIncidence()
   })
   output$incidence_gt_download <- shiny::downloadHandler(
-    filename = function() {
-      paste0("incidence_gt.", input$incidence_gt_download_type)
-    },
+    filename = "incidence_gt.docx",
     content = function(file) {
       obj <- createTableIncidence()
       gt::gtsave(data = obj, filename = file)
@@ -1244,9 +1230,7 @@ server <- function(input, output, session) {
     createTablePrevalence()
   })
   output$prevalence_gt_download <- shiny::downloadHandler(
-    filename = function() {
-      paste0("prevalence_gt.", input$prevalence_gt_download_type)
-    },
+    filename = "prevalence_gt.docx",
     content = function(file) {
       obj <- createTablePrevalence()
       gt::gtsave(data = obj, filename = file)
