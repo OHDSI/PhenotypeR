@@ -44,7 +44,7 @@ if(file.exists(here::here("data", "appData.RData"))){
 }
 
 plotComparedLsc <- function(lsc, cohorts, imputeMissings, colour = NULL, facet = NULL){
-  
+
   plot_data <- lsc |>
     filter(group_level %in% c(cohorts)) |>
     filter(estimate_name == "percentage") |>
@@ -61,12 +61,12 @@ plotComparedLsc <- function(lsc, cohorts, imputeMissings, colour = NULL, facet =
     mutate(percentage = as.numeric(percentage)) |>
     pivot_wider(names_from = cohort_name,
                 values_from = percentage)
-  
+
   if(isTRUE(imputeMissings)){
     plot_data <- plot_data |>
       mutate(across(c(cohorts[1], cohorts[2]), ~if_else(is.na(.x), 0, .x)))
   }
-  
+
   plot <- plot_data |>
     mutate("Details" = paste("<br>Database:", database,
                              "<br>Concept:", variable_name,
@@ -87,12 +87,12 @@ plotComparedLsc <- function(lsc, cohorts, imputeMissings, colour = NULL, facet =
     geom_abline(slope = 1, intercept = 0,
                 color = "red", linetype = "dashed") +
     theme_bw()
-  
+
   return(plot)
 }
 
 plotAgeDensity <- function(summarise_table, summarise_characteristics){
-  
+
   data <- summarise_table |>
     filter(variable_name == "age") |>
     pivot_wider(names_from = "estimate_name", values_from = "estimate_value") |>
@@ -100,19 +100,19 @@ plotAgeDensity <- function(summarise_table, summarise_characteristics){
            density_y = as.numeric(density_y)) |>
     splitStrata() |>
     mutate(density_y = if_else(sex == "Female", -density_y, density_y))
-  
+
   data <- data |>
     filter(!is.na(data$density_x),
            !is.na(data$density_y))
-  
+
   if (nrow(data) == 0) {
     validate("No results found for age density")
   }
-  
+
   max_density <- max(data$density_y, na.rm = TRUE)
   min_age <- (floor((data$density_x |> min(na.rm = TRUE))/5))*5
   max_age <- (ceiling((data$density_x |> max(na.rm = TRUE))/5))*5
-  
+
   iqr <- summarise_characteristics |>
     filter(variable_name == "Age",
            strata_level %in% c("Female","Male"),
@@ -131,12 +131,12 @@ plotAgeDensity <- function(summarise_table, summarise_characteristics){
       by = c("estimate_value_round", "strata_level", "cdm_name")
     ) |>
     rename("sex" = "strata_level")
-  
+
   # keep only estimates for cohorts with density
   iqr <- iqr |>
     inner_join(data |>
                  select(group_level) |> distinct())
-  
+
   ggplot(data, aes(x = density_x, y = density_y, fill = sex)) +
     geom_polygon() +
     geom_segment(data = iqr[iqr$estimate_name == "median", ],
@@ -169,15 +169,15 @@ plotAgeDensity <- function(summarise_table, summarise_characteristics){
 }
 
 getColsForTbl <- function(tbl, sortNALast = TRUE, names = c("Standard concept ID")){
-  
+
   cols <- list()
   for(i in seq_along(names(tbl))){
     working_col <- names(tbl)[i]
-    
+
     if(working_col %in% c(names)){
-      
+
       cols[[working_col]] <- colDef(name = working_col,
-                                    sortNALast = sortNALast, 
+                                    sortNALast = sortNALast,
                                     cell = function(value){
                                       if(!is.na(value) && !grepl("^NA$", value)) {
                                         url <- sprintf("https://athena.ohdsi.org/search-terms/terms/%s", value)
@@ -187,12 +187,13 @@ getColsForTbl <- function(tbl, sortNALast = TRUE, names = c("Standard concept ID
                                       }
                                     }
       )
-      
+
     }else{
       cols[[working_col]] <- colDef(name = working_col,
-                                    sortNALast = sortNALast)
+                                    sortNALast = sortNALast,
+                                    format = colFormat(separators = TRUE))
     }
   }
-  
+
   return(cols)
 }
