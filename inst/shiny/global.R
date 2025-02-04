@@ -166,10 +166,10 @@ plotAgeDensity <- function(summarise_table, summarise_characteristics, show_inte
   if(show_interquantile_range){
     plot <- plot +
       geom_segment(data = iqr[iqr$estimate_name == "median", ],
-                   aes(x = estimate_value, y = 0, xend = estimate_value, yend = density_y, group = interaction(cdm_name, group_level)),
+                   aes(x = estimate_value, y = 0, xend = estimate_value, yend = density_y),
                    linewidth = 0.75) +
       geom_segment(data = iqr[iqr$estimate_name != "median", ],
-                   aes(x = estimate_value, y = 0, xend = estimate_value, yend = density_y, group = interaction(cdm_name, group_level)),
+                   aes(x = estimate_value, y = 0, xend = estimate_value, yend = density_y),
                    linetype = 2,
                    linewidth = 0.75) +
       labs(subtitle = "The solid line represents the median, while the dotted lines indicate the interquartile range.") +

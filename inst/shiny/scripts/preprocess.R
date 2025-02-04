@@ -24,6 +24,13 @@ if(nrow(data) == 0){
   cli::cli_warn("No data found in data/raw")
   choices <- list()
 } else{
+  
+  if(any(grepl("^matched_to", data$group_level))){
+    data <- data |>
+      mutate(group_level = gsub("_matched$","_sampled",group_level)) |>
+      mutate(group_level = if_else(grepl("matched_to", group_level), paste0(gsub("^matched_to_","",group_level),"_matched"), group_level))
+  }
+  
   cli::cli_inform("Getting input choices for shiny UI")
   choices <- getChoices(data, flatten = TRUE)
 }

@@ -626,7 +626,7 @@ server <- function(input, output, session) {
                    paste0(input$summarise_characteristics_grouping_cohort_name, "_matched")
                  )
         )
-      summarise_characteristics <- dataFiltered$summarise_characteristics |>
+      summarise_characteristics <- summarise_characteristics |>
         filter(group_level %in%
                  c(
                    input$summarise_characteristics_grouping_cohort_name,
@@ -638,7 +638,7 @@ server <- function(input, output, session) {
       summarise_table <- summarise_table |>
         filter(group_level %in%
                  input$summarise_characteristics_grouping_cohort_name)
-      summarise_characteristics <- dataFiltered$summarise_characteristics |>
+      summarise_characteristics <- summarise_characteristics |>
         filter(group_level %in% input$summarise_characteristics_grouping_cohort_name)
     }
 
