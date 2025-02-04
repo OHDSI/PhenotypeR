@@ -91,7 +91,8 @@ plotComparedLsc <- function(lsc, cohorts, imputeMissings, colour = NULL, facet =
   return(plot)
 }
 
-plotAgeDensity <- function(summarise_table, summarise_characteristics){
+
+plotAgeDensity <- function(summarise_table, summarise_characteristics, show_interquantile_range){
 
   data <- summarise_table |>
     filter(variable_name == "age") |>
@@ -99,11 +100,9 @@ plotAgeDensity <- function(summarise_table, summarise_characteristics){
     mutate(density_x = as.numeric(density_x),
            density_y = as.numeric(density_y)) |>
     splitStrata() |>
-    mutate(density_y = if_else(sex == "Female", -density_y, density_y))
-
-  data <- data |>
-    filter(!is.na(data$density_x),
-           !is.na(data$density_y))
+    mutate(density_y = if_else(sex == "Female", -density_y, density_y)) |>
+    filter(!is.na(density_x),
+           !is.na(density_y))
 
   if (nrow(data) == 0) {
     validate("No results found for age density")
@@ -121,14 +120,14 @@ plotAgeDensity <- function(summarise_table, summarise_characteristics){
     select(-"estimate_value") |>
     left_join(
       data |>
-        select("cdm_name", "strata_level" = "sex", "estimate_value" = "density_x", "density_y") |>
-        arrange(strata_level, estimate_value, density_y) |>
+        select("cdm_name", "group_level", "strata_level" = "sex", "estimate_value" = "density_x", "density_y") |>
+        arrange(cdm_name, strata_level, estimate_value, density_y) |>
         mutate(estimate_value_round = round(estimate_value)) |>
         mutate(estimate_value_diff = estimate_value - estimate_value_round) |>
-        group_by(strata_level, estimate_value_round) |>
+        group_by(cdm_name, group_level, strata_level, estimate_value_round) |>
         filter(estimate_value_diff == min(estimate_value_diff)) |>
-        select("cdm_name", "estimate_value_round" = "estimate_value_round", "estimate_value", "density_y", "strata_level"),
-      by = c("estimate_value_round", "strata_level", "cdm_name")
+        ungroup(),
+      by = c("cdm_name", "group_level", "strata_level", "estimate_value_round")
     ) |>
     rename("sex" = "strata_level")
 
@@ -137,15 +136,8 @@ plotAgeDensity <- function(summarise_table, summarise_characteristics){
     inner_join(data |>
                  select(group_level) |> distinct())
 
-  ggplot(data, aes(x = density_x, y = density_y, fill = sex)) +
+  plot <- ggplot2::ggplot(data, ggplot2::aes(x = density_x, y = density_y, fill = sex)) +
     geom_polygon() +
-    geom_segment(data = iqr[iqr$estimate_name == "median", ],
-                 aes(x = estimate_value, y = 0, xend = estimate_value, yend = density_y),
-                 linewidth = 1) +
-    geom_segment(data = iqr[iqr$estimate_name != "median", ],
-                 aes(x = estimate_value, y = 0, xend = estimate_value, yend = density_y),
-                 linetype = 2,
-                 linewidth = 1) +
     scale_y_continuous(labels = function(x) scales::label_percent()(abs(x)),
                        limits = c(-max_density*1.1, max_density*1.1)) +
     themeVisOmop() +
@@ -162,10 +154,24 @@ plotAgeDensity <- function(summarise_table, summarise_characteristics){
     ) +
     scale_x_continuous(labels = c(as.character(seq(min_age,max_age-5,5)), paste0(max_age,"+")),
                        breaks = c(seq(min_age, max_age-5,5), max_age)) +
-    scale_fill_manual(values = list("Male" = "#003153","Female" = "#4682B4")) +
+    scale_fill_manual(values = list("Male" = "#77A9B4","Female" = "#E1B12D")) +
     facet_wrap(c("cdm_name", "group_level")) +
-    coord_flip(clip = "off") +
-    labs(subtitle = "The solid line represents the median, while the dotted lines indicate the interquartile range.")
+    coord_flip(clip = "off")
+
+  if(show_interquantile_range){
+    plot <- plot +
+      geom_segment(data = iqr[iqr$estimate_name == "median", ],
+                   aes(x = estimate_value, y = 0, xend = estimate_value, yend = density_y, group = interaction(cdm_name, group_level)),
+                   linewidth = 0.75) +
+      geom_segment(data = iqr[iqr$estimate_name != "median", ],
+                   aes(x = estimate_value, y = 0, xend = estimate_value, yend = density_y, group = interaction(cdm_name, group_level)),
+                   linetype = 2,
+                   linewidth = 0.75) +
+      labs(subtitle = "The solid line represents the median, while the dotted lines indicate the interquartile range.") +
+      facet_wrap(c("cdm_name", "group_level"))
+  }
+
+  return(plot)
 }
 
 getColsForTbl <- function(tbl, sortNALast = TRUE, names = c("Standard concept ID")){

@@ -10,8 +10,8 @@ ui <- bslib::page_navbar(
     title = "Background",
     icon = shiny::icon("disease"),
     shiny::includeMarkdown(path = "background.md")
-
   ),
+
   # Database diagnostics -----
   bslib::nav_menu(
     title = "Database diagnostics",
@@ -562,9 +562,19 @@ ui <- bslib::page_navbar(
                   ),
                   shiny::downloadButton(outputId = "plot_age_pyramid_download", label = "Download")
                 ),
-                class = "text-end"
+                class = "text-end",
               ),
-              shiny::plotOutput("plot_age_pyramid")
+              bslib::layout_sidebar(
+                sidebar = bslib::sidebar(width = 400, open = "closed",
+                                         shiny::checkboxInput(
+                                           inputId = "summarise_characteristics_add_interquantile_range",
+                                           label = "Show interquantile range",
+                                           value = c(TRUE)
+                                         ),
+                                         position = "right"
+                ),
+                shiny::plotOutput("plot_age_pyramid")
+              )
             )
           )
         )
@@ -854,7 +864,6 @@ ui <- bslib::page_navbar(
               ),
               bslib::layout_sidebar(
                 sidebar = bslib::sidebar(width = 400, open = "closed",
-
                                          materialSwitch(inputId = "overlap_plot_interactive",
                                                         value = TRUE,
                                                         label = "Interactive",
