@@ -1228,7 +1228,7 @@ ui <- bslib::page_navbar(
                 class = "text-end"
               ),
               bslib::layout_sidebar(
-                sidebar = bslib::sidebar(width = 400, open = "open",
+                sidebar = bslib::sidebar(width = 400, open = "closed",
                                          materialSwitch(inputId = "incidence_plot_interactive",
                                                         value = TRUE,
                                                         label = "Interactive",
@@ -1258,7 +1258,7 @@ ui <- bslib::page_navbar(
                                          shinyWidgets::pickerInput(
                                            inputId = "incidence_plot_facet",
                                            label = "Facet",
-                                           selected = NULL,
+                                           selected = "cdm_name",
                                            multiple = TRUE,
                                            choices = c("cdm_name",
                                                        "incidence_start_date",
@@ -1403,7 +1403,7 @@ ui <- bslib::page_navbar(
                 class = "text-end"
               ),
               bslib::layout_sidebar(
-                sidebar = bslib::sidebar(width = 400, open = "open",
+                sidebar = bslib::sidebar(width = 400, open = "closed",
                                          materialSwitch(inputId = "prevalence_plot_interactive",
                                                         value = TRUE,
                                                         label = "Interactive",
@@ -1432,7 +1432,7 @@ ui <- bslib::page_navbar(
                                          shinyWidgets::pickerInput(
                                            inputId = "prevalence_plot_facet",
                                            label = "Facet",
-                                           selected = NULL,
+                                           selected = "cdm_name",
                                            multiple = TRUE,
                                            choices = c("cdm_name",
                                                        "prevalence_start_date",

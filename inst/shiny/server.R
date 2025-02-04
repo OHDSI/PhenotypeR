@@ -129,7 +129,7 @@ server <- function(input, output, session) {
       tab_options(
         heading.align = "left"
       )
-      
+
     return(tbl)
   })
   createAchillesCodeUseInteractive <- shiny::reactive({
@@ -171,7 +171,7 @@ server <- function(input, output, session) {
                                     ~ gsub(",", "", .))) |>
         dplyr::mutate(dplyr::across(c(ends_with("count")),
                                     ~ suppressWarnings(as.numeric(.))))
-      
+
      tbl <- reactable::reactable(tbl,
                        defaultSorted = order,
                        columns = getColsForTbl(tbl),
@@ -186,9 +186,9 @@ server <- function(input, output, session) {
                                  font_size = 25,
                                  font_weight = "normal") |>
         reactablefmtr::add_subtitle("Codes from codelist observed in achilles tables.",
-                                    font_size = 15, 
+                                    font_size = 15,
                                     font_weight = "normal")
-      
+
       return(tbl)
     }
   })
@@ -309,9 +309,9 @@ server <- function(input, output, session) {
                                  font_size = 25,
                                  font_weight = "normal") |>
         reactablefmtr::add_subtitle("Orphan codes refer to concepts present in the database that are not in a codelist but are related to included codes.",
-                                    font_size = 15, 
+                                    font_size = 15,
                                     font_weight = "normal")
-      
+
       return(tbl)
     }
   })
@@ -461,7 +461,7 @@ server <- function(input, output, session) {
                                  font_size = 25,
                                  font_weight = "normal") |>
         reactablefmtr::add_subtitle("Codes from codelist observed on day of cohort entry. Note more than one code could be seen for a person on this day (both of which would have led to inclusion).",
-                                    font_size = 15, 
+                                    font_size = 15,
                                     font_weight = "normal")
 
       return(tbl)
@@ -521,20 +521,20 @@ server <- function(input, output, session) {
   createDiagramCohortAttrition <- shiny::reactive({
     result <- dataFiltered$summarise_cohort_attrition |>
       filterData("summarise_cohort_attrition", input)
-    
-    n <- result |> 
+
+    n <- result |>
       select(cdm_name, group_level) |>
       distinct() |>
       nrow()
-    
+
     if(n > 1){
       validate("Please select only one database")
     }
-    
+
     CohortCharacteristics::plotCohortAttrition(
       result
-    ) 
-    
+    )
+
   })
   output$summarise_cohort_attrition_grViz <- DiagrammeR::renderGrViz({
     createDiagramCohortAttrition()
@@ -700,7 +700,7 @@ server <- function(input, output, session) {
                     "percentage")
 
   })
-  
+
   output$summarise_large_scale_characteristics_tidy <- renderUI({
 
     tbl_data <- getTidyDataSummariseLargeScaleCharacteristics()
@@ -730,11 +730,11 @@ server <- function(input, output, session) {
                              font_size = 25,
                              font_weight = "normal") |>
     reactablefmtr::add_subtitle("Summary of all records from clinical tables within a time window. The sampled cohort represents individuals from the original cohort, the matched cohort comprises individuals of similar age and sex from the database.",
-                                font_size = 15, 
+                                font_size = 15,
                                 font_weight = "normal")
 
   })
-  
+
   output$summarise_large_scale_characteristics_tidy_download <- shiny::downloadHandler(
     filename = "summarise_large_scale_characteristics_tidy.csv",
     content = function(file) {
@@ -893,7 +893,7 @@ server <- function(input, output, session) {
     )
     names(cols)[1] <- target_cohort
     names(cols)[2] <- comparator_cohort
- 
+
     reactable::reactable(tbl,
                          defaultSorted = list("Standardised mean difference"  = "desc"),
                          columns = cols,
@@ -1176,6 +1176,8 @@ server <- function(input, output, session) {
         facet = facet,
         colour = colour
       )
+      plot$data <- plot$data |>
+        filter(incidence_100000_pys > 0)
 
       if(!is.null(facet) && isTRUE(facet_free)){
         plot <- plot +
@@ -1308,6 +1310,10 @@ server <- function(input, output, session) {
         facet = facet,
         colour = colour
       )
+      plot$data$prevalence_95CI_lower <- round(plot$data$prevalence_95CI_lower, 6)
+      plot$data$prevalence_95CI_upper <- round(plot$data$prevalence_95CI_upper, 6)
+      plot$data <- plot$data |>
+        dplyr::mutate(prevalence = round((outcome_count/denominator_count),6))
 
       if(!is.null(facet) && isTRUE(facet_free)){
         plot <- plot +
