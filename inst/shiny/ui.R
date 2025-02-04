@@ -864,10 +864,10 @@ ui <- bslib::page_navbar(
               ),
               bslib::layout_sidebar(
                 sidebar = bslib::sidebar(width = 400, open = "closed",
-                                         materialSwitch(inputId = "overlap_plot_interactive",
-                                                        value = TRUE,
-                                                        label = "Interactive",
-                                                        status = "primary"),
+#                                          materialSwitch(inputId = "overlap_plot_interactive",
+#                                                         value = TRUE,
+#                                                         label = "Interactive",
+#                                                         status = "primary"),
                                          sortable::bucket_list(
                                            header = NULL,
                                            sortable::add_rank_list(

@@ -40,6 +40,8 @@ Suggests:
     shiny,
     DiagrammeR,
     DiagrammeRsvg,
+    reactable,
+    reactablefmtr,
     rsvg,
     sortable,
     shinycssloaders,
