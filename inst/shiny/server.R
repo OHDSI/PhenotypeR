@@ -121,7 +121,15 @@ server <- function(input, output, session) {
     tbl <- CodelistGenerator::tableAchillesCodeUse(filterAchillesCodeUse(),
                                                    header = input$achilles_code_use_header,
                                                    groupColumn = input$achilles_code_use_groupColumn,
-                                                   hide = input$achilles_code_use_hide)
+                                                   hide = input$achilles_code_use_hide) |>
+      tab_header(
+        title = "Summary of achilles codes",
+        subtitle = "Codes from codelist observed in achilles tables."
+      ) |>
+      tab_options(
+        heading.align = "left"
+      )
+      
     return(tbl)
   })
   createAchillesCodeUseInteractive <- shiny::reactive({
@@ -163,7 +171,8 @@ server <- function(input, output, session) {
                                     ~ gsub(",", "", .))) |>
         dplyr::mutate(dplyr::across(c(ends_with("count")),
                                     ~ suppressWarnings(as.numeric(.))))
-      tbl <- reactable(tbl,
+      
+     tbl <- reactable::reactable(tbl,
                        defaultSorted = order,
                        columns = getColsForTbl(tbl),
                        filterable = TRUE,
@@ -172,8 +181,14 @@ server <- function(input, output, session) {
                        highlight = TRUE,
                        striped = TRUE,
                        compact = TRUE,
-                       showSortable = TRUE)
-
+                       showSortable = TRUE) |>
+        reactablefmtr::add_title("Summary of achilles codes",
+                                 font_size = 25,
+                                 font_weight = "normal") |>
+        reactablefmtr::add_subtitle("Codes from codelist observed in achilles tables.",
+                                    font_size = 15, 
+                                    font_weight = "normal")
+      
       return(tbl)
     }
   })
@@ -289,7 +304,14 @@ server <- function(input, output, session) {
                        highlight = TRUE,
                        striped = TRUE,
                        compact = TRUE,
-                       showSortable = TRUE)
+                       showSortable = TRUE) |>
+        reactablefmtr::add_title("Summary of orphan codes",
+                                 font_size = 25,
+                                 font_weight = "normal") |>
+        reactablefmtr::add_subtitle("Orphan codes refer to concepts present in the database that are not in a codelist but are related to included codes.",
+                                    font_size = 15, 
+                                    font_weight = "normal")
+      
       return(tbl)
     }
   })
@@ -434,7 +456,13 @@ server <- function(input, output, session) {
                        highlight = TRUE,
                        striped = TRUE,
                        compact = TRUE,
-                       showSortable = TRUE)
+                       showSortable = TRUE) |>
+        reactablefmtr::add_title("Summary of cohort code use",
+                                 font_size = 25,
+                                 font_weight = "normal") |>
+        reactablefmtr::add_subtitle("Codes from codelist observed on day of cohort entry. Note more than one code could be seen for a person on this day (both of which would have led to inclusion).",
+                                    font_size = 15, 
+                                    font_weight = "normal")
 
       return(tbl)
     }
@@ -661,6 +689,7 @@ server <- function(input, output, session) {
                     "percentage")
 
   })
+  
   output$summarise_large_scale_characteristics_tidy <- renderUI({
 
     tbl_data <- getTidyDataSummariseLargeScaleCharacteristics()
@@ -685,9 +714,16 @@ server <- function(input, output, session) {
               highlight = TRUE,
               striped = TRUE,
               compact = TRUE,
-              showSortable = TRUE)
+              showSortable = TRUE) |>
+    reactablefmtr::add_title("Large scale characteristics",
+                             font_size = 25,
+                             font_weight = "normal") |>
+    reactablefmtr::add_subtitle("Summary of all records from clinical tables within a time window. The sampled cohort represents individuals from the original cohort, the matched cohort comprises individuals of similar age and sex from the database.",
+                                font_size = 15, 
+                                font_weight = "normal")
 
   })
+  
   output$summarise_large_scale_characteristics_tidy_download <- shiny::downloadHandler(
     filename = "summarise_large_scale_characteristics_tidy.csv",
     content = function(file) {
@@ -846,7 +882,7 @@ server <- function(input, output, session) {
     )
     names(cols)[1] <- target_cohort
     names(cols)[2] <- comparator_cohort
-
+ 
     reactable::reactable(tbl,
                          defaultSorted = list("Standardised mean difference"  = "desc"),
                          columns = cols,
