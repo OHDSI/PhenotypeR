@@ -607,7 +607,7 @@ server <- function(input, output, session) {
       validate("No results found for selected inputs")
     }
 
-    plotAgeDensity(summarise_table, summarise_characteristics)
+    plotAgeDensity(summarise_table, summarise_characteristics, input$summarise_characteristics_add_interquantile_range)
 
   })
 
