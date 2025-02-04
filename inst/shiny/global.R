@@ -91,6 +91,7 @@ plotComparedLsc <- function(lsc, cohorts, imputeMissings, colour = NULL, facet =
   return(plot)
 }
 
+
 plotAgeDensity <- function(summarise_table, summarise_characteristics, show_interquantile_range){
 
   data <- summarise_table |>
@@ -195,7 +196,8 @@ getColsForTbl <- function(tbl, sortNALast = TRUE, names = c("Standard concept ID
 
     }else{
       cols[[working_col]] <- colDef(name = working_col,
-                                    sortNALast = sortNALast)
+                                    sortNALast = sortNALast,
+                                    format = colFormat(separators = TRUE))
     }
   }
 

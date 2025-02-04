@@ -84,6 +84,8 @@ selected$compare_large_scale_characteristics_grouping_domain <- choices$compare_
 
 if(!is.null(dataFiltered$summarise_large_scale_characteristics)){
   if(nrow(dataFiltered$summarise_large_scale_characteristics)>0){
+    dataFiltered$summarise_large_scale_characteristics <- dataFiltered$summarise_large_scale_characteristics |>
+      mutate(variable_name = iconv(variable_name, from = "latin1", to = "UTF-8"))
     choices$summarise_large_scale_characteristics_grouping_domain <- unique(settings(dataFiltered$summarise_large_scale_characteristics) |>
       pull("table_name"))
     selected$summarise_large_scale_characteristics_grouping_domain <- choices$summarise_large_scale_characteristics_grouping_domain
