@@ -493,9 +493,20 @@ server <- function(input, output, session) {
   createDiagramCohortAttrition <- shiny::reactive({
     result <- dataFiltered$summarise_cohort_attrition |>
       filterData("summarise_cohort_attrition", input)
+    
+    n <- result |> 
+      select(cdm_name, group_level) |>
+      distinct() |>
+      nrow()
+    
+    if(n > 1){
+      validate("Please select only one database")
+    }
+    
     CohortCharacteristics::plotCohortAttrition(
       result
-    )
+    ) 
+    
   })
   output$summarise_cohort_attrition_grViz <- DiagrammeR::renderGrViz({
     createDiagramCohortAttrition()

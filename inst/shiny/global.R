@@ -68,11 +68,14 @@ plotComparedLsc <- function(lsc, cohorts, imputeMissings, colour = NULL, facet =
   }
 
   plot <- plot_data |>
+    mutate(smd = (!!sym(cohorts[1]) - !!sym(cohorts[2]))/sqrt((!!sym(cohorts[1])*(1-!!sym(cohorts[1])) + !!sym(cohorts[2])*(1-!!sym(cohorts[2])))/2)) |>
+    mutate(smd = round(smd, 2)) |>
     mutate("Details" = paste("<br>Database:", database,
                              "<br>Concept:", variable_name,
                              "<br>Concept ID:", concept_id,
                              "<br>Time window:", time_window,
                              "<br>Table:", table,
+                             "<br>SMD:", smd,
                              "<br>Cohorts: ",
                              "<br> - ", cohorts[1],": ", !!sym(cohorts[1]),
                              "<br> - ", cohorts[2],": ", !!sym(cohorts[2]))) |>
@@ -86,8 +89,10 @@ plotComparedLsc <- function(lsc, cohorts, imputeMissings, colour = NULL, facet =
                                 label  = "Details") +
     geom_abline(slope = 1, intercept = 0,
                 color = "red", linetype = "dashed") +
-    theme_bw()
-
+    theme_bw() +
+    xlab(paste0(stringr::str_to_sentence(gsub("_"," ", cohorts[1])), " (%)")) +
+    ylab(paste0(stringr::str_to_sentence(gsub("_"," ", cohorts[2])), " (%)"))
+  
   return(plot)
 }
 
