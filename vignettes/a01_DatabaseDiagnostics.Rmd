@@ -13,3 +13,59 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
+
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>", message = FALSE, warning = FALSE,
+  fig.width = 7
+)
+
+library(CDMConnector)
+if (Sys.getenv("EUNOMIA_DATA_FOLDER") == "") Sys.setenv("EUNOMIA_DATA_FOLDER" = tempdir())
+if (!dir.exists(Sys.getenv("EUNOMIA_DATA_FOLDER"))) dir.create(Sys.getenv("EUNOMIA_DATA_FOLDER"))
+if (!eunomia_is_available()) downloadEunomiaData()
+```
+
+## Introduction
+In this example we're going to be using the Eunomia synthetic data. 
+
+```{r}
+library(CDMConnector)
+library(CohortConstructor)
+library(CodelistGenerator)
+library(PhenotypeR)
+library(dplyr)
+library(ggplot2)
+
+con <- DBI::dbConnect(duckdb::duckdb(),
+  dbdir = CDMConnector::eunomiaDir()
+)
+cdm <- CDMConnector::cdmFromCon(con,
+  cdmSchema = "main",
+  writeSchema = "main",
+  cdmName = "Eunomia"
+)
+```
+
+## Database diagnostics
+
+We have created our study cohort, but to inform analytic decisions and interpretation of results requires an understanding of the dataset from which it has been derived. The `databaseDiagnostics()` function will help us better understand a data source. 
+
+To run database diagnostics we just need to provide our cdm reference to the function.
+
+```{r}
+db_diagnostics <- databaseDiagnostics(cdm)
+db_diagnostics |> glimpse()
+```
+
+From our results we can create a table with a summary of metadata for the data source.
+```{r}
+OmopSketch::tableOmopSnapshot(db_diagnostics)
+```
+
+In addition, we also can see a summary of individuals' observation periods. From this we can see if there are individuals with multiple, non-overlapping, observation periods and how long each observation period lasts on average. 
+```{r}
+OmopSketch::tableObservationPeriod(db_diagnostics)
+```
