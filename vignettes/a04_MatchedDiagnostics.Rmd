@@ -1,5 +1,5 @@
 ---
-title: "a04_MatchedDiagnostics"
+title: "Matched diagnostics"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{a04_MatchedDiagnostics}
@@ -30,7 +30,7 @@ if (!eunomia_is_available()) downloadEunomiaData(datasetName = "synpuf-1k")
 ## Introduction
 In this example we're going to again create cohorts of individuals with an ankle sprain, ankle fracture, forearm fracture, or a hip fracture using the Eunomia synthetic data. 
 
-```{r}
+```{r, eval=FALSE}
 library(CDMConnector)
 library(CohortConstructor)
 library(CodelistGenerator)
@@ -60,7 +60,7 @@ cdm$injuries <- conceptCohort(cdm = cdm,
 
 ## Matched diagnostics
 Running the `matchedDiagnostics()` will compare the individuals in our cohorts with age and sex matched controls from the data source. This helps us to find features of our cohort that are particularly distinctive.
-```{r}
+```{r, eval=FALSE}
 matched_diag <- matchedDiagnostics(cdm$injuries)
 ```
 
