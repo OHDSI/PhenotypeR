@@ -37,7 +37,29 @@ cohortDiagnostics <- function(cohort){
   tempCohortName  <- paste0(prefix, cohortName)
   results <- list()
 
+  cli::cli_bullets(c("*" = "Getting cohort attrition"))
+  results[["cohort_attrition"]] <- cdm[[cohortName]] |>
+    CohortCharacteristics::summariseCohortAttrition()
+
+  # if there is more than one cohort, we'll get timing and overlap of all together
+  if(length(cohortIds) > 1){
+    cli::cli_bullets(c("*" = "Getting cohort overlap"))
+    results[["cohort_overlap"]] <-  cdm[[cohortName]] |>
+      CohortCharacteristics::summariseCohortOverlap()
+
+    cli::cli_bullets(c("*" = "Getting cohort timing"))
+    results[["cohort_timing"]] <- cdm[[cohortName]] |>
+      CohortCharacteristics::summariseCohortTiming(estimates = c("median", "q25", "q75", "min", "max", "density"))
+  }
+
+  # for other analyses run cohort by cohort
+  for(i in seq_along(cohortIds)){
+  workingCohortId <- cohortIds[i]
+  workingCohortName <- omopgenerics::getCohortName(cdm[[cohortName]],
+                                                   cohortId = workingCohortId)
+  cli::cli_bullets(c("*" = "{workingCohortName} - get cohort and index"))
   cdm[[tempCohortName]]  <- cdm[[cohortName]] |>
+    dplyr::filter(.data$cohort_definition_id == .env$workingCohortId) |>
     PatientProfiles::addDemographics(age = TRUE,
       ageGroup = list(c(0, 17), c(18, 64), c(65, 150)),
       sex = TRUE,
@@ -45,12 +67,10 @@ cohortDiagnostics <- function(cohort){
       futureObservation = FALSE,
       dateOfBirth = FALSE,
       name = tempCohortName)
-
-  cli::cli_bullets(c("*" = "Index cohort table"))
   cdm[[tempCohortName]] <- CohortConstructor::addCohortTableIndex(cdm[[tempCohortName]])
 
-  cli::cli_bullets(c("*" = "Getting cohort summary"))
-  results[["cohort_summary"]] <- cdm[[tempCohortName]] |>
+  cli::cli_bullets(c("*" = "{workingCohortName} - cohort summary"))
+  results[[paste0("cohort_summary_", workingCohortName)]] <- cdm[[tempCohortName]] |>
     CohortCharacteristics::summariseCharacteristics(
       strata = list("age_group", "sex"),
       tableIntersectCount = list(
@@ -61,8 +81,8 @@ cohortDiagnostics <- function(cohort){
       )
     )
 
-  cli::cli_bullets(c("*" = "Getting age density"))
-  results[["cohort_density"]] <- cdm[[tempCohortName]] |>
+  cli::cli_bullets(c("*" = "{workingCohortName} - age density"))
+  results[[paste0("cohort_density_", workingCohortName)]] <- cdm[[tempCohortName]] |>
     PatientProfiles::addCohortName() |>
     PatientProfiles::summariseResult(
       strata    = "sex",
@@ -70,25 +90,10 @@ cohortDiagnostics <- function(cohort){
       group     = "cohort_name",
       includeOverallGroup  = FALSE,
       variables = "age",
-      estimates = "density") |>
-    suppressMessages()
+      estimates = "density")
+ }
 
   omopgenerics::dropTable(cdm, dplyr::starts_with(prefix))
-
-  cli::cli_bullets(c("*" = "Getting cohort attrition"))
-  results[["cohort_attrition"]] <- cdm[[cohortName]] |>
-    CohortCharacteristics::summariseCohortAttrition()
-
-  if(length(cohortIds) > 1){
-    cli::cli_bullets(c("*" = "Getting cohort overlap"))
-    results[["cohort_overlap"]] <-  cdm[[cohortName]] |>
-      CohortCharacteristics::summariseCohortOverlap()
-
-    cli::cli_bullets(c("*" = "Getting cohort timing"))
-    results[["cohort_timing"]] <- cdm[[cohortName]] |>
-      CohortCharacteristics::summariseCohortTiming(estimates = c("median", "q25", "q75", "min", "max", "density"))
-    }
-
   results <- results |>
     vctrs::list_drop_empty() |>
     omopgenerics::bind() |>
