@@ -86,7 +86,7 @@ tables as these will be used for deriving concept counts.</p></dd>
 <span class="r-in"><span><span class="va">cdm</span><span class="op">$</span><span class="va">arthropathies</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ohdsi.github.io/CohortConstructor/reference/conceptCohort.html" class="external-link">conceptCohort</a></span><span class="op">(</span><span class="va">cdm</span>,</span></span>
 <span class="r-in"><span>                                   conceptSet <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"arthropathies"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">40475132</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                                   name <span class="op">=</span> <span class="st">"arthropathies"</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span><span style="color: #BBBB00;">!</span> `codelist` contains numeric values, they are casted to integers.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span><span style="color: #BBBB00;">!</span> `codelist` casted to integers.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Subsetting table <span style="font-weight: bold;">condition_occurrence</span> using 1 concept with domain: <span style="font-weight: bold;">condition</span>.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> No cohort entries found, returning empty cohort table.</span>
 <span class="r-in"><span></span></span>
@@ -98,7 +98,7 @@ tables as these will be used for deriving concept counts.</p></dd>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The CDM reference containing the cohort must also contain achilles tables.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> Returning only index event breakdown.</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">CDMConnector</span><span class="fu">::</span><span class="fu"><a href="https://darwin-eu.github.io/CDMConnector/reference/cdmDisconnect.html" class="external-link">cdmDisconnect</a></span><span class="op">(</span>cdm <span class="op">=</span> <span class="va">cdm</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">CDMConnector</span><span class="fu">::</span><span class="fu">cdmDisconnect</span><span class="op">(</span>cdm <span class="op">=</span> <span class="va">cdm</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
