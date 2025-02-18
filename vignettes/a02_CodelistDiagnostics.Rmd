@@ -70,3 +70,14 @@ And we can also see orphan codes, which are codes that we did not include in our
 ```{r}
 tableOrphanCodes(code_diag)
 ```
+
+## addCodelistAttribute
+
+Some cohorts that may be created manually may not have the codelists recorded in the `cohort_codelist` attribute. The package has a utility function to record a codelist in a `cohort_table` object:
+
+```{r}
+cohortCodelist(cdm$injuries, cohortId = 1)
+cdm$injuries <- cdm$injuries |>
+  addCodelistAttribute(codelist = list(new_codelist = c(1L, 2L)), cohortName = "ankle_fracture")
+cohortCodelist(cdm$injuries, cohortId = 1)
+```

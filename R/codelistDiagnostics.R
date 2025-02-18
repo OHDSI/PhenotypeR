@@ -65,6 +65,7 @@ codelistDiagnostics <- function(cohort){
   all_codelists <- purrr::map(cohortIds, \(x) {
     omopgenerics::cohortCodelist(cohortTable = cdm[[cohortTable]], cohortId = x)
   }) |>
+    purrr::flatten() |>
     omopgenerics::newCodelist()
 
   if(length(all_codelists) == 0){
