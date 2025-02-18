@@ -45,7 +45,12 @@ codelistDiagnostics <- function(cohort){
     dplyr::pull()
 
   addAttribute <- c("i" = "You can add a codelist to a cohort with `addCodelistAttribute()`.")
-  if(is.null(attr(cdm[[cohortTable]], "cohort_codelist"))){
+  notPresentCodelist <- is.null(attr(cdm[[cohortTable]], "cohort_codelist"))
+  if (!notPresentCodelist) {
+    notPresentCodelist <- attr(cdm[[cohortTable]], "cohort_codelist") |>
+      omopgenerics::isTableEmpty()
+  }
+  if (notPresentCodelist) {
     cli::cli_warn(message = c(
       "!" = "cohort_codelist attribute for cohort not found",
       "i" = "Returning an empty summarised result",
