@@ -50,6 +50,14 @@ codelistDiagnostics <- function(cohort){
   if (!notPresentCodelist) {
     notPresentCodelist <- attr(cdm[[cohortTable]], "cohort_codelist") |>
       omopgenerics::isTableEmpty()
+    if(notPresentCodelist){
+      cli::cli_warn(message = c(
+        "!" = "cohort_codelist attribute for cohort is empty",
+        "i" = "Returning an empty summarised result",
+        addAttribute
+      ))
+      return(omopgenerics::emptySummarisedResult())
+    }
   }
   if (notPresentCodelist) {
     cli::cli_warn(message = c(
@@ -81,17 +89,27 @@ codelistDiagnostics <- function(cohort){
   results <- list()
   results[[1]] <- omopgenerics::emptySummarisedResult()
 
+  # Check empty cohorts
+  ids <- CDMConnector::cohortCount(cdm[[cohortName]]) |>
+    dplyr::filter(number_subjects == 0) |>
+    dplyr::pull("cohort_definition_id")
+
   cli::cli_bullets(c("*" = "Getting index event breakdown"))
   for(i in seq_along(cohortIds)){
-    results[[paste0("index_event_", i)]] <- CodelistGenerator::summariseCohortCodeUse(
-      x = omopgenerics::cohortCodelist(cdm[[cohortName]], cohortIds[[i]]),
-      cdm = cdm,
-      cohortTable = cohortName,
-      cohortId = cohortIds[[i]],
-      timing = "entry",
-      countBy = c("record", "person"),
-      byConcept = TRUE
-    )
+    if(i %in% ids){
+      cli::cli_warn(message = c("!" = paste0("cohort_definition_id ", i, " is empty. Skipping code use for this cohort.")))
+      results[[paste0("index_event_", i)]] <- omopgenerics::emptySummarisedResult()
+    }else{
+      results[[paste0("index_event_", i)]] <- CodelistGenerator::summariseCohortCodeUse(
+        x = omopgenerics::cohortCodelist(cdm[[cohortName]], cohortIds[[i]]),
+        cdm = cdm,
+        cohortTable = cohortName,
+        cohortId = cohortIds[[i]],
+        timing = "entry",
+        countBy = c("record", "person"),
+        byConcept = TRUE
+      )
+    }
   }
 
   # all other analyses require achilles, so return if not available
