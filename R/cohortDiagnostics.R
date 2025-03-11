@@ -42,6 +42,10 @@ cohortDiagnostics <- function(cohort){
   results[["cohort_attrition"]] <- cdm[[cohortName]] |>
     CohortCharacteristics::summariseCohortAttrition()
 
+  cli::cli_bullets(c("*" = "Getting cohort count"))
+  results[["cohort_count"]] <- cdm[[cohortName]] |>
+    CohortCharacteristics::summariseCohortCount()
+
   # if there is more than one cohort, we'll get timing and overlap of all together
   if(length(cohortIds) > 1){
     cli::cli_bullets(c("*" = "Getting cohort overlap"))

@@ -485,7 +485,40 @@ server <- function(input, output, session) {
       }
     }
   )
+  
+  # summarise_cohort_count -----
+  ## Table summarise_cohort_count ----
+  createTableCohortCount <- shiny::reactive({
 
+    result <- dataFiltered$summarise_cohort_count |>
+      filterData("summarise_cohort_count", input) 
+    
+    if (nrow(result) == 0) {
+      validate("No results found for selected inputs")
+    }
+    
+    CohortCharacteristics::tableCohortCount(
+      result
+    )%>%
+      tab_header(
+        title = "Cohort count",
+        subtitle = "Number of records and subjects in the study cohorts."
+      ) %>%
+      tab_options(
+        heading.align = "left"
+      )
+  })
+  output$summarise_cohort_count_gt <- gt::render_gt({
+    createTableCohortCount()
+  })
+  output$summarise_cohort_count_gt_download <- shiny::downloadHandler(
+    filename = "summarise_cohort_count_gt.docx",
+    content = function(file) {
+      obj <- createTableCohortCount()
+      gt::gtsave(data = obj, filename = file)
+    }
+  )
+  
   # summarise_cohort_attrition -----
   ## Table summarise_cohort_attrition ----
   createTableCohortAttrition <- shiny::reactive({

@@ -4,14 +4,14 @@
 ui <- bslib::page_navbar(
   theme = bs_theme(bootswatch = "pulse"),
   #  zephyr
-
+  
   title = "PhenotypeR",
   bslib::nav_panel(
     title = "Background",
     icon = shiny::icon("disease"),
     shiny::includeMarkdown(path = "background.md")
   ),
-
+  
   # Database diagnostics -----
   bslib::nav_menu(
     title = "Database diagnostics",
@@ -392,9 +392,9 @@ ui <- bslib::page_navbar(
         )
       )
     ),
-    ## Cohort attrition ----
+    ## Cohort count ----
     bslib::nav_panel(
-      title = "Cohort attrition",
+      title = "Cohort count",
       icon = shiny::icon("person"),
       bslib::layout_sidebar(
         sidebar = bslib::sidebar(width = 400, open = "closed",
@@ -422,7 +422,34 @@ ui <- bslib::page_navbar(
         ),
         bslib::navset_card_tab(
           bslib::nav_panel(
-            title = "Table",
+            title = "Counts",
+            bslib::card(
+              full_screen = TRUE,
+              bslib::card_header(
+                shiny::downloadButton(outputId = "summarise_cohort_count_gt_download", label = ""),
+                class = "text-end"
+              ),
+              bslib::layout_sidebar(
+                
+                sidebar = bslib::sidebar(width = 400, open = "closed",
+                                         bslib::accordion(
+                                           shinyWidgets::pickerInput(
+                                             inputId = "summarise_cohort_count_variable_name",
+                                             label = "Variable name",
+                                             selected = c("Number records", "Number subjects"),
+                                             multiple = TRUE,
+                                             choices = c("Number records", "Number subjects"),
+                                             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                           )
+                                         ),
+                                         position = "right"
+                ),
+                gt::gt_output("summarise_cohort_count_gt") |> withSpinner()
+              )
+            )
+          ),
+          bslib::nav_panel(
+            title = "Attrition",
             bslib::card(
               full_screen = TRUE,
               bslib::card_header(
@@ -864,10 +891,10 @@ ui <- bslib::page_navbar(
               ),
               bslib::layout_sidebar(
                 sidebar = bslib::sidebar(width = 400, open = "closed",
-#                                          materialSwitch(inputId = "overlap_plot_interactive",
-#                                                         value = TRUE,
-#                                                         label = "Interactive",
-#                                                         status = "primary"),
+                                         #                                          materialSwitch(inputId = "overlap_plot_interactive",
+                                         #                                                         value = TRUE,
+                                         #                                                         label = "Interactive",
+                                         #                                                         status = "primary"),
                                          sortable::bucket_list(
                                            header = NULL,
                                            sortable::add_rank_list(
