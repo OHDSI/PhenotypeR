@@ -42,8 +42,14 @@ phenotypeDiagnostics <- function(cohort,
                                  populationDateRange = as.Date(c(NA, NA)),
                                  matchedDiagnostics = TRUE,
                                  matchedSample = 1000) {
-
+  cohort <- omopgenerics::validateCohortArgument(cohort = cohort)
   cdm <- omopgenerics::cdmReference(cohort)
+
+  omopgenerics::assertLogical(databaseDiagnostics)
+  omopgenerics::assertLogical(codelistDiagnostics)
+  omopgenerics::assertLogical(cohortDiagnostics)
+  omopgenerics::assertLogical(populationDiagnostics)
+  omopgenerics::assertLogical(matchedDiagnostics)
 
   results <- list()
   if (isTRUE(databaseDiagnostics)) {

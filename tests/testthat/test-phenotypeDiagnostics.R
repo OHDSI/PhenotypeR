@@ -80,5 +80,10 @@ test_that("overall diagnostics function", {
           unique(settings(cohort_pop_diag_only) |>
                    dplyr::pull("result_type"))))
 
+  expect_error(phenotypeDiagnostics(cdm$my_cohort, databaseDiagnostics = "hello"))
+  expect_error(phenotypeDiagnostics(cdm$my_cohort, codelistDiagnostics = 1))
+  expect_error(phenotypeDiagnostics(cdm$my_cohort, cohortDiagnostics   = "f"))
+  expect_error(phenotypeDiagnostics(cdm$my_cohort, matchedDiagnostics  = -10))
+  expect_error(phenotypeDiagnostics(cdm$my_cohort, populationDiagnostics = "hhh"))
 
 })

@@ -32,7 +32,8 @@
 matchedDiagnostics <- function(cohort,
                                matchedSample = 1000){
 
-  omopgenerics::assertNumeric(matchedSample, min = 1, null = TRUE)
+  cohort <- omopgenerics::validateCohortArgument(cohort = cohort)
+  omopgenerics::assertNumeric(matchedSample, integerish = TRUE, min = 1, null = TRUE, length = 1)
 
   cdm <- omopgenerics::cdmReference(cohort)
   cohortName <- omopgenerics::tableName(cohort)
