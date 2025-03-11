@@ -27,6 +27,7 @@
 
 cohortDiagnostics <- function(cohort){
 
+  cohort <- omopgenerics::validateCohortArgument(cohort = cohort)
   cdm <- omopgenerics::cdmReference(cohort)
   cohortName <- omopgenerics::tableName(cohort)
   cohortIds <- omopgenerics::settings(cohort) |>
