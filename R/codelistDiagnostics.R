@@ -45,29 +45,36 @@ codelistDiagnostics <- function(cohort){
     dplyr::select("cohort_definition_id") |>
     dplyr::pull()
 
-  if(is.null(attr(cdm[[cohortTable]], "cohort_codelist"))){
-    cli::cli_warn(message =
-                    c("cohort_codelist attribute for cohort not found",
-                      "i" = "Returning an empty summarised result"))
+  addAttribute <- c("i" = "You can add a codelist to a cohort with `addCodelistAttribute()`.")
+  notPresentCodelist <- is.null(attr(cdm[[cohortTable]], "cohort_codelist"))
+  if (!notPresentCodelist) {
+    notPresentCodelist <- attr(cdm[[cohortTable]], "cohort_codelist") |>
+      omopgenerics::isTableEmpty()
+  }
+  if (notPresentCodelist) {
+    cli::cli_warn(message = c(
+      "!" = "cohort_codelist attribute for cohort not found",
+      "i" = "Returning an empty summarised result",
+      addAttribute
+    ))
     return(omopgenerics::emptySummarisedResult())
   }
 
   cli::cli_bullets(c("*" = "Getting codelists from cohorts"))
 
    # get all cohort codelists
-  all_codelists <- omopgenerics::emptyCodelist()
-  for(i in seq_along(cohortIds)){
-    all_codelists <- purrr::flatten(list(
-      all_codelists,
-      omopgenerics::cohortCodelist(cdm[[cohortTable]], cohortIds[[i]])
-    )) |>
-      omopgenerics::newCodelist()
-  }
+  all_codelists <- purrr::map(cohortIds, \(x) {
+    omopgenerics::cohortCodelist(cohortTable = cdm[[cohortTable]], cohortId = x)
+  }) |>
+    purrr::flatten() |>
+    omopgenerics::newCodelist()
 
   if(length(all_codelists) == 0){
-    cli::cli_warn(message =
-                    c("Empty cohort_codelist attribute for cohort",
-                      "i" = "Returning an empty summarised result"))
+    cli::cli_warn(message = c(
+      "!" = "Empty cohort_codelist attribute for cohort",
+      "i" = "Returning an empty summarised result",
+      addAttribute
+    ))
     return(omopgenerics::emptySummarisedResult())
   }
 

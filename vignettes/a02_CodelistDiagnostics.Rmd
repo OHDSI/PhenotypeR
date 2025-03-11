@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 library(CDMConnector)
 if (Sys.getenv("EUNOMIA_DATA_FOLDER") == "") Sys.setenv("EUNOMIA_DATA_FOLDER" = tempdir())
 if (!dir.exists(Sys.getenv("EUNOMIA_DATA_FOLDER"))) dir.create(Sys.getenv("EUNOMIA_DATA_FOLDER"))
-if (!eunomia_is_available()) downloadEunomiaData()
+if (!eunomiaIsAvailable()) downloadEunomiaData(datasetName = "synpuf-1k")
 ```
 
 ## Introduction
@@ -34,14 +34,13 @@ library(PhenotypeR)
 library(dplyr)
 library(ggplot2)
 
-con <- DBI::dbConnect(duckdb::duckdb(),
-  dbdir = CDMConnector::eunomiaDir()
-)
-cdm <- CDMConnector::cdmFromCon(con,
-  cdmSchema = "main",
-  writeSchema = "main",
-  cdmName = "Eunomia"
-)
+con <- DBI::dbConnect(duckdb::duckdb(), 
+                      CDMConnector::eunomiaDir("synpuf-1k", "5.3"))
+cdm <- CDMConnector::cdmFromCon(con = con, 
+                                cdmName = "Eunomia Synpuf",
+                                cdmSchema   = "main",
+                                writeSchema = "main", 
+                                achillesSchema = "main")
 
 cdm$injuries <- conceptCohort(cdm = cdm,
   conceptSet = list(
@@ -56,8 +55,29 @@ cdm$injuries |>
 ```
 
 ## Summarising code use
-
+To get a good understanding of the codes we've used to define our cohorts we can use the `codelistDiagnostics()` function.
 ```{r}
 code_diag <- codelistDiagnostics(cdm$injuries)
-#tableCohortCodeUse(code_diag)
+```
+
+From our results we can see a table of counts of our codes in our database based on the achilles results.
+
+```{r}
+tableAchillesCodeUse(code_diag)
+```
+
+And we can also see orphan codes, which are codes that we did not include in our cohort definition but maybe could have. These are codes being used in the database that are associated with codes we included in our definition. So although many can be false positives, we may identify some codes that we may want to our cohort definitions.
+```{r}
+tableOrphanCodes(code_diag)
+```
+
+## addCodelistAttribute
+
+Some cohorts that may be created manually may not have the codelists recorded in the `cohort_codelist` attribute. The package has a utility function to record a codelist in a `cohort_table` object:
+
+```{r}
+cohortCodelist(cdm$injuries, cohortId = 1)
+cdm$injuries <- cdm$injuries |>
+  addCodelistAttribute(codelist = list(new_codelist = c(1L, 2L)), cohortName = "ankle_fracture")
+cohortCodelist(cdm$injuries, cohortId = 1)
 ```

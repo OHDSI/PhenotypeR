@@ -1,5 +1,7 @@
 test_that("overall diagnostics function", {
 
+  skip_on_cran()
+
   cdm_local <- omock::mockCdmReference() |>
     omock::mockPerson(nPerson = 100) |>
     omock::mockObservationPeriod() |>

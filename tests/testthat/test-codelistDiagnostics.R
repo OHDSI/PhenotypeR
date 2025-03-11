@@ -1,4 +1,6 @@
 test_that("missing codelist attribute", {
+  skip_on_cran()
+
   testthat::skip_on_cran()
   cdm_local <- omock::mockCdmReference() |>
     omock::mockPerson(nPerson = 100) |>
