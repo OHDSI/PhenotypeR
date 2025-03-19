@@ -485,18 +485,18 @@ server <- function(input, output, session) {
       }
     }
   )
-  
+
   # summarise_cohort_count -----
   ## Table summarise_cohort_count ----
   createTableCohortCount <- shiny::reactive({
 
     result <- dataFiltered$summarise_cohort_count |>
-      filterData("summarise_cohort_count", input) 
-    
+      filterData("summarise_cohort_count", input)
+
     if (nrow(result) == 0) {
       validate("No results found for selected inputs")
     }
-    
+
     CohortCharacteristics::tableCohortCount(
       result
     )%>%
@@ -518,7 +518,7 @@ server <- function(input, output, session) {
       gt::gtsave(data = obj, filename = file)
     }
   )
-  
+
   # summarise_cohort_attrition -----
   ## Table summarise_cohort_attrition ----
   createTableCohortAttrition <- shiny::reactive({
@@ -1041,6 +1041,7 @@ server <- function(input, output, session) {
       facet = input$summarise_cohort_overlap_plot_facet,
       uniqueCombinations = input$summarise_cohort_overlap_plot_uniqueCombinations
     )
+    return(result)
   })
   output$summarise_cohort_overlap_plot <- plotly::renderPlotly({
     createPlotCohortOverlap()
