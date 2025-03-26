@@ -58,24 +58,19 @@ cohortDiagnostics <- function(cohort){
   }
 
   # for other analyses run cohort by cohort
-  for(i in seq_along(cohortIds)){
-  workingCohortId <- cohortIds[i]
-  workingCohortName <- omopgenerics::getCohortName(cdm[[cohortName]],
-                                                   cohortId = workingCohortId)
-  cli::cli_bullets(c("*" = "{workingCohortName} - get cohort and index"))
+  cli::cli_bullets(c("*" = "get cohorts and index"))
   cdm[[tempCohortName]]  <- cdm[[cohortName]] |>
-    dplyr::filter(.data$cohort_definition_id == .env$workingCohortId) |>
     PatientProfiles::addDemographics(age = TRUE,
-      ageGroup = list(c(0, 17), c(18, 64), c(65, 150)),
-      sex = TRUE,
-      priorObservation = FALSE,
-      futureObservation = FALSE,
-      dateOfBirth = FALSE,
-      name = tempCohortName)
+                                     ageGroup = list(c(0, 17), c(18, 64), c(65, 150)),
+                                     sex = TRUE,
+                                     priorObservation = FALSE,
+                                     futureObservation = FALSE,
+                                     dateOfBirth = FALSE,
+                                     name = tempCohortName)
   cdm[[tempCohortName]] <- CohortConstructor::addCohortTableIndex(cdm[[tempCohortName]])
 
-  cli::cli_bullets(c("*" = "{workingCohortName} - cohort summary"))
-  results[[paste0("cohort_summary_", workingCohortName)]] <- cdm[[tempCohortName]] |>
+  cli::cli_bullets(c("*" = "cohort summary"))
+  results[["cohort_summary"]] <- cdm[[tempCohortName]] |>
     CohortCharacteristics::summariseCharacteristics(
       strata = list("age_group", "sex"),
       tableIntersectCount = list(
@@ -86,17 +81,18 @@ cohortDiagnostics <- function(cohort){
       )
     )
 
-  cli::cli_bullets(c("*" = "{workingCohortName} - age density"))
-  results[[paste0("cohort_density_", workingCohortName)]] <- cdm[[tempCohortName]] |>
+  cli::cli_bullets(c("*" = "age density"))
+  results[["cohort_density"]] <- cdm[[tempCohortName]] |>
     PatientProfiles::addCohortName() |>
     PatientProfiles::summariseResult(
+      counts = FALSE,
       strata    = "sex",
       includeOverallStrata = FALSE,
       group     = "cohort_name",
       includeOverallGroup  = FALSE,
       variables = "age",
-      estimates = "density")
- }
+      estimates = "density"
+    )
 
   omopgenerics::dropTable(cdm, dplyr::starts_with(prefix))
   results <- results |>
