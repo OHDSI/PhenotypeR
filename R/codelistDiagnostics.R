@@ -91,7 +91,7 @@ codelistDiagnostics <- function(cohort){
 
   # Check empty cohorts
   ids <- CDMConnector::cohortCount(cdm[[cohortName]]) |>
-    dplyr::filter(number_subjects == 0) |>
+    dplyr::filter(.data$number_subjects == 0) |>
     dplyr::pull("cohort_definition_id")
 
   cli::cli_bullets(c("*" = "Getting index event breakdown"))
