@@ -84,7 +84,8 @@ cohortDiagnostics <- function(cohort){
           window = c(-365, -1)
         )
       )
-    )
+    ) |>
+      dplyr::filter(.data$group_level == .env$workingCohortName)
 
   cli::cli_bullets(c("*" = "{workingCohortName} - age density"))
   results[[paste0("cohort_density_", workingCohortName)]] <- cdm[[tempCohortName]] |>
@@ -97,7 +98,6 @@ cohortDiagnostics <- function(cohort){
       variables = "age",
       estimates = "density")
  }
-
   omopgenerics::dropTable(cdm, dplyr::starts_with(prefix))
   results <- results |>
     vctrs::list_drop_empty() |>
