@@ -44,3 +44,38 @@ test_that("missing codelist attribute", {
   CDMConnector::cdmDisconnect(cdm = cdm)
 })
 
+test_that("duplicated codelists", {
+  skip_on_cran()
+  cdm <- omock::mockCdmFromTables(tables = list(
+    cohort1 = dplyr::tibble(
+      cohort_definition_id = c(1L, 2L),
+      subject_id = 1L,
+      cohort_start_date = as.Date("2020-01-01"),
+      cohort_end_date = as.Date("2020-01-01")
+    )
+  )) |>
+    omock::mockConditionOccurrence() |>
+    omopgenerics::insertCdmTo(to = CDMConnector::dbSource(
+      con = duckdb::dbConnect(duckdb::duckdb()), writeSchema = "main"
+    ))
+  cdm$cohort1 <- cdm$cohort1 |>
+    omopgenerics::newCohortTable() |>
+    addCodelistAttribute(
+      codelist = list(a = c(1L, 2L, 3L)),
+      cohortName = c("cohort_1")
+    ) |>
+    addCodelistAttribute(
+      codelist = list(a = c(1L, 2L, 3L), b = 3L),
+      cohortName = c("cohort_2", "cohort_2")
+    )
+
+  expect_no_error(codelistDiagnostics(cdm$cohort1))
+
+  # now b codelist is different
+  cdm$cohort1 <- cdm$cohort1 |>
+    addCodelistAttribute(
+      codelist = list(b = 4L),
+      cohortName = c("cohort_1")
+    )
+  expect_error(codelistDiagnostics(cdm$cohort1))
+})

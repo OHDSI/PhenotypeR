@@ -70,12 +70,11 @@ codelistDiagnostics <- function(cohort){
 
   cli::cli_bullets(c("*" = "Getting codelists from cohorts"))
 
-   # get all cohort codelists
+  # get all cohort codelists
   all_codelists <- purrr::map(cohortIds, \(x) {
     omopgenerics::cohortCodelist(cohortTable = cdm[[cohortTable]], cohortId = x)
   }) |>
-    purrr::flatten() |>
-    omopgenerics::newCodelist()
+    duplicatedCodelists()
 
   if(length(all_codelists) == 0){
     cli::cli_warn(message = c(
@@ -122,9 +121,9 @@ codelistDiagnostics <- function(cohort){
       vctrs::list_drop_empty() |>
       omopgenerics::bind()
 
-   if(is.null(results)){
-     results <- omopgenerics::emptySummarisedResult()
-   }
+    if(is.null(results)){
+      results <- omopgenerics::emptySummarisedResult()
+    }
 
     return(results)
   }
@@ -141,13 +140,42 @@ codelistDiagnostics <- function(cohort){
 
   cli::cli_bullets(c("*" = "Getting orphan concepts"))
   results[[paste0("orphan_codes", i)]] <- CodelistGenerator::summariseOrphanCodes(
-      x = all_codelists,
-      cdm = cdm
-    )
+    x = all_codelists,
+    cdm = cdm
+  )
 
   results <- results |>
     vctrs::list_drop_empty() |>
     omopgenerics::bind()
 
   results
+}
+
+duplicatedCodelists <- function(codelists) {
+  # check names
+  codelist <- codelists |>
+    purrr::map(names) |>
+    purrr::flatten_chr() |>
+    unique() |>
+    rlang::set_names() |>
+    purrr::map(\(nm) {
+      codelists |>
+        purrr::map(\(x) x[[nm]]) |>
+        purrr::compact() |>
+        # this will ensure that if the duplicated codelist is the same there is no error
+        unique()
+    })
+  dupl <- purrr::keep(lengths(codelist), \(x) x > 1)
+  if (length(dupl)) {
+    dupl <- dupl |>
+      purrr::imap_chr(\(x, nm) paste0("Codelist {.pkg ", nm, "}: ", x, " definitions."))
+    cli::cli_abort(c(
+      x = "There are codelists with multiple definitions in cohort: ",
+      dupl,
+      i = "Please provide unique definitions for each codelist"
+    ))
+  }
+  codelist |>
+    purrr::flatten() |>
+    omopgenerics::newCodelist()
 }
