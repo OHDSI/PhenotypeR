@@ -52,7 +52,8 @@ Suggests:
     plotly,
     tidyr,
     scales,
-    usethis
+    usethis,
+    rmarkdown
 Config/testthat/edition: 3
 RoxygenNote: 7.3.2
 Imports: 
