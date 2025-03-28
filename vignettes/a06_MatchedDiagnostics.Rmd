@@ -63,4 +63,3 @@ Running the `matchedDiagnostics()` will compare the individuals in our cohorts w
 ```{r, eval=FALSE}
 matched_diag <- matchedDiagnostics(cdm$injuries)
 ```
-
