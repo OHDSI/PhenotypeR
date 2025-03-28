@@ -1,5 +1,5 @@
 ---
-title: "PopulationDiagnostics"
+title: "Population diagnostics"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{a07_PopulationDiagnostics}
