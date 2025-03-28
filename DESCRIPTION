@@ -1,7 +1,7 @@
 Package: PhenotypeR
 Type: Package
 Title: Assess Study Cohorts Using a Common Data Model
-Version: 0.1.3.900
+Version: 0.1.4
 Authors@R: c(
     person("Edward", "Burn", , "edward.burn@ndorms.ox.ac.uk", 
     role = c("aut", "cre"), comment = c(ORCID = "0000-0002-9286-1128")),
@@ -56,14 +56,14 @@ Suggests:
 Config/testthat/edition: 3
 RoxygenNote: 7.3.2
 Imports: 
-    CodelistGenerator (>= 3.3.2),
-    CohortCharacteristics (>= 0.4.0),
+    CodelistGenerator (>= 3.4.0),
+    CohortCharacteristics (>= 0.5.1),
     CohortConstructor (>= 0.3.5),
     cli,
     dplyr,
-    IncidencePrevalence (>= 1.0.0),
-    omopgenerics (>= 0.4.1),
-    OmopSketch (>= 0.2.1),
+    IncidencePrevalence (>= 1.2.0),
+    omopgenerics (>= 1.1.1),
+    OmopSketch (>= 0.3.1),
     magrittr,
     purrr,
     rlang,
