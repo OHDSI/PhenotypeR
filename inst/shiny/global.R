@@ -92,7 +92,7 @@ plotComparedLsc <- function(lsc, cohorts, imputeMissings, colour = NULL, facet =
     theme_bw() +
     xlab(paste0(stringr::str_to_sentence(gsub("_"," ", cohorts[1])), " (%)")) +
     ylab(paste0(stringr::str_to_sentence(gsub("_"," ", cohorts[2])), " (%)"))
-  
+
   return(plot)
 }
 
@@ -144,7 +144,7 @@ plotAgeDensity <- function(summarise_table, summarise_characteristics, show_inte
   plot <- ggplot2::ggplot(data, ggplot2::aes(x = density_x, y = density_y, fill = sex)) +
     geom_polygon() +
     scale_y_continuous(labels = function(x) scales::label_percent()(abs(x)),
-                       limits = c(-max_density*1.1, max_density*1.1)) +
+                       limits = c(-max_density*1.2, max_density*1.2)) +
     themeVisOmop() +
     theme(
       axis.text.x = element_text(),
