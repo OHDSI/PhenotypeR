@@ -24,12 +24,12 @@ library(chromote)
 library(reactable)
 
 # ensure minimum versions
-rlang::check_installed("omopgenerics", version = "0.4")
+rlang::check_installed("omopgenerics", version = "1.1.1")
 rlang::check_installed("visOmopResults", version = "0.5.0")
-rlang::check_installed("CodelistGenerator", version = "3.3.2")
-rlang::check_installed("CohortCharacteristics", version = "0.4.0")
-rlang::check_installed("IncidencePrevalence", version = "1.0.0")
-rlang::check_installed("OmopSketch", version = "0.2.1")
+rlang::check_installed("CodelistGenerator", version = "3.4.0")
+rlang::check_installed("CohortCharacteristics", version = "0.5.1")
+rlang::check_installed("IncidencePrevalence", version = "1.2.0")
+rlang::check_installed("OmopSketch", version = "0.3.1")
 
 source(here::here("scripts", "functions.R"))
 
