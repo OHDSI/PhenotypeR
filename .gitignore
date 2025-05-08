@@ -1,11 +1,10 @@
 report.html
 docs
 inst/doc
-/shiny
 /doc/
 /Meta/
 .Rproj.user/
 .Rhistory
 inst/shiny/data/raw/*.csv
-inst/shiny/data/appData.RData
 inst/shiny/*.RData
+inst/shiny/data/appData.RData
