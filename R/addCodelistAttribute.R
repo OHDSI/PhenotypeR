@@ -44,7 +44,9 @@ addCodelistAttribute <- function(cohort,
   if (length(cohortName) != length(codelist)) {
     cli::cli_abort("`cohortName` and `codelist` must have the same length.")
   }
-  currentCohortCodelist <- attr(cohort, "cohort_codelist") |> dplyr::collect()
+  currentCohortCodelist <- attr(cohort, "cohort_codelist") |>
+    dplyr::collect() |>
+    dplyr::rename(type = dplyr::any_of("codelist_type"))
 
   cohortCodelist <- dplyr::tibble("cohort_name" = cohortName, codelist_name = names(codelist)) |>
     dplyr::inner_join(
