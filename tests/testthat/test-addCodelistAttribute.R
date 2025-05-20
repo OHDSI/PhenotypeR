@@ -22,7 +22,7 @@ test_that("test add codelist works", {
       cohort_definition_id = 1,
       codelist_name = c("a", "b"),
       concept_id = 1:2,
-      type = "index event"
+      codelist_type = "index event"
     )
   )
 
@@ -37,7 +37,7 @@ test_that("test add codelist works", {
       cohort_definition_id = 1,
       codelist_name = c("a", "b"),
       concept_id = 1:2,
-      type = "index event"
+      codelist_type = "index event"
     )
   )
 
@@ -51,7 +51,7 @@ test_that("test add codelist works", {
       cohort_definition_id = c(1L, 2L, 2L),
       codelist_name = c("a", "b", "c"),
       concept_id = 1:3,
-      type = "index event"
+      codelist_type = "index event"
     )
   )
 
@@ -121,7 +121,7 @@ test_that("test eunomia", {
 
   con <- DBI::dbConnect(duckdb::duckdb(CDMConnector::eunomiaDir()))
   cdm <- CDMConnector::cdmFromCon(
-    con = con, cdm_name = "eunomia",
+    con = con, cdmName = "eunomia",
     cdmSchema = "main", writeSchema = "main"
   )
 
