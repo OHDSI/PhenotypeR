@@ -414,7 +414,7 @@ ui <- bslib::page_navbar(
                                        label = "Cohort name",
                                        choices = NULL,
                                        selected = NULL,
-                                       multiple = FALSE,
+                                       multiple = TRUE,
                                        options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                      )
                                    )
@@ -679,7 +679,19 @@ ui <- bslib::page_navbar(
                 shiny::downloadButton(outputId = "summarise_large_scale_characteristics_gt_download", label = ""),
                 class = "text-end"
               ),
-              gt::gt_output("summarise_large_scale_characteristics_gt") |> withSpinner()
+              bslib::layout_sidebar(
+                sidebar = bslib::sidebar(width = 400, open = "closed",
+                                         shiny::numericInput(
+                                           min = 1,
+                                           step = 1, 
+                                           inputId = "summarise_large_scale_characteristics_top_concepts",
+                                           label = "Top concepts",
+                                           value = 10
+                                         ),
+                                         position = "right"
+                ),
+                gt::gt_output("summarise_large_scale_characteristics_gt") |> withSpinner()
+              )
             )
           )
         )
