@@ -166,7 +166,7 @@ choices$compare_large_scale_characteristics_grouping_domain <- choices$summarise
 selected$compare_large_scale_characteristics_grouping_domain <- choices$compare_large_scale_characteristics_grouping_domain
 
 choices$compare_large_scale_characteristics_settings_analysis <- choices$summarise_large_scale_characteristics_settings_analysis
-selected$compare_large_scale_characteristics_settings_analysis <- "standard"
+selected$compare_large_scale_characteristics_settings_analysis <- choices$compare_large_scale_characteristics_settings_analysis[1]
 
 selected$summarise_large_scale_characteristics_settings_analysis <-"standard"
 
