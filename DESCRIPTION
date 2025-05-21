@@ -58,8 +58,8 @@ Config/testthat/edition: 3
 RoxygenNote: 7.3.2
 Imports: 
     CodelistGenerator (>= 3.4.0),
-    CohortCharacteristics (>= 0.5.1),
-    CohortConstructor (>= 0.3.5),
+    CohortCharacteristics (>= 1.0.0),
+    CohortConstructor (>= 0.4.0),
     cli,
     dplyr,
     IncidencePrevalence (>= 1.2.0),
