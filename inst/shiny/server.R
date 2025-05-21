@@ -560,10 +560,6 @@ server <- function(input, output, session) {
       distinct() |>
       nrow()
 
-    if(n > 1){
-      validate("Please select only one database")
-    }
-
     CohortCharacteristics::plotCohortAttrition(
       result
     )
@@ -844,11 +840,10 @@ server <- function(input, output, session) {
                        desc(as.numeric(estimate_value)))
     }
     lsc_data |>
-      CohortCharacteristics::tableTopLargeScaleCharacteristics(topConcepts = 10) %>%
+      CohortCharacteristics::tableTopLargeScaleCharacteristics(topConcepts = input$summarise_large_scale_characteristics_top_concepts) %>%
       tab_header(
-        title = "Large scale characteristics",
-        subtitle = "Summary of all records from clinical tables within a time window.
-                    The sampled cohort represents individuals from the original cohort, the matched cohort comprises individuals of similar age and sex from the database."
+        title = "Top concepts in large scale characteristics",
+        subtitle = "Summary of the most prevalent concepts by percentage across each cohort."
       ) %>%
       tab_options(
         heading.align = "left"
