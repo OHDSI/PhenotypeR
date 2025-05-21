@@ -24,10 +24,10 @@ library(chromote)
 library(reactable)
 
 # ensure minimum versions
-rlang::check_installed("omopgenerics", version = "1.1.1")
+rlang::check_installed("omopgenerics", version = "1.2.0")
 rlang::check_installed("visOmopResults", version = "0.5.0")
 rlang::check_installed("CodelistGenerator", version = "3.4.0")
-rlang::check_installed("CohortCharacteristics", version = "0.5.1")
+rlang::check_installed("CohortCharacteristics", version = "1.0.0")
 rlang::check_installed("IncidencePrevalence", version = "1.2.0")
 rlang::check_installed("OmopSketch", version = "0.3.1")
 
@@ -44,21 +44,23 @@ if(file.exists(here::here("data", "appData.RData"))){
 }
 
 plotComparedLsc <- function(lsc, cohorts, imputeMissings, colour = NULL, facet = NULL){
-
   plot_data <- lsc |>
     filter(group_level %in% c(cohorts)) |>
     filter(estimate_name == "percentage") |>
-    omopgenerics::addSettings() |>
-    select(database = cdm_name,
-           cohort_name = group_level,
-           variable_name,
-           time_window = variable_level,
-           concept_id = additional_level,
-           table = table_name,
-           percentage = estimate_value) |>
+    tidy() |> 
+    select(dplyr::any_of(c(
+      "database" = "cdm_name",
+           "cohort_name",
+           "variable_name",
+           "time_window" = "variable_level",
+           "concept_id", 
+         "source_concept_name",
+           "source_concept_id",
+           "table" = "table_name",
+           "percentage"))) |>
     mutate(percentage = if_else(percentage == "-",
                                 NA, percentage)) |>
-    mutate(percentage = as.numeric(percentage)) |>
+    mutate(percentage = as.numeric(percentage)/100) |>
     pivot_wider(names_from = cohort_name,
                 values_from = percentage)
 
@@ -67,18 +69,37 @@ plotComparedLsc <- function(lsc, cohorts, imputeMissings, colour = NULL, facet =
       mutate(across(c(cohorts[1], cohorts[2]), ~if_else(is.na(.x), 0, .x)))
   }
 
-  plot <- plot_data |>
+ plot_data <- plot_data |>
     mutate(smd = (!!sym(cohorts[1]) - !!sym(cohorts[2]))/sqrt((!!sym(cohorts[1])*(1-!!sym(cohorts[1])) + !!sym(cohorts[2])*(1-!!sym(cohorts[2])))/2)) |>
-    mutate(smd = round(smd, 2)) |>
-    mutate("Details" = paste("<br>Database:", database,
+    mutate(smd = round(smd, 2))
+  if("source_concept_id" %in% colnames(plot_data)){
+    plot_data <- plot_data |>
+     mutate("Details" = paste("<br>Database:", database,
                              "<br>Concept:", variable_name,
                              "<br>Concept ID:", concept_id,
+                             "<br>Source concept:", source_concept_name,
+                             "<br>Source concept ID:", source_concept_id,
                              "<br>Time window:", time_window,
                              "<br>Table:", table,
                              "<br>SMD:", smd,
                              "<br>Cohorts: ",
                              "<br> - ", cohorts[1],": ", !!sym(cohorts[1]),
-                             "<br> - ", cohorts[2],": ", !!sym(cohorts[2]))) |>
+                             "<br> - ", cohorts[2],": ", !!sym(cohorts[2]))) 
+  } else {
+    plot_data <- plot_data |>
+      mutate("Details" = paste("<br>Database:", database,
+                               "<br>Concept:", variable_name,
+                               "<br>Concept ID:", concept_id,
+                               "<br>Time window:", time_window,
+                               "<br>Table:", table,
+                               "<br>SMD:", smd,
+                               "<br>Cohorts: ",
+                               "<br> - ", cohorts[1],": ", !!sym(cohorts[1]),
+                               "<br> - ", cohorts[2],": ", !!sym(cohorts[2])))   
+    }
+    
+    
+ plot <- plot_data |>
     visOmopResults::scatterPlot(x = cohorts[1],
                                 y = cohorts[2],
                                 colour = colour,

@@ -127,7 +127,7 @@ and save our shiny app to a temporary directory, but you will likely
 want to save this shiny app to a local directory of your choice.
 
 ``` r
-shinyDiagnostics(result = result, minCellCount = 10, directory = tempdir())
+shinyDiagnostics(result = result |> suppress(10), directory = tempdir())
 ```
 
 See the shiny app generated from the example cohort in

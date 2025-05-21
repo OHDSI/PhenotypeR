@@ -712,7 +712,8 @@ server <- function(input, output, session) {
     lsc_data <- dataFiltered$summarise_large_scale_characteristics |>
       filter(!is.na(estimate_value)) |>
       filter(estimate_value != "-") |>
-      visOmopResults::filterSettings(table_name %in% input$summarise_large_scale_characteristics_grouping_domain) |>
+      visOmopResults::filterSettings(table_name %in% input$summarise_large_scale_characteristics_grouping_domain,
+                                     analysis %in% input$summarise_large_scale_characteristics_settings_analysis) |>
       dplyr::filter(cdm_name %in% input$summarise_large_scale_characteristics_grouping_cdm_name ) |>
       dplyr::filter(group_level  %in% input$summarise_large_scale_characteristics_grouping_cohort_name) |>
       dplyr::filter(variable_level  %in% input$summarise_large_scale_characteristics_grouping_time_window)
@@ -720,23 +721,29 @@ server <- function(input, output, session) {
     if (nrow(lsc_data) == 0) {
       validate("No results found for selected inputs")
     }
-    tidy(lsc_data) |>
+   tidy_lsc <- tidy(lsc_data) |>
       mutate(concept = paste0(variable_name, " (",
-                              concept_id, ")")) |>
-      mutate(source_concept = paste0(source_concept_name, " (",
-                                     source_concept_id, ")")) |>
-      dplyr::select("cdm_name",
+                              concept_id, ")")) 
+   
+   if("source_concept_id" %in% colnames(tidy_lsc)){
+     tidy_lsc <- tidy_lsc |> 
+       mutate(source_concept = paste0(source_concept_name, " (",
+                                    source_concept_id, ")"))
+   }
+   
+   tidy_lsc |> 
+      dplyr::select(dplyr::any_of(c("cdm_name",
                     "cohort_name",
                     "concept",
                     "source_concept",
                     "count",
-                    "percentage")
+                    "percentage")))
 
   })
 
   output$summarise_large_scale_characteristics_tidy <- renderUI({
-
     tbl_data <- getTidyDataSummariseLargeScaleCharacteristics()
+    if("source_concept" %in% colnames(tbl_data)){
     tbl_data <- tbl_data |>
       rename("CDM name" = "cdm_name",
              "Cohort" = "cohort_name",
@@ -748,15 +755,31 @@ server <- function(input, output, session) {
                                                         url   <- sprintf("https://athena.ohdsi.org/search-terms/terms/%s", value_concept)
                                                         htmltools::tags$a(href = url, target = "_blank", as.character(value))
                                                       }),
-                 "Source concept name (concept ID)" = colDef(name = "Concept name (concept ID)",
-                                                      cell = function(value){
-                                                        value_concept <- gsub(".*\\(|\\)","",value)
-                                                        url   <- sprintf("https://athena.ohdsi.org/search-terms/terms/%s", value_concept)
-                                                        htmltools::tags$a(href = url, target = "_blank", as.character(value))
-                                                      }),
+                 "Source concept name (concept ID)" = colDef(name = "Source concept name (concept ID)",
+                                                             cell = function(value){
+                                                               value_concept <- gsub(".*\\(|\\)","",value)
+                                                               url   <- sprintf("https://athena.ohdsi.org/search-terms/terms/%s", value_concept)
+                                                               htmltools::tags$a(href = url, target = "_blank", as.character(value))
+                                                             }),
                  count = colDef(format = colFormat(separators = TRUE)),
                  percentage = colDef(format = colFormat(percent = TRUE))
     )
+    } else {
+      tbl_data <- tbl_data |>
+        rename("CDM name" = "cdm_name",
+               "Cohort" = "cohort_name",
+               "Concept name (concept ID)" = "concept")
+      cols <- list("Concept name (concept ID)" = colDef(name = "Concept name (concept ID)",
+                                                        cell = function(value){
+                                                          value_concept <- gsub(".*\\(|\\)","",value)
+                                                          url   <- sprintf("https://athena.ohdsi.org/search-terms/terms/%s", value_concept)
+                                                          htmltools::tags$a(href = url, target = "_blank", as.character(value))
+                                                        }),
+                   count = colDef(format = colFormat(separators = TRUE)),
+                   percentage = colDef(format = colFormat(percent = TRUE))
+      )
+      
+    }
 
     reactable(tbl_data |>
                 mutate(percentage = percentage / 100), # to use colFormat
@@ -795,7 +818,8 @@ server <- function(input, output, session) {
     lsc_data <- dataFiltered$summarise_large_scale_characteristics |>
       filter(!is.na(estimate_value)) |>
       filter(estimate_value != "-") |>
-      visOmopResults::filterSettings(table_name %in% input$summarise_large_scale_characteristics_grouping_domain) |>
+      visOmopResults::filterSettings(table_name %in% input$summarise_large_scale_characteristics_grouping_domain,
+                                     analysis %in% input$summarise_large_scale_characteristics_settings_analysis) |>
       dplyr::filter(cdm_name %in% input$summarise_large_scale_characteristics_grouping_cdm_name ) |>
       dplyr::filter(group_level  %in% input$summarise_large_scale_characteristics_grouping_cohort_name) |>
       dplyr::filter(variable_level %in% input$summarise_large_scale_characteristics_grouping_time_window)
@@ -852,7 +876,8 @@ server <- function(input, output, session) {
     dataFiltered$summarise_large_scale_characteristics |>
       filter(variable_level %in% input$compare_large_scale_characteristics_grouping_time_window,
              cdm_name %in% input$compare_large_scale_characteristics_grouping_cdm_name) |>
-      filterSettings(table_name %in% input$compare_large_scale_characteristics_grouping_domain)
+      filterSettings(table_name %in% input$compare_large_scale_characteristics_grouping_domain,
+                     analysis %in% input$compare_large_scale_characteristics_settings_analysis)
 
   })
   ## Tidy large_scale_characteristics ----
@@ -872,15 +897,15 @@ lsc <- lscFiltered |>
   )) |>
   filter(estimate_name == "percentage") |>
   tidy() |>
-  select(database = cdm_name,
-         cohort_name,
-         variable_name,
-         time_window = variable_level,
-         concept_id,
-         source_concept_name ,
-         source_concept_id,
-         table = table_name,
-         percentage) |>
+  select(dplyr::any_of(c("database" = "cdm_name",
+         "cohort_name",
+         "variable_name",
+         "time_window" = "variable_level",
+         "concept_id",
+         "source_concept_name" ,
+         "source_concept_id",
+         "table" = "table_name",
+         "percentage"))) |>
       mutate(percentage = if_else(percentage == "-",
                                   NA, percentage)) |>
       mutate(percentage = as.numeric(percentage)) |>
@@ -897,16 +922,21 @@ lsc <- lscFiltered |>
       mutate(smd = (!!sym(target_cohort) - !!sym(comparator_cohort))/sqrt((!!sym(target_cohort)*(1-!!sym(target_cohort)) + !!sym(comparator_cohort)*(1-!!sym(comparator_cohort)))/2)) |>
       mutate(smd = round(smd, 2)) |>
       arrange(desc(smd))  |>
-      mutate(concept = paste0(variable_name, " (",concept_id, ")")) |>
-      mutate(source_concept = paste0(source_concept_name, " (",source_concept_id, ")")) |>
-      select("CDM name" = database,
-             "Concept name (concept ID)" = concept,
-             "Source concept name (concept ID)" = source_concept,
-             "Table" = table,
-             "Time window" = time_window,
+      mutate(concept = paste0(variable_name, " (",concept_id, ")"))
+    if("source_concept_name" %in% colnames(lsc)){
+    lsc <- lsc |>
+      mutate(source_concept = paste0(source_concept_name, " (",source_concept_id, ")")) 
+    }
+    
+    lsc <- lsc |>
+      select(dplyr::any_of(c("CDM name" = "database",
+             "Concept name (concept ID)" = "concept",
+             "Source concept name (concept ID)" = "source_concept",
+             "Table" = "table",
+             "Time window" = "time_window",
              target_cohort,
              comparator_cohort,
-             "Standardised mean difference" = smd)
+             "Standardised mean difference" = "smd")))
 
     return(lsc)
   })
@@ -916,7 +946,7 @@ lsc <- lscFiltered |>
     comparator_cohort <- input$compare_large_scale_characteristics_grouping_cohort_2
 
     tbl <- createTidyDataCompareLargeScaleCharacteristics()
-
+    if("Source concept name (concept ID)" %in% colnames(tbl)){
     cols <- list(target_cohort = colDef(name = paste0(target_cohort, " percentage"),
                                         format = colFormat(percent = TRUE),
                                         sortNALast = TRUE),
@@ -938,6 +968,25 @@ lsc <- lscFiltered |>
                  "Standardised mean difference" = colDef(name = "Standardised mean difference",
                                                          sortNALast = TRUE)
     )
+    } else {
+      cols <- list(target_cohort = colDef(name = paste0(target_cohort, " percentage"),
+                                          format = colFormat(percent = TRUE),
+                                          sortNALast = TRUE),
+                   comparator_cohort = colDef(name = paste0(comparator_cohort, " percentage"),
+                                              format = colFormat(percent = TRUE),
+                                              sortNALast = TRUE),
+                   "Concept name (concept ID)" = colDef(name = "Concept name (concept ID)",
+                                                        cell = function(value){
+                                                          value_concept <- gsub(".*\\(|\\)","",value)
+                                                          url   <- sprintf("https://athena.ohdsi.org/search-terms/terms/%s", value_concept)
+                                                          htmltools::tags$a(href = url, target = "_blank", as.character(value))
+                                                        }),
+                   "Standardised mean difference" = colDef(name = "Standardised mean difference",
+                                                           sortNALast = TRUE)
+      )
+    }
+    
+    
     names(cols)[1] <- target_cohort
     names(cols)[2] <- comparator_cohort
 
