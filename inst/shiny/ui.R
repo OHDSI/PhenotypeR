@@ -647,6 +647,14 @@ ui <- bslib::page_navbar(
                                        selected = NULL,
                                        multiple = TRUE,
                                        options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                     ),
+                                     shinyWidgets::pickerInput(
+                                       inputId = "summarise_large_scale_characteristics_settings_analysis",
+                                       label = "Analysis",
+                                       choices = NULL,
+                                       selected = NULL,
+                                       multiple = FALSE,
+                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                      )
                                    )
                                  )
@@ -724,6 +732,14 @@ ui <- bslib::page_navbar(
                                        choices = NULL,
                                        selected = NULL,
                                        multiple = TRUE,
+                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                     ),
+                                     shinyWidgets::pickerInput(
+                                       inputId = "compare_large_scale_characteristics_settings_analysis",
+                                       label = "Analysis",
+                                       choices = NULL,
+                                       selected = NULL,
+                                       multiple = FALSE,
                                        options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                      ),
                                      shinyWidgets::prettyCheckbox(
