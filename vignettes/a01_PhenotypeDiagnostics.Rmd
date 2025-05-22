@@ -23,7 +23,7 @@ if (!eunomiaIsAvailable()) downloadEunomiaData(datasetName = "synpuf-1k", cdmVer
 
 In this vignette, we are going to present how to run `PhenotypeDiagnostics()`. We are going to use the following packages and mock data:
 
-```{r, message=FALSE, warning=FALSE}
+```{r, message=FALSE, warning=FALSE, eval=FALSE}
 library(CohortConstructor)
 library(PhenotypeR)
 library(dplyr)
@@ -44,7 +44,7 @@ Note that we have included [achilles tables](https://github.com/OHDSI/Achilles) 
 
 First, we are going to use the package [CohortConstructor](https://ohdsi.github.io/CohortConstructor/) to generate three cohorts of *warfarin*, *acetaminophen* and *morphine* users.
 
-```{r, message=FALSE, warning=FALSE}
+```{r, message=FALSE, warning=FALSE, eval=FALSE}
 # Create a codelist
 codes <- list("warfarin" = c(1310149, 40163554),
               "acetaminophen" = c(1125315, 1127078, 1127433, 40229134, 40231925, 40162522, 19133768),
@@ -68,11 +68,6 @@ Now we will proceed to run `phenotypeDiagnotics()`. This function will run the f
 -   **Population diagnostics**: Calculates the frequency of our study cohorts in the database in terms of their incidence rates and prevalence. See [Population diagnostics vignette](https://ohdsi.github.io/PhenotypeR/articles/a07_PopulationDiagnostics.html) for further details.
 
 We can specify which analysis we want to perform by setting to TRUE or FALSE each one of the corresponding arguments:
-```{r,  message=FALSE, warning=FALSE, echo=FALSE}
-# exportSummarisedResult(result, minCellCount = 0, fileName = "vignettes/Data/PhenotypeDiagnostics.csv")
-result <- importSummarisedResult(path = here::here("vignettes/Data/PhenotypeDiagnostics.csv"))
-```
-
 ```{r, eval=FALSE}
 result <- phenotypeDiagnostics(
   cohort = cdm$my_cohort, 
@@ -85,11 +80,6 @@ result <- phenotypeDiagnostics(
   matchedDiagnostics  = TRUE,
   matchedSample = 1000
   )
-result |> glimpse()
-```
-```{r,  message=FALSE, warning=FALSE, echo=FALSE}
-# exportSummarisedResult(result, minCellCount = 0, fileName = "vignettes/Data/PhenotypeDiagnostics.csv")
-result <- importSummarisedResult(path = here::here("vignettes/Data/PhenotypeDiagnostics.csv"))
 result |> glimpse()
 ```
 
