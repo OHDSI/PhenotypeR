@@ -402,7 +402,7 @@ ui <- bslib::page_navbar(
                                    bslib::accordion_panel(
                                      title = "Settings",
                                      shinyWidgets::pickerInput(
-                                       inputId = "summarise_cohort_attrition_grouping_cdm_name",
+                                       inputId = "summarise_cohort_count_grouping_cdm_name",
                                        label = "CDM name",
                                        choices = NULL,
                                        selected = NULL,
@@ -410,7 +410,7 @@ ui <- bslib::page_navbar(
                                        options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                      ),
                                      shinyWidgets::pickerInput(
-                                       inputId = "summarise_cohort_attrition_grouping_cohort_name",
+                                       inputId = "summarise_cohort_count_grouping_cohort_name",
                                        label = "Cohort name",
                                        choices = NULL,
                                        selected = NULL,
