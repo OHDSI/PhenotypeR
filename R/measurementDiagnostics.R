@@ -24,14 +24,14 @@
 #' # diagnostics in the database for measurements occurring while patients are
 #' # in observation
 #' result <- measurementDiagnostics(
-#'   cdm = cdm, codes = list("test_codelist" = c(3001467L, 45875977L),
+#'   cdm = cdm, codes = list("test_codelist" = c(3001467L, 45875977L)),
 #'   timing = "during"
 #' )
 #'
 #' # diagnostics subsetted to "my_cohort" for measurements occurring at cohort
 #' # start date
 #' result_subset <- measurementDiagnostics(
-#'   cdm = cdm, codes = list("test_codelist" = c(3001467L, 45875977L),
+#'   cdm = cdm, codes = list("test_codelist" = c(3001467L, 45875977L)),
 #'   cohort = cdm$my_cohort, timing = "cohort_start_date"
 #' )
 #'
@@ -46,6 +46,7 @@ measurementDiagnostics <- function(cdm,
   timing <- omopgenerics::assertChoice(timing, choices = c("any", "during", "cohort_start_date"))
   prefix <- omopgenerics::tmpPrefix()
   if (is.null(cohort)) {
+    cli::cli_inform(c(">" = "Creating cohort from observation period table."))
     cohort <- cdm$observation_period |>
       dplyr::mutate(cohort_definition_id = 1L) |>
       dplyr::select(dplyr::all_of(c(
@@ -55,7 +56,7 @@ measurementDiagnostics <- function(cdm,
       ))) |>
       dplyr::compute(name = omopgenerics::uniqueTableName(prefix = prefix)) |>
       omopgenerics::newCohortTable(.softValidation = TRUE)
-    cohortName <- NA
+    cohortName <- NULL
   } else {
     cohort <- omopgenerics::validateCohortArgument(cohort)
     cohortName <- omopgenerics::tableName(cohort)
@@ -89,9 +90,11 @@ measurementDiagnostics <- function(cdm,
   addIndex(cdm[[settingsTableName]], cols = "concept_id")
 
   # cohort
+  cli::cli_inform(c(">" = "Subsetting measurement table to the subjects and timing of interest."))
   measurementCohortName <- omopgenerics::uniqueTableName(prefix = prefix)
   # subset to cohort and timing
   measurement <- subsetMeasurementTable(cdm, cohort, timing, measurementCohortName)
+  cli::cli_inform(c(">" = "Getting measurement records based on measurement codes."))
   measurement <- measurement |>
     dplyr::rename("concept_id" = "measurement_concept_id") |>
     dplyr::inner_join(
@@ -123,6 +126,7 @@ measurementDiagnostics <- function(cdm,
       name = measurementCohortName
     )
 
+  cli::cli_inform(c(">" = "Getting counts for each concept."))
   measurementCounts <- omopgenerics::cohortCount(measurement) |>
     dplyr::inner_join(
       cdm[[settingsTableName]] |> dplyr::collect(), by = "cohort_definition_id"
@@ -162,6 +166,7 @@ measurementDiagnostics <- function(cdm,
   }
 
   ## measurements per subject
+  cli::cli_inform(c(">" = "Getting time between records per person."))
   measurementTiming <- measurement |>
     dplyr::group_by(.data$cohort_definition_id, .data$subject_id) |>
     dplyr::arrange(.data$cohort_start_date) |>
@@ -198,6 +203,7 @@ measurementDiagnostics <- function(cdm,
     )
 
   ## measurement value
+  cli::cli_inform(c(">" = "Summarising measurement results - value as number."))
   # as numeric
   # 1) summarise numbers by unit
   measurementNumeric <- measurement |>
@@ -247,6 +253,7 @@ measurementDiagnostics <- function(cdm,
     )
 
   # counts of as concept
+  cli::cli_inform(c(">" = "Summarising measurement results - value as concept"))
   measurementConcept <- measurement |>
     dplyr::mutate(value_as_concept_id = as.character(value_as_concept_id)) |>
     PatientProfiles::summariseResult(
@@ -266,6 +273,7 @@ measurementDiagnostics <- function(cdm,
       installedVersion = installedVersion, timing = timing
     )
 
+  cli::cli_inform(c(">" = "Binding all diagnostic results"))
   omopgenerics::dropSourceTable(cdm = cdm, name = dplyr::starts_with(prefix))
   return(
     omopgenerics::bind(

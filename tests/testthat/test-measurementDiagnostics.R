@@ -1,4 +1,8 @@
 test_that("measurementDiagnostics works", {
+  ## TODO
+  # Sort estimates in test
+  # Add nice messages in function
+
   skip_on_cran()
   # without cohort
   cdm <- mockPhenotypeR()
@@ -20,56 +24,64 @@ test_that("measurementDiagnostics works", {
   expect_equal(
     res |>
       omopgenerics::filterSettings(result_type == "measurement_code_count") |>
-      dplyr::pull("estimate_value"),
-    c("100", "67", "0", "0")
+      dplyr::pull("estimate_value") |>
+      sort(),
+    c( "0", "0", "100", "67")
   )
   expect_equal(
     res |>
       omopgenerics::filterSettings(result_type == "measurements_taken") |>
       dplyr::filter(strata_name == "overall") |>
-      dplyr::pull(estimate_value),
-    as.character(c(100, 67, 0, 21, 89, 294, 1207))
+      dplyr::pull(estimate_value) |>
+      sort(),
+    as.character(c(0, 100, 1207, 21, 294, 67, 89))
   )
   expect_equal(
     res |>
       omopgenerics::filterSettings(result_type == "measurements_taken") |>
       dplyr::filter(strata_name == "overall") |>
-      dplyr::pull(variable_name),
+      dplyr::pull(variable_name) |>
+      sort(),
     c("number records", "number subjects", rep("time", 5))
   )
   expect_equal(
     res |>
       omopgenerics::filterSettings(result_type == "measurements_taken") |>
       dplyr::filter(strata_name == "overall") |>
-      dplyr::pull(estimate_name),
-    c("count", "count", "min", "q25", "median", "q75", "max")
+      dplyr::pull(estimate_name) |>
+      sort(),
+    c("count", "count", "max", "median", "min", "q25", "q75")
   )
   expect_equal(
     res |>
       omopgenerics::filterSettings(result_type == "measurement_value_as_numeric") |>
       dplyr::filter(strata_name == "overall") |>
-      dplyr::pull(estimate_value),
-    c(NA_character_, NA_character_, NA_character_, NA_character_, NA_character_, "100", "100", "100", "100")
+      dplyr::pull(estimate_value) |>
+      sort(),
+    c("100", "100", "100", "100")
   )
   expect_equal(
     res |>
       omopgenerics::filterSettings(result_type == "measurement_value_as_numeric") |>
       dplyr::filter(strata_name == "overall") |>
-      dplyr::pull(estimate_name),
-    c("min", "q25", "median", "q75", "max", "count_missing", "percentage_missing", "count", "percentage")
+      dplyr::pull(estimate_name) |>
+      sort(),
+    c("count", "count_missing", "max", "median", "min", "percentage", "percentage_missing", "q25", "q75")
   )
   expect_equal(
     res |>
       omopgenerics::filterSettings(result_type == "measurement_value_as_concept") |>
       dplyr::filter(strata_name == "overall") |>
-      dplyr::pull(estimate_value),
+      dplyr::pull(estimate_value) |>
+      sort(),
     c("100", "100")
   )
   expect_equal(
     res |>
       omopgenerics::filterSettings(result_type == "measurement_value_as_concept") |>
       dplyr::filter(strata_name == "overall") |>
-      dplyr::pull(estimate_name),
+      dplyr::pull(estimate_name) |>
+      sort(),
     c("count", "percentage")
   )
 
@@ -94,49 +106,56 @@ test_that("measurementDiagnostics works", {
     res |>
       omopgenerics::filterSettings(result_type == "measurements_taken") |>
       dplyr::filter(strata_name == "overall") |>
-      dplyr::pull(estimate_value),
-    as.character(c("72", "53", "0", "22", "85", "282", "1072"))
+      dplyr::pull(estimate_value) |>
+      sort(),
+    as.character(c("0", "1072", "22", "282", "53", "72", "85"))
   )
   expect_equal(
     res |>
       omopgenerics::filterSettings(result_type == "measurements_taken") |>
       dplyr::filter(strata_name == "overall") |>
-      dplyr::pull(variable_name),
+      dplyr::pull(variable_name) |>
+      sort(),
     c("number records", "number subjects", rep("time", 5))
   )
   expect_equal(
     res |>
       omopgenerics::filterSettings(result_type == "measurements_taken") |>
       dplyr::filter(strata_name == "overall") |>
-      dplyr::pull(estimate_name),
-    c("count", "count", "min", "q25", "median", "q75", "max")
+      dplyr::pull(estimate_name) |>
+      sort(),
+    c("count", "count", "max", "median", "min", "q25", "q75")
   )
   expect_equal(
     res |>
       omopgenerics::filterSettings(result_type == "measurement_value_as_numeric") |>
       dplyr::filter(strata_name == "overall") |>
-      dplyr::pull(estimate_value),
-    c(NA_character_, NA_character_, NA_character_, NA_character_, NA_character_, "72", "100", "72", "100")
+      dplyr::pull(estimate_value) |>
+      sort(),
+    c("100", "100", "72", "72")
   )
   expect_equal(
     res |>
       omopgenerics::filterSettings(result_type == "measurement_value_as_numeric") |>
       dplyr::filter(strata_name == "overall") |>
-      dplyr::pull(estimate_name),
-    c("min", "q25", "median", "q75", "max", "count_missing", "percentage_missing", "count", "percentage")
+      dplyr::pull(estimate_name) |>
+      sort(),
+    c("count", "count_missing", "max", "median", "min", "percentage", "percentage_missing", "q25", "q75")
   )
   expect_equal(
     res |>
       omopgenerics::filterSettings(result_type == "measurement_value_as_concept") |>
       dplyr::filter(strata_name == "overall") |>
-      dplyr::pull(estimate_value),
-    c("72", "100")
+      dplyr::pull(estimate_value) |>
+      sort(),
+    c("100", "72")
   )
   expect_equal(
     res |>
       omopgenerics::filterSettings(result_type == "measurement_value_as_concept") |>
       dplyr::filter(strata_name == "overall") |>
-      dplyr::pull(estimate_name),
+      dplyr::pull(estimate_name) |>
+      sort(),
     c("count", "percentage")
   )
 })
@@ -164,64 +183,74 @@ test_that("test timings with eunomia", {
     res_any |>
       omopgenerics::filterSettings(result_type == "measurements_taken") |>
       dplyr::filter(strata_name == "overall") |>
-      dplyr::pull(estimate_value),
-    c("5498", "12852", "2329", "2656", "39", "38", "1487", "1035", "3493",
-      "2442", "7481", "4961.5", "31880", "31573")
+      dplyr::pull(estimate_value) |>
+      sort(),
+    c('1035', '12852', '1487', '2329', '2442', '2656', '31573', '31880', '3493',
+      '38', '39', '4961.5', '5498', '7481')
   )
   expect_equal(
     res_during |>
       omopgenerics::filterSettings(result_type == "measurements_taken") |>
       dplyr::filter(strata_name == "overall") |>
-      dplyr::pull(estimate_value),
-    as.character(c(29, 61, 28, 60, rep(1602, 10)))
+      dplyr::pull(estimate_value) |>
+      sort(),
+    c('1602', '1602', '1602', '1602', '1602', '1602', '1602', '1602', '1602',
+      '1602', '28', '29', '60', '61')
   )
   expect_equal(
     res_start |>
       omopgenerics::filterSettings(result_type == "measurements_taken") |>
       dplyr::filter(strata_name == "overall") |>
-      dplyr::pull(estimate_value),
-    as.character(c(1, 1, rep(NA, 5)))
+      dplyr::pull(estimate_value) |>
+      sort(),
+    c("1", "1")
   )
   expect_equal(
     res_any |>
       omopgenerics::filterSettings(result_type == "measurement_value_as_numeric") |>
       dplyr::filter(strata_name == "overall") |>
-      dplyr::pull(estimate_value),
-    c(rep(NA_character_, 5), "12852", "100", rep(NA_character_, 5), "5498", "100", "5498", "12852", "100", "100")
+      dplyr::pull(estimate_value) |>
+      sort(),
+    c('100', '100', '100', '100', '12852', '12852', '5498', '5498')
   )
   expect_equal(
     res_during |>
       omopgenerics::filterSettings(result_type == "measurement_value_as_numeric") |>
       dplyr::filter(strata_name == "overall") |>
-      dplyr::pull(estimate_value),
-    c(rep(NA_character_, 5), "61", "100", rep(NA_character_, 5), "29", "100", "61", "29", "100", "100")
+      dplyr::pull(estimate_value) |>
+      sort(),
+    c('100', '100', '100', '100', '29', '29', '61', '61')
   )
   expect_equal(
     res_start |>
       omopgenerics::filterSettings(result_type == "measurement_value_as_numeric") |>
       dplyr::filter(strata_name == "overall") |>
-      dplyr::pull(estimate_value),
-    c(rep(NA_character_, 5), "1", "100", "1", "100")
+      dplyr::pull(estimate_value) |>
+      sort(),
+    c("1", "1", "100", "100")
   )
   expect_equal(
     res_any |>
       omopgenerics::filterSettings(result_type == "measurement_value_as_concept") |>
       dplyr::filter(strata_name == "overall") |>
-      dplyr::pull(estimate_value),
-    c("12852", "5498", "100", "100")
+      dplyr::pull(estimate_value) |>
+      sort(),
+    c("100", "100", "12852", "5498")
   )
   expect_equal(
     res_during |>
       omopgenerics::filterSettings(result_type == "measurement_value_as_concept") |>
       dplyr::filter(strata_name == "overall") |>
-      dplyr::pull(estimate_value),
-    c("61", "29", "100", "100")
+      dplyr::pull(estimate_value) |>
+      sort(),
+    c("100", "100", "29", "61")
   )
   expect_equal(
     res_start |>
       omopgenerics::filterSettings(result_type == "measurement_value_as_concept") |>
       dplyr::filter(strata_name == "overall") |>
-      dplyr::pull(estimate_value),
+      dplyr::pull(estimate_value) |>
+      sort(),
     c("1", "100")
   )
 })

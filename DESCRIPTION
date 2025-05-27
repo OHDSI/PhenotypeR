@@ -25,7 +25,6 @@ Depends:
 Suggests: 
     CDMConnector (>= 1.6.1),
     duckdb,
-    DBI,
     gt,
     omock,
     testthat (>= 3.0.0),
@@ -33,7 +32,6 @@ Suggests:
     visOmopResults (>= 0.5.0),
     glue,
     RPostgres,
-    PatientProfiles (>= 1.2.2),
     ggplot2,
     ggpubr,
     stringr,
@@ -50,7 +48,6 @@ Suggests:
     bslib,
     shinyWidgets,
     plotly,
-    tidyr,
     scales,
     usethis,
     rmarkdown
@@ -68,6 +65,9 @@ Imports:
     magrittr,
     purrr,
     rlang,
-    vctrs
+    vctrs,
+    PatientProfiles (>= 1.2.2),
+    tidyr,
+    DBI
 URL: https://ohdsi.github.io/PhenotypeR/
 VignetteBuilder: knitr
