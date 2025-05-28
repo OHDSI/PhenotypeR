@@ -1,8 +1,4 @@
 test_that("measurementDiagnostics works", {
-  ## TODO
-  # Sort estimates in test
-  # Add nice messages in function
-
   skip_on_cran()
   # without cohort
   cdm <- mockPhenotypeR()

@@ -1,6 +1,5 @@
 #' Diagnostics of a conceptSet of measurement codes
 #'
-#'
 #' @param cdm A reference to the cdm object.
 #' @param codes A codelist of measurement codes for which to perform diagnostics.
 #' @param cohort A cohort in which to perfom the diagnostics of the measurement
@@ -37,6 +36,7 @@
 #'
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
+#'
 measurementDiagnostics <- function(cdm,
                                    codes,
                                    cohort = NULL,
@@ -102,17 +102,12 @@ measurementDiagnostics <- function(cdm,
         dplyr::select(dplyr::all_of(c("cohort_definition_id", "concept_id", "codelist_name"))),
       by = "concept_id"
     ) |>
-    dplyr::select(
-      cohort_definition_id,
-      subject_id = person_id,
-      cohort_start_date = measurement_date,
-      measurement_id,
-      codelist_name,
-      concept_id,
-      unit_concept_id,
-      value_as_number,
-      value_as_concept_id
-    ) |>
+    dplyr::select(dplyr::all_of(c(
+      "cohort_definition_id", "subject_id" = "person_id",
+      "cohort_start_date" = "measurement_date", "measurement_id",
+      "codelist_name", "concept_id", "unit_concept_id", "value_as_number",
+      "value_as_concept_id"
+    ))) |>
     dplyr::mutate(cohort_end_date = .data$cohort_start_date) |>
     dplyr::compute(name = measurementCohortName, temporary = FALSE) |>
     omopgenerics::newCohortTable(
@@ -142,11 +137,11 @@ measurementDiagnostics <- function(cdm,
     dplyr::mutate(
       result_id = 1L,
       cdm_name = CDMConnector::cdmName(cdm),
-      variable_name = gsub("_", " ", variable_name),
+      variable_name = gsub("_", " ", .data$variable_name),
       variable_level = NA_character_,
       estimate_name = "count",
       estimate_type = "integer",
-      estimate_value = as.character(estimate_value)
+      estimate_value = as.character(.data$estimate_value)
     ) |>
     dplyr::select(omopgenerics::resultColumns()) |>
     omopgenerics::newSummarisedResult(
@@ -234,7 +229,7 @@ measurementDiagnostics <- function(cdm,
     )
   # 2) counts of units
   measurementUnit <- measurement |>
-    dplyr::mutate(unit_concept_id = as.character(unit_concept_id)) |>
+    dplyr::mutate(unit_concept_id = as.character(.data$unit_concept_id)) |>
     PatientProfiles::summariseResult(
       group = list(c("codelist_name", "concept_id")),
       includeOverallGroup = FALSE,
@@ -253,9 +248,9 @@ measurementDiagnostics <- function(cdm,
     )
 
   # counts of as concept
-  cli::cli_inform(c(">" = "Summarising measurement results - value as concept"))
+  cli::cli_inform(c(">" = "Summarising measurement results - value as concept."))
   measurementConcept <- measurement |>
-    dplyr::mutate(value_as_concept_id = as.character(value_as_concept_id)) |>
+    dplyr::mutate(value_as_concept_id = as.character(.data$value_as_concept_id)) |>
     PatientProfiles::summariseResult(
       group = list(c("codelist_name", "concept_id")),
       includeOverallGroup = FALSE,
@@ -273,7 +268,7 @@ measurementDiagnostics <- function(cdm,
       installedVersion = installedVersion, timing = timing
     )
 
-  cli::cli_inform(c(">" = "Binding all diagnostic results"))
+  cli::cli_inform(c(">" = "Binding all diagnostic results."))
   omopgenerics::dropSourceTable(cdm = cdm, name = dplyr::starts_with(prefix))
   return(
     omopgenerics::bind(
@@ -411,12 +406,12 @@ transformMeasurementValue <- function(x, cdm, newSet, cohortName, installedVersi
           "variable_name" = "concept_id",
           "variable_level" = "concept_name"
         ) |>
-        dplyr::mutate(variable_name = as.character(variable_name)) |>
+        dplyr::mutate(variable_name = as.character(.data$variable_name)) |>
         dplyr::collect(),
       by = "variable_name"
     ) |>
     dplyr::mutate(
-      unit_as_concept_id = variable_name,
+      unit_as_concept_id = .data$variable_name,
       variable_name = "unit_as_concept_name"
     ) |>
     groupIdToName(newSet = newSet) |>

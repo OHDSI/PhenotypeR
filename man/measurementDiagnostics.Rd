@@ -36,17 +36,18 @@ cdm <- mockPhenotypeR()
 # diagnostics in the database for measurements occurring while patients are
 # in observation
 result <- measurementDiagnostics(
-  cdm = cdm, codes = list("test_codelist" = c(3001467L, 45875977L),
+  cdm = cdm, codes = list("test_codelist" = c(3001467L, 45875977L)),
   timing = "during"
 )
 
 # diagnostics subsetted to "my_cohort" for measurements occurring at cohort
 # start date
 result_subset <- measurementDiagnostics(
-  cdm = cdm, codes = list("test_codelist" = c(3001467L, 45875977L),
+  cdm = cdm, codes = list("test_codelist" = c(3001467L, 45875977L)),
   cohort = cdm$my_cohort, timing = "cohort_start_date"
 )
 
 CDMConnector::cdmDisconnect(cdm = cdm)
 }
+
 }
