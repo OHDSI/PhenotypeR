@@ -58,7 +58,7 @@ cohortDiagnostics <- function(cohort){
   }
 
   # for other analyses run cohort by cohort
-  cli::cli_bullets(c("*" = "get cohorts and index"))
+  cli::cli_bullets(c("*" = "Get cohorts and index"))
   cdm[[tempCohortName]]  <- cdm[[cohortName]] |>
     PatientProfiles::addDemographics(age = TRUE,
                                      ageGroup = list(c(0, 17), c(18, 64), c(65, 150)),
@@ -69,7 +69,7 @@ cohortDiagnostics <- function(cohort){
                                      name = tempCohortName)
   cdm[[tempCohortName]] <- CohortConstructor::addCohortTableIndex(cdm[[tempCohortName]])
 
-  cli::cli_bullets(c("*" = "cohort summary"))
+  cli::cli_bullets(c("*" = "Cohort summary"))
   results[["cohort_summary"]] <- cdm[[tempCohortName]] |>
     CohortCharacteristics::summariseCharacteristics(
       strata = list("age_group", "sex"),
@@ -81,7 +81,7 @@ cohortDiagnostics <- function(cohort){
       )
     )
 
-  cli::cli_bullets(c("*" = "age density"))
+  cli::cli_bullets(c("*" = "Age density"))
   results[["cohort_density"]] <- cdm[[tempCohortName]] |>
     PatientProfiles::addCohortName() |>
     PatientProfiles::summariseResult(
@@ -93,6 +93,37 @@ cohortDiagnostics <- function(cohort){
       variables = "age",
       estimates = "density"
     )
+
+  cli::cli_bullets(c("*" = "{.strong Running large scale characterisation}"))
+  results[["lsc_standard_source"]] <- CohortCharacteristics::summariseLargeScaleCharacteristics(
+    cohort = cdm[[tempCohortName]],
+    window = list(c(-Inf, -1), c(-Inf, -366), c(-365, -31),
+                  c(-30, -1), c(0, 0),
+                  c(1, 30), c(31, 365),
+                  c(366, Inf), c(1, Inf)),
+    eventInWindow = c("condition_occurrence", "visit_occurrence",
+                      "measurement", "procedure_occurrence",
+                      "observation"),
+    episodeInWindow = c("drug_exposure"),
+    minimumFrequency = 0.0005,
+    includeSource = TRUE,
+    excludedCodes = NULL
+  )
+
+  results[["lsc_standard"]] <- CohortCharacteristics::summariseLargeScaleCharacteristics(
+    cohort = cdm[[tempCohortName]],
+    window = list(c(-Inf, -1), c(-Inf, -366), c(-365, -31),
+                  c(-30, -1), c(0, 0),
+                  c(1, 30), c(31, 365),
+                  c(366, Inf), c(1, Inf)),
+    eventInWindow = c("condition_occurrence", "visit_occurrence",
+                      "measurement", "procedure_occurrence",
+                      "observation"),
+    episodeInWindow = c("drug_exposure"),
+    minimumFrequency = 0.0005,
+    includeSource = FALSE,
+    excludedCodes = NULL
+  )
 
   omopgenerics::dropTable(cdm, dplyr::starts_with(prefix))
   results <- results |>

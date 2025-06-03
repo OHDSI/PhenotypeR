@@ -24,13 +24,13 @@ if(nrow(data) == 0){
   cli::cli_warn("No data found in data/raw")
   choices <- list()
 } else{
-  
+
   if(any(grepl("^matched_to", data$group_level))){
     data <- data |>
       mutate(group_level = gsub("_matched$","_sampled",group_level)) |>
       mutate(group_level = if_else(grepl("matched_to", group_level), paste0(gsub("^matched_to_","",group_level),"_matched"), group_level))
   }
-  
+
   cli::cli_inform("Getting input choices for shiny UI")
   choices <- getChoices(data, flatten = TRUE)
 }
@@ -69,15 +69,11 @@ if(!is.null(dataFiltered$cohort_code_use)){
 selected$achilles_code_use_grouping_codelist_name <- selected$achilles_code_use_grouping_codelist_name[1]
 
 selected$summarise_characteristics_grouping_cohort_name <- selected$summarise_characteristics_grouping_cohort_name[1]
-selected$summarise_large_scale_characteristics_grouping_cohort_name <- c(gsub("_matched","_sampled",selected$summarise_large_scale_characteristics_grouping_cohort_name[1]),
-                                                                         gsub("_sampled","_matched",selected$summarise_large_scale_characteristics_grouping_cohort_name[1]))
+selected$summarise_large_scale_characteristics_grouping_cohort_name <- choices$summarise_large_scale_characteristics_grouping_cohort_name[1]
 
 choices$compare_large_scale_characteristics_grouping_cdm_name <- choices$summarise_large_scale_characteristics_grouping_cdm_name
-choices$compare_large_scale_characteristics_grouping_cohort <- choices$summarise_large_scale_characteristics_grouping_cohort_name
-choices$compare_large_scale_characteristics_grouping_cohort <- choices$compare_large_scale_characteristics_grouping_cohort[str_detect(choices$compare_large_scale_characteristics_grouping_cohort,
-                                                                                                                                      "matched|sampled", negate= TRUE)]
-choices$compare_large_scale_characteristics_grouping_cohort_1 <- choices$summarise_large_scale_characteristics_grouping_cohort_name
-choices$compare_large_scale_characteristics_grouping_cohort_2 <- choices$summarise_large_scale_characteristics_grouping_cohort_name
+choices$compare_large_scale_characteristics_grouping_cohort_1 <- choices$summarise_large_scale_characteristics_grouping_cohort_name[str_detect(choices$summarise_large_scale_characteristics_grouping_cohort_name,"matched|sampled")]
+choices$compare_large_scale_characteristics_grouping_cohort_2 <- choices$summarise_large_scale_characteristics_grouping_cohort_name[str_detect(choices$summarise_large_scale_characteristics_grouping_cohort_name,"matched|sampled")]
 choices$compare_large_scale_characteristics_grouping_domain <- choices$summarise_large_scale_characteristics_grouping_domain
 # choices$compare_large_scale_characteristics_grouping_time_window <- choices$summarise_large_scale_characteristics_grouping_time_window
 
@@ -94,7 +90,7 @@ if(!is.null(dataFiltered$summarise_large_scale_characteristics)){
     dataFiltered$summarise_large_scale_characteristics <- dataFiltered$summarise_large_scale_characteristics |>
       mutate(variable_name = iconv(variable_name, from = "latin1", to = "UTF-8"))
     choices$summarise_large_scale_characteristics_grouping_domain <- unique(settings(dataFiltered$summarise_large_scale_characteristics) |>
-      pull("table_name"))
+                                                                              pull("table_name"))
     selected$summarise_large_scale_characteristics_grouping_domain <- choices$summarise_large_scale_characteristics_grouping_domain
   }}
 

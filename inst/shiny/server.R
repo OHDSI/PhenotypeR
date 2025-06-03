@@ -485,18 +485,18 @@ server <- function(input, output, session) {
       }
     }
   )
-  
+
   # summarise_cohort_count -----
   ## Table summarise_cohort_count ----
   createTableCohortCount <- shiny::reactive({
 
     result <- dataFiltered$summarise_cohort_count |>
-      filterData("summarise_cohort_count", input) 
-    
+      filterData("summarise_cohort_count", input)
+
     if (nrow(result) == 0) {
       validate("No results found for selected inputs")
     }
-    
+
     CohortCharacteristics::tableCohortCount(
       result
     )%>%
@@ -518,7 +518,7 @@ server <- function(input, output, session) {
       gt::gtsave(data = obj, filename = file)
     }
   )
-  
+
   # summarise_cohort_attrition -----
   ## Table summarise_cohort_attrition ----
   createTableCohortAttrition <- shiny::reactive({
@@ -719,15 +719,15 @@ server <- function(input, output, session) {
     }
    tidy_lsc <- tidy(lsc_data) |>
       mutate(concept = paste0(variable_name, " (",
-                              concept_id, ")")) 
-   
+                              concept_id, ")"))
+
    if("source_concept_id" %in% colnames(tidy_lsc)){
-     tidy_lsc <- tidy_lsc |> 
+     tidy_lsc <- tidy_lsc |>
        mutate(source_concept = paste0(source_concept_name, " (",
                                     source_concept_id, ")"))
    }
-   
-   tidy_lsc |> 
+
+   tidy_lsc |>
       dplyr::select(dplyr::any_of(c("cdm_name",
                     "cohort_name",
                     "concept",
@@ -774,7 +774,7 @@ server <- function(input, output, session) {
                    count = colDef(format = colFormat(separators = TRUE)),
                    percentage = colDef(format = colFormat(percent = TRUE))
       )
-      
+
     }
 
     reactable(tbl_data |>
@@ -820,25 +820,6 @@ server <- function(input, output, session) {
       dplyr::filter(group_level  %in% input$summarise_large_scale_characteristics_grouping_cohort_name) |>
       dplyr::filter(variable_level %in% input$summarise_large_scale_characteristics_grouping_time_window)
 
-    levels <- lsc_data |>
-      dplyr::select("group_level") |>
-      dplyr::distinct() |>
-      dplyr::pull("group_level")
-
-    if(all(sort(gsub(".*_","",levels)) == sort(rep(c("matched","sampled"),floor(length(levels)/2))))){
-      lsc_data <- lsc_data |>
-        dplyr::filter(grepl("_sampled",group_level)) |>
-        dplyr::arrange(group_level,
-                       desc(estimate_type),
-                       desc(as.numeric(estimate_value))) |>
-        rbind(lsc_data |>
-                dplyr::filter(grepl("_matched",group_level)) |>
-                dplyr::arrange(group_level))
-    }else{
-      lsc_data <- lsc_data |>
-        dplyr::arrange(desc(estimate_type),
-                       desc(as.numeric(estimate_value)))
-    }
     lsc_data |>
       CohortCharacteristics::tableTopLargeScaleCharacteristics(topConcepts = input$summarise_large_scale_characteristics_top_concepts) %>%
       tab_header(
@@ -920,9 +901,9 @@ lsc <- lscFiltered |>
       mutate(concept = paste0(variable_name, " (",concept_id, ")"))
     if("source_concept_name" %in% colnames(lsc)){
     lsc <- lsc |>
-      mutate(source_concept = paste0(source_concept_name, " (",source_concept_id, ")")) 
+      mutate(source_concept = paste0(source_concept_name, " (",source_concept_id, ")"))
     }
-    
+
     lsc <- lsc |>
       select(dplyr::any_of(c("CDM name" = "database",
              "Concept name (concept ID)" = "concept",
@@ -980,8 +961,8 @@ lsc <- lscFiltered |>
                                                            sortNALast = TRUE)
       )
     }
-    
-    
+
+
     names(cols)[1] <- target_cohort
     names(cols)[2] <- comparator_cohort
 
