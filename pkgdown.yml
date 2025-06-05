@@ -1,5 +1,5 @@
 pandoc: 3.1.11
-pkgdown: 2.1.2
+pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
   a01_PhenotypeDiagnostics: a01_PhenotypeDiagnostics.html
@@ -9,7 +9,7 @@ articles:
   a05_CohortDiagnostics: a05_CohortDiagnostics.html
   a06_MatchedDiagnostics: a06_MatchedDiagnostics.html
   a07_PopulationDiagnostics: a07_PopulationDiagnostics.html
-last_built: 2025-05-23T15:20Z
+last_built: 2025-06-05T11:39Z
 urls:
   reference: https://ohdsi.github.io/PhenotypeR/reference
   article: https://ohdsi.github.io/PhenotypeR/articles
