@@ -2,7 +2,9 @@
 # Be careful editing this file
 
 ui <- bslib::page_navbar(
-  theme = bs_theme(bootswatch = "pulse"),
+  theme = bs_theme(5, "pulse"), navbar_options =list(class = "bg-dark", theme = "dark"),
+  # theme = bs_theme(5, "sandstone"), navbar_options =list(class = "bg-dark", theme = "dark"),
+  
   #  zephyr
   
   title = "PhenotypeR",
@@ -60,7 +62,7 @@ ui <- bslib::page_navbar(
                                    bslib::accordion_panel(
                                      title = "Settings",
                                      shinyWidgets::pickerInput(
-                                       inputId = "achilles_code_use_grouping_cdm_name",
+                                       inputId = "achilles_code_use_cdm_name",
                                        label = "CDM name",
                                        choices = NULL,
                                        selected = NULL,
@@ -68,7 +70,7 @@ ui <- bslib::page_navbar(
                                        options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                      ),
                                      shinyWidgets::pickerInput(
-                                       inputId = "achilles_code_use_grouping_codelist_name",
+                                       inputId = "achilles_code_use_codelist_name",
                                        label = "Codelist name",
                                        choices = NULL,
                                        selected = NULL,
@@ -145,7 +147,7 @@ ui <- bslib::page_navbar(
     #                                bslib::accordion_panel(
     #                                  title = "Settings",
     #                                  shinyWidgets::pickerInput(
-    #                                    inputId = "unmapped_grouping_cdm_name",
+    #                                    inputId = "unmapped_cdm_name",
     #                                    label = "Database",
     #                                    choices = NULL,
     #                                    selected = NULL,
@@ -153,7 +155,7 @@ ui <- bslib::page_navbar(
     #                                    options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
     #                                  ),
     #                                  shinyWidgets::pickerInput(
-    #                                    inputId = "unmapped_grouping_codelist_name",
+    #                                    inputId = "unmapped_codelist_name",
     #                                    label = "Codelist name",
     #                                    choices = NULL,
     #                                    selected = NULL,
@@ -222,7 +224,7 @@ ui <- bslib::page_navbar(
                                    bslib::accordion_panel(
                                      title = "Settings",
                                      shinyWidgets::pickerInput(
-                                       inputId = "orphan_grouping_cdm_name",
+                                       inputId = "orphan_code_use_cdm_name",
                                        label = "CDM name",
                                        choices = NULL,
                                        selected = NULL,
@@ -230,7 +232,7 @@ ui <- bslib::page_navbar(
                                        options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                      ),
                                      shinyWidgets::pickerInput(
-                                       inputId = "orphan_grouping_codelist_name",
+                                       inputId = "orphan_code_use_codelist_name",
                                        label = "Cohort name",
                                        choices = NULL,
                                        selected = NULL,
@@ -293,12 +295,7 @@ ui <- bslib::page_navbar(
           uiOutput("orphan_codes_tbl") |> withSpinner()
         )
       )
-    )
-  ),
-  # Cohort diagnostics -----
-  bslib::nav_menu(
-    title = "Cohort diagnostics",
-    icon = shiny::icon("list"),
+    ),
     ## Cohort code use -----
     bslib::nav_panel(
       title = "Cohort code use",
@@ -309,7 +306,7 @@ ui <- bslib::page_navbar(
                                    bslib::accordion_panel(
                                      title = "Settings",
                                      shinyWidgets::pickerInput(
-                                       inputId = "cohort_code_use_grouping_cdm_name",
+                                       inputId = "cohort_code_use_cdm_name",
                                        label = "CDM name",
                                        choices = NULL,
                                        selected = NULL,
@@ -317,7 +314,7 @@ ui <- bslib::page_navbar(
                                        options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                      ),
                                      shinyWidgets::pickerInput(
-                                       inputId = "cohort_code_use_grouping_cohort_name",
+                                       inputId = "cohort_code_use_cohort_name",
                                        label = "Cohort name",
                                        choices = NULL,
                                        selected = NULL,
@@ -325,7 +322,7 @@ ui <- bslib::page_navbar(
                                        options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                      ),
                                      shinyWidgets::pickerInput(
-                                       inputId = "cohort_code_use_grouping_domain_id",
+                                       inputId = "cohort_code_use_domain_id",
                                        label = "Domain",
                                        choices = NULL,
                                        selected = NULL,
@@ -391,7 +388,12 @@ ui <- bslib::page_navbar(
           )
         )
       )
-    ),
+    )
+  ),
+  # Cohort diagnostics -----
+  bslib::nav_menu(
+    title = "Cohort diagnostics",
+    icon = shiny::icon("list"),
     ## Cohort count ----
     bslib::nav_panel(
       title = "Cohort count",
@@ -402,7 +404,7 @@ ui <- bslib::page_navbar(
                                    bslib::accordion_panel(
                                      title = "Settings",
                                      shinyWidgets::pickerInput(
-                                       inputId = "summarise_cohort_count_grouping_cdm_name",
+                                       inputId = "summarise_cohort_count_cdm_name",
                                        label = "CDM name",
                                        choices = NULL,
                                        selected = NULL,
@@ -410,12 +412,26 @@ ui <- bslib::page_navbar(
                                        options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                      ),
                                      shinyWidgets::pickerInput(
-                                       inputId = "summarise_cohort_count_grouping_cohort_name",
+                                       inputId = "summarise_cohort_count_cohort_name",
                                        label = "Cohort name",
                                        choices = NULL,
                                        selected = NULL,
                                        multiple = TRUE,
                                        options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                     ),
+                                     div(style="display: flex; justify-content: space-between;",
+                                         div(style="flex: 1;", prettyCheckbox(inputId = "cohort_count_person_count",
+                                                                              label = "Person count",
+                                                                              value = TRUE,
+                                                                              status = "primary",
+                                                                              shape = "curve",
+                                                                              outline = TRUE)),
+                                         div(style="flex: 1;", prettyCheckbox(inputId = "cohort_count_record_count",
+                                                                              label = "Record count",
+                                                                              value = TRUE,
+                                                                              status = "primary",
+                                                                              shape = "curve",
+                                                                              outline = TRUE))
                                      )
                                    )
                                  )
@@ -429,23 +445,7 @@ ui <- bslib::page_navbar(
                 shiny::downloadButton(outputId = "summarise_cohort_count_gt_download", label = ""),
                 class = "text-end"
               ),
-              bslib::layout_sidebar(
-                
-                sidebar = bslib::sidebar(width = 400, open = "closed",
-                                         bslib::accordion(
-                                           shinyWidgets::pickerInput(
-                                             inputId = "summarise_cohort_count_variable_name",
-                                             label = "Variable name",
-                                             selected = c("Number records", "Number subjects"),
-                                             multiple = TRUE,
-                                             choices = c("Number records", "Number subjects"),
-                                             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                                           )
-                                         ),
-                                         position = "right"
-                ),
-                gt::gt_output("summarise_cohort_count_gt") |> withSpinner()
-              )
+              gt::gt_output("summarise_cohort_count_gt") |> withSpinner()
             )
           ),
           bslib::nav_panel(
@@ -496,7 +496,7 @@ ui <- bslib::page_navbar(
                                    bslib::accordion_panel(
                                      title = "Settings",
                                      shinyWidgets::pickerInput(
-                                       inputId = "summarise_characteristics_grouping_cdm_name",
+                                       inputId = "summarise_characteristics_cdm_name",
                                        label = "CDM name",
                                        choices = NULL,
                                        selected = NULL,
@@ -504,7 +504,7 @@ ui <- bslib::page_navbar(
                                        options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                      ),
                                      shinyWidgets::pickerInput(
-                                       inputId = "summarise_characteristics_grouping_cohort_name",
+                                       inputId = "summarise_characteristics_cohort_name",
                                        label = "Cohort name",
                                        choices = NULL,
                                        selected = NULL,
@@ -530,7 +530,7 @@ ui <- bslib::page_navbar(
               bslib::layout_sidebar(
                 sidebar = bslib::sidebar(width = 400, open = "closed",
                                          sortable::bucket_list(
-                                           header = NULL,
+                                           header = "Table formatting",
                                            sortable::add_rank_list(
                                              text = "none",
                                              labels = c("variable_name", "variable_level", "estimate_name"),
@@ -617,7 +617,7 @@ ui <- bslib::page_navbar(
                                    bslib::accordion_panel(
                                      title = "Settings",
                                      shinyWidgets::pickerInput(
-                                       inputId = "summarise_large_scale_characteristics_grouping_cdm_name",
+                                       inputId = "summarise_large_scale_characteristics_cdm_name",
                                        label = "CDM name",
                                        choices = NULL,
                                        selected = NULL,
@@ -625,7 +625,7 @@ ui <- bslib::page_navbar(
                                        options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                      ),
                                      shinyWidgets::pickerInput(
-                                       inputId = "summarise_large_scale_characteristics_grouping_cohort_name",
+                                       inputId = "summarise_large_scale_characteristics_cohort_name",
                                        label = "Cohort name",
                                        choices = NULL,
                                        selected = NULL,
@@ -633,7 +633,7 @@ ui <- bslib::page_navbar(
                                        options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                      ),
                                      shinyWidgets::pickerInput(
-                                       inputId = "summarise_large_scale_characteristics_grouping_domain",
+                                       inputId = "summarise_large_scale_characteristics_table_name",
                                        label = "Domain",
                                        choices = NULL,
                                        selected = NULL,
@@ -641,7 +641,7 @@ ui <- bslib::page_navbar(
                                        options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                      ),
                                      shinyWidgets::pickerInput(
-                                       inputId = "summarise_large_scale_characteristics_grouping_time_window",
+                                       inputId = "summarise_large_scale_characteristics_variable_level",
                                        label = "Time window",
                                        choices = NULL,
                                        selected = NULL,
@@ -649,7 +649,7 @@ ui <- bslib::page_navbar(
                                        options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                      ),
                                      shinyWidgets::pickerInput(
-                                       inputId = "summarise_large_scale_characteristics_settings_analysis",
+                                       inputId = "summarise_large_scale_characteristics_analysis",
                                        label = "Analysis",
                                        choices = NULL,
                                        selected = NULL,
@@ -700,14 +700,14 @@ ui <- bslib::page_navbar(
     ## Compare large scale characteristics -----
     bslib::nav_panel(
       title = "Compare large scale characteristics",
-      icon = shiny::icon("arrow-up-right-dots"),
+      icon = shiny::icon("people-arrows"),
       bslib::layout_sidebar(
         sidebar = bslib::sidebar(width = 400, open = "closed",
                                  bslib::accordion(
                                    bslib::accordion_panel(
                                      title = "Settings",
                                      shinyWidgets::pickerInput(
-                                       inputId = "compare_large_scale_characteristics_grouping_cdm_name",
+                                       inputId = "compare_large_scale_characteristics_cdm_name",
                                        label = "CDM name",
                                        choices = NULL,
                                        selected = NULL,
@@ -715,7 +715,7 @@ ui <- bslib::page_navbar(
                                        options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                      ),
                                      shinyWidgets::pickerInput(
-                                       inputId = "compare_large_scale_characteristics_grouping_cohort_1",
+                                       inputId = "compare_large_scale_characteristics_cohort_name_1",
                                        label = "Cohort 1",
                                        choices = NULL,
                                        selected = NULL,
@@ -723,7 +723,7 @@ ui <- bslib::page_navbar(
                                        options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                      ),
                                      shinyWidgets::pickerInput(
-                                       inputId = "compare_large_scale_characteristics_grouping_cohort_2",
+                                       inputId = "compare_large_scale_characteristics_cohort_name_2",
                                        label = "Cohort 2",
                                        choices = NULL,
                                        selected = NULL,
@@ -731,7 +731,7 @@ ui <- bslib::page_navbar(
                                        options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                      ),
                                      shinyWidgets::pickerInput(
-                                       inputId = "compare_large_scale_characteristics_grouping_time_window",
+                                       inputId = "compare_large_scale_characteristics_variable_level",
                                        label = "Time window",
                                        choices = NULL,
                                        selected = NULL,
@@ -739,7 +739,7 @@ ui <- bslib::page_navbar(
                                        options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                      ),
                                      shinyWidgets::pickerInput(
-                                       inputId = "compare_large_scale_characteristics_grouping_domain",
+                                       inputId = "compare_large_scale_characteristics_table_name",
                                        label = "Domain",
                                        choices = NULL,
                                        selected = NULL,
@@ -747,7 +747,7 @@ ui <- bslib::page_navbar(
                                        options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                      ),
                                      shinyWidgets::pickerInput(
-                                       inputId = "compare_large_scale_characteristics_settings_analysis",
+                                       inputId = "compare_large_scale_characteristics_analysis",
                                        label = "Analysis",
                                        choices = NULL,
                                        selected = NULL,
@@ -826,9 +826,9 @@ ui <- bslib::page_navbar(
                                          ),
                                          position = "right"
                 ),
-                position = "right"
-              ),
-              plotly::plotlyOutput("plotly_compare_lsc") |> withSpinner()
+                position = "right",
+                plotly::plotlyOutput("plotly_compare_lsc") |> withSpinner()
+              )
             )
           )
         )
@@ -836,15 +836,15 @@ ui <- bslib::page_navbar(
     ),
     ## Cohort overlap -----
     bslib::nav_panel(
-      title = "Cohort overlap",
-      icon = shiny::icon("circle-half-stroke"),
+      title = "Compare cohorts",
+      icon = shiny::icon("yin-yang"),
       bslib::layout_sidebar(
         sidebar = bslib::sidebar(width = 400, open = "closed",
                                  bslib::accordion(
                                    bslib::accordion_panel(
                                      title = "Settings",
                                      shinyWidgets::pickerInput(
-                                       inputId = "summarise_cohort_overlap_grouping_cdm_name",
+                                       inputId = "summarise_cohort_overlap_cdm_name",
                                        label = "CDM name",
                                        choices = NULL,
                                        selected = NULL,
@@ -852,7 +852,7 @@ ui <- bslib::page_navbar(
                                        options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                      ),
                                      shinyWidgets::pickerInput(
-                                       inputId = "summarise_cohort_overlap_grouping_cohort_name_reference",
+                                       inputId = "summarise_cohort_overlap_cohort_name_reference",
                                        label = "Cohort name reference",
                                        choices = NULL,
                                        selected = NULL,
@@ -860,7 +860,7 @@ ui <- bslib::page_navbar(
                                        options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                      ),
                                      shinyWidgets::pickerInput(
-                                       inputId = "summarise_cohort_overlap_grouping_cohort_name_comparator",
+                                       inputId = "summarise_cohort_overlap_cohort_name_comparator",
                                        label = "Cohort name comparator",
                                        choices = NULL,
                                        selected = NULL,
@@ -868,33 +868,22 @@ ui <- bslib::page_navbar(
                                        options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                      )
                                    ),
-                                   bslib::accordion_panel(
-                                     title = "Variables",
-                                     shinyWidgets::pickerInput(
-                                       inputId = "summarise_cohort_overlap_variable_name",
-                                       label = "Variable name",
-                                       choices = NULL,
-                                       selected = NULL,
-                                       multiple = TRUE,
-                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                                     )
-                                   ),
-                                   bslib::accordion_panel(
-                                     title = "Estimates",
-                                     shinyWidgets::pickerInput(
-                                       inputId = "summarise_cohort_overlap_estimate_name",
-                                       label = "Estimate name",
-                                       choices = NULL,
-                                       selected = NULL,
-                                       multiple = TRUE,
-                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                                     )
-                                   )
+                                   # bslib::accordion_panel(
+                                   #   title = "Variables",
+                                   #   shinyWidgets::pickerInput(
+                                   #     inputId = "summarise_cohort_overlap_variable_name",
+                                   #     label = "Variable name",
+                                   #     choices = NULL,
+                                   #     selected = NULL,
+                                   #     multiple = TRUE,
+                                   #     options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                   #   )
+                                   # )
                                  )
         ),
         bslib::navset_card_tab(
           bslib::nav_panel(
-            title = "Table cohort overlap",
+            title = "Cohort Overlap (Table)",
             bslib::card(
               full_screen = TRUE,
               bslib::card_header(
@@ -903,12 +892,21 @@ ui <- bslib::page_navbar(
               ),
               bslib::layout_sidebar(
                 sidebar = bslib::sidebar(width = 400, open = "closed",
-                                         #                                          materialSwitch(inputId = "overlap_plot_interactive",
-                                         #                                                         value = TRUE,
-                                         #                                                         label = "Interactive",
-                                         #                                                         status = "primary"),
+                                         shinyWidgets::pickerInput(
+                                           inputId = "summarise_cohort_overlap_variable_name",
+                                           label = "Variable name",
+                                           choices = NULL,
+                                           selected = NULL,
+                                           multiple = TRUE,
+                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                         ),
+                                         shiny::checkboxInput(
+                                           inputId = "summarise_cohort_overlap_gt_uniqueCombinations",
+                                           label = "uniqueCombinations",
+                                           value = c(TRUE)
+                                         ),
                                          sortable::bucket_list(
-                                           header = NULL,
+                                           header = "Table formatting",
                                            sortable::add_rank_list(
                                              text = "none",
                                              labels = c("cohort_name_reference", "cohort_name_comparator", "estimate_name"),
@@ -930,11 +928,6 @@ ui <- bslib::page_navbar(
                                              input_id = "summarise_cohort_overlap_gt_hide"
                                            )
                                          ),
-                                         shiny::checkboxInput(
-                                           inputId = "summarise_cohort_overlap_gt_uniqueCombinations",
-                                           label = "uniqueCombinations",
-                                           value = c(TRUE)
-                                         ),
                                          position = "right"
                 ),
                 gt::gt_output("summarise_cohort_overlap_gt") |> withSpinner()
@@ -942,7 +935,7 @@ ui <- bslib::page_navbar(
             )
           ),
           bslib::nav_panel(
-            title = "Plot cohort overlap",
+            title = "Cohort Overlap (Plot)",
             bslib::card(
               full_screen = TRUE,
               bslib::card_header(
@@ -977,11 +970,11 @@ ui <- bslib::page_navbar(
               bslib::layout_sidebar(
                 sidebar = bslib::sidebar(width = 400, open = "closed",
                                          shinyWidgets::pickerInput(
-                                           inputId = "summarise_cohort_overlap_plot_facet",
-                                           label = "facet",
-                                           selected = c("cdm_name", "cohort_name_reference"),
+                                           inputId = "summarise_cohort_overlap_variable_name",
+                                           label = "Variable name",
+                                           choices = c("Only in reference cohort", "In both cohorts", "Only in comparator cohort"),
+                                           selected = c("Only in reference cohort", "In both cohorts", "Only in comparator cohort"),
                                            multiple = TRUE,
-                                           choices = c("cdm_name", "cohort_name_reference", "cohort_name_comparator", "variable_name", "variable_level", "estimate_name"),
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                          ),
                                          shiny::checkboxInput(
@@ -989,65 +982,30 @@ ui <- bslib::page_navbar(
                                            label = "uniqueCombinations",
                                            value = c(TRUE)
                                          ),
+                                         shinyWidgets::pickerInput(
+                                           inputId = "summarise_cohort_overlap_plot_colour",
+                                           label = "Colour",
+                                           selected = c("variable_name"),
+                                           multiple = TRUE,
+                                           choices = c("cdm_name", "cohort_name_reference", "cohort_name_comparator", "variable_name"),
+                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                         ),
+                                         shinyWidgets::pickerInput(
+                                           inputId = "summarise_cohort_overlap_plot_facet",
+                                           label = "Facet",
+                                           selected = c("cdm_name", "cohort_name_reference"),
+                                           multiple = TRUE,
+                                           choices = c("cdm_name", "cohort_name_reference", "cohort_name_comparator", "variable_name"),
+                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                         ),
                                          position = "right"
                 ),
                 plotly::plotlyOutput("summarise_cohort_overlap_plot")
               )
             )
-          )
-        )
-      )
-    ),
-    ## Cohort timing -----
-    bslib::nav_panel(
-      title = "Cohort timing",
-      icon = shiny::icon("hourglass-half"),
-      bslib::layout_sidebar(
-        sidebar = bslib::sidebar(width = 400, open = "closed",
-                                 bslib::accordion(
-                                   bslib::accordion_panel(
-                                     title = "Settings",
-                                     shinyWidgets::pickerInput(
-                                       inputId = "summarise_cohort_timing_grouping_cdm_name",
-                                       label = "CDM name",
-                                       choices = NULL,
-                                       selected = NULL,
-                                       multiple = TRUE,
-                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                                     ),
-                                     shinyWidgets::pickerInput(
-                                       inputId = "summarise_cohort_timing_grouping_cohort_name_reference",
-                                       label = "Cohort name reference",
-                                       choices = NULL,
-                                       selected = NULL,
-                                       multiple = TRUE,
-                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                                     ),
-                                     shinyWidgets::pickerInput(
-                                       inputId = "summarise_cohort_timing_grouping_cohort_name_comparator",
-                                       label = "Cohort name comparator",
-                                       choices = NULL,
-                                       selected = NULL,
-                                       multiple = TRUE,
-                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                                     )
-                                   ),
-                                   bslib::accordion_panel(
-                                     title = "Estimates",
-                                     shinyWidgets::pickerInput(
-                                       inputId = "summarise_cohort_timing_estimate_name",
-                                       label = "Estimate name",
-                                       choices = NULL,
-                                       selected = NULL,
-                                       multiple = TRUE,
-                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                                     )
-                                   )
-                                 )
-        ),
-        bslib::navset_card_tab(
+          ),
           bslib::nav_panel(
-            title = "Table cohort timing",
+            title = "Cohort Timing (Table)",
             bslib::card(
               full_screen = TRUE,
               bslib::card_header(
@@ -1056,8 +1014,21 @@ ui <- bslib::page_navbar(
               ),
               bslib::layout_sidebar(
                 sidebar = bslib::sidebar(width = 400, open = "closed",
+                                         shinyWidgets::pickerInput(
+                                           inputId = "summarise_cohort_timing_gt_time_scale",
+                                           label = "Time scale",
+                                           choices = c("days", "years"),
+                                           selected = "days",
+                                           multiple = FALSE,
+                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                         ),
+                                         shiny::checkboxInput(
+                                           inputId = "summarise_cohort_timing_gt_uniqueCombinations",
+                                           label = "uniqueCombinations",
+                                           value = c(TRUE)
+                                         ),
                                          sortable::bucket_list(
-                                           header = NULL,
+                                           header = "Table formatting",
                                            sortable::add_rank_list(
                                              text = "none",
                                              labels = c("cohort_name_reference", "cohort_name_comparator", "estimate_name"),
@@ -1079,28 +1050,14 @@ ui <- bslib::page_navbar(
                                              input_id = "summarise_cohort_timing_gt_hide"
                                            )
                                          ),
-                                         shinyWidgets::pickerInput(
-                                           inputId = "summarise_cohort_timing_gt_time_scale",
-                                           label = "Time scale",
-                                           choices = c("days", "years"),
-                                           selected = "days",
-                                           multiple = FALSE,
-                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                                         ),
-                                         shiny::checkboxInput(
-                                           inputId = "summarise_cohort_timing_gt_uniqueCombinations",
-                                           label = "uniqueCombinations",
-                                           value = c(TRUE)
-                                         ),
                                          position = "right"
                 ),
                 gt::gt_output("summarise_cohort_timing_gt") |> withSpinner()
               )
             )
           ),
-          # Cohort timing ----
           bslib::nav_panel(
-            title = "Plot cohort timing",
+            title = "Cohort Timing (Plot)",
             bslib::card(
               full_screen = TRUE,
               bslib::card_header(
@@ -1135,17 +1092,33 @@ ui <- bslib::page_navbar(
               bslib::layout_sidebar(
                 sidebar = bslib::sidebar(width = 400, open = "closed",
                                          shinyWidgets::pickerInput(
-                                           inputId = "summarise_cohort_timing_plot_facet",
-                                           label = "facet",
-                                           selected = c("cdm_name", "cohort_name_reference"),
-                                           multiple = TRUE,
-                                           choices = c("cdm_name", "cohort_name_reference", "cohort_name_comparator", "variable_name", "variable_level", "estimate_name"),
+                                           inputId = "summarise_cohort_timing_plot_time_scale",
+                                           label = "Time scale",
+                                           choices = c("days", "years"),
+                                           selected = "days",
+                                           multiple = FALSE,
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                          ),
                                          shiny::checkboxInput(
                                            inputId = "summarise_cohort_timing_plot_uniqueCombinations",
                                            label = "uniqueCombinations",
                                            value = c(TRUE)
+                                         ),
+                                         shinyWidgets::pickerInput(
+                                           inputId = "summarise_cohort_timing_plot_colour",
+                                           label = "Colour",
+                                           selected = c("cohort_name_comparator"),
+                                           multiple = TRUE,
+                                           choices = c("cdm_name", "cohort_name_reference", "cohort_name_comparator", "variable_name"),
+                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                         ),
+                                         shinyWidgets::pickerInput(
+                                           inputId = "summarise_cohort_timing_plot_facet",
+                                           label = "Facet",
+                                           selected = c("cdm_name", "cohort_name_reference"),
+                                           multiple = TRUE,
+                                           choices = c("cdm_name", "cohort_name_reference", "cohort_name_comparator", "variable_name"),
+                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                          ),
                                          position = "right"
                 ),
@@ -1164,14 +1137,14 @@ ui <- bslib::page_navbar(
     ## Incidence -----
     bslib::nav_panel(
       title = "Incidence",
-      icon = shiny::icon("chart-line"),
+      icon = shiny::icon("shower"),
       bslib::layout_sidebar(
         sidebar = bslib::sidebar(width = 400, open = "closed",
                                  bslib::accordion(
                                    bslib::accordion_panel(
                                      title = "Settings",
                                      shinyWidgets::pickerInput(
-                                       inputId = "incidence_grouping_cdm_name",
+                                       inputId = "incidence_cdm_name",
                                        label = "CDM name",
                                        choices = NULL,
                                        selected = NULL,
@@ -1179,7 +1152,7 @@ ui <- bslib::page_navbar(
                                        options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                      ),
                                      shinyWidgets::pickerInput(
-                                       inputId = "incidence_grouping_outcome_cohort_name",
+                                       inputId = "incidence_outcome_cohort_name",
                                        label = "Outcome cohort name",
                                        choices = NULL,
                                        selected = NULL,
@@ -1187,7 +1160,7 @@ ui <- bslib::page_navbar(
                                        options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                      ),
                                      shinyWidgets::pickerInput(
-                                       inputId = "incidence_settings_analysis_interval",
+                                       inputId = "incidence_analysis_interval",
                                        label = "Time interval",
                                        choices = NULL,
                                        selected = NULL,
@@ -1195,7 +1168,7 @@ ui <- bslib::page_navbar(
                                        options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                      ),
                                      shinyWidgets::pickerInput(
-                                       inputId = "incidence_settings_denominator_age_group",
+                                       inputId = "incidence_denominator_age_group",
                                        label = "Denominator age group",
                                        choices = NULL,
                                        selected = NULL,
@@ -1203,7 +1176,7 @@ ui <- bslib::page_navbar(
                                        options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                      ),
                                      shinyWidgets::pickerInput(
-                                       inputId = "incidence_settings_denominator_sex",
+                                       inputId = "incidence_denominator_sex",
                                        label = "Denominator sex",
                                        choices = NULL,
                                        selected = NULL,
@@ -1211,7 +1184,7 @@ ui <- bslib::page_navbar(
                                        options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                      ),
                                      shinyWidgets::pickerInput(
-                                       inputId = "incidence_settings_denominator_days_prior_observation",
+                                       inputId = "incidence_denominator_days_prior_observation",
                                        label = "Denominator days prior observation",
                                        choices = NULL,
                                        selected = NULL,
@@ -1339,14 +1312,14 @@ ui <- bslib::page_navbar(
     ## Prevalence -----
     bslib::nav_panel(
       title = "Prevalence",
-      icon = shiny::icon("chart-line"),
+      icon = shiny::icon("bath"),
       bslib::layout_sidebar(
         sidebar = bslib::sidebar(width = 400, open = "closed",
                                  bslib::accordion(
                                    bslib::accordion_panel(
                                      title = "Settings",
                                      shinyWidgets::pickerInput(
-                                       inputId = "prevalence_grouping_cdm_name",
+                                       inputId = "prevalence_cdm_name",
                                        label = "CDM",
                                        choices = NULL,
                                        selected = NULL,
@@ -1354,7 +1327,7 @@ ui <- bslib::page_navbar(
                                        options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                      ),
                                      shinyWidgets::pickerInput(
-                                       inputId = "prevalence_grouping_outcome_cohort_name",
+                                       inputId = "prevalence_outcome_cohort_name",
                                        label = "Outcome cohort name",
                                        choices = NULL,
                                        selected = NULL,
@@ -1362,7 +1335,7 @@ ui <- bslib::page_navbar(
                                        options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                      ),
                                      shinyWidgets::pickerInput(
-                                       inputId = "prevalence_settings_analysis_interval",
+                                       inputId = "prevalence_analysis_interval",
                                        label = "Time interval",
                                        choices = NULL,
                                        selected = NULL,
@@ -1370,7 +1343,7 @@ ui <- bslib::page_navbar(
                                        options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                      ),
                                      shinyWidgets::pickerInput(
-                                       inputId = "prevalence_settings_denominator_age_group",
+                                       inputId = "prevalence_denominator_age_group",
                                        label = "Denominator age group",
                                        choices = NULL,
                                        selected = NULL,
@@ -1378,7 +1351,7 @@ ui <- bslib::page_navbar(
                                        options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                      ),
                                      shinyWidgets::pickerInput(
-                                       inputId = "prevalence_settings_denominator_sex",
+                                       inputId = "prevalence_denominator_sex",
                                        label = "Denominator sex",
                                        choices = NULL,
                                        selected = NULL,
@@ -1386,7 +1359,7 @@ ui <- bslib::page_navbar(
                                        options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                      ),
                                      shinyWidgets::pickerInput(
-                                       inputId = "prevalence_settings_denominator_days_prior_observation",
+                                       inputId = "prevalence_denominator_days_prior_observation",
                                        label = "Denominator days prior observation",
                                        choices = NULL,
                                        selected = NULL,

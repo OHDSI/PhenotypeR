@@ -91,15 +91,15 @@ server <- function(input, output, session) {
     if (is.null(dataFiltered$achilles_code_use)) {
       validate("No achilles code use in results")
     }
+    
     achillesFiltered <- dataFiltered$achilles_code_use  |>
-      filterData("achilles_code_use", input)
+      dplyr::filter(.data$cdm_name %in% input$achilles_code_use_cdm_name,
+                    .data$group_level %in% input$achilles_code_use_codelist_name)
 
     if (is.null(dataFiltered$achilles_code_use)) {
       validate("No achilles code use in results")
     }
-    achillesFiltered <- dataFiltered$achilles_code_use  |>
-      filterData("achilles_code_use", input)
-
+    
     if(isFALSE(input$achilles_person_count)){
       achillesFiltered <- achillesFiltered  |>
         filter(estimate_name != "person_count")
@@ -219,8 +219,8 @@ server <- function(input, output, session) {
     }
 
     result <- dataFiltered$orphan_code_use |>
-      dplyr::filter(cdm_name %in% input$orphan_grouping_cdm_name,
-                    group_level %in% input$orphan_grouping_codelist_name)
+      dplyr::filter(.data$cdm_name %in% input$orphan_code_use_cdm_name,
+                    .data$group_level %in% input$orphan_code_use_codelist_name)
 
     if(isFALSE(input$orphan_person_count)){
       result <- result  |>
@@ -341,8 +341,8 @@ server <- function(input, output, session) {
   #
   #   CodelistGenerator::tableUnmappedCodes(
   #     dataFiltered$unmapped_codes |>
-  #       dplyr::filter(cdm_name %in% input$unmapped_grouping_cdm_name,
-  #                     group_level %in% input$unmapped_grouping_codelist_name),
+  #       dplyr::filter(cdm_name %in% input$unmapped_cdm_name,
+  #                     group_level %in% input$unmapped_codelist_name),
   #     header = input$unmapped_header,
   #     groupColumn = input$unmapped_groupColumn,
   #     hide = input$unmapped_hide
@@ -372,7 +372,13 @@ server <- function(input, output, session) {
       validate("No cohort code use in results")
     }
     result <- dataFiltered$cohort_code_use |>
-      filterData("cohort_code_use", input)
+      visOmopResults::splitGroup(keep = TRUE) |>
+      visOmopResults::splitAdditional(keep = TRUE) |>
+      dplyr::filter(.data$cdm_name %in% input$cohort_code_use_cdm_name,
+                    .data$cohort_name %in% input$cohort_code_use_cohort_name,
+                    .data$domain_id %in% input$cohort_code_use_domain_id) |>
+      dplyr::select(-visOmopResults::groupColumns(dataFiltered$cohort_code_use)) |>
+      dplyr::select(-visOmopResults::additionalColumns(dataFiltered$cohort_code_use))
 
     if(isFALSE(input$cohort_code_use_person_count)){
       result <- result  |>
@@ -491,7 +497,17 @@ server <- function(input, output, session) {
   createTableCohortCount <- shiny::reactive({
 
     result <- dataFiltered$summarise_cohort_count |>
-      filterData("summarise_cohort_count", input) 
+      dplyr::filter(.data$cdm_name %in% input$summarise_cohort_count_cdm_name,
+                    .data$group_level %in% input$summarise_cohort_count_cohort_name)
+    
+    if(isFALSE(input$cohort_count_person_count)){
+      result <- result  |>
+        dplyr::filter(.data$variable_name != "Number subjects")
+    }
+    if(isFALSE(input$cohort_count_record_count)){
+      result <- result  |>
+        dplyr::filter(.data$variable_name != "Number records")
+    }
     
     if (nrow(result) == 0) {
       validate("No results found for selected inputs")
@@ -520,22 +536,35 @@ server <- function(input, output, session) {
   )
   
   # summarise_cohort_attrition -----
-  ## Table summarise_cohort_attrition ----
-  createTableCohortAttrition <- shiny::reactive({
+  filterCohortAttrition <- shiny::reactive({
     result <- dataFiltered$summarise_cohort_attrition |>
-      filterData("summarise_cohort_attrition", input)
+      dplyr::filter(.data$cdm_name %in% input$summarise_cohort_count_cdm_name,
+                    .data$group_level %in% input$summarise_cohort_count_cohort_name)
 
+    if(isFALSE(input$cohort_count_person_count)){
+      result <- result  |>
+        dplyr::filter(!stringr::str_detect(.data$variable_name, "subjects"))
+    }
+    if(isFALSE(input$cohort_count_record_count)){
+      result <- result  |>
+        dplyr::filter(!stringr::str_detect(.data$variable_name, "records"))
+    }
+    
     if (nrow(result) == 0) {
       validate("No results found for selected inputs")
     }
-
-    CohortCharacteristics::tableCohortAttrition(
-      result
-    )%>%
+    
+    
+    return(result)
+  })
+  ## Table summarise_cohort_attrition ----
+  createTableCohortAttrition <- shiny::reactive({
+    filterCohortAttrition() |>
+    CohortCharacteristics::tableCohortAttrition() |>
       tab_header(
         title = "Cohort attrition",
         subtitle = "Attrition of the study cohorts."
-      ) %>%
+      ) |>
       tab_options(
         heading.align = "left"
       )
@@ -552,8 +581,7 @@ server <- function(input, output, session) {
   )
   ## Diagram summarise_cohort_attrition -----
   createDiagramCohortAttrition <- shiny::reactive({
-    result <- dataFiltered$summarise_cohort_attrition |>
-      filterData("summarise_cohort_attrition", input)
+    result <- filterCohortAttrition()
 
     n <- result |>
       select(cdm_name, group_level) |>
@@ -582,33 +610,30 @@ server <- function(input, output, session) {
 
 
   # summarise_characteristics -----
-  ## Table summarise_characteristics -----
-  createTableSummariseCharacteristics <- shiny::reactive({
-
-    if (is.null(dataFiltered$summarise_characteristics)) {
-      validate("No summarised characteristics in results")
+  filterSummariseCharacteristics <- shiny::reactive({
+    selectedCohorts <- input$summarise_characteristics_cohort_name
+   
+   if(isTRUE(input$summarise_characteristics_include_matched)){
+      selectedCohorts <- as.vector(t(outer(selectedCohorts, c("", "_sampled", "_matched"), paste0)))
     }
-
-    if(isTRUE(input$summarise_characteristics_include_matched)){
-      selectedCohorts <- c(
-        input$summarise_characteristics_grouping_cohort_name,
-        paste0("matched_to_", input$summarise_characteristics_grouping_cohort_name),
-        paste0(input$summarise_characteristics_grouping_cohort_name, "_sampled"),
-        paste0(input$summarise_characteristics_grouping_cohort_name, "_matched")
-      )
-    } else {
-      selectedCohorts <- input$summarise_characteristics_grouping_cohort_name
-    }
-
+    
     result <- dataFiltered$summarise_characteristics |>
-      dplyr::filter(cdm_name %in% input$summarise_characteristics_grouping_cdm_name,
-                    group_level %in% selectedCohorts)
-
+      dplyr::filter(.data$cdm_name %in% input$summarise_characteristics_cdm_name,
+                    .data$group_level %in% selectedCohorts) |>
+      dplyr::mutate(group_level = factor(group_level, levels = selectedCohorts)) |>
+      arrange(group_level)
+    
     if (nrow(result) == 0) {
       validate("No results found for selected inputs")
     }
+    
+    return(result)
+  })
+  ## Table summarise_characteristics -----
+  createTableSummariseCharacteristics <- shiny::reactive({
+
+    filterSummariseCharacteristics() |>
     CohortCharacteristics::tableCharacteristics(
-      result,
       header = input$summarise_characteristics_gt_header,
       groupColumn = input$summarise_characteristics_gt_groupColumn,
       hide = c(input$summarise_characteristics_gt_hide,
@@ -616,7 +641,7 @@ server <- function(input, output, session) {
     ) %>%
       tab_header(
         title = "Patient characteristics",
-        subtitle = "Summary of patient characteristics relative to cohort entry"
+        subtitle = "Summary of patient characteristics relative to cohort entry. Please be aware that statistics are calculated by record, not by subject."
       ) %>%
       tab_options(
         heading.align = "left"
@@ -635,41 +660,23 @@ server <- function(input, output, session) {
 
   ## Plot age_pyramid ----
   createAgePyramid <- shiny::reactive({
-
+    summarise_characteristics <- filterSummariseCharacteristics()
+    
     summarise_table <- dataFiltered$summarise_table |>
-      filter(cdm_name %in% input$summarise_characteristics_grouping_cdm_name)
-    summarise_characteristics <-  dataFiltered$summarise_characteristics |>
-      filter(cdm_name %in% input$summarise_characteristics_grouping_cdm_name)
-
+      filter(cdm_name %in% input$summarise_characteristics_cdm_name)
+    selectedCohorts <- input$summarise_characteristics_cohort_name
+    if(isTRUE(input$summarise_characteristics_include_matched)){
+      selectedCohorts <- as.vector(t(outer(selectedCohorts, c("", "_sampled", "_matched"), paste0)))
+    }
+    summarise_table <- summarise_table |>
+      dplyr::filter(.data$group_level %in% selectedCohorts) |>
+      dplyr::mutate(group_level = factor(group_level, levels = selectedCohorts)) |>
+      arrange(group_level)
+    
     if (nrow(summarise_table) == 0 || nrow(summarise_characteristics) == 0 ) {
       validate("No results found for selected inputs")
     }
 
-    if(isTRUE(input$summarise_characteristics_include_matched)){
-      summarise_table <- summarise_table |>
-        filter(group_level %in%
-                 c(
-                   input$summarise_characteristics_grouping_cohort_name,
-                   paste0("matched_to_", input$summarise_characteristics_grouping_cohort_name),
-                   paste0(input$summarise_characteristics_grouping_cohort_name, "_sampled"),
-                   paste0(input$summarise_characteristics_grouping_cohort_name, "_matched")
-                 )
-        )
-      summarise_characteristics <- summarise_characteristics |>
-        filter(group_level %in%
-                 c(
-                   input$summarise_characteristics_grouping_cohort_name,
-                   paste0("matched_to_", input$summarise_characteristics_grouping_cohort_name),
-                   paste0(input$summarise_characteristics_grouping_cohort_name, "_sampled"),
-                   paste0(input$summarise_characteristics_grouping_cohort_name, "_matched")
-                 ))
-    } else {
-      summarise_table <- summarise_table |>
-        filter(group_level %in%
-                 input$summarise_characteristics_grouping_cohort_name)
-      summarise_characteristics <- summarise_characteristics |>
-        filter(group_level %in% input$summarise_characteristics_grouping_cohort_name)
-    }
 
     if (nrow(summarise_table) == 0 || nrow(summarise_characteristics) == 0 ) {
       validate("No results found for selected inputs")
@@ -699,50 +706,56 @@ server <- function(input, output, session) {
   )
 
   # summarise_large_scale_characteristics -----
-  ## Tidy summarise_large_scale_characteristics -----
-  getTidyDataSummariseLargeScaleCharacteristics <- shiny::reactive({
-
-    if (is.null(dataFiltered$summarise_large_scale_characteristics)) {
-      validate("No large scale characteristics in results")
-    }
+  filterLargeScaleCharacteristics <- shiny::reactive({
     lsc_data <- dataFiltered$summarise_large_scale_characteristics |>
       filter(!is.na(estimate_value)) |>
       filter(estimate_value != "-") |>
-      visOmopResults::filterSettings(table_name %in% input$summarise_large_scale_characteristics_grouping_domain,
-                                     analysis %in% input$summarise_large_scale_characteristics_settings_analysis) |>
-      dplyr::filter(cdm_name %in% input$summarise_large_scale_characteristics_grouping_cdm_name ) |>
-      dplyr::filter(group_level  %in% input$summarise_large_scale_characteristics_grouping_cohort_name) |>
-      dplyr::filter(variable_level  %in% input$summarise_large_scale_characteristics_grouping_time_window)
-
+      visOmopResults::filterSettings(table_name %in% input$summarise_large_scale_characteristics_table_name,
+                                     analysis %in% input$summarise_large_scale_characteristics_analysis) |>
+      dplyr::filter(cdm_name %in% input$summarise_large_scale_characteristics_cdm_name ) |>
+      dplyr::filter(group_level  %in% input$summarise_large_scale_characteristics_cohort_name) |>
+      dplyr::filter(variable_level  %in% input$summarise_large_scale_characteristics_variable_level)
+    
     if (nrow(lsc_data) == 0) {
       validate("No results found for selected inputs")
     }
-   tidy_lsc <- tidy(lsc_data) |>
+    return(lsc_data)
+  })
+  ## Table summarise_characteristics -----
+  tidyLargeScaleCharacteristics <- shiny::reactive({
+    tidy_lsc <- filterLargeScaleCharacteristics()
+    
+    tidy_lsc <- tidy_lsc |>
+      tidy() |>
       mutate(concept = paste0(variable_name, " (",
                               concept_id, ")")) 
-   
-   if("source_concept_id" %in% colnames(tidy_lsc)){
-     tidy_lsc <- tidy_lsc |> 
-       mutate(source_concept = paste0(source_concept_name, " (",
-                                    source_concept_id, ")"))
-   }
-   
-   tidy_lsc |> 
+    
+    if("source_concept_id" %in% colnames(tidy_lsc)){
+      tidy_lsc <- tidy_lsc |> 
+        mutate(source_concept = paste0(source_concept_name, " (",
+                                       source_concept_id, ")"))
+    }
+    
+    tidy_lsc <- tidy_lsc |> 
       dplyr::select(dplyr::any_of(c("cdm_name",
-                    "cohort_name",
-                    "concept",
-                    "source_concept",
-                    "count",
-                    "percentage")))
-
+                                    "cohort_name",
+                                    "concept",
+                                    "source_concept",
+                                    "time_window" = "variable_level",
+                                    "count",
+                                    "percentage")))
+    return(tidy_lsc)
   })
-
+  
+  ## Table summarise_large_scale_characteristics -----
   output$summarise_large_scale_characteristics_tidy <- renderUI({
-    tbl_data <- getTidyDataSummariseLargeScaleCharacteristics()
+    tbl_data <- tidyLargeScaleCharacteristics()
+    
     if("source_concept" %in% colnames(tbl_data)){
     tbl_data <- tbl_data |>
       rename("CDM name" = "cdm_name",
              "Cohort" = "cohort_name",
+             "Time window" = "time_window",
              "Concept name (concept ID)" = "concept",
              "Source concept name (concept ID)" = "source_concept")
     cols <- list("Concept name (concept ID)" = colDef(name = "Concept name (concept ID)",
@@ -764,6 +777,7 @@ server <- function(input, output, session) {
       tbl_data <- tbl_data |>
         rename("CDM name" = "cdm_name",
                "Cohort" = "cohort_name",
+               "Time window" = "time_window",
                "Concept name (concept ID)" = "concept")
       cols <- list("Concept name (concept ID)" = colDef(name = "Concept name (concept ID)",
                                                         cell = function(value){
@@ -800,51 +814,22 @@ server <- function(input, output, session) {
   output$summarise_large_scale_characteristics_tidy_download <- shiny::downloadHandler(
     filename = "summarise_large_scale_characteristics_tidy.csv",
     content = function(file) {
-      getTidyDataSummariseLargeScaleCharacteristics() |>
+      tidyLargeScaleCharacteristics() |>
         readr::write_csv(file = file)
     }
   )
   ## Table summarise_large_scale_characteristics -----
   createTableLargeScaleCharacteristics <- shiny::reactive({
 
-    if (is.null(dataFiltered$summarise_large_scale_characteristics)) {
-      validate("No large scale characteristics in results")
-    }
+    lsc_data <- filterLargeScaleCharacteristics()
 
-    lsc_data <- dataFiltered$summarise_large_scale_characteristics |>
-      filter(!is.na(estimate_value)) |>
-      filter(estimate_value != "-") |>
-      visOmopResults::filterSettings(table_name %in% input$summarise_large_scale_characteristics_grouping_domain,
-                                     analysis %in% input$summarise_large_scale_characteristics_settings_analysis) |>
-      dplyr::filter(cdm_name %in% input$summarise_large_scale_characteristics_grouping_cdm_name ) |>
-      dplyr::filter(group_level  %in% input$summarise_large_scale_characteristics_grouping_cohort_name) |>
-      dplyr::filter(variable_level %in% input$summarise_large_scale_characteristics_grouping_time_window)
-
-    levels <- lsc_data |>
-      dplyr::select("group_level") |>
-      dplyr::distinct() |>
-      dplyr::pull("group_level")
-
-    if(all(sort(gsub(".*_","",levels)) == sort(rep(c("matched","sampled"),floor(length(levels)/2))))){
-      lsc_data <- lsc_data |>
-        dplyr::filter(grepl("_sampled",group_level)) |>
-        dplyr::arrange(group_level,
-                       desc(estimate_type),
-                       desc(as.numeric(estimate_value))) |>
-        rbind(lsc_data |>
-                dplyr::filter(grepl("_matched",group_level)) |>
-                dplyr::arrange(group_level))
-    }else{
-      lsc_data <- lsc_data |>
-        dplyr::arrange(desc(estimate_type),
-                       desc(as.numeric(estimate_value)))
-    }
     lsc_data |>
-      CohortCharacteristics::tableTopLargeScaleCharacteristics(topConcepts = input$summarise_large_scale_characteristics_top_concepts) %>%
+      CohortCharacteristics::tableTopLargeScaleCharacteristics(
+        topConcepts = input$summarise_large_scale_characteristics_top_concepts) |>
       tab_header(
         title = "Top concepts in large scale characteristics",
         subtitle = "Summary of the most prevalent concepts by percentage across each cohort."
-      ) %>%
+      ) |>
       tab_options(
         heading.align = "left"
       )
@@ -860,85 +845,70 @@ server <- function(input, output, session) {
     }
   )
 
-
-
   # compare large_scale_characteristics ----
-  filterLargeScaleCharacteristics <- shiny::reactive({
-
-    if (is.null(dataFiltered$summarise_large_scale_characteristics)) {
-      validate("No large scale characteristics in results")
+  filterCompareLargeScaleCharacteristics <- shiny::reactive({
+    
+    lsc_filtered <- dataFiltered$summarise_large_scale_characteristics |>
+      visOmopResults::filterSettings(.data$table_name %in% input$compare_large_scale_characteristics_table_name,
+                                     .data$analysis %in% input$compare_large_scale_characteristics_analysis) |>
+      dplyr::filter(.data$cdm_name %in% input$compare_large_scale_characteristics_cdm_name,
+                    .data$group_level %in% c(input$compare_large_scale_characteristics_cohort_name_1, input$compare_large_scale_characteristics_cohort_name_2),
+                    .data$variable_level %in% input$compare_large_scale_characteristics_variable_level)
+    
+    if (nrow(lsc_filtered) == 0) {
+      validate("No results found for selected inputs")
     }
-    dataFiltered$summarise_large_scale_characteristics |>
-      filter(variable_level %in% input$compare_large_scale_characteristics_grouping_time_window,
-             cdm_name %in% input$compare_large_scale_characteristics_grouping_cdm_name) |>
-      filterSettings(table_name %in% input$compare_large_scale_characteristics_grouping_domain,
-                     analysis %in% input$compare_large_scale_characteristics_settings_analysis)
-
+    
+    return(lsc_filtered)
   })
   ## Tidy large_scale_characteristics ----
   createTidyDataCompareLargeScaleCharacteristics <- shiny::reactive({
 
-    lscFiltered <- filterLargeScaleCharacteristics()
+    lscFiltered <- filterCompareLargeScaleCharacteristics()
 
-    if (nrow(lscFiltered) == 0) {
-      validate("No results found for selected inputs")
-    }
-
-    target_cohort     <- input$compare_large_scale_characteristics_grouping_cohort_1
-    comparator_cohort <- input$compare_large_scale_characteristics_grouping_cohort_2
-
-lsc <- lscFiltered |>
-  filter(group_level %in% c(target_cohort, comparator_cohort
-  )) |>
-  filter(estimate_name == "percentage") |>
-  tidy() |>
-  select(dplyr::any_of(c("database" = "cdm_name",
-         "cohort_name",
-         "variable_name",
-         "time_window" = "variable_level",
-         "concept_id",
-         "source_concept_name" ,
-         "source_concept_id",
-         "table" = "table_name",
-         "percentage"))) |>
-      mutate(percentage = if_else(percentage == "-",
-                                  NA, percentage)) |>
-      mutate(percentage = as.numeric(percentage)) |>
-      pivot_wider(names_from = cohort_name,
-                  values_from = percentage)
-
+    target_cohort     <- input$compare_large_scale_characteristics_cohort_name_1
+    comparator_cohort <- input$compare_large_scale_characteristics_cohort_name_2
+    
+    lsc <- lscFiltered |>
+      dplyr::filter(.data$estimate_name == "percentage") |>
+      tidy() |>
+      tidyr::pivot_wider(names_from = cohort_name,
+                  values_from = percentage) 
+    
     if(isTRUE(input$compare_large_scale_characteristics_impute_missings)){
       lsc <- lsc |>
-        mutate(across(c(target_cohort, comparator_cohort), ~if_else(is.na(.x), 0, .x)))
+        dplyr::mutate(across(c(target_cohort, comparator_cohort), ~if_else(is.na(.x), 0, .x)))
     }
 
     lsc <- lsc |>
-      mutate(across(c(target_cohort, comparator_cohort), ~ as.numeric(.x)/100)) |>
-      mutate(smd = (!!sym(target_cohort) - !!sym(comparator_cohort))/sqrt((!!sym(target_cohort)*(1-!!sym(target_cohort)) + !!sym(comparator_cohort)*(1-!!sym(comparator_cohort)))/2)) |>
-      mutate(smd = round(smd, 2)) |>
-      arrange(desc(smd))  |>
+      dplyr::mutate(across(c(target_cohort, comparator_cohort), ~ as.numeric(.x)/100)) |>
+      dplyr::mutate(smd = (!!sym(target_cohort) - !!sym(comparator_cohort))/sqrt((!!sym(target_cohort)*(1-!!sym(target_cohort)) + !!sym(comparator_cohort)*(1-!!sym(comparator_cohort)))/2)) |>
+      dplyr::mutate(smd = if_else(is.na(smd), 0, round(smd, 2))) |>
+      dplyr::arrange(desc(smd))  |>
       mutate(concept = paste0(variable_name, " (",concept_id, ")"))
+    
     if("source_concept_name" %in% colnames(lsc)){
-    lsc <- lsc |>
-      mutate(source_concept = paste0(source_concept_name, " (",source_concept_id, ")")) 
+      lsc <- lsc |>
+        mutate(source_concept = paste0(source_concept_name, " (",source_concept_id, ")")) 
     }
     
     lsc <- lsc |>
-      select(dplyr::any_of(c("CDM name" = "database",
-             "Concept name (concept ID)" = "concept",
-             "Source concept name (concept ID)" = "source_concept",
-             "Table" = "table",
-             "Time window" = "time_window",
-             target_cohort,
-             comparator_cohort,
-             "Standardised mean difference" = "smd")))
+      select(dplyr::any_of(c(
+        "CDM name" = "cdm_name",
+        "Concept name (concept ID)" = "concept",
+        "Source concept name (concept ID)" = "source_concept",
+        "Table" = "table_name",
+        "Time window" = "variable_level",
+        target_cohort,
+        comparator_cohort,
+        "Standardised mean difference" = "smd")))
 
     return(lsc)
   })
 
   output$compare_large_scale_characteristics_tidy <- reactable::renderReactable({
-    target_cohort     <- input$compare_large_scale_characteristics_grouping_cohort_1
-    comparator_cohort <- input$compare_large_scale_characteristics_grouping_cohort_2
+    target_cohort     <- input$compare_large_scale_characteristics_cohort_name_1
+    comparator_cohort <- input$compare_large_scale_characteristics_cohort_name_2
 
     tbl <- createTidyDataCompareLargeScaleCharacteristics()
     if("Source concept name (concept ID)" %in% colnames(tbl)){
@@ -1006,15 +976,12 @@ lsc <- lscFiltered |>
     }
   )
 
-  ## Plot large_scale_characteristics ----
+  ## Plot compare large_scale_characteristics ----
   getPlotlyCompareLsc <- shiny::reactive({
-    if (nrow(filterLargeScaleCharacteristics()) == 0) {
-      validate("No data to plot")
-    }
 
-    plotComparedLsc(lsc = filterLargeScaleCharacteristics(),
-                    cohorts = c(input$compare_large_scale_characteristics_grouping_cohort_1,
-                                input$compare_large_scale_characteristics_grouping_cohort_2),
+    plotComparedLsc(lsc = filterCompareLargeScaleCharacteristics(),
+                    cohorts = c(input$compare_large_scale_characteristics_cohort_name_1,
+                                input$compare_large_scale_characteristics_cohort_name_2),
                     colour = c(input$compare_large_scale_characteristics_colour_1),
                     facet  = c(input$compare_large_scale_characteristics_facet_1),
                     imputeMissings = input$compare_large_scale_characteristics_impute_missings
@@ -1040,33 +1007,38 @@ lsc <- lscFiltered |>
     }
   )
 
-
-
-
-
-
   # summarise_cohort_overlap -----
-  ## Table cohort_overlap -----
-  createTableCohortOverlap <- shiny::reactive({
-
+  filterCohortOverlap <- shiny::reactive({
     if (is.null(dataFiltered$summarise_cohort_overlap)) {
       validate("No cohort overlap in results")
     }
-
+    
     result <- dataFiltered$summarise_cohort_overlap |>
-      filterData("summarise_cohort_overlap", input)
-
+      visOmopResults::splitGroup(keep = TRUE) |>
+      dplyr::filter(.data$cdm_name %in% input$summarise_cohort_overlap_cdm_name,
+                    .data$cohort_name_reference %in% input$summarise_cohort_overlap_cohort_name_reference,
+                    .data$cohort_name_comparator %in% input$summarise_cohort_overlap_cohort_name_comparator,
+                    .data$variable_name %in% input$summarise_cohort_overlap_variable_name
+                    ) |>
+      dplyr::select(-visOmopResults::groupColumns(dataFiltered$summarise_cohort_overlap))
+    
     if (nrow(result) == 0) {
       validate("No results found for selected inputs")
     }
+    return(result)
+  })
+  ## Table cohort_overlap -----
+  createTableCohortOverlap <- shiny::reactive({
 
+    result <- filterCohortOverlap()
+    
     CohortCharacteristics::tableCohortOverlap(
       result,
       uniqueCombinations = input$summarise_cohort_overlap_gt_uniqueCombinations,
       header = input$summarise_cohort_overlap_gt_header,
       groupColumn = input$summarise_cohort_overlap_gt_groupColumn,
       hide = input$summarise_cohort_overlap_gt_hide
-    )%>%
+    ) %>%
       tab_header(
         title = "Cohort overlap",
         subtitle = "Overlap is where the same individual is in both cohorts. Note their cohort entries do not necessarily overlap."
@@ -1088,14 +1060,11 @@ lsc <- lscFiltered |>
 
   ## Plot cohort_overlap -----
   createPlotCohortOverlap <- shiny::reactive({
-    if (is.null(dataFiltered$summarise_cohort_overlap)) {
-      validate("No cohort overlap in results")
-    }
+    result <- filterCohortOverlap()
 
-    result <- dataFiltered$summarise_cohort_overlap |>
-      filterData("summarise_cohort_overlap", input)
     CohortCharacteristics::plotCohortOverlap(
       result,
+      colour = input$summarise_cohort_overlap_plot_colour,
       facet = input$summarise_cohort_overlap_plot_facet,
       uniqueCombinations = input$summarise_cohort_overlap_plot_uniqueCombinations
     )
@@ -1118,21 +1087,28 @@ lsc <- lscFiltered |>
     }
   )
 
-
   # summarise_cohort_timing ----
-  ## Table cohort_timing -----
-  createTableCohortTiming <- shiny::reactive({
-
+  filterCohortTiming <- shiny::reactive({
     if (is.null(dataFiltered$summarise_cohort_timing)) {
       validate("No cohort timing in results")
     }
-
+    
     result <- dataFiltered$summarise_cohort_timing |>
-      filterData("summarise_cohort_timing", input)
-
+      visOmopResults::splitGroup(keep = TRUE) |>
+      dplyr::filter(.data$cdm_name %in% input$summarise_cohort_overlap_cdm_name,
+                    .data$cohort_name_reference %in% input$summarise_cohort_overlap_cohort_name_reference,
+                    .data$cohort_name_comparator %in% input$summarise_cohort_overlap_cohort_name_comparator) |>
+      dplyr::select(-visOmopResults::groupColumns(dataFiltered$summarise_cohort_timing))
+    
     if (nrow(result) == 0) {
       validate("No results found for selected inputs")
     }
+    return(result)
+  })
+  ## Table cohort_timing -----
+  createTableCohortTiming <- shiny::reactive({
+
+    result <- filterCohortTiming()
 
     CohortCharacteristics::tableCohortTiming(
       result,
@@ -1160,18 +1136,14 @@ lsc <- lscFiltered |>
 
   ## Plot cohort_timing -----
   createPlotCohortTiming <- shiny::reactive({
-    if (is.null(dataFiltered$summarise_cohort_timing)) {
-      validate("No cohort timing in results")
-    }
-
-    dataFiltered$summarise_cohort_timing |>
-      filterData("summarise_cohort_timing", input) |>
-      CohortCharacteristics::plotCohortTiming(
-        plotType = "densityplot",
-        facet = input$summarise_cohort_timing_plot_facet,
-        uniqueCombinations = input$summarise_cohort_timing_plot_uniqueCombinations,
-        timeScale = input$summarise_cohort_timing_gt_time_scale,
-      )
+    CohortCharacteristics::plotCohortTiming(
+      filterCohortTiming(),
+      plotType = "densityplot",
+      timeScale = input$summarise_cohort_timing_plot_time_scale,
+      uniqueCombinations = input$summarise_cohort_timing_plot_uniqueCombinations,
+      facet = input$summarise_cohort_timing_plot_facet,
+      colour = input$summarise_cohort_timing_plot_colour
+    )
   })
   output$summarise_cohort_timing_plot <- plotly::renderPlotly({
     createPlotCohortTiming()
@@ -1191,7 +1163,6 @@ lsc <- lscFiltered |>
     }
   )
 
-
   # incidence -----
   filterIncidence <- shiny::reactive({
     if (is.null(dataFiltered$incidence)) {
@@ -1200,17 +1171,17 @@ lsc <- lscFiltered |>
 
     result <- dataFiltered$incidence |>
       filter(cdm_name %in%
-               input$incidence_grouping_cdm_name) |>
+               input$incidence_cdm_name) |>
       filterGroup(outcome_cohort_name %in%
-                    input$incidence_grouping_outcome_cohort_name) |>
+                    input$incidence_outcome_cohort_name) |>
       filterSettings(denominator_age_group %in%
-                       input$incidence_settings_denominator_age_group,
+                       input$incidence_denominator_age_group,
                      denominator_sex %in%
-                       input$incidence_settings_denominator_sex,
+                       input$incidence_denominator_sex,
                      denominator_days_prior_observation %in%
-                       input$incidence_settings_denominator_days_prior_observation) |>
+                       input$incidence_denominator_days_prior_observation) |>
       filterAdditional(analysis_interval %in%
-                         input$incidence_settings_analysis_interval)
+                         input$incidence_analysis_interval)
 
     if (nrow(result) == 0) {
       validate("No results found for selected inputs")
@@ -1334,17 +1305,17 @@ lsc <- lscFiltered |>
 
     result <- dataFiltered$prevalence |>
       filter(cdm_name %in%
-               input$prevalence_grouping_cdm_name) |>
+               input$prevalence_cdm_name) |>
       filterGroup(outcome_cohort_name %in%
-                    input$prevalence_grouping_outcome_cohort_name) |>
+                    input$prevalence_outcome_cohort_name) |>
       filterSettings(denominator_age_group %in%
-                       input$prevalence_settings_denominator_age_group,
+                       input$prevalence_denominator_age_group,
                      denominator_sex %in%
-                       input$prevalence_settings_denominator_sex,
+                       input$prevalence_denominator_sex,
                      denominator_days_prior_observation %in%
-                       input$prevalence_settings_denominator_days_prior_observation) |>
+                       input$prevalence_denominator_days_prior_observation) |>
       filterAdditional(analysis_interval %in%
-                         input$prevalence_settings_analysis_interval)
+                         input$prevalence_analysis_interval)
 
     if (nrow(result) == 0) {
       validate("No results found for selected inputs")

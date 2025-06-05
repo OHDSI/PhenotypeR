@@ -193,8 +193,11 @@ plotAgeDensity <- function(summarise_table, summarise_characteristics, show_inte
                    aes(x = estimate_value, y = 0, xend = estimate_value, yend = density_y),
                    linetype = 2,
                    linewidth = 0.75) +
-      labs(subtitle = "The solid line represents the median, while the dotted lines indicate the interquartile range.") +
+      labs(subtitle = "The solid line represents the median, while the dotted lines indicate the interquartile range. Notice that these may not appear if in the cohort there are less than the minimum cell count specified. Please be aware that statistics are calculated by record, not by subject.") +
       facet_wrap(c("cdm_name", "group_level"))
+  }else{
+    plot <- plot +
+      labs(subtitle = "Please be aware that statistics are calculated by record, not by subject.")
   }
 
   return(plot)
