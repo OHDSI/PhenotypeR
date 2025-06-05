@@ -82,7 +82,7 @@ populationDiagnostics <- function(cohort,
     cdm = cdm,
     denominatorTable = denominatorTable,
     outcomeTable = cohortName,
-    interval = "years",
+    interval = c("years", "overall"),
     completeDatabaseIntervals = TRUE,
     fullContribution = FALSE)
 

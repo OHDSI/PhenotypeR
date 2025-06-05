@@ -641,7 +641,7 @@ server <- function(input, output, session) {
     ) %>%
       tab_header(
         title = "Patient characteristics",
-        subtitle = "Summary of patient characteristics relative to cohort entry"
+        subtitle = "Summary of patient characteristics relative to cohort entry. Please be aware that statistics are calculated by record, not by subject."
       ) %>%
       tab_options(
         heading.align = "left"
@@ -1018,8 +1018,8 @@ server <- function(input, output, session) {
       dplyr::filter(.data$cdm_name %in% input$summarise_cohort_overlap_cdm_name,
                     .data$cohort_name_reference %in% input$summarise_cohort_overlap_cohort_name_reference,
                     .data$cohort_name_comparator %in% input$summarise_cohort_overlap_cohort_name_comparator,
-                    .data$variable_name %in% input$summarise_cohort_overlap_variable_name,
-                    .data$estimate_name %in% input$summarise_cohort_overlap_estimate_name) |>
+                    .data$variable_name %in% input$summarise_cohort_overlap_variable_name
+                    ) |>
       dplyr::select(-visOmopResults::groupColumns(dataFiltered$summarise_cohort_overlap))
     
     if (nrow(result) == 0) {
@@ -1061,9 +1061,10 @@ server <- function(input, output, session) {
   ## Plot cohort_overlap -----
   createPlotCohortOverlap <- shiny::reactive({
     result <- filterCohortOverlap()
-    
+
     CohortCharacteristics::plotCohortOverlap(
       result,
+      colour = input$summarise_cohort_overlap_plot_colour,
       facet = input$summarise_cohort_overlap_plot_facet,
       uniqueCombinations = input$summarise_cohort_overlap_plot_uniqueCombinations
     )
@@ -1094,9 +1095,9 @@ server <- function(input, output, session) {
     
     result <- dataFiltered$summarise_cohort_timing |>
       visOmopResults::splitGroup(keep = TRUE) |>
-      dplyr::filter(.data$cdm_name %in% input$summarise_cohort_timing_cdm_name,
-                    .data$cohort_name_reference %in% input$summarise_cohort_timing_cohort_name_reference,
-                    .data$cohort_name_comparator %in% input$summarise_cohort_timing_cohort_name_comparator) |>
+      dplyr::filter(.data$cdm_name %in% input$summarise_cohort_overlap_cdm_name,
+                    .data$cohort_name_reference %in% input$summarise_cohort_overlap_cohort_name_reference,
+                    .data$cohort_name_comparator %in% input$summarise_cohort_overlap_cohort_name_comparator) |>
       dplyr::select(-visOmopResults::groupColumns(dataFiltered$summarise_cohort_timing))
     
     if (nrow(result) == 0) {
@@ -1135,13 +1136,14 @@ server <- function(input, output, session) {
 
   ## Plot cohort_timing -----
   createPlotCohortTiming <- shiny::reactive({
-    filterCohortTiming() |>
-      CohortCharacteristics::plotCohortTiming(
-        plotType = "densityplot",
-        facet = input$summarise_cohort_timing_plot_facet,
-        uniqueCombinations = input$summarise_cohort_timing_plot_uniqueCombinations,
-        timeScale = input$summarise_cohort_timing_gt_time_scale,
-      )
+    CohortCharacteristics::plotCohortTiming(
+      filterCohortTiming(),
+      plotType = "densityplot",
+      timeScale = input$summarise_cohort_timing_plot_time_scale,
+      uniqueCombinations = input$summarise_cohort_timing_plot_uniqueCombinations,
+      facet = input$summarise_cohort_timing_plot_facet,
+      colour = input$summarise_cohort_timing_plot_colour
+    )
   })
   output$summarise_cohort_timing_plot <- plotly::renderPlotly({
     createPlotCohortTiming()
