@@ -2,7 +2,9 @@
 # Be careful editing this file
 
 ui <- bslib::page_navbar(
-  theme = bs_theme(bootswatch = "pulse"),
+  theme = bs_theme(5, "pulse"), navbar_options =list(class = "bg-dark", theme = "dark"),
+  # theme = bs_theme(5, "sandstone"), navbar_options =list(class = "bg-dark", theme = "dark"),
+  
   #  zephyr
   
   title = "PhenotypeR",
@@ -528,7 +530,7 @@ ui <- bslib::page_navbar(
               bslib::layout_sidebar(
                 sidebar = bslib::sidebar(width = 400, open = "closed",
                                          sortable::bucket_list(
-                                           header = NULL,
+                                           header = "Table formatting",
                                            sortable::add_rank_list(
                                              text = "none",
                                              labels = c("variable_name", "variable_level", "estimate_name"),
@@ -698,7 +700,7 @@ ui <- bslib::page_navbar(
     ## Compare large scale characteristics -----
     bslib::nav_panel(
       title = "Compare large scale characteristics",
-      icon = shiny::icon("arrow-up-right-dots"),
+      icon = shiny::icon("people-arrows"),
       bslib::layout_sidebar(
         sidebar = bslib::sidebar(width = 400, open = "closed",
                                  bslib::accordion(
@@ -824,9 +826,9 @@ ui <- bslib::page_navbar(
                                          ),
                                          position = "right"
                 ),
-                position = "right"
-              ),
-              plotly::plotlyOutput("plotly_compare_lsc") |> withSpinner()
+                position = "right",
+                plotly::plotlyOutput("plotly_compare_lsc") |> withSpinner()
+              )
             )
           )
         )
@@ -835,7 +837,7 @@ ui <- bslib::page_navbar(
     ## Cohort overlap -----
     bslib::nav_panel(
       title = "Compare cohorts",
-      icon = shiny::icon("circle-half-stroke"),
+      icon = shiny::icon("yin-yang"),
       bslib::layout_sidebar(
         sidebar = bslib::sidebar(width = 400, open = "closed",
                                  bslib::accordion(
@@ -904,7 +906,7 @@ ui <- bslib::page_navbar(
                                            value = c(TRUE)
                                          ),
                                          sortable::bucket_list(
-                                           header = "Table settings",
+                                           header = "Table formatting",
                                            sortable::add_rank_list(
                                              text = "none",
                                              labels = c("cohort_name_reference", "cohort_name_comparator", "estimate_name"),
@@ -1135,7 +1137,7 @@ ui <- bslib::page_navbar(
     ## Incidence -----
     bslib::nav_panel(
       title = "Incidence",
-      icon = shiny::icon("chart-line"),
+      icon = shiny::icon("shower"),
       bslib::layout_sidebar(
         sidebar = bslib::sidebar(width = 400, open = "closed",
                                  bslib::accordion(
@@ -1310,7 +1312,7 @@ ui <- bslib::page_navbar(
     ## Prevalence -----
     bslib::nav_panel(
       title = "Prevalence",
-      icon = shiny::icon("chart-line"),
+      icon = shiny::icon("bath"),
       bslib::layout_sidebar(
         sidebar = bslib::sidebar(width = 400, open = "closed",
                                  bslib::accordion(
