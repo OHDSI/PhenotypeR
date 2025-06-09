@@ -156,8 +156,6 @@ cohortDiagnostics <- function(cohort, matchedAnalysis, matchedSample = 1000){
   results
 }
 
-
-
 createMatchedCohorts <- function(cdm, tempCohortName, cohortName, cohortIds, matchedSample){
 
   cdm <- omopgenerics::emptyCohortTable(cdm, name = tempCohortName)

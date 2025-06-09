@@ -89,7 +89,7 @@ test_that("run with multiple cohorts", {
   expect_true(
     all(result |>
           omopgenerics::settings() |>
-          pull("result_type") %in%
+          dplyr::pull("result_type") %in%
         c(rep("summarise_cohort_attrition",2), "summarise_cohort_count", "summarise_cohort_overlap",
         "summarise_cohort_timing", "summarise_characteristics", "summarise_table",
         rep("summarise_large_scale_characteristics", 12))
