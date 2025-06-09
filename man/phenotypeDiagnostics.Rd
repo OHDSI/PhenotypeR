@@ -9,11 +9,11 @@ phenotypeDiagnostics(
   databaseDiagnostics = TRUE,
   codelistDiagnostics = TRUE,
   cohortDiagnostics = TRUE,
+  matchedAnalysis = TRUE,
+  matchedSample = 1000,
   populationDiagnostics = TRUE,
   populationSample = 1e+06,
-  populationDateRange = as.Date(c(NA, NA)),
-  matchedDiagnostics = TRUE,
-  matchedSample = 1000
+  populationDateRange = as.Date(c(NA, NA))
 )
 }
 \arguments{
@@ -24,6 +24,11 @@ phenotypeDiagnostics(
 \item{codelistDiagnostics}{If TRUE, codelist diagnostics will be run.}
 
 \item{cohortDiagnostics}{If TRUE, cohort diagnostics will be run.}
+
+\item{matchedAnalysis}{Boolean variable. Whether to conduct the analysis for the matched cohorts (TRUE) or not (FALSE).}
+
+\item{matchedSample}{Only if matchedAnalysis = TRUE. The number of people to take a random sample for
+matching. If NULL, no sampling will be performed.}
 
 \item{populationDiagnostics}{If TRUE, population diagnostics will be run.}
 
@@ -36,12 +41,6 @@ NULL or the first date is set as missing, the earliest observation_start_date
 in the observation_period table will be used for the former. If  NULL or the
 second date is set as missing, the latest observation_end_date in the
 observation_period table will be used for the latter.}
-
-\item{matchedDiagnostics}{If TRUE, cohort to population
-diagnostics will be run.}
-
-\item{matchedSample}{The number of people to take a random sample for
-matching. If NULL, no sampling will be performed.}
 }
 \value{
 A summarised result

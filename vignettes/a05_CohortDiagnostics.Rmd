@@ -64,7 +64,7 @@ cdm$injuries <- conceptCohort(cdm = cdm,
 
 We can run cohort diagnostics analyses for each of our overall cohorts like so:
 ```{r}
-cohort_diag <- cohortDiagnostics(cdm$injuries)
+cohort_diag <- cohortDiagnostics(cdm$injuries, matchedAnalysis = TRUE)
 ```
 
 Our results will include a summary of the overlap between our cohorts. We could visualise this 

@@ -17,13 +17,14 @@ test_that("run with a single cohort", {
                           schema ="main", overwrite = TRUE)
 
   expect_no_error(result <- cdm$my_cohort |>
-    cohortDiagnostics())
+    cohortDiagnostics(matchedAnalysis = FALSE))
 
+  # Check all the expected summarised results have been calculated)
   # check density is being calculated
-  expect_true(any(stringr::str_detect(
-    omopgenerics::settings(result) |>
-      dplyr::pull("result_type"),
-    "table")))
+  expect_true(all(c("summarise_cohort_attrition", "summarise_cohort_count", "summarise_characteristics",
+                    "summarise_table", "summarise_large_scale_characteristics") %in%
+                    c(dplyr::pull(omopgenerics::settings(result), "result_type") |> unique())))
+  expect_true(result$group_level |> unique() == "cohort_1")
 
   # cohort and timing and overlap should have been skipped
   expect_false(any("summarise_cohort_overlap" ==
@@ -50,7 +51,7 @@ test_that("run with multiple cohorts", {
   cdm <- CDMConnector::copyCdmTo(con = db, cdm = cdm_local,
                                  schema ="main", overwrite = TRUE)
   expect_no_error(result <- cdm$my_cohort |>
-                    cohortDiagnostics())
+                    cohortDiagnostics(matchedAnalysis = TRUE))
 
   # check density is being calculated
   expect_true(any(stringr::str_detect(
@@ -65,7 +66,8 @@ test_that("run with multiple cohorts", {
                      dplyr::distinct() |>
                      dplyr::pull() |>
                      sort(),
-                   c("cohort_1", "cohort_2"))
+                   c("cohort_1", "cohort_1_matched", "cohort_1_sampled",
+                     "cohort_2", "cohort_2_matched", "cohort_2_sampled"))
 
   # cohort and timing and overlap should have been estimated now we have more than one cohort
   expect_true(any(stringr::str_detect(
@@ -76,6 +78,23 @@ test_that("run with multiple cohorts", {
                    omopgenerics::settings(result) |>
                     dplyr::pull("result_type"),
                    "cohort_timing")))
+
+  # Check matched cohorts
+  expect_true(
+    all(sort(unique(result$group_level)) == c("cohort_1", "cohort_1 &&& cohort_2", "cohort_1_matched", "cohort_1_sampled",
+                                                        "cohort_2", "cohort_2 &&& cohort_1", "cohort_2_matched", "cohort_2_sampled"))
+  )
+
+  # Check all the summarised results are there
+  expect_true(
+    all(result |>
+          omopgenerics::settings() |>
+          pull("result_type") %in%
+        c(rep("summarise_cohort_attrition",2), "summarise_cohort_count", "summarise_cohort_overlap",
+        "summarise_cohort_timing", "summarise_characteristics", "summarise_table",
+        rep("summarise_large_scale_characteristics", 12))
+    )
+  )
 })
 
 test_that("check all expected analyses are present in results", {
