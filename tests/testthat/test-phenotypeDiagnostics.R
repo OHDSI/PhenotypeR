@@ -69,7 +69,7 @@ test_that("overall diagnostics function", {
           (settings(cohort_diag_only) |>
              dplyr::pull("result_type"))))
   expect_true(
-    all(sort(dplyr::distinct(cohort_diag_only$group_level)) == c("cohort_1", "cohort_2"))
+    all(sort(unique(cohort_diag_only$group_level)) == c("cohort_1", "cohort_2"))
   )
 
   cohort_diag_only <-  phenotypeDiagnostics(cdm$my_cohort,
