@@ -92,8 +92,7 @@ test_that("overall diagnostics function", {
                                             matchedAnalysis = FALSE,
                                             populationDiagnostics = TRUE)
   expect_true(
-    all(c("summarise_characteristics",
-          "summarise_large_scale_characteristics") %in%
+    all(c("incidence", "incidence_attrition", "prevalence", "prevalence_attrition") %in%
           unique(settings(cohort_pop_diag_only) |>
                    dplyr::pull("result_type"))))
 
