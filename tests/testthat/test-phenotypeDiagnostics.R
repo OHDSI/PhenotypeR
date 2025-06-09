@@ -24,17 +24,8 @@ test_that("overall diagnostics function", {
   expect_no_error(my_result <- phenotypeDiagnostics(cdm$my_cohort))
   cohort_post <- cdm$my_cohort |>
     dplyr::collect()
-  # expect_identical(cohort_pre,
-  #                  cohort_post)
 
-  expect_identical(phenotypeDiagnostics(cdm$my_cohort,
-                                        databaseDiagnostics = FALSE,
-                                        codelistDiagnostics = FALSE,
-                                        cohortDiagnostics = FALSE,
-                                        matchedAnalysis = TRUE,
-                                        populationDiagnostics = FALSE),
-                   omopgenerics::emptySummarisedResult())
-
+  # Only database diagnostics
   dd_only <- phenotypeDiagnostics(cdm$my_cohort,
                                   databaseDiagnostics = TRUE,
                                   codelistDiagnostics = FALSE,
@@ -46,13 +37,25 @@ test_that("overall diagnostics function", {
   expect_true("summarise_observation_period" %in%
                 (settings(dd_only) |> dplyr::pull("result_type")))
 
-  # codelist diag will be empty currently
-  code_diag_only <- phenotypeDiagnostics(cdm$my_cohort,
-                                         databaseDiagnostics = FALSE,
-                                         codelistDiagnostics = TRUE,
-                                         cohortDiagnostics = FALSE,
-                                         matchedAnalysis = FALSE,
-                                         populationDiagnostics = FALSE)
+  # Only codelist diagnostics
+  expect_identical(phenotypeDiagnostics(cdm$my_cohort,
+                                        databaseDiagnostics = FALSE,
+                                        codelistDiagnostics = TRUE,
+                                        cohortDiagnostics = FALSE,
+                                        matchedAnalysis = FALSE,
+                                        populationDiagnostics = FALSE),
+                   omopgenerics::emptySummarisedResult())
+
+
+  # Only cohort diagnostics
+  expect_identical(phenotypeDiagnostics(cdm$my_cohort,
+                                        databaseDiagnostics = FALSE,
+                                        codelistDiagnostics = FALSE,
+                                        cohortDiagnostics = FALSE,
+                                        matchedAnalysis = TRUE,
+                                        populationDiagnostics = FALSE),
+                   omopgenerics::emptySummarisedResult())
+
 
   cohort_diag_only <-  phenotypeDiagnostics(cdm$my_cohort,
                                             databaseDiagnostics = FALSE,
@@ -67,9 +70,11 @@ test_that("overall diagnostics function", {
           "summarise_cohort_overlap", "summarise_cohort_timing",
           "summarise_large_scale_characteristics") %in%
           (settings(cohort_diag_only) |>
-             dplyr::pull("result_type"))))
+             dplyr::pull("result_type") |>
+             unique())))
   expect_true(
-    all(sort(unique(cohort_diag_only$group_level)) == c("cohort_1", "cohort_2"))
+    all(sort(unique(cohort_diag_only$group_level)) == c("cohort_1", "cohort_1 &&& cohort_2",
+                                                        "cohort_2", "cohort_2 &&& cohort_1"))
   )
 
   cohort_diag_only <-  phenotypeDiagnostics(cdm$my_cohort,
@@ -80,7 +85,7 @@ test_that("overall diagnostics function", {
                                             populationDiagnostics = FALSE)
   expect_identical(cohort_diag_only, expected = omopgenerics::emptySummarisedResult())
 
-  cohort_diag_only <-  phenotypeDiagnostics(cdm$my_cohort,
+  cohort_pop_diag_only <-  phenotypeDiagnostics(cdm$my_cohort,
                                             databaseDiagnostics = FALSE,
                                             codelistDiagnostics = FALSE,
                                             cohortDiagnostics = FALSE,
