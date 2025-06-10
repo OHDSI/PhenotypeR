@@ -22,7 +22,7 @@
 #' cdm <- mockPhenotypeR()
 #'
 #' result <- cohortDiagnostics(cdm$my_cohort,
-#'                             matchedAnalysis = TRUE)
+#'                             match = TRUE)
 #'
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
