@@ -35,7 +35,7 @@ phenotypeDiagnostics <- function(cohort,
                                  databaseDiagnostics = TRUE,
                                  codelistDiagnostics = TRUE,
                                  cohortDiagnostics = TRUE,
-                                 matchedAnalysis = TRUE,
+                                 match = TRUE,
                                  matchedSample = 1000,
                                  populationDiagnostics = TRUE,
                                  populationSample = 1000000,
@@ -47,7 +47,6 @@ phenotypeDiagnostics <- function(cohort,
   omopgenerics::assertLogical(codelistDiagnostics)
   omopgenerics::assertLogical(cohortDiagnostics)
   omopgenerics::assertLogical(populationDiagnostics)
-  omopgenerics::assertLogical(matchedAnalysis)
 
   results <- list()
   if (isTRUE(databaseDiagnostics)) {
@@ -60,7 +59,7 @@ phenotypeDiagnostics <- function(cohort,
   }
   if (isTRUE(cohortDiagnostics)) {
     cli::cli("Running cohort diagnostics")
-    results[["cohort_diag"]] <- cohortDiagnostics(cohort, matched = matchedAnalysis, matchedSample = matchedSample)
+    results[["cohort_diag"]] <- cohortDiagnostics(cohort, match = match, matchedSample = matchedSample)
   }
   if (isTRUE(populationDiagnostics)) {
     cli::cli("Running population diagnostics")

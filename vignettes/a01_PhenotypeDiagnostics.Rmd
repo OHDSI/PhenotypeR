@@ -73,7 +73,7 @@ result <- phenotypeDiagnostics(
   databaseDiagnostics = TRUE, 
   codelistDiagnostics = TRUE, 
   cohortDiagnostics   = TRUE, 
-  matchedAnalysis  = TRUE,
+  match = TRUE,
   matchedSample = 1000
   populationDiagnostics = TRUE,
   populationSample = 1e+06,
@@ -86,7 +86,7 @@ Notice that we have three additional arguments:
 
 -   `populationSample`: It allows to specify a number of people that randomly will be extracted from the CDM to perform the **Population diagnostics** analysis. If NULL, all the participants in the CDM will be included. It helps to reduce the computational time.
 -   `populationDateRange`: We can use it to specify the time period when we want to perform our **Population diagnostics** analysis.
--   `matchedAnalysis`: If set to TRUE, our study cohorts will be matched with people with similar age and sex in the database, and will perform a large-scale characterisation on our original cohort, the sampled cohort (those participants from our cohort that have found a match) and the matched cohort. If set to FALSE, cohortDiagnostics will only be performed in our original cohort.
+-   `match`: If set to TRUE, our study cohorts will be matched with people with similar age and sex in the database, and will perform a large-scale characterisation on our original cohort, the sampled cohort (those participants from our cohort that have found a match) and the matched cohort. If set to FALSE, cohortDiagnostics will only be performed in our original cohort.
 -   `matchedSample`: Similar to populationSample, this arguments subsets a random sample of people from our cohort and performs the matched analysis on this sample. 
 
 ## Save the results

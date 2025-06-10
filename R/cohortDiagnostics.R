@@ -27,13 +27,13 @@
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
 
-cohortDiagnostics <- function(cohort, matchedAnalysis, matchedSample = 1000){
+cohortDiagnostics <- function(cohort, match = TRUE, matchedSample = 1000){
 
   cli::cli_bullets(c("*" = "Starting Cohort Diagnostics"))
 
   # Initial checks ----
   cohort <- omopgenerics::validateCohortArgument(cohort = cohort)
-  omopgenerics::assertLogical(matchedAnalysis)
+  omopgenerics::assertLogical(match)
   omopgenerics::assertNumeric(matchedSample, integerish = TRUE, min = 1, null = TRUE, length = 1)
 
   cdm <- omopgenerics::cdmReference(cohort)
@@ -52,8 +52,7 @@ cohortDiagnostics <- function(cohort, matchedAnalysis, matchedSample = 1000){
 
   cli::cli_bullets(c(">" = "Getting cohort count"))
   results[["cohort_count"]] <- cdm[[cohortName]] |>
-    CohortCharacteristics::summariseCohortCount() |>
-    suppressMessages()
+    CohortCharacteristics::summariseCohortCount()
 
   # if there is more than one cohort, we'll get timing and overlap of all together
   if(length(cohortIds) > 1){
@@ -63,11 +62,10 @@ cohortDiagnostics <- function(cohort, matchedAnalysis, matchedSample = 1000){
 
     cli::cli_bullets(c(">" = "Getting cohort timing"))
     results[["cohort_timing"]] <- cdm[[cohortName]] |>
-      CohortCharacteristics::summariseCohortTiming(estimates = c("median", "q25", "q75", "min", "max", "density")) |>
-      suppressMessages()
+      CohortCharacteristics::summariseCohortTiming(estimates = c("median", "q25", "q75", "min", "max", "density"))
   }
 
-  if(matchedAnalysis){
+  if(match){
     cli::cli_bullets(c(">" = "Creating matching cohorts"))
     cdm <- createMatchedCohorts(cdm, tempCohortName, cohortName, cohortIds, matchedSample)
     cdm <- bind(cdm[[cohortName]], cdm[[tempCohortName]], name = tempCohortName)
@@ -97,8 +95,7 @@ cohortDiagnostics <- function(cohort, matchedAnalysis, matchedSample = 1000){
           window = c(-365, -1)
         )
       )
-    ) |>
-    suppressMessages()
+    )
 
   cli::cli_bullets(c(">" = "Calculating age density"))
   results[["cohort_density"]] <- cdm[[tempCohortName]] |>
@@ -111,8 +108,7 @@ cohortDiagnostics <- function(cohort, matchedAnalysis, matchedSample = 1000){
       includeOverallGroup  = FALSE,
       variables = "age",
       estimates = "density"
-    ) |>
-    suppressMessages()
+    )
 
   # Large scale characteristics
   cli::cli_bullets(c(">" = "Run large scale characteristics (including source and standard codes)"))

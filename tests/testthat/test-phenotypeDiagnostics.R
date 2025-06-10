@@ -30,7 +30,7 @@ test_that("overall diagnostics function", {
                                   databaseDiagnostics = TRUE,
                                   codelistDiagnostics = FALSE,
                                   cohortDiagnostics = FALSE,
-                                  matchedAnalysis = TRUE,
+                                  match = TRUE,
                                   populationDiagnostics = FALSE)
   expect_true("summarise_omop_snapshot" %in%
                 (settings(dd_only) |> dplyr::pull("result_type")))
@@ -42,7 +42,7 @@ test_that("overall diagnostics function", {
                                         databaseDiagnostics = FALSE,
                                         codelistDiagnostics = TRUE,
                                         cohortDiagnostics = FALSE,
-                                        matchedAnalysis = FALSE,
+                                        match = FALSE,
                                         populationDiagnostics = FALSE),
                    omopgenerics::emptySummarisedResult())
 
@@ -52,7 +52,7 @@ test_that("overall diagnostics function", {
                                         databaseDiagnostics = FALSE,
                                         codelistDiagnostics = FALSE,
                                         cohortDiagnostics = FALSE,
-                                        matchedAnalysis = TRUE,
+                                        match = TRUE,
                                         populationDiagnostics = FALSE),
                    omopgenerics::emptySummarisedResult())
 
@@ -61,7 +61,7 @@ test_that("overall diagnostics function", {
                                             databaseDiagnostics = FALSE,
                                             codelistDiagnostics = FALSE,
                                             cohortDiagnostics = TRUE,
-                                            matchedAnalysis = FALSE,
+                                            match = FALSE,
                                             populationDiagnostics = FALSE)
   expect_true(
     all(c("summarise_characteristics", "summarise_table",
@@ -81,7 +81,7 @@ test_that("overall diagnostics function", {
                                             databaseDiagnostics = FALSE,
                                             codelistDiagnostics = FALSE,
                                             cohortDiagnostics = FALSE,
-                                            matchedAnalysis = TRUE,
+                                            match = TRUE,
                                             populationDiagnostics = FALSE)
   expect_identical(cohort_diag_only, expected = omopgenerics::emptySummarisedResult())
 
@@ -89,7 +89,7 @@ test_that("overall diagnostics function", {
                                             databaseDiagnostics = FALSE,
                                             codelistDiagnostics = FALSE,
                                             cohortDiagnostics = FALSE,
-                                            matchedAnalysis = FALSE,
+                                            match = FALSE,
                                             populationDiagnostics = TRUE)
   expect_true(
     all(c("incidence", "incidence_attrition", "prevalence", "prevalence_attrition") %in%
@@ -99,7 +99,7 @@ test_that("overall diagnostics function", {
   expect_error(phenotypeDiagnostics(cdm$my_cohort, databaseDiagnostics = "hello"))
   expect_error(phenotypeDiagnostics(cdm$my_cohort, codelistDiagnostics = 1))
   expect_error(phenotypeDiagnostics(cdm$my_cohort, cohortDiagnostics   = "f"))
-  expect_error(phenotypeDiagnostics(cdm$my_cohort, matchedAnalysis  = -10))
+  expect_error(phenotypeDiagnostics(cdm$my_cohort, match  = -10))
   expect_error(phenotypeDiagnostics(cdm$my_cohort, populationDiagnostics = "hhh"))
 
 })

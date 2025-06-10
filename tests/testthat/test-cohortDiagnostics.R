@@ -17,7 +17,7 @@ test_that("run with a single cohort", {
                           schema ="main", overwrite = TRUE)
 
   expect_no_error(result <- cdm$my_cohort |>
-    cohortDiagnostics(matchedAnalysis = FALSE))
+    cohortDiagnostics(match = FALSE))
 
   # Check all the expected summarised results have been calculated)
   # check density is being calculated
@@ -51,7 +51,7 @@ test_that("run with multiple cohorts", {
   cdm <- CDMConnector::copyCdmTo(con = db, cdm = cdm_local,
                                  schema ="main", overwrite = TRUE)
   expect_no_error(result <- cdm$my_cohort |>
-                    cohortDiagnostics(matchedAnalysis = TRUE))
+                    cohortDiagnostics(match = TRUE))
 
   # check density is being calculated
   expect_true(any(stringr::str_detect(
