@@ -35,7 +35,6 @@ this includes:
     <li><a class="dropdown-item" href="../articles/a03_DatabaseDiagnostics.html">Database diagnostics</a></li>
     <li><a class="dropdown-item" href="../articles/a04_CodelistDiagnostics.html">Codelist diagnostics</a></li>
     <li><a class="dropdown-item" href="../articles/a05_CohortDiagnostics.html">Cohort diagnostics</a></li>
-    <li><a class="dropdown-item" href="../articles/a06_MatchedDiagnostics.html">Matched diagnostics</a></li>
     <li><a class="dropdown-item" href="../articles/a07_PopulationDiagnostics.html">Population diagnostics</a></li>
   </ul></li>
       </ul><ul class="navbar-nav"></ul></div>
@@ -67,11 +66,11 @@ this includes:</p>
 <span>  databaseDiagnostics <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  codelistDiagnostics <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  cohortDiagnostics <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  match <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  matchedSample <span class="op">=</span> <span class="fl">1000</span>,</span>
 <span>  populationDiagnostics <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  populationSample <span class="op">=</span> <span class="fl">1e+06</span>,</span>
-<span>  populationDateRange <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  matchedDiagnostics <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  matchedSample <span class="op">=</span> <span class="fl">1000</span></span>
+<span>  populationDateRange <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -95,6 +94,15 @@ this includes:</p>
 <dd><p>If TRUE, cohort diagnostics will be run.</p></dd>
 
 
+<dt id="arg-match">match<a class="anchor" aria-label="anchor" href="#arg-match"></a></dt>
+<dd><p>Boolean variable. Whether to conduct the analysis for the matched cohorts (TRUE) or not (FALSE).</p></dd>
+
+
+<dt id="arg-matchedsample">matchedSample<a class="anchor" aria-label="anchor" href="#arg-matchedsample"></a></dt>
+<dd><p>Only if match = TRUE. The number of people to take a random sample for
+matching. If NULL, no sampling will be performed.</p></dd>
+
+
 <dt id="arg-populationdiagnostics">populationDiagnostics<a class="anchor" aria-label="anchor" href="#arg-populationdiagnostics"></a></dt>
 <dd><p>If TRUE, population diagnostics will be run.</p></dd>
 
@@ -111,16 +119,6 @@ NULL or the first date is set as missing, the earliest observation_start_date
 in the observation_period table will be used for the former. If  NULL or the
 second date is set as missing, the latest observation_end_date in the
 observation_period table will be used for the latter.</p></dd>
-
-
-<dt id="arg-matcheddiagnostics">matchedDiagnostics<a class="anchor" aria-label="anchor" href="#arg-matcheddiagnostics"></a></dt>
-<dd><p>If TRUE, cohort to population
-diagnostics will be run.</p></dd>
-
-
-<dt id="arg-matchedsample">matchedSample<a class="anchor" aria-label="anchor" href="#arg-matchedsample"></a></dt>
-<dd><p>The number of people to take a random sample for
-matching. If NULL, no sampling will be performed.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -144,22 +142,54 @@ matching. If NULL, no sampling will be performed.</p></dd>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Returning an empty summarised result</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> You can add a codelist to a cohort with `addCodelistAttribute()`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Getting cohort attrition</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Getting cohort count</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Starting Cohort Diagnostics</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Getting cohort attrition</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Getting cohort count</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising data</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising cohort <span style="color: #0000BB;">cohort_1</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising cohort <span style="color: #0000BB;">cohort_2</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> summariseCharacteristics finished!</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Getting cohort overlap</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Getting cohort timing</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Getting cohort overlap</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Getting cohort timing</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The following estimates will be computed:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> days_between_cohort_entries: median, q25, q75, min, max, density</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   the database side</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2025-06-10 12:26:19.637959</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2025-06-10 12:26:19.758795</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> get cohorts and index</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> cohort summary</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2025-06-10 16:57:17.747373</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2025-06-10 16:57:17.870023</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Creating matching cohorts</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Sampling cohort `my_cohort`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Returning entry cohort as the size of the cohorts to be sampled is equal or</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> smaller than `n`.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Generating an age and sex matched cohort for cohort_1</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Starting matching</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Creating copy of target cohort.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> 1 cohort to be matched.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Creating controls cohorts.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Excluding cases from controls</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Matching by gender_concept_id and year_of_birth</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Removing controls that were not in observation at index date</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Excluding target records whose pair is not in observation</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Adjusting ratio</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Binding cohorts</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Done</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Sampling cohort `my_cohort`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Returning entry cohort as the size of the cohorts to be sampled is equal or</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> smaller than `n`.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Generating an age and sex matched cohort for cohort_2</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Starting matching</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Creating copy of target cohort.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> 1 cohort to be matched.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Creating controls cohorts.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Excluding cases from controls</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Matching by gender_concept_id and year_of_birth</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Removing controls that were not in observation at index date</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Excluding target records whose pair is not in observation</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Adjusting ratio</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Binding cohorts</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Done</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Getting cohorts and indexes</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Summarising cohort characteristics</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> adding demographics columns</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> adding tableIntersectCount 1/1</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> window names casted to snake_case:</span>
@@ -167,12 +197,36 @@ matching. If NULL, no sampling will be performed.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising data</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising cohort <span style="color: #0000BB;">cohort_1</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising cohort <span style="color: #0000BB;">cohort_2</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising cohort <span style="color: #0000BB;">cohort_1_sampled</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising cohort <span style="color: #0000BB;">cohort_1_matched</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising cohort <span style="color: #0000BB;">cohort_2_sampled</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising cohort <span style="color: #0000BB;">cohort_2_matched</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> summariseCharacteristics finished!</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> age density</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Calculating age density</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The following estimates will be computed:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> age: density</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2025-06-10 12:26:24.063767</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2025-06-10 12:26:24.326516</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2025-06-10 16:57:42.687675</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2025-06-10 16:57:43.009358</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Run large scale characteristics (including source and standard codes)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising large scale characteristics </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 6)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 6)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 6)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 6)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 6)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 6)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Formatting result</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summarising large scale characteristics</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Run large scale characteristics (including only standard codes)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising large scale characteristics </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 6)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 6)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 6)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 6)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 6)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 6)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Formatting result</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summarising large scale characteristics</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Creating denominator for incidence and prevalence</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Sampling person table to 1e+06</span></span>
@@ -191,7 +245,7 @@ matching. If NULL, no sampling will be performed.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 10 of 12</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 11 of 12</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 12 of 12</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Overall time taken: 0 mins and 12 secs</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Overall time taken: 0 mins and 13 secs</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Estimating prevalence</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 1 of 12</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 2 of 12</span>
@@ -206,101 +260,6 @@ matching. If NULL, no sampling will be performed.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 11 of 12</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 12 of 12</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Time taken: 0 mins and 7 secs</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Sampling cohorts</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Returning entry cohort as the size of the cohorts to be sampled is equal or</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> smaller than `n`.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Generating an age and sex matched cohort for cohort_1</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Starting matching</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Creating copy of target cohort.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> 1 cohort to be matched.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Creating controls cohorts.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Excluding cases from controls</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Matching by gender_concept_id and year_of_birth</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Removing controls that were not in observation at index date</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Excluding target records whose pair is not in observation</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Adjusting ratio</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Binding cohorts</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Done</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> adding demographics columns</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> adding tableIntersectCount 1/1</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> window names casted to snake_case:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> `-365 to -1` -&gt; `365_to_1`</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising data</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising cohort <span style="color: #0000BB;">cohort_1_sampled</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising cohort <span style="color: #0000BB;">cohort_1_matched</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> summariseCharacteristics finished!</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Getting age density</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The following estimates will be computed:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> age: density</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2025-06-10 12:27:02.992455</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2025-06-10 12:27:03.33162</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Running large scale characterisation</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising large scale characteristics </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 6)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 6)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 6)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 6)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 6)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 6)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Formatting result</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summarising large scale characteristics</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising large scale characteristics </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 6)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 6)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 6)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 6)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 6)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 6)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Formatting result</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summarising large scale characteristics</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Sampling cohorts</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Returning entry cohort as the size of the cohorts to be sampled is equal or</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> smaller than `n`.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Generating an age and sex matched cohort for cohort_2</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Starting matching</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Creating copy of target cohort.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> 1 cohort to be matched.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Creating controls cohorts.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Excluding cases from controls</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Matching by gender_concept_id and year_of_birth</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Removing controls that were not in observation at index date</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Excluding target records whose pair is not in observation</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Adjusting ratio</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Binding cohorts</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Done</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> adding demographics columns</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> adding tableIntersectCount 1/1</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> window names casted to snake_case:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> `-365 to -1` -&gt; `365_to_1`</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising data</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising cohort <span style="color: #0000BB;">cohort_2_sampled</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising cohort <span style="color: #0000BB;">cohort_2_matched</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> summariseCharacteristics finished!</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Getting age density</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The following estimates will be computed:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> age: density</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2025-06-10 12:28:02.537511</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2025-06-10 12:28:02.920388</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Running large scale characterisation</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising large scale characteristics </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 6)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 6)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 6)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 6)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 6)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 6)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Formatting result</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summarising large scale characteristics</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising large scale characteristics </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 6)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 6)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 6)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 6)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 6)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 6)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Formatting result</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summarising large scale characteristics</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">CDMConnector</span><span class="fu">::</span><span class="fu"><a href="https://darwin-eu.github.io/omopgenerics/reference/cdmDisconnect.html" class="external-link">cdmDisconnect</a></span><span class="op">(</span>cdm <span class="op">=</span> <span class="va">cdm</span><span class="op">)</span></span></span>

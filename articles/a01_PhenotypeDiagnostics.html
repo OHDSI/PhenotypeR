@@ -38,7 +38,6 @@
     <li><a class="dropdown-item" href="../articles/a03_DatabaseDiagnostics.html">Database diagnostics</a></li>
     <li><a class="dropdown-item" href="../articles/a04_CodelistDiagnostics.html">Codelist diagnostics</a></li>
     <li><a class="dropdown-item" href="../articles/a05_CohortDiagnostics.html">Cohort diagnostics</a></li>
-    <li><a class="dropdown-item" href="../articles/a06_MatchedDiagnostics.html">Matched diagnostics</a></li>
     <li><a class="dropdown-item" href="../articles/a07_PopulationDiagnostics.html">Population diagnostics</a></li>
   </ul>
 </li>
@@ -125,11 +124,6 @@ diagnostics vignette</a> for further details.</li>
 of our cohorts, as well as overlapping between cohorts. See <a href="https://ohdsi.github.io/PhenotypeR/articles/a05_CohortDiagnostics.html">Cohort
 diagnostics vignette</a> for further details.</li>
 <li>
-<strong>Matched diagnostics</strong>: This matched our study cohorts
-to people with similar age and sex in the database and performs a
-large-scale characterisation on both. See <a href="https://ohdsi.github.io/PhenotypeR/articles/a06_MatchedDiagnostics.html">Matched
-diagnostics vignette</a> for further details.</li>
-<li>
 <strong>Population diagnostics</strong>: Calculates the frequency of
 our study cohorts in the database in terms of their incidence rates and
 prevalence. See <a href="https://ohdsi.github.io/PhenotypeR/articles/a07_PopulationDiagnostics.html">Population
@@ -137,19 +131,18 @@ diagnostics vignette</a> for further details.</li>
 </ul>
 <p>We can specify which analysis we want to perform by setting to TRUE
 or FALSE each one of the corresponding arguments:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/phenotypeDiagnostics.html">phenotypeDiagnostics</a></span><span class="op">(</span></span>
-<span>  cohort <span class="op">=</span> <span class="va">cdm</span><span class="op">$</span><span class="va">my_cohort</span>, </span>
-<span>  databaseDiagnostics <span class="op">=</span> <span class="cn">TRUE</span>, </span>
-<span>  codelistDiagnostics <span class="op">=</span> <span class="cn">TRUE</span>, </span>
-<span>  cohortDiagnostics   <span class="op">=</span> <span class="cn">TRUE</span>, </span>
-<span>  populationDiagnostics <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  populationSample <span class="op">=</span> <span class="fl">1e+06</span>,</span>
-<span>  populationDateRange <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  matchedDiagnostics  <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  matchedSample <span class="op">=</span> <span class="fl">1000</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="va">result</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">phenotypeDiagnostics</span>(</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  <span class="at">cohort =</span> cdm<span class="sc">$</span>my_cohort, </span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  <span class="at">databaseDiagnostics =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>  <span class="at">codelistDiagnostics =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>  <span class="at">cohortDiagnostics   =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>  <span class="at">match =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>  <span class="at">matchedSample =</span> <span class="dv">1000</span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>  <span class="at">populationDiagnostics =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>  <span class="at">populationSample =</span> <span class="fl">1e+06</span>,</span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>  <span class="at">populationDateRange =</span> <span class="fu">as.Date</span>(<span class="fu">c</span>(<span class="cn">NA</span>, <span class="cn">NA</span>))</span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a>  )</span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a>result <span class="sc">|&gt;</span> <span class="fu">glimpse</span>()</span></code></pre></div>
 <p>Notice that we have three additional arguments:</p>
 <ul>
 <li>
@@ -163,9 +156,16 @@ computational time.</li>
 period when we want to perform our <strong>Population
 diagnostics</strong> analysis.</li>
 <li>
+<code>match</code>: If set to TRUE, our study cohorts will be
+matched with people with similar age and sex in the database, and will
+perform a large-scale characterisation on our original cohort, the
+sampled cohort (those participants from our cohort that have found a
+match) and the matched cohort. If set to FALSE, cohortDiagnostics will
+only be performed in our original cohort.</li>
+<li>
 <code>matchedSample</code>: Similar to populationSample, this
-arguments subsets a random sample of people to perform the
-<strong>Matching diagnostics</strong>.</li>
+arguments subsets a random sample of people from our cohort and performs
+the matched analysis on this sample.</li>
 </ul>
 </div>
 <div class="section level2">
