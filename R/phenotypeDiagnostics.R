@@ -14,11 +14,9 @@
 #' @param databaseDiagnostics If TRUE, database diagnostics will be run.
 #' @param codelistDiagnostics If TRUE, codelist diagnostics will be run.
 #' @param cohortDiagnostics If TRUE, cohort diagnostics will be run.
+#' @inheritParams matchedDoc
 #' @param populationDiagnostics If TRUE, population diagnostics will be run.
 #' @inheritParams populationSampleDoc
-#' @param matchedDiagnostics If TRUE, cohort to population
-#' diagnostics will be run.
-#' @inheritParams matchedSampleDoc
 #'
 #' @return A summarised result
 #' @export
@@ -37,11 +35,11 @@ phenotypeDiagnostics <- function(cohort,
                                  databaseDiagnostics = TRUE,
                                  codelistDiagnostics = TRUE,
                                  cohortDiagnostics = TRUE,
+                                 match = TRUE,
+                                 matchedSample = 1000,
                                  populationDiagnostics = TRUE,
                                  populationSample = 1000000,
-                                 populationDateRange = as.Date(c(NA, NA)),
-                                 matchedDiagnostics = TRUE,
-                                 matchedSample = 1000) {
+                                 populationDateRange = as.Date(c(NA, NA))) {
   cohort <- omopgenerics::validateCohortArgument(cohort = cohort)
   cdm <- omopgenerics::cdmReference(cohort)
 
@@ -49,7 +47,6 @@ phenotypeDiagnostics <- function(cohort,
   omopgenerics::assertLogical(codelistDiagnostics)
   omopgenerics::assertLogical(cohortDiagnostics)
   omopgenerics::assertLogical(populationDiagnostics)
-  omopgenerics::assertLogical(matchedDiagnostics)
 
   results <- list()
   if (isTRUE(databaseDiagnostics)) {
@@ -62,19 +59,13 @@ phenotypeDiagnostics <- function(cohort,
   }
   if (isTRUE(cohortDiagnostics)) {
     cli::cli("Running cohort diagnostics")
-    results[["cohort_diag"]] <- cohortDiagnostics(cohort)
+    results[["cohort_diag"]] <- cohortDiagnostics(cohort, match = match, matchedSample = matchedSample)
   }
   if (isTRUE(populationDiagnostics)) {
     cli::cli("Running population diagnostics")
     results[["pop_diag"]] <- populationDiagnostics(cohort,
                                                    populationSample = populationSample,
                                                    populationDateRange = populationDateRange)
-  }
-  if (isTRUE(matchedDiagnostics)) {
-    cli::cli("Running matched diagnostics")
-    results[["matched_diag"]] <- matchedDiagnostics(cohort,
-                                                    matchedSample  = matchedSample
-    )
   }
 
   cli::cli("Combining results")
