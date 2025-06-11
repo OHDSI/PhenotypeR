@@ -30,6 +30,7 @@ rlang::check_installed("CodelistGenerator", version = "3.4.0")
 rlang::check_installed("CohortCharacteristics", version = "1.0.0")
 rlang::check_installed("IncidencePrevalence", version = "1.2.0")
 rlang::check_installed("OmopSketch", version = "0.3.1")
+rlang::check_installed("CohortSurvival", version = "1.0.1")
 
 source(here::here("scripts", "functions.R"))
 
@@ -40,6 +41,7 @@ if(file.exists(here::here("data", "appData.RData"))){
 } else {
   cli::cli_inform("Preprocessing data from data/raw")
   source(here::here("scripts", "preprocess.R"))
+  load(here::here("data", "appData.RData"))
   cli::cli_alert_success("Data processed")
 }
 
