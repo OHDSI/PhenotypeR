@@ -106,10 +106,10 @@ test_that("run with multiple cohorts", {
     c(rep("summarise_cohort_attrition",2), "summarise_cohort_count", "summarise_cohort_overlap",
       "summarise_cohort_timing", "summarise_characteristics", "summarise_table",
       rep("summarise_large_scale_characteristics", 12), "survival_probability", "survival_events",
-      "survival_summary", "survival_attrition"),
-    result |>
-      omopgenerics::settings() |>
-      dplyr::pull("result_type")
+      "survival_summary", "survival_attrition") ==
+      (result |>
+         omopgenerics::settings() |>
+         dplyr::pull("result_type"))
   ))
 })
 
