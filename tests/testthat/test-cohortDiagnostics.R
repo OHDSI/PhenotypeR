@@ -100,7 +100,21 @@ test_that("run with multiple cohorts", {
   expect_warning(cohortDiagnostics(cdm$my_cohort))
 
   # check survival analysis is being done
-  cdm <- mockPhenotypeR()
+  cdm_local <- omock::mockCdmReference() |>
+    omock::mockPerson(nPerson = 100) |>
+    omock::mockObservationPeriod() |>
+    omock::mockConditionOccurrence() |>
+    omock::mockDrugExposure() |>
+    omock::mockObservation() |>
+    omock::mockMeasurement() |>
+    omock::mockVisitOccurrence() |>
+    omock::mockProcedureOccurrence() |>
+    omock::mockDeath() |>
+    omock::mockCohort(name = "my_cohort", numberCohorts = 2)
+
+  db <- DBI::dbConnect(duckdb::duckdb())
+  cdm <- CDMConnector::copyCdmTo(con = db, cdm = cdm_local,
+                                 schema ="main", overwrite = TRUE)
   result <- cohortDiagnostics(cdm$my_cohort)
   expect_true(all(
     c(rep("summarise_cohort_attrition",2), "summarise_cohort_count", "summarise_cohort_overlap",
