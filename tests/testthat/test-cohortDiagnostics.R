@@ -116,15 +116,14 @@ test_that("run with multiple cohorts", {
   cdm <- CDMConnector::copyCdmTo(con = db, cdm = cdm_local,
                                  schema ="main", overwrite = TRUE)
   result <- cohortDiagnostics(cdm$my_cohort)
-  expect_true(all(
-    c(rep("summarise_cohort_attrition",2), "summarise_cohort_count", "summarise_cohort_overlap",
-      "summarise_cohort_timing", "summarise_characteristics", "summarise_table",
-      rep("summarise_large_scale_characteristics", 12), "survival_probability", "survival_events",
-      "survival_summary", "survival_attrition") ==
-      (result |>
-         omopgenerics::settings() |>
-         dplyr::pull("result_type"))
-  ))
+  expect_identical(result |>
+    omopgenerics::settings() |>
+    dplyr::pull("result_type") |>
+    unique(),
+    c("summarise_cohort_attrition",
+      "summarise_cohort_count", "summarise_cohort_overlap", "summarise_cohort_timing",
+      "summarise_characteristics","summarise_table", "summarise_large_scale_characteristics",
+      "survival_probability", "survival_events", "survival_summary", "survival_attrition"))
 })
 
 test_that("check all expected analyses are present in results", {
