@@ -161,7 +161,7 @@ cohortDiagnostics <- function(cohort, match = TRUE, matchedSample = 1000){
 
   }else{
     cli::cli_warn("No table 'death' in the cdm object. Skipping survival analysis.")
-    results[["single_survival_event"]] <- emptySummarisedResult()
+    results[["single_survival_event"]] <- omopgenerics::emptySummarisedResult()
   }
 
   omopgenerics::dropTable(cdm, dplyr::starts_with(prefix))
