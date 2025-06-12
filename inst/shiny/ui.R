@@ -4,16 +4,16 @@
 ui <- bslib::page_navbar(
   theme = bs_theme(5, "pulse"), navbar_options =list(class = "bg-dark", theme = "dark"),
   # theme = bs_theme(5, "sandstone"), navbar_options =list(class = "bg-dark", theme = "dark"),
-  
+
   #  zephyr
-  
+
   title = "PhenotypeR",
   bslib::nav_panel(
     title = "Background",
     icon = shiny::icon("disease"),
     shiny::includeMarkdown(path = "background.md")
   ),
-  
+
   # Database diagnostics -----
   bslib::nav_menu(
     title = "Database diagnostics",
@@ -683,7 +683,7 @@ ui <- bslib::page_navbar(
                 sidebar = bslib::sidebar(width = 400, open = "closed",
                                          shiny::numericInput(
                                            min = 1,
-                                           step = 1, 
+                                           step = 1,
                                            inputId = "summarise_large_scale_characteristics_top_concepts",
                                            label = "Top concepts",
                                            value = 10
@@ -1289,7 +1289,7 @@ ui <- bslib::page_navbar(
                                          shinyWidgets::pickerInput(
                                            inputId = "incidence_plot_colour",
                                            label = "Colour",
-                                           selected = NULL,
+                                           selected = "outcome_cohort_name",
                                            multiple = TRUE,
                                            choices = c("cdm_name",
                                                        "incidence_start_date",
@@ -1462,7 +1462,7 @@ ui <- bslib::page_navbar(
                                          shinyWidgets::pickerInput(
                                            inputId = "prevalence_plot_colour",
                                            label = "Colour",
-                                           selected = NULL,
+                                           selected = "outcome_cohort_name",
                                            multiple = TRUE,
                                            choices = c("cdm_name",
                                                        "prevalence_start_date",
