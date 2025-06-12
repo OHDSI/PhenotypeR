@@ -68,6 +68,7 @@ Imports:
     magrittr,
     purrr,
     rlang,
-    vctrs
+    vctrs,
+    CohortSurvival
 URL: https://ohdsi.github.io/PhenotypeR/
 VignetteBuilder: knitr
