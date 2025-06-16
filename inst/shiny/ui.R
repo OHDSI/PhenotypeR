@@ -1187,7 +1187,7 @@ ui <- bslib::page_navbar(
                                            sortable::add_rank_list(
                                              text = "groupColumn",
                                              labels = character(),
-                                             input_id = "ssurvival_table_groupColumn"
+                                             input_id = "survival_table_groupColumn"
                                            ),
                                            sortable::add_rank_list(
                                              text = "hide",
