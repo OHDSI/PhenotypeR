@@ -155,9 +155,7 @@ cohortDiagnostics <- function(cohort, match = TRUE, matchedSample = 1000){
     cli::cli_bullets(c(">" = "Estimating single survival event"))
     results[["single_survival_event"]] <- CohortSurvival::estimateSingleEventSurvival(cdm,
                                                                                       targetCohortTable = tempCohortName,
-                                                                                      outcomeCohortTable = deathCohortName,
-                                                                                      targetCohortId = NULL,
-                                                                                      outcomeCohortId = NULL)
+                                                                                      outcomeCohortTable = deathCohortName)
 
   }else{
     cli::cli_warn("No table 'death' in the cdm object. Skipping survival analysis.")

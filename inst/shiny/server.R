@@ -1183,8 +1183,8 @@ server <- function(input, output, session) {
   ## Table cohort survival -----
   createTableSurvival <- shiny::reactive({
     result <- filterCohortSurvival()
-    
-    table <- tableSurvival(result, 
+
+    table <- CohortSurvival::tableSurvival(result, 
                            timeScale = input$survival_probability_time_scale, 
                            header    = input$survival_table_header,
                            groupColumn = input$survival_table_groupColumn) |>
@@ -1215,11 +1215,12 @@ server <- function(input, output, session) {
     result <- filterCohortSurvival()
 
     CohortSurvival::plotSurvival(result, 
-                                 ribbon = input$survival_plot_ribbon, 
+                                 timeScale = input$survival_probability_time_scale,
+                                 ribbon = input$survival_plot_ribbon,
                                  facet = input$survival_plot_facet, 
                                  colour = input$survival_plot_colour, 
-                                 cumulativeFailure = input$survival_plot_cf, 
-                                 riskTable = FALSE) +
+                                 logLog = input$survival_plot_log_log,
+                                 cumulativeFailure = input$survival_plot_cf) +
       labs(color = "Color") +
       guides(fill = "none")
   })

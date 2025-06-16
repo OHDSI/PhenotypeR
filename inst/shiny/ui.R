@@ -1250,6 +1250,11 @@ ui <- bslib::page_navbar(
                                            label = "Plot cumulative failure",
                                            value = FALSE
                                          ),
+                                         shiny::checkboxInput(
+                                           inputId = "survival_plot_log_log",
+                                           label = "Plot LogLog",
+                                           value = FALSE
+                                         ),
                                          shinyWidgets::pickerInput(
                                            inputId = "survival_plot_colour",
                                            label = "Colour",
@@ -1275,7 +1280,6 @@ ui <- bslib::page_navbar(
         )
       )
     )
-    
   ),
   # Population diagnostics -----
   bslib::nav_menu(
