@@ -18,9 +18,6 @@ library(shinycssloaders)
 library(shinyWidgets)
 library(plotly)
 library(tidyr)
-library(patchwork)
-library(webshot2)
-library(chromote)
 library(reactable)
 
 # ensure minimum versions
