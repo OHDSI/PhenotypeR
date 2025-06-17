@@ -69,6 +69,6 @@ Imports:
     purrr,
     rlang,
     vctrs,
-    CohortSurvival
+    CohortSurvival (>= 1.0.2)
 URL: https://ohdsi.github.io/PhenotypeR/
 VignetteBuilder: knitr
