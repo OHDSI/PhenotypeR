@@ -46,23 +46,27 @@ resultList <- setNames(lapply(data, function(x) list(result_type = x)), data)
 dataFiltered <- prepareResult(result, resultList)
 values <- getValues(result, resultList)
 
+# Common variables
+values$shared_cohort_names <- values$summarise_cohort_count_cohort_name
+values$shared_cdm_names    <- values$summarise_cohort_count_cdm_name
+
 # Filter not needed values
 values <- values[!stringr::str_detect(names(values), "summarise_omop_snapshot")]
 values <- values[!stringr::str_detect(names(values), "summarise_observation_period")]
-values <- filterValues(values, prefix = "achilles_code_use", sufix_to_include = c("cdm_name", "codelist_name"))
-values <- filterValues(values, prefix = "orphan_code_use", sufix_to_include = c("cdm_name", "codelist_name"))
-values <- filterValues(values, prefix = "cohort_code_use", sufix_to_include = c("cdm_name", "cohort_name", "domain"))
-values <- filterValues(values, prefix = "cohort_count", sufix_to_include = c("cdm_name", "cohort_name"))
+values <- filterValues(values, prefix = "achilles_code_use", sufix_to_include = c("codelist_name"))
+values <- filterValues(values, prefix = "orphan_code_use", sufix_to_include = c("codelist_name"))
+values <- filterValues(values, prefix = "cohort_code_use", sufix_to_include = c("domain"))
+values <- values[!stringr::str_detect(names(values), "summarise_cohort_count")]
 values <- values[!stringr::str_detect(names(values), "summarise_cohort_attrition")]
-values <- filterValues(values, prefix = "summarise_characteristics", sufix_to_include = c("cdm_name", "cohort_name"))
-values <- filterValues(values, prefix = "summarise_large_scale_characteristics", sufix_to_include = c("cdm_name", "cohort_name", "table_name", "variable_level", "analysis"))
-values <- filterValues(values, prefix = "summarise_cohort_overlap", sufix_to_include = c("cdm_name", "cohort_name_reference", "cohort_name_comparator", "variable_name", "estimate_name"))
-values <- filterValues(values, prefix = "summarise_cohort_overlap", sufix_to_include = c("cdm_name", "cohort_name_reference", "cohort_name_comparator", "variable_name", "estimate_name"))
-values <- filterValues(values, prefix = "summarise_cohort_timing", sufix_to_include = c("cdm_name", "cohort_name_reference", "cohort_name_comparator"))
+values <- values[!stringr::str_detect(names(values), "summarise_characteristics")]
+values <- filterValues(values, prefix = "summarise_large_scale_characteristics", sufix_to_include = c("table_name", "variable_level", "analysis"))
+values <- filterValues(values, prefix = "summarise_cohort_overlap", sufix_to_include = c("cohort_name_reference", "cohort_name_comparator", "variable_name", "estimate_name"))
+values <- filterValues(values, prefix = "summarise_cohort_overlap", sufix_to_include = c("cohort_name_reference", "cohort_name_comparator", "variable_name", "estimate_name"))
+values <- filterValues(values, prefix = "summarise_cohort_timing", sufix_to_include = c("cohort_name_reference", "cohort_name_comparator"))
 values <- values[!stringr::str_detect(names(values), "incidence_attrition")]
-values <- filterValues(values, prefix = "incidence",  sufix_to_include = c("cdm_name", "outcome_cohort_name", "interval", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation"))
+values <- filterValues(values, prefix = "incidence",  sufix_to_include = c("interval", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation"))
 values <- values[!stringr::str_detect(names(values), "prevalence_attrition")]
-values <- filterValues(values, prefix = "prevalence", sufix_to_include = c("cdm_name", "outcome_cohort_name", "interval", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation"))
+values <- filterValues(values, prefix = "prevalence", sufix_to_include = c("interval", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation"))
 values <- filterValues(values, prefix = "survival_probability", sufix_to_include = c("cdm_name", "target_cohort"))
 values <- values[!stringr::str_detect(names(values), "survival_events")]
 values <- values[!stringr::str_detect(names(values), "survival_summary")]
@@ -71,13 +75,10 @@ values <- values[!stringr::str_detect(names(values), "survival_attrition")]
 # Add compare large scale characteristics 
 values_subset <- values[stringr::str_detect(names(values), "large_scale")]
 names(values_subset) <- stringr::str_replace(string = names(values_subset), pattern = "summarise", replacement = "compare")
-values_subset$compare_large_scale_characteristics_cohort_name_1 <- values_subset$compare_large_scale_characteristics_cohort_name
-values_subset$compare_large_scale_characteristics_cohort_name_2 <- values_subset$compare_large_scale_characteristics_cohort_name
+values_subset$compare_large_scale_characteristics_cohort_name_1 <- c("original", "sampled", "matched")
+values_subset$compare_large_scale_characteristics_cohort_name_2 <- c("original", "sampled", "matched")
 values_subset[values_subset != "compare_large_scale_characteristics_cohort_name"]
 values <- append(values, values_subset)
-
-# Remove matched and sample options for baseline characteristics
-values$summarise_characteristics_cohort_name <- values$summarise_characteristics_cohort_name[stringr::str_detect(values$summarise_characteristics_cohort_name, "matched|sampled", negate = TRUE)]
 
 choices <- values
 selected <- choices
@@ -88,8 +89,8 @@ selected$summarise_large_scale_characteristics_table_name     <- "condition_occu
 
 selected$compare_large_scale_characteristics_variable_level <- "-inf to -1"
 selected$compare_large_scale_characteristics_table_name     <- "condition_occurrence"
-selected$compare_large_scale_characteristics_cohort_name_1  <- paste0(gsub("_matched|_sampled","",selected$compare_large_scale_characteristics_cohort_name_1[1]),"_sampled")
-selected$compare_large_scale_characteristics_cohort_name_2  <- paste0(gsub("_matched|_sampled","",selected$compare_large_scale_characteristics_cohort_name_1[1]),"_matched")
+selected$compare_large_scale_characteristics_cohort_name_1  <- "sampled"
+selected$compare_large_scale_characteristics_cohort_name_2  <- "matched"
 
 selected$incidence_analysis_interval  <- "years"
 selected$incidence_denominator_age_group <- "0 to 150"
@@ -116,5 +117,4 @@ save(dataFiltered,
      file = here::here("data", "appData.RData"))
 
 rm(result, data, dataFiltered, choices, selected, values, values_subset)
-
 

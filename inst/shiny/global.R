@@ -18,9 +18,6 @@ library(shinycssloaders)
 library(shinyWidgets)
 library(plotly)
 library(tidyr)
-library(patchwork)
-library(webshot2)
-library(chromote)
 library(reactable)
 
 # ensure minimum versions
@@ -233,4 +230,10 @@ getColsForTbl <- function(tbl, sortNALast = TRUE, names = c("Standard concept ID
   }
 
   return(cols)
+}
+
+validateFilteredResult <- function(result){
+  if (nrow(result) == 0) {
+    validate("No results found for selected inputs")
+  }
 }
