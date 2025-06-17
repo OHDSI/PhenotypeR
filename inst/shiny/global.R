@@ -30,7 +30,7 @@ rlang::check_installed("CodelistGenerator", version = "3.4.0")
 rlang::check_installed("CohortCharacteristics", version = "1.0.0")
 rlang::check_installed("IncidencePrevalence", version = "1.2.0")
 rlang::check_installed("OmopSketch", version = "0.3.1")
-rlang::check_installed("CohortSurvival", version = "1.0.1")
+rlang::check_installed("CohortSurvival", version = "1.0.2")
 
 source(here::here("scripts", "functions.R"))
 

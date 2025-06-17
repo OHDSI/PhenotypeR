@@ -861,7 +861,7 @@ server <- function(input, output, session) {
     
     return(lsc_filtered)
   })
-  ## Tidy compare arge_scale_characteristics ----
+  ## Tidy compare large_scale_characteristics ----
   createTidyDataCompareLargeScaleCharacteristics <- shiny::reactive({
 
     lscFiltered <- filterCompareLargeScaleCharacteristics()
