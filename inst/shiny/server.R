@@ -31,14 +31,21 @@ server <- function(input, output, session) {
   )
   
   # summarise_omop_snapshot -----
-  ## Table summarise_omop_snapshot ----
-  createTableOmopSnapshot <- shiny::reactive({
+  filterOmopSnapshot <- shiny::reactive({
     if (is.null(dataFiltered$summarise_omop_snapshot)) {
       validate("No snapshot in results")
     }
     
-    dataFiltered$summarise_omop_snapshot |>
-      dplyr::filter(.data$cdm_name %in% input$shared_cdm_names) |>
+    result <- dataFiltered$summarise_omop_snapshot |>
+      dplyr::filter(.data$cdm_name %in% input$shared_cdm_names)
+      
+    validateFilteredResult(result)
+    
+    return(result)
+  })
+  ## Table summarise_omop_snapshot ----
+  createTableOmopSnapshot <- shiny::reactive({
+    filterOmopSnapshot() |>
       OmopSketch::tableOmopSnapshot() %>%
       tab_header(
         title = "Database metadata",
@@ -59,15 +66,22 @@ server <- function(input, output, session) {
   )
   
   # summarise_observation_period -----
-  ## Table summarise_observation_period -----
-  createTableObservationPeriod <- shiny::reactive({
-    
+  filterObservationPeriod <- shiny::reactive({
     if (is.null(dataFiltered$summarise_observation_period)) {
       validate("No observation period summary in results")
     }
     
-    dataFiltered$summarise_observation_period |>
-      dplyr::filter(.data$cdm_name %in% input$shared_cdm_names) |>
+    result <- dataFiltered$summarise_observation_period |>
+      dplyr::filter(.data$cdm_name %in% input$shared_cdm_names) 
+      
+    validateFilteredResult(result)
+    
+    return(result)
+  })
+  
+  ## Table summarise_observation_period -----
+  createTableObservationPeriod <- shiny::reactive({
+    filterObservationPeriod() |>
       OmopSketch::tableObservationPeriod() %>%
       tab_header(
         title = "Summary of observation periods",
@@ -99,10 +113,6 @@ server <- function(input, output, session) {
       dplyr::filter(.data$cdm_name %in% input$shared_cdm_names,
                     .data$group_level %in% input$achilles_code_use_codelist_name)
     
-    if (is.null(dataFiltered$achilles_code_use)) {
-      validate("No achilles code use in results")
-    }
-    
     if(isFALSE(input$achilles_person_count)){
       achillesFiltered <- achillesFiltered  |>
         filter(estimate_name != "person_count")
@@ -112,9 +122,7 @@ server <- function(input, output, session) {
         filter(estimate_name != "record_count")
     }
     
-    if (nrow(achillesFiltered) == 0) {
-      validate("No results found for selected inputs")
-    }
+    validateFilteredResult(achillesFiltered)
     
     return(achillesFiltered)
   })
@@ -234,10 +242,8 @@ server <- function(input, output, session) {
         filter(estimate_name != "record_count")
     }
     
-    if (nrow(result) == 0) {
-      validate("No orphan codes in results")
-    }
-    
+    validateFilteredResult(result)
+
     return(result)
   })
   
@@ -394,9 +400,7 @@ server <- function(input, output, session) {
         filter(estimate_name != "record_count")
     }
     
-    if (nrow(result) == 0) {
-      validate("No results found for selected inputs")
-    }
+    validateFilteredResult(result)
     
     return(result)
   })
@@ -499,6 +503,11 @@ server <- function(input, output, session) {
   
   # summarise_cohort_count -----
   filterCohortCount <- shiny::reactive({
+    
+    if (is.null(dataFiltered$summarise_cohort_count)) {
+      validate("No cohort count in results")
+    }
+    
     result <- dataFiltered$summarise_cohort_count |>
       dplyr::filter(.data$cdm_name %in% input$shared_cdm_names,
                     .data$group_level %in% input$shared_cohort_names)
@@ -512,9 +521,8 @@ server <- function(input, output, session) {
         dplyr::filter(.data$variable_name != "Number records")
     }
     
-    if (nrow(result) == 0) {
-      validate("No results found for selected inputs")
-    }
+    validateFilteredResult(result)
+    
     return(result)
   })
   
@@ -543,6 +551,11 @@ server <- function(input, output, session) {
   
   # summarise_cohort_attrition -----
   filterCohortAttrition <- shiny::reactive({
+    
+    if (is.null(dataFiltered$summarise_cohort_attrition)) {
+      validate("No cohort attrition in results")
+    }
+    
     result <- dataFiltered$summarise_cohort_attrition |>
       dplyr::filter(.data$cdm_name %in% input$shared_cdm_names,
                     .data$group_level %in% input$shared_cohort_names)
@@ -556,10 +569,7 @@ server <- function(input, output, session) {
         dplyr::filter(!stringr::str_detect(.data$variable_name, "records"))
     }
     
-    if (nrow(result) == 0) {
-      validate("No results found for selected inputs")
-    }
-    
+    validateFilteredResult(result)
     
     return(result)
   })
@@ -617,6 +627,11 @@ server <- function(input, output, session) {
   
   # summarise_characteristics -----
   filterSummariseCharacteristics <- shiny::reactive({
+    
+    if (is.null(dataFiltered$summarise_characteristics)) {
+      validate("No cohort characteristics in results")
+    }
+    
     selectedCohorts <- input$shared_cohort_names
     
     if(isTRUE(input$summarise_characteristics_include_matched)){
@@ -629,9 +644,7 @@ server <- function(input, output, session) {
       dplyr::mutate(group_level = factor(group_level, levels = selectedCohorts)) |>
       arrange(group_level)
     
-    if (nrow(result) == 0) {
-      validate("No results found for selected inputs")
-    }
+    validateFilteredResult(result)
     
     return(result)
   })
@@ -713,6 +726,11 @@ server <- function(input, output, session) {
   
   # summarise_large_scale_characteristics -----
   filterLargeScaleCharacteristics <- shiny::reactive({
+    
+    if (is.null(dataFiltered$summarise_large_scale_characteristics)) {
+      validate("No large scale characteristics in results")
+    }
+    
     lsc_data <- dataFiltered$summarise_large_scale_characteristics |>
       filter(!is.na(estimate_value)) |>
       filter(estimate_value != "-") |>
@@ -722,9 +740,8 @@ server <- function(input, output, session) {
       dplyr::filter(group_level  %in% input$shared_cohort_names) |>
       dplyr::filter(variable_level  %in% input$summarise_large_scale_characteristics_variable_level)
     
-    if (nrow(lsc_data) == 0) {
-      validate("No results found for selected inputs")
-    }
+    validateFilteredResult(lsc_data)
+    
     return(lsc_data)
   })
   ## Table summarise_characteristics -----
@@ -853,12 +870,13 @@ server <- function(input, output, session) {
   
   # compare large_scale_characteristics ----
   getComparedCohorts <- shiny::reactive({
+    
     cohort <- input$shared_cohort_names
     
     if(length(cohort) > 1){
       validate("Please select only one cohort")
     }
-    
+
     cohort1 <- switch(input$compare_large_scale_characteristics_cohort_name_1,
                       "original" = cohort,
                       "sampled" = paste0(cohort,"_sampled"),
@@ -873,6 +891,10 @@ server <- function(input, output, session) {
                 "cohort2" = cohort2))
   })
   filterCompareLargeScaleCharacteristics <- shiny::reactive({
+    if (is.null(dataFiltered$summarise_large_scale_characteristics)) {
+      validate("No large scale characteristics in results")
+    }
+    
     cohorts <- getComparedCohorts()
     cohort1 <- cohorts$cohort1
     cohort2 <- cohorts$cohort2
@@ -884,9 +906,7 @@ server <- function(input, output, session) {
                     .data$group_level %in% c(cohort1, cohort2),
                     .data$variable_level %in% input$compare_large_scale_characteristics_variable_level)
     
-    if (nrow(lsc_filtered) == 0) {
-      validate("No results found for selected inputs")
-    }
+    validateFilteredResult(lsc_filtered)
     
     return(lsc_filtered)
   })
@@ -1051,9 +1071,7 @@ server <- function(input, output, session) {
       ) |>
       dplyr::select(-visOmopResults::groupColumns(dataFiltered$summarise_cohort_overlap))
     
-    if (nrow(result) == 0) {
-      validate("No results found for selected inputs")
-    }
+    validateFilteredResult(result)
     return(result)
   })
   ## Table cohort_overlap -----
@@ -1125,15 +1143,15 @@ server <- function(input, output, session) {
     result <- dataFiltered$summarise_cohort_timing |>
       visOmopResults::splitGroup(keep = TRUE) |>
       dplyr::filter(.data$cdm_name %in% input$shared_cdm_names,
-                    .data$cohort_name_reference %in% input$shared_cohort_name,
+                    .data$cohort_name_reference %in% input$shared_cohort_names,
                     .data$cohort_name_comparator %in% input$summarise_cohort_overlap_cohort_name_comparator) |>
       dplyr::select(-visOmopResults::groupColumns(dataFiltered$summarise_cohort_timing))
     
-    if (nrow(result) == 0) {
-      validate("No results found for selected inputs")
-    }
+    validateFilteredResult(result)
+
     return(result)
   })
+  
   ## Table cohort_timing -----
   createTableCohortTiming <- shiny::reactive({
     
@@ -1194,17 +1212,25 @@ server <- function(input, output, session) {
   # summarise cohort survival -----
   filterCohortSurvival <- shiny::reactive({
 
+    if (is.null(dataFiltered$survival_probability)) {
+      validate("No survival in results")
+    }
+    
+    if(input$survival_porbability_include_matches){
+      cohorts <- c(paste0(input$shared_cohort_names,"_sampled"),
+                   paste0(input$shared_cohort_names,"_matched"))
+    }else{
+      cohorts <- input$shared_cohort_names
+    }
     result <- omopgenerics::bind(
       dataFiltered$survival_attrition,
       dataFiltered$survival_events,
       dataFiltered$survival_probability,
       dataFiltered$survival_summary) |>
       dplyr::filter(.data$cdm_name %in% input$shared_cdm_names) |>
-      visOmopResults::filterGroup(.data$target_cohort %in% input$shared_cohort_names)
+      visOmopResults::filterGroup(.data$target_cohort %in% cohorts)
     
-    if (nrow(result) == 0) {
-      validate("No results found for selected inputs")
-    }
+    validateFilteredResult(result)
     return(result)
   })
   
@@ -1238,7 +1264,7 @@ server <- function(input, output, session) {
     }
   )
   
-  # Plot cohort survival ----
+  ## Plot cohort survival ----
   createPlotSurvival <- shiny::reactive({
     result <- filterCohortSurvival()
 
@@ -1293,9 +1319,7 @@ server <- function(input, output, session) {
       filterAdditional(analysis_interval %in%
                          input$incidence_analysis_interval)
     
-    if (nrow(result) == 0) {
-      validate("No results found for selected inputs")
-    }
+    validateFilteredResult(result)
     return(result)
   })
   
@@ -1425,9 +1449,7 @@ server <- function(input, output, session) {
       filterAdditional(analysis_interval %in%
                          input$prevalence_analysis_interval)
     
-    if (nrow(result) == 0) {
-      validate("No results found for selected inputs")
-    }
+    validateFilteredResult(result)
     
     return(result)
   })

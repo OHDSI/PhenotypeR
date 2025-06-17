@@ -231,3 +231,9 @@ getColsForTbl <- function(tbl, sortNALast = TRUE, names = c("Standard concept ID
 
   return(cols)
 }
+
+validateFilteredResult <- function(result){
+  if (nrow(result) == 0) {
+    validate("No results found for selected inputs")
+  }
+}
