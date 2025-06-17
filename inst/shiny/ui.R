@@ -3,10 +3,6 @@
 
 ui <- bslib::page_navbar(
   theme = bs_theme(5, "pulse"), navbar_options =list(class = "bg-dark", theme = "dark"),
-  # theme = bs_theme(5, "sandstone"), navbar_options =list(class = "bg-dark", theme = "dark"),
-
-  #  zephyr
-
   title = "PhenotypeR",
   bslib::nav_panel(
     title = "Background",
@@ -834,7 +830,7 @@ ui <- bslib::page_navbar(
         )
       )
     ),
-    ## Cohort overlap -----
+    ## Compare cohorts -----
     bslib::nav_panel(
       title = "Compare cohorts",
       icon = shiny::icon("yin-yang"),
@@ -1101,7 +1097,7 @@ ui <- bslib::page_navbar(
                                          ),
                                          shiny::checkboxInput(
                                            inputId = "summarise_cohort_timing_plot_uniqueCombinations",
-                                           label = "uniqueCombinations",
+                                           label = "Unique combinations",
                                            value = c(TRUE)
                                          ),
                                          shinyWidgets::pickerInput(
@@ -1123,6 +1119,161 @@ ui <- bslib::page_navbar(
                                          position = "right"
                 ),
                 plotly::plotlyOutput("summarise_cohort_timing_plot")
+              )
+            )
+          )
+        )
+      )
+    ),
+    ## Cohort survival -----
+    bslib::nav_panel(
+      title = "Cohort survival",
+      icon = shiny::icon("chart-gantt"),
+      bslib::layout_sidebar(
+        sidebar = bslib::sidebar(width = 400, open = "closed",
+                                 bslib::accordion(
+                                   bslib::accordion_panel(
+                                     title = "Settings",
+                                     shinyWidgets::pickerInput(
+                                       inputId = "survival_probability_cdm_name",
+                                       label = "CDM name",
+                                       choices = NULL,
+                                       selected = NULL,
+                                       multiple = TRUE,
+                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                     ),
+                                     shinyWidgets::pickerInput(
+                                       inputId = "survival_probability_target_cohort",
+                                       label = "Cohort name",
+                                       choices = NULL,
+                                       selected = NULL,
+                                       multiple = TRUE,
+                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                     ),
+                                     shinyWidgets::pickerInput(
+                                       inputId = "survival_probability_time_scale",
+                                       label = "Time scale",
+                                       choices = c("days", "months", "years"),
+                                       selected = "days",
+                                       multiple = FALSE,
+                                       options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                     )
+                                   )
+                                 )
+        ),
+        bslib::navset_card_tab(
+          bslib::nav_panel(
+            title = "Table",
+            bslib::card(
+              full_screen = TRUE,
+              bslib::card_header(
+                shiny::downloadButton(outputId = "summarise_cohort_survival_gt_download", label = ""),
+                class = "text-end"
+              ),
+              bslib::layout_sidebar(
+                sidebar = bslib::sidebar(width = 400, open = "closed",
+                                         sortable::bucket_list(
+                                           header = "Table formatting",
+                                           sortable::add_rank_list(
+                                             text = "none",
+                                             labels = c("cdm_name", "target_cohort"),
+                                             input_id = "survival_table_none"
+                                           ),
+                                           sortable::add_rank_list(
+                                             text = "header",
+                                             labels = "estimate_name",
+                                             input_id = "survival_table_header"
+                                           ),
+                                           sortable::add_rank_list(
+                                             text = "groupColumn",
+                                             labels = character(),
+                                             input_id = "survival_table_groupColumn"
+                                           ),
+                                           sortable::add_rank_list(
+                                             text = "hide",
+                                             labels = character(),
+                                             input_id = "survival_table_hide"
+                                           )
+                                         ),
+                                         position = "right"
+                ),
+                gt::gt_output("summarise_cohort_survival_gt") |> withSpinner()
+              )
+            )
+          ),
+          bslib::nav_panel(
+            title = "Plot",
+            bslib::card(
+              full_screen = TRUE,
+              bslib::card_header(
+                bslib::popover(
+                  shiny::icon("download"),
+                  shiny::numericInput(
+                    inputId = "summarise_cohort_survival_plot_download_width",
+                    label = "Width",
+                    value = 15
+                  ),
+                  shiny::numericInput(
+                    inputId = "summarise_cohort_survival_plot_download_height",
+                    label = "Height",
+                    value = 10
+                  ),
+                  shinyWidgets::pickerInput(
+                    inputId = "summarise_cohort_survival_plot_download_units",
+                    label = "Units",
+                    selected = "cm",
+                    choices = c("px", "cm", "inch"),
+                    multiple = FALSE
+                  ),
+                  shiny::numericInput(
+                    inputId = "summarise_cohort_survival_plot_download_dpi",
+                    label = "dpi",
+                    value = 300
+                  ),
+                  shiny::downloadButton(outputId = "summarise_cohort_survival_plot_download", label = "Download")
+                ),
+                class = "text-end"
+              ),
+              bslib::layout_sidebar(
+                sidebar = bslib::sidebar(width = 400, open = "closed",
+                                         materialSwitch(inputId = "survival_plot_interactive",
+                                                        value = TRUE,
+                                                        label = "Interactive",
+                                                        status = "primary"),
+                                         shiny::checkboxInput(
+                                           inputId = "survival_plot_ribbon",
+                                           label = "Ribbon",
+                                           value = c(TRUE)
+                                         ),
+                                         shiny::checkboxInput(
+                                           inputId = "survival_plot_cf",
+                                           label = "Plot cumulative failure",
+                                           value = FALSE
+                                         ),
+                                         shiny::checkboxInput(
+                                           inputId = "survival_plot_log_log",
+                                           label = "Plot LogLog",
+                                           value = FALSE
+                                         ),
+                                         shinyWidgets::pickerInput(
+                                           inputId = "survival_plot_colour",
+                                           label = "Colour",
+                                           selected = c("target_cohort"),
+                                           multiple = TRUE,
+                                           choices = c("cdm_name", "target_cohort"),
+                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                         ),
+                                         shinyWidgets::pickerInput(
+                                           inputId = "survival_plot_facet",
+                                           label = "Facet",
+                                           selected = c("cdm_name"),
+                                           multiple = TRUE,
+                                           choices = c("cdm_name", "target_cohort"),
+                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                         ),
+                                         position = "right"
+                ),
+                uiOutput("summarise_cohort_survival_plot") |> withSpinner()
               )
             )
           )
