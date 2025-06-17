@@ -67,6 +67,10 @@ values <- values[!stringr::str_detect(names(values), "incidence_attrition")]
 values <- filterValues(values, prefix = "incidence",  sufix_to_include = c("interval", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation"))
 values <- values[!stringr::str_detect(names(values), "prevalence_attrition")]
 values <- filterValues(values, prefix = "prevalence", sufix_to_include = c("interval", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation"))
+values <- filterValues(values, prefix = "survival_probability", sufix_to_include = c("cdm_name", "target_cohort"))
+values <- values[!stringr::str_detect(names(values), "survival_events")]
+values <- values[!stringr::str_detect(names(values), "survival_summary")]
+values <- values[!stringr::str_detect(names(values), "survival_attrition")]
 
 # Add compare large scale characteristics 
 values_subset <- values[stringr::str_detect(names(values), "large_scale")]
@@ -98,6 +102,8 @@ selected$prevalence_denominator_age_group <- "0 to 150"
 selected$prevalence_denominator_sex <- "Both"
 selected$prevalence_denominator_days_prior_observation <- "0"
 
+selected$survival_probability_target_cohort <- c(paste0(gsub("_matched|sampled", "", selected$survival_probability_target_cohort[1]),"_sampled"),
+                                                 paste0(gsub("_matched|sampled", "", selected$survival_probability_target_cohort[1]),"_matched"))
 # Define incidence start and end date
 min_incidence_start <- min(as.Date(selected$incidence_grouping_incidence_start_date))
 max_incidence_end <- max(as.Date(selected$incidence_grouping_incidence_end_date))
@@ -110,4 +116,5 @@ save(dataFiltered,
      max_incidence_end,
      file = here::here("data", "appData.RData"))
 
-rm(result, data, dataFiltered, values, choices, selected, values_subset)
+rm(result, data, dataFiltered, choices, selected, values, values_subset)
+

@@ -143,6 +143,25 @@ cohortDiagnostics <- function(cohort, match = TRUE, matchedSample = 1000){
     excludedCodes = NULL
   )
 
+
+  if("death" %in% omopgenerics::listSourceTables(cdm)){
+    cli::cli_bullets(c(">" = "Creating death cohort"))
+    deathCohortName <- paste0(prefix, "death_cohort")
+    cdm[[deathCohortName]] <- CohortConstructor::deathCohort(cdm,
+                                                             name = deathCohortName,
+                                                             subsetCohort = tempCohortName,
+                                                             subsetCohortId = NULL)
+
+    cli::cli_bullets(c(">" = "Estimating single survival event"))
+    results[["single_survival_event"]] <- CohortSurvival::estimateSingleEventSurvival(cdm,
+                                                                                      targetCohortTable = tempCohortName,
+                                                                                      outcomeCohortTable = deathCohortName)
+
+  }else{
+    cli::cli_warn("No table 'death' in the cdm object. Skipping survival analysis.")
+    results[["single_survival_event"]] <- omopgenerics::emptySummarisedResult()
+  }
+
   omopgenerics::dropTable(cdm, dplyr::starts_with(prefix))
   results <- results |>
     vctrs::list_drop_empty() |>

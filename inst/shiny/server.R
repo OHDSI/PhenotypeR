@@ -754,7 +754,7 @@ server <- function(input, output, session) {
   })
   
   ## Table summarise_large_scale_characteristics -----
-  output$summarise_large_scale_characteristics_tidy <- renderUI({
+  output$summarise_large_scale_characteristics_tidy <- shiny::renderUI({
     tbl_data <- tidyLargeScaleCharacteristics()
     
     if("source_concept" %in% colnames(tbl_data)){
@@ -890,7 +890,7 @@ server <- function(input, output, session) {
     
     return(lsc_filtered)
   })
-  ## Tidy large_scale_characteristics ----
+  ## Tidy compare large_scale_characteristics ----
   createTidyDataCompareLargeScaleCharacteristics <- shiny::reactive({
     
     lscFiltered <- filterCompareLargeScaleCharacteristics()
@@ -1191,7 +1191,90 @@ server <- function(input, output, session) {
       )
     }
   )
+  # summarise cohort survival -----
+  filterCohortSurvival <- shiny::reactive({
+
+    result <- omopgenerics::bind(
+      dataFiltered$survival_attrition,
+      dataFiltered$survival_events,
+      dataFiltered$survival_probability,
+      dataFiltered$survival_summary) |>
+      dplyr::filter(.data$cdm_name %in% input$shared_cdm_names) |>
+      visOmopResults::filterGroup(.data$target_cohort %in% input$shared_cohort_names)
+    
+    if (nrow(result) == 0) {
+      validate("No results found for selected inputs")
+    }
+    return(result)
+  })
   
+  ## Table cohort survival -----
+  createTableSurvival <- shiny::reactive({
+    result <- filterCohortSurvival()
+
+    table <- CohortSurvival::tableSurvival(result, 
+                           timeScale = input$survival_probability_time_scale, 
+                           header    = input$survival_table_header,
+                           groupColumn = input$survival_table_groupColumn) |>
+      tab_header(
+        title = "Single Event Survival Summary",
+        subtitle = "Time from cohort entry to death"
+      ) |>
+      tab_options(
+        heading.align = "left"
+      )
+    
+    return(table)
+  })
+
+  output$summarise_cohort_survival_gt <- gt::render_gt({
+    createTableSurvival()
+  })
+  output$summarise_cohort_survival_gt_download <- shiny::downloadHandler(
+    filename = "summarise_cohort_survival_gt.docx",
+    content = function(file) {
+      obj <- createTableSurvival()
+      gt::gtsave(data = obj, filename = file)
+    }
+  )
+  
+  # Plot cohort survival ----
+  createPlotSurvival <- shiny::reactive({
+    result <- filterCohortSurvival()
+
+    CohortSurvival::plotSurvival(result, 
+                                 timeScale = input$survival_probability_time_scale,
+                                 ribbon = input$survival_plot_ribbon,
+                                 facet = input$survival_plot_facet, 
+                                 colour = input$survival_plot_colour, 
+                                 logLog = input$survival_plot_log_log,
+                                 cumulativeFailure = input$survival_plot_cf) +
+      labs(color = "Color") +
+      guides(fill = "none")
+  })
+  output$summarise_cohort_survival_plot <- shiny::renderUI({
+      if(isTRUE(input$survival_plot_interactive)){
+        plot <- plotly::ggplotly(createPlotSurvival())
+      } else {
+        plot <- renderPlot(createPlotSurvival())
+      }
+      plot
+  })
+  output$summarise_cohort_survival_plot_download <- shiny::downloadHandler(
+    filename = "summarise_cohort_survival_plot.png",
+    content = function(file) {
+      obj <- createPlotSurvival()
+      ggplot2::ggsave(
+        filename = file,
+        plot = obj,
+        width = as.numeric(input$summarise_cohort_survival_plot_download_width),
+        height = as.numeric(input$summarise_cohort_survival_plot_download_height),
+        units = input$summarise_cohort_survival_plot_download_units,
+        dpi = as.numeric(input$summarise_cohort_survival_plot_download_dpi)
+      )
+    }
+  )
+
   # incidence -----
   filterIncidence <- shiny::reactive({
     if (is.null(dataFiltered$incidence)) {
@@ -1300,8 +1383,8 @@ server <- function(input, output, session) {
     }
     return(plot)
   })
-  
-  output$incidence_plot <- renderUI({
+
+  output$incidence_plot <- shiny::renderUI({
     if(isTRUE(input$incidence_plot_interactive)){
       plot <- plotly::ggplotly(createPlotIncidence())
     } else {
@@ -1433,8 +1516,8 @@ server <- function(input, output, session) {
     return(plot)
     
   })
-  
-  output$prevalence_plot <- renderUI({
+
+  output$prevalence_plot <- shiny::renderUI({
     if(isTRUE(input$prevalence_plot_interactive)){
       plot <- plotly::ggplotly(createPlotPrevalence())
     } else {
