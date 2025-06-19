@@ -53,32 +53,35 @@ values$shared_cdm_names    <- values$summarise_cohort_count_cdm_name
 # Filter not needed values
 values <- values[!stringr::str_detect(names(values), "summarise_omop_snapshot")]
 values <- values[!stringr::str_detect(names(values), "summarise_observation_period")]
-values <- filterValues(values, prefix = "achilles_code_use", sufix_to_include = c("codelist_name"))
-values <- filterValues(values, prefix = "orphan_code_use", sufix_to_include = c("codelist_name"))
-values <- filterValues(values, prefix = "cohort_code_use", sufix_to_include = c("domain"))
-values <- values[!stringr::str_detect(names(values), "summarise_cohort_count")]
+values <- filterValues(values, prefix = "achilles_code_use", sufix_to_include = c("cdm_name", "codelist_name"))
+values <- filterValues(values, prefix = "orphan_code_use", sufix_to_include = c("cdm_name", "codelist_name"))
+values <- filterValues(values, prefix = "cohort_code_use", sufix_to_include = c("cdm_name", "cohort_name", "domain"))
+values <- filterValues(values, prefix = "summarise_cohort_count", sufix_to_include = c("cdm_name", "cohort_name"))
 values <- values[!stringr::str_detect(names(values), "summarise_cohort_attrition")]
-values <- values[!stringr::str_detect(names(values), "summarise_characteristics")]
-values <- filterValues(values, prefix = "summarise_large_scale_characteristics", sufix_to_include = c("table_name", "variable_level", "analysis"))
-values <- filterValues(values, prefix = "summarise_cohort_overlap", sufix_to_include = c("cohort_name_reference", "cohort_name_comparator", "variable_name", "estimate_name"))
-values <- filterValues(values, prefix = "summarise_cohort_overlap", sufix_to_include = c("cohort_name_reference", "cohort_name_comparator", "variable_name", "estimate_name"))
-values <- filterValues(values, prefix = "summarise_cohort_timing", sufix_to_include = c("cohort_name_reference", "cohort_name_comparator"))
+values <- filterValues(values, prefix = "summarise_characteristics", sufix_to_include = c("cdm_name", "cohort_name"))
+values <- filterValues(values, prefix = "summarise_large_scale_characteristics", sufix_to_include = c("cdm_name", "cohort_name", "table_name", "variable_level", "analysis"))
+values <- filterValues(values, prefix = "summarise_cohort_overlap", sufix_to_include = c("cdm_name", "cohort_name", "cohort_name_reference", "cohort_name_comparator", "variable_name", "estimate_name"))
+values <- filterValues(values, prefix = "summarise_cohort_timing", sufix_to_include = c("cdm_name", "cohort_name", "cohort_name_reference", "cohort_name_comparator"))
 values <- values[!stringr::str_detect(names(values), "incidence_attrition")]
-values <- filterValues(values, prefix = "incidence",  sufix_to_include = c("interval", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation"))
+values <- filterValues(values, prefix = "incidence",  sufix_to_include = c("cdm_name", "cohort_name", "interval", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation"))
 values <- values[!stringr::str_detect(names(values), "prevalence_attrition")]
-values <- filterValues(values, prefix = "prevalence", sufix_to_include = c("interval", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation"))
+values <- filterValues(values, prefix = "prevalence", sufix_to_include = c("cdm_name", "cohort_name", "interval", "denominator_age_group", "denominator_sex", "denominator_days_prior_observation"))
 values <- filterValues(values, prefix = "survival_probability", sufix_to_include = c("cdm_name", "target_cohort"))
 values <- values[!stringr::str_detect(names(values), "survival_events")]
 values <- values[!stringr::str_detect(names(values), "survival_summary")]
 values <- values[!stringr::str_detect(names(values), "survival_attrition")]
 
-# Add compare large scale characteristics 
+# Add compare large scale characteristics
 values_subset <- values[stringr::str_detect(names(values), "large_scale")]
 names(values_subset) <- stringr::str_replace(string = names(values_subset), pattern = "summarise", replacement = "compare")
-values_subset$compare_large_scale_characteristics_cohort_name_1 <- c("original", "sampled", "matched")
-values_subset$compare_large_scale_characteristics_cohort_name_2 <- c("original", "sampled", "matched")
+values_subset$compare_large_scale_characteristics_cohort_1 <- c("original", "sampled", "matched")
+values_subset$compare_large_scale_characteristics_cohort_2 <- c("original", "sampled", "matched")
 values_subset[values_subset != "compare_large_scale_characteristics_cohort_name"]
 values <- append(values, values_subset)
+
+# Compare cohorts
+values$summarise_cohort_overlap_cohort_comparator <- values$summarise_cohort_overlap_cohort_name_comparator
+values <- values[!stringr::str_detect(names(values), "summarise_cohort_overlap_cohort_name_comparator")]
 
 choices <- values
 selected <- choices
@@ -89,8 +92,8 @@ selected$summarise_large_scale_characteristics_table_name     <- "condition_occu
 
 selected$compare_large_scale_characteristics_variable_level <- "-inf to -1"
 selected$compare_large_scale_characteristics_table_name     <- "condition_occurrence"
-selected$compare_large_scale_characteristics_cohort_name_1  <- "sampled"
-selected$compare_large_scale_characteristics_cohort_name_2  <- "matched"
+selected$compare_large_scale_characteristics_cohort_1  <- "sampled"
+selected$compare_large_scale_characteristics_cohort_2  <- "matched"
 
 selected$incidence_analysis_interval  <- "years"
 selected$incidence_denominator_age_group <- "0 to 150"
