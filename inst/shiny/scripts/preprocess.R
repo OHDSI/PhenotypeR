@@ -83,6 +83,10 @@ values <- append(values, values_subset)
 values$summarise_cohort_overlap_cohort_comparator <- values$summarise_cohort_overlap_cohort_name_comparator
 values <- values[!stringr::str_detect(names(values), "summarise_cohort_overlap_cohort_name_comparator")]
 
+# survival 
+values$survival_probability_cohort_name <- values$survival_probability_target_cohort
+values <- values[!stringr::str_detect(names(values), "survival_probability_target_cohort")]
+
 choices <- values
 selected <- choices
 

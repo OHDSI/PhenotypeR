@@ -1048,7 +1048,7 @@ ui <- fluidPage(
             tags$div(
               style = "margin-top: 15px;",
             shinyWidgets::pickerInput(
-              inputId = "summarise_cohort_overlap_cohort_name",
+              inputId = "summarise_cohort_overlap_cohort_name_reference",
               label = NULL,
               selected = selected$shared_cohort_names,
               choices = choices$shared_cohort_names,
@@ -1342,7 +1342,7 @@ ui <- fluidPage(
             tags$div(
               style = "margin-top: 15px;",
             shinyWidgets::pickerInput(
-              inputId = "summarise_cohort_survival_cdm_name",
+              inputId = "survival_probability_cdm_name",
               label = NULL,
               selected = selected$shared_cdm_names,
               choices = choices$shared_cdm_names,
@@ -1359,7 +1359,7 @@ ui <- fluidPage(
             tags$div(
               style = "margin-top: 15px;",
             shinyWidgets::pickerInput(
-              inputId = "summarise_cohort_survival_cohort_name",
+              inputId = "survival_probability_cohort_name",
               label = NULL,
               selected = selected$shared_cohort_names,
               choices = choices$shared_cohort_names,
