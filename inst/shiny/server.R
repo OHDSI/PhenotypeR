@@ -3,23 +3,162 @@
 
 server <- function(input, output, session) {
   
+  # Shared variables
+  app_initialized_flag <- reactiveVal(FALSE)
+  shared_cdm_names     <- reactiveVal(NULL)
+  shared_cohort_names  <- reactiveVal(NULL)
+  
   # fill selectise variables ----
   shiny::observe({
+    req(!app_initialized_flag())
+    
     for (k in seq_along(choices)) {
-      shiny::updateSelectizeInput(
-        session,
-        inputId = names(choices)[k],
-        choices = choices[[k]],
-        selected = selected[[k]],
-        server = TRUE
-      )
-      
-      shinyWidgets::updatePickerInput(session,
-                                      inputId = names(choices)[k],
-                                      choices = choices[[k]],
-                                      selected = selected[[k]])
+      if(!grepl("cdm_name|cohort_name", names(choices)[k])){
+        shiny::updateSelectizeInput(
+          session,
+          inputId = names(choices)[k],
+          choices = choices[[k]],
+          selected = selected[[k]],
+          server = TRUE
+        )
+        
+        shinyWidgets::updatePickerInput(session,
+                                        inputId = names(choices)[k],
+                                        choices = choices[[k]],
+                                        selected = selected[[k]])
+      }else if(grepl("cdm_name", names(choices[k]))){
+        updatePickerInput(session, names(choices[k]), selected = shared_cdm_names())
+      }else if(grepl("cohort_name", names(choices[k]))){
+        updatePickerInput(session, names(choices[k]), selected = shared_cohort_names())
+      }
     }
+    
+    app_initialized_flag(TRUE)
   })
+  
+  # Define shared cdm_names values ----
+  shiny::observeEvent(input$achilles_code_use_cdm_name, {
+    val <- input$achilles_code_use_cdm_name
+    if (is.null(val) || length(val) == 0 || all(val == "")) { val <- character(0) }
+    shared_cdm_names(val)
+  }, ignoreNULL = FALSE)
+  
+  shiny::observeEvent(input$orphan_code_use_cdm_name, {
+    val <- input$orphan_code_use_cdm_name
+    if (is.null(val) || length(val) == 0 || all(val == "")) { val <- character(0) }
+    shared_cdm_names(val)
+  }, ignoreNULL = FALSE)
+  
+  shiny::observeEvent(input$cohort_code_use_cdm_name, {
+    val <- input$cohort_code_use_cdm_name
+    if (is.null(val) || length(val) == 0 || all(val == "")) { val <- character(0) }
+    shared_cdm_names(val)
+  }, ignoreNULL = FALSE)
+  
+  shiny::observeEvent(input$summarise_cohort_count_cdm_name, {
+    val <- input$summarise_cohort_count_cdm_name
+    if (is.null(val) || length(val) == 0 || all(val == "")) { val <- character(0) }
+    shared_cdm_names(val)
+  }, ignoreNULL = FALSE)
+  
+  shiny::observeEvent(input$summarise_characteristics_cdm_name, {
+    val <- input$summarise_characteristics_cdm_name
+    if (is.null(val) || length(val) == 0 || all(val == "")) { val <- character(0) }
+    shared_cdm_names(val)
+  }, ignoreNULL = FALSE)
+  
+  shiny::observeEvent(input$summarise_large_scale_characteristics_cdm_name, {
+    val <- input$summarise_large_scale_characteristics_cdm_name
+    if (is.null(val) || length(val) == 0 || all(val == "")) { val <- character(0) }
+    shared_cdm_names(val)
+  }, ignoreNULL = FALSE)
+  
+  shiny::observeEvent(input$compare_large_scale_characteristics_cdm_name, {
+    val <- input$compare_large_scale_characteristics_cdm_name
+    if (is.null(val) || length(val) == 0 || all(val == "")) { val <- character(0) }
+    shared_cdm_names(val)
+  }, ignoreNULL = FALSE)
+
+  shiny::observeEvent(input$summarise_cohort_overlap_cdm_name, {
+    val <- input$summarise_cohort_overlap_cdm_name
+    if (is.null(val) || length(val) == 0 || all(val == "")) { val <- character(0) }
+    shared_cdm_names(val)
+  }, ignoreNULL = FALSE)
+  
+  shiny::observeEvent(input$summarise_cohort_survival_cdm_name, {
+    val <- input$summarise_cohort_survival_cdm_name
+    if (is.null(val) || length(val) == 0 || all(val == "")) { val <- character(0) }
+    shared_cdm_names(val)
+  }, ignoreNULL = FALSE)
+  
+  shiny::observeEvent(input$incidence_cdm_name, {
+    val <- input$incidence_cdm_name
+    if (is.null(val) || length(val) == 0 || all(val == "")) { val <- character(0) }
+    shared_cdm_names(val)
+  }, ignoreNULL = FALSE)
+  
+  shiny::observeEvent(input$prevalence_cdm_name, {
+    val <- input$prevalence_cdm_name
+    if (is.null(val) || length(val) == 0 || all(val == "")) { val <- character(0) }
+    shared_cdm_names(val)
+  }, ignoreNULL = FALSE)
+  
+
+  # Define shared cohort_names values ----
+
+  shiny::observeEvent(input$summarise_cohort_count_cohort_name, {
+    val <- input$summarise_cohort_count_cohort_name
+    if (is.null(val) || length(val) == 0 || all(val == "")) { val <- character(0) }
+    shared_cohort_names(val)
+  }, ignoreNULL = FALSE)
+  
+  shiny::observeEvent(input$summarise_characteristics_cohort_name, {
+    val <- input$summarise_characteristics_cohort_name
+    if (is.null(val) || length(val) == 0 || all(val == "")) { val <- character(0) }
+    shared_cohort_names(val)
+  }, ignoreNULL = FALSE)
+  
+  shiny::observeEvent(input$summarise_large_scale_characteristics_cohort_name, {
+    val <- input$summarise_large_scale_characteristics_cohort_name
+    if (is.null(val) || length(val) == 0 || all(val == "")) { val <- character(0) }
+    shared_cohort_names(val)
+  }, ignoreNULL = FALSE)
+  
+  shiny::observeEvent(input$compare_large_scale_characteristics_cohort_name, {
+    val <- input$compare_large_scale_characteristics_cohort_name
+    if (is.null(val) || length(val) == 0 || all(val == "")) { val <- character(0) }
+    shared_cohort_names(val)
+  }, ignoreNULL = FALSE)
+  
+  shiny::observeEvent(input$cohort_code_use_cohort_name, {
+    val <- input$cohort_code_use_cohort_name
+    if (is.null(val) || length(val) == 0 || all(val == "")) { val <- character(0) }
+    shared_cohort_names(val)
+  }, ignoreNULL = FALSE)
+  
+  shiny::observeEvent(input$summarise_cohort_overlap_cohort_name, {
+    val <- input$summarise_cohort_overlap_cohort_name
+    if (is.null(val) || length(val) == 0 || all(val == "")) { val <- character(0) }
+    shared_cohort_names(val)
+  }, ignoreNULL = FALSE)
+  
+  shiny::observeEvent(input$summarise_cohort_survival_cohort_name, {
+    val <- input$summarise_cohort_survival_cohort_name
+    if (is.null(val) || length(val) == 0 || all(val == "")) { val <- character(0) }
+    shared_cohort_names(val)
+  }, ignoreNULL = FALSE)
+  
+  shiny::observeEvent(input$incidence_outcome_cohort_name, {
+    val <- input$incidence_outcome_cohort_name
+    if (is.null(val) || length(val) == 0 || all(val == "")) { val <- character(0) }
+    shared_cohort_names(val)
+  }, ignoreNULL = FALSE)
+  
+  shiny::observeEvent(input$prevalence_outcome_cohort_name, {
+    val <- input$prevalence_outcome_cohort_name
+    if (is.null(val) || length(val) == 0 || all(val == "")) { val <- character(0) }
+    shared_cohort_names(val)
+  }, ignoreNULL = FALSE)
   
   # download raw data -----
   output$download_raw <- shiny::downloadHandler(
@@ -37,8 +176,8 @@ server <- function(input, output, session) {
     }
     
     result <- dataFiltered$summarise_omop_snapshot |>
-      dplyr::filter(.data$cdm_name %in% input$shared_cdm_names)
-      
+      dplyr::filter(.data$cdm_name %in% shared_cdm_names())
+    
     validateFilteredResult(result)
     
     return(result)
@@ -72,8 +211,8 @@ server <- function(input, output, session) {
     }
     
     result <- dataFiltered$summarise_observation_period |>
-      dplyr::filter(.data$cdm_name %in% input$shared_cdm_names) 
-      
+      dplyr::filter(.data$cdm_name %in% shared_cdm_names())
+    
     validateFilteredResult(result)
     
     return(result)
@@ -105,12 +244,16 @@ server <- function(input, output, session) {
   
   # achilles_code_use -----
   filterAchillesCodeUse <- shiny::reactive({
+    shiny::observeEvent(shared_cdm_names(), {
+      updatePickerInput(session, "achilles_code_use_cdm_name", selected = shared_cdm_names())
+    })
+    
     if (is.null(dataFiltered$achilles_code_use)) {
       validate("No achilles code use in results")
     }
     
     achillesFiltered <- dataFiltered$achilles_code_use  |>
-      dplyr::filter(.data$cdm_name %in% input$shared_cdm_names,
+      dplyr::filter(.data$cdm_name %in% shared_cdm_names(),
                     .data$group_level %in% input$achilles_code_use_codelist_name)
     
     if(isFALSE(input$achilles_person_count)){
@@ -224,13 +367,16 @@ server <- function(input, output, session) {
   
   # orphan_codes -----
   filterOrphanCodes <-  shiny::reactive({
+    shiny::observeEvent(shared_cdm_names(), {
+      updatePickerInput(session, "orphan_code_use_cdm_name",   selected = shared_cdm_names())
+    })
     
     if (is.null(dataFiltered$orphan_code_use)) {
       validate("No orphan codes in results")
     }
     
     result <- dataFiltered$orphan_code_use |>
-      dplyr::filter(.data$cdm_name %in% input$shared_cdm_names,
+      dplyr::filter(.data$cdm_name %in% shared_cdm_names(),
                     .data$group_level %in% input$orphan_code_use_codelist_name)
     
     if(isFALSE(input$orphan_person_count)){
@@ -243,7 +389,7 @@ server <- function(input, output, session) {
     }
     
     validateFilteredResult(result)
-
+    
     return(result)
   })
   
@@ -350,7 +496,7 @@ server <- function(input, output, session) {
   #
   #   CodelistGenerator::tableUnmappedCodes(
   #     dataFiltered$unmapped_codes |>
-  #       dplyr::filter(cdm_name %in% input$shared_cdm_names,
+  #       dplyr::filter(cdm_name %in% shared_cdm_names(),
   #                     group_level %in% input$unmapped_codelist_name),
   #     header = input$unmapped_header,
   #     groupColumn = input$unmapped_groupColumn,
@@ -377,16 +523,22 @@ server <- function(input, output, session) {
   
   # cohort_code_use -----
   filterCohortCodeUse <- shiny::reactive({
+    shiny::observeEvent(shared_cdm_names(), {
+      updatePickerInput(session, "cohort_code_use_cdm_name", selected = shared_cdm_names())
+    })
+    shiny::observeEvent(shared_cohort_names(), {
+      updatePickerInput(session, "cohort_code_use_cohort_name", selected = shared_cohort_names())
+    })
     
     if (is.null(dataFiltered$cohort_code_use)) {
       validate("No cohort code use in results")
     }
-
+    
     result <- dataFiltered$cohort_code_use |>
       visOmopResults::splitGroup(keep = TRUE) |>
       visOmopResults::splitAdditional(keep = TRUE) |>
-      dplyr::filter(.data$cdm_name %in% input$shared_cdm_names,
-                    .data$cohort_name %in% input$shared_cohort_names,
+      dplyr::filter(.data$cdm_name %in% shared_cdm_names(),
+                    .data$cohort_name %in% shared_cohort_names(),
                     .data$domain_id %in% input$cohort_code_use_domain_id) |>
       dplyr::select(-visOmopResults::groupColumns(dataFiltered$cohort_code_use)) |>
       dplyr::select(-visOmopResults::additionalColumns(dataFiltered$cohort_code_use))
@@ -503,14 +655,20 @@ server <- function(input, output, session) {
   
   # summarise_cohort_count -----
   filterCohortCount <- shiny::reactive({
+    shiny::observeEvent(shared_cdm_names(), {
+      updatePickerInput(session, "summarise_cohort_count_cdm_name",   selected = shared_cdm_names())
+    })
+    shiny::observeEvent(shared_cohort_names(), {
+      updatePickerInput(session, "summarise_cohort_count_cohort_name",   selected = shared_cohort_names())
+    })
     
     if (is.null(dataFiltered$summarise_cohort_count)) {
       validate("No cohort count in results")
     }
     
     result <- dataFiltered$summarise_cohort_count |>
-      dplyr::filter(.data$cdm_name %in% input$shared_cdm_names,
-                    .data$group_level %in% input$shared_cohort_names)
+      dplyr::filter(.data$cdm_name %in% shared_cdm_names(),
+                    .data$group_level %in% shared_cohort_names())
     
     if(isFALSE(input$cohort_count_person_count)){
       result <- result  |>
@@ -551,14 +709,20 @@ server <- function(input, output, session) {
   
   # summarise_cohort_attrition -----
   filterCohortAttrition <- shiny::reactive({
+    shiny::observeEvent(shared_cdm_names(), {
+      updatePickerInput(session, "prevalence_cdm_name",   selected = shared_cdm_names())
+    })
+    shiny::observeEvent(shared_cohort_names(), {
+      updatePickerInput(session, "prevalence_outcome_cohort_name",   selected = shared_cohort_names())
+    })
     
     if (is.null(dataFiltered$summarise_cohort_attrition)) {
       validate("No cohort attrition in results")
     }
     
     result <- dataFiltered$summarise_cohort_attrition |>
-      dplyr::filter(.data$cdm_name %in% input$shared_cdm_names,
-                    .data$group_level %in% input$shared_cohort_names)
+      dplyr::filter(.data$cdm_name %in% shared_cdm_names(),
+                    .data$group_level %in% shared_cohort_names())
     
     if(isFALSE(input$cohort_count_person_count)){
       result <- result  |>
@@ -627,19 +791,24 @@ server <- function(input, output, session) {
   
   # summarise_characteristics -----
   filterSummariseCharacteristics <- shiny::reactive({
-    
+    shiny::observeEvent(shared_cdm_names(), {
+      updatePickerInput(session, "summarise_characteristics_cdm_name",   selected = shared_cdm_names())
+    })
+    shiny::observeEvent(shared_cohort_names(), {
+      updatePickerInput(session, "summarise_characteristics_cohort_name",   selected = shared_cohort_names())
+    })
     if (is.null(dataFiltered$summarise_characteristics)) {
       validate("No cohort characteristics in results")
     }
-    
-    selectedCohorts <- input$shared_cohort_names
+
+    selectedCohorts <- shared_cohort_names()
     
     if(isTRUE(input$summarise_characteristics_include_matched)){
       selectedCohorts <- as.vector(t(outer(selectedCohorts, c("", "_sampled", "_matched"), paste0)))
     }
     
     result <- dataFiltered$summarise_characteristics |>
-      dplyr::filter(.data$cdm_name %in% input$shared_cdm_names,
+      dplyr::filter(.data$cdm_name %in% shared_cdm_names(),
                     .data$group_level %in% selectedCohorts) |>
       dplyr::mutate(group_level = factor(group_level, levels = selectedCohorts)) |>
       arrange(group_level)
@@ -682,8 +851,8 @@ server <- function(input, output, session) {
     summarise_characteristics <- filterSummariseCharacteristics()
     
     summarise_table <- dataFiltered$summarise_table |>
-      filter(cdm_name %in% input$shared_cdm_names)
-    selectedCohorts <- input$shared_cohort_names
+      filter(cdm_name %in% shared_cdm_names())
+    selectedCohorts <- shared_cohort_names()
     if(isTRUE(input$summarise_characteristics_include_matched)){
       selectedCohorts <- as.vector(t(outer(selectedCohorts, c("", "_sampled", "_matched"), paste0)))
     }
@@ -726,6 +895,12 @@ server <- function(input, output, session) {
   
   # summarise_large_scale_characteristics -----
   filterLargeScaleCharacteristics <- shiny::reactive({
+    shiny::observeEvent(shared_cdm_names(), {
+      updatePickerInput(session, "summarise_large_scale_characteristics_cdm_name",   selected = shared_cdm_names())
+    })
+    shiny::observeEvent(shared_cohort_names(), {
+      updatePickerInput(session, "summarise_large_scale_characteristics_cohort_name",   selected = shared_cohort_names())
+    })
     
     if (is.null(dataFiltered$summarise_large_scale_characteristics)) {
       validate("No large scale characteristics in results")
@@ -736,8 +911,8 @@ server <- function(input, output, session) {
       filter(estimate_value != "-") |>
       visOmopResults::filterSettings(table_name %in% input$summarise_large_scale_characteristics_table_name,
                                      analysis %in% input$summarise_large_scale_characteristics_analysis) |>
-      dplyr::filter(cdm_name %in% input$shared_cdm_names) |>
-      dplyr::filter(group_level  %in% input$shared_cohort_names) |>
+      dplyr::filter(cdm_name %in% shared_cdm_names()) |>
+      dplyr::filter(group_level  %in% shared_cohort_names()) |>
       dplyr::filter(variable_level  %in% input$summarise_large_scale_characteristics_variable_level)
     
     validateFilteredResult(lsc_data)
@@ -751,15 +926,15 @@ server <- function(input, output, session) {
     tidy_lsc <- tidy_lsc |>
       tidy() |>
       mutate(concept = paste0(variable_name, " (",
-                              concept_id, ")")) 
+                              concept_id, ")"))
     
     if("source_concept_id" %in% colnames(tidy_lsc)){
-      tidy_lsc <- tidy_lsc |> 
+      tidy_lsc <- tidy_lsc |>
         mutate(source_concept = paste0(source_concept_name, " (",
                                        source_concept_id, ")"))
     }
     
-    tidy_lsc <- tidy_lsc |> 
+    tidy_lsc <- tidy_lsc |>
       dplyr::select(dplyr::any_of(c("cdm_name",
                                     "cohort_name",
                                     "concept",
@@ -870,19 +1045,20 @@ server <- function(input, output, session) {
   
   # compare large_scale_characteristics ----
   getComparedCohorts <- shiny::reactive({
+
     
-    cohort <- input$shared_cohort_names
-    
+    cohort <- shared_cohort_names()
+
     if(length(cohort) > 1){
       validate("Please select only one cohort")
     }
-
-    cohort1 <- switch(input$compare_large_scale_characteristics_cohort_name_1,
+    
+    cohort1 <- switch(input$compare_large_scale_characteristics_cohort_1,
                       "original" = cohort,
                       "sampled" = paste0(cohort,"_sampled"),
                       "matched" = paste0(cohort,"_matched"))
     
-    cohort2 <- switch(input$compare_large_scale_characteristics_cohort_name_2,
+    cohort2 <- switch(input$compare_large_scale_characteristics_cohort_2,
                       "original" = cohort,
                       "sampled" = paste0(cohort,"_sampled"),
                       "matched" = paste0(cohort,"_matched"))
@@ -891,10 +1067,18 @@ server <- function(input, output, session) {
                 "cohort2" = cohort2))
   })
   filterCompareLargeScaleCharacteristics <- shiny::reactive({
+    shiny::observeEvent(shared_cdm_names(), {
+      updatePickerInput(session, "compare_large_scale_characteristics_cdm_name",   selected = shared_cdm_names())
+    })
+    
+    shiny::observeEvent(shared_cohort_names(), {
+      updatePickerInput(session, "compare_large_scale_characteristics_cohort_name",   selected = shared_cohort_names())
+    })
+    
     if (is.null(dataFiltered$summarise_large_scale_characteristics)) {
       validate("No large scale characteristics in results")
     }
-    
+
     cohorts <- getComparedCohorts()
     cohort1 <- cohorts$cohort1
     cohort2 <- cohorts$cohort2
@@ -902,7 +1086,7 @@ server <- function(input, output, session) {
     lsc_filtered <- dataFiltered$summarise_large_scale_characteristics |>
       visOmopResults::filterSettings(.data$table_name %in% input$compare_large_scale_characteristics_table_name,
                                      .data$analysis %in% input$compare_large_scale_characteristics_analysis) |>
-      dplyr::filter(.data$cdm_name %in% input$shared_cdm_names,
+      dplyr::filter(.data$cdm_name %in% shared_cdm_names(),
                     .data$group_level %in% c(cohort1, cohort2),
                     .data$variable_level %in% input$compare_large_scale_characteristics_variable_level)
     
@@ -912,7 +1096,7 @@ server <- function(input, output, session) {
   })
   ## Tidy compare large_scale_characteristics ----
   createTidyDataCompareLargeScaleCharacteristics <- shiny::reactive({
-    
+
     lscFiltered <- filterCompareLargeScaleCharacteristics()
     cohorts <- getComparedCohorts()
     target_cohort     <- cohorts$cohort1
@@ -922,7 +1106,7 @@ server <- function(input, output, session) {
       dplyr::filter(.data$estimate_name == "percentage") |>
       tidy() |>
       tidyr::pivot_wider(names_from = cohort_name,
-                         values_from = percentage) 
+                         values_from = percentage)
     
     if(isTRUE(input$compare_large_scale_characteristics_impute_missings)){
       lsc <- lsc |>
@@ -938,7 +1122,7 @@ server <- function(input, output, session) {
     
     if("source_concept_name" %in% colnames(lsc)){
       lsc <- lsc |>
-        mutate(source_concept = paste0(source_concept_name, " (",source_concept_id, ")")) 
+        mutate(source_concept = paste0(source_concept_name, " (",source_concept_id, ")"))
     }
     
     lsc <- lsc |>
@@ -959,7 +1143,7 @@ server <- function(input, output, session) {
     cohorts <- getComparedCohorts()
     target_cohort <- cohorts$cohort1
     comparator_cohort <- cohorts$cohort2
-
+    
     tbl <- createTidyDataCompareLargeScaleCharacteristics()
     if("Source concept name (concept ID)" %in% colnames(tbl)){
       cols <- list(target_cohort = colDef(name = paste0(target_cohort, " percentage"),
@@ -1058,15 +1242,23 @@ server <- function(input, output, session) {
   
   # summarise_cohort_overlap -----
   filterCohortOverlap <- shiny::reactive({
+
+    shiny::observeEvent(shared_cdm_names(), {
+      updatePickerInput(session, "summarise_cohort_overlap_cdm_name",   selected = shared_cdm_names())
+    })
+    shiny::observeEvent(shared_cohort_names(), {
+      updatePickerInput(session, "summarise_cohort_overlap_cohort_name",   selected = shared_cohort_names())
+    })
+    
     if (is.null(dataFiltered$summarise_cohort_overlap)) {
       validate("No cohort overlap in results")
     }
     
     result <- dataFiltered$summarise_cohort_overlap |>
       visOmopResults::splitGroup(keep = TRUE) |>
-      dplyr::filter(.data$cdm_name %in% input$shared_cdm_names,
-                    .data$cohort_name_reference %in% input$shared_cohort_names,
-                    .data$cohort_name_comparator %in% input$summarise_cohort_overlap_cohort_name_comparator,
+      dplyr::filter(.data$cdm_name %in% shared_cdm_names(),
+                    .data$cohort_name_reference %in% shared_cohort_names(),
+                    .data$cohort_name_comparator %in% input$summarise_cohort_overlap_cohort_comparator,
                     .data$variable_name %in% input$summarise_cohort_overlap_variable_name
       ) |>
       dplyr::select(-visOmopResults::groupColumns(dataFiltered$summarise_cohort_overlap))
@@ -1136,19 +1328,27 @@ server <- function(input, output, session) {
   
   # summarise_cohort_timing ----
   filterCohortTiming <- shiny::reactive({
+
+    shiny::observeEvent(shared_cdm_names(), {
+      updatePickerInput(session, "summarise_cohort_overlap_cdm_name",   selected = shared_cdm_names())
+    })
+    shiny::observeEvent(shared_cohort_names(), {
+      updatePickerInput(session, "summarise_cohort_overlap_cohort_name",   selected = shared_cohort_names())
+    })
+    
     if (is.null(dataFiltered$summarise_cohort_timing)) {
       validate("No cohort timing in results")
     }
     
     result <- dataFiltered$summarise_cohort_timing |>
       visOmopResults::splitGroup(keep = TRUE) |>
-      dplyr::filter(.data$cdm_name %in% input$shared_cdm_names,
-                    .data$cohort_name_reference %in% input$shared_cohort_names,
-                    .data$cohort_name_comparator %in% input$summarise_cohort_overlap_cohort_name_comparator) |>
+      dplyr::filter(.data$cdm_name %in% shared_cdm_names(),
+                    .data$cohort_name_reference %in% shared_cohort_names(),
+                    .data$cohort_name_comparator %in% input$summarise_cohort_overlap_cohort_comparator) |>
       dplyr::select(-visOmopResults::groupColumns(dataFiltered$summarise_cohort_timing))
     
     validateFilteredResult(result)
-
+    
     return(result)
   })
   
@@ -1211,23 +1411,30 @@ server <- function(input, output, session) {
   )
   # summarise cohort survival -----
   filterCohortSurvival <- shiny::reactive({
-
+    
+    shiny::observeEvent(shared_cdm_names(), {
+      updatePickerInput(session, "summarise_cohort_survival_cdm_name",   selected = shared_cdm_names())
+    })
+    shiny::observeEvent(shared_cohort_names(), {
+      updatePickerInput(session, "summarise_cohort_survival_cohort_name",   selected = shared_cohort_names())
+    })
+    
     if (is.null(dataFiltered$survival_probability)) {
       validate("No survival in results")
     }
     
     if(input$survival_porbability_include_matches){
-      cohorts <- c(paste0(input$shared_cohort_names,"_sampled"),
-                   paste0(input$shared_cohort_names,"_matched"))
+      cohorts <- c(paste0(shared_cohort_names(),"_sampled"),
+                   paste0(shared_cohort_names(),"_matched"))
     }else{
-      cohorts <- input$shared_cohort_names
+      cohorts <- shared_cohort_names()
     }
     result <- omopgenerics::bind(
       dataFiltered$survival_attrition,
       dataFiltered$survival_events,
       dataFiltered$survival_probability,
       dataFiltered$survival_summary) |>
-      dplyr::filter(.data$cdm_name %in% input$shared_cdm_names) |>
+      dplyr::filter(.data$cdm_name %in% shared_cdm_names()) |>
       visOmopResults::filterGroup(.data$target_cohort %in% cohorts)
     
     validateFilteredResult(result)
@@ -1237,11 +1444,11 @@ server <- function(input, output, session) {
   ## Table cohort survival -----
   createTableSurvival <- shiny::reactive({
     result <- filterCohortSurvival()
-
-    table <- CohortSurvival::tableSurvival(result, 
-                           timeScale = input$survival_probability_time_scale, 
-                           header    = input$survival_table_header,
-                           groupColumn = input$survival_table_groupColumn) |>
+    
+    table <- CohortSurvival::tableSurvival(result,
+                                           timeScale = input$survival_probability_time_scale,
+                                           header    = input$survival_table_header,
+                                           groupColumn = input$survival_table_groupColumn) |>
       tab_header(
         title = "Single Event Survival Summary",
         subtitle = "Time from cohort entry to death"
@@ -1252,7 +1459,7 @@ server <- function(input, output, session) {
     
     return(table)
   })
-
+  
   output$summarise_cohort_survival_gt <- gt::render_gt({
     createTableSurvival()
   })
@@ -1267,24 +1474,24 @@ server <- function(input, output, session) {
   ## Plot cohort survival ----
   createPlotSurvival <- shiny::reactive({
     result <- filterCohortSurvival()
-
-    CohortSurvival::plotSurvival(result, 
+    
+    CohortSurvival::plotSurvival(result,
                                  timeScale = input$survival_probability_time_scale,
                                  ribbon = input$survival_plot_ribbon,
-                                 facet = input$survival_plot_facet, 
-                                 colour = input$survival_plot_colour, 
+                                 facet = input$survival_plot_facet,
+                                 colour = input$survival_plot_colour,
                                  logLog = input$survival_plot_log_log,
                                  cumulativeFailure = input$survival_plot_cf) +
       labs(color = "Color") +
       guides(fill = "none")
   })
   output$summarise_cohort_survival_plot <- shiny::renderUI({
-      if(isTRUE(input$survival_plot_interactive)){
-        plot <- plotly::ggplotly(createPlotSurvival())
-      } else {
-        plot <- renderPlot(createPlotSurvival())
-      }
-      plot
+    if(isTRUE(input$survival_plot_interactive)){
+      plot <- plotly::ggplotly(createPlotSurvival())
+    } else {
+      plot <- renderPlot(createPlotSurvival())
+    }
+    plot
   })
   output$summarise_cohort_survival_plot_download <- shiny::downloadHandler(
     filename = "summarise_cohort_survival_plot.png",
@@ -1300,16 +1507,23 @@ server <- function(input, output, session) {
       )
     }
   )
-
+  
   # incidence -----
   filterIncidence <- shiny::reactive({
+    shiny::observeEvent(shared_cdm_names(), {
+      updatePickerInput(session, "incidence_cdm_name",   selected = shared_cdm_names())
+    })
+    shiny::observeEvent(shared_cohort_names(), {
+      updatePickerInput(session, "incidence_outcome_cohort_name",   selected = shared_cohort_names())
+    })
+    
     if (is.null(dataFiltered$incidence)) {
       validate("No incidence in results")
     }
     
     result <- dataFiltered$incidence |>
-      filter(cdm_name %in% input$shared_cdm_names) |>
-      filterGroup(outcome_cohort_name %in% input$shared_cohort_names) |>
+      filter(cdm_name %in% shared_cdm_names()) |>
+      filterGroup(outcome_cohort_name %in% shared_cohort_names()) |>
       filterSettings(denominator_age_group %in%
                        input$incidence_denominator_age_group,
                      denominator_sex %in%
@@ -1407,7 +1621,7 @@ server <- function(input, output, session) {
     }
     return(plot)
   })
-
+  
   output$incidence_plot <- shiny::renderUI({
     if(isTRUE(input$incidence_plot_interactive)){
       plot <- plotly::ggplotly(createPlotIncidence())
@@ -1433,13 +1647,20 @@ server <- function(input, output, session) {
   
   # prevalence -----
   filterPrevalence <- shiny::reactive({
+    shiny::observeEvent(shared_cdm_names(), {
+      updatePickerInput(session, "incidence_cdm_name",   selected = shared_cdm_names())
+    })
+    shiny::observeEvent(shared_cohort_names(), {
+      updatePickerInput(session, "incidence_outcome_cohort_name",   selected = shared_cohort_names())
+    })
+    
     if (is.null(dataFiltered$prevalence)) {
       validate("No prevalence in results")
     }
     
     result <- dataFiltered$prevalence |>
-      filter(cdm_name %in% input$shared_cdm_names) |>
-      filterGroup(outcome_cohort_name %in% input$shared_cohort_names) |>
+      filter(cdm_name %in% shared_cdm_names()) |>
+      filterGroup(outcome_cohort_name %in% shared_cohort_names()) |>
       filterSettings(denominator_age_group %in%
                        input$prevalence_denominator_age_group,
                      denominator_sex %in%
@@ -1538,7 +1759,7 @@ server <- function(input, output, session) {
     return(plot)
     
   })
-
+  
   output$prevalence_plot <- shiny::renderUI({
     if(isTRUE(input$prevalence_plot_interactive)){
       plot <- plotly::ggplotly(createPlotPrevalence())
