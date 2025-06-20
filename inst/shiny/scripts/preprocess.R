@@ -47,8 +47,14 @@ dataFiltered <- prepareResult(result, resultList)
 values <- getValues(result, resultList)
 
 # Common variables
-values$shared_cohort_names <- values$summarise_cohort_count_cohort_name
-values$shared_cdm_names    <- values$summarise_cohort_count_cdm_name
+values$shared_cohort_names <- rbind(dataFiltered$cohort_code_use, dataFiltered$summarise_cohort_count, dataFiltered$incidence) |>
+  dplyr::mutate(group_name = gsub("outcome_cohort_name", "cohort_name", group_name)) |>
+  visOmopResults::splitGroup() |>
+  dplyr::select("cohort_name") |>
+  dplyr::distinct() |>
+  dplyr::filter(cohort_name != "overall") |>
+  dplyr::pull("cohort_name")
+values$shared_cdm_names    <- unique(dataFiltered$cohort_code_use$cdm_name)
 
 # Filter not needed values
 values <- values[!stringr::str_detect(names(values), "summarise_omop_snapshot")]
@@ -83,7 +89,7 @@ values <- append(values, values_subset)
 values$summarise_cohort_overlap_cohort_comparator <- values$summarise_cohort_overlap_cohort_name_comparator
 values <- values[!stringr::str_detect(names(values), "summarise_cohort_overlap_cohort_name_comparator")]
 
-# survival 
+# survival
 values$survival_probability_cohort_name <- values$survival_probability_target_cohort
 values <- values[!stringr::str_detect(names(values), "survival_probability_target_cohort")]
 
