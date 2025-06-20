@@ -82,7 +82,8 @@ values_subset <- values[stringr::str_detect(names(values), "large_scale")]
 names(values_subset) <- stringr::str_replace(string = names(values_subset), pattern = "summarise", replacement = "compare")
 values_subset$compare_large_scale_characteristics_cohort_1 <- c("original", "sampled", "matched")
 values_subset$compare_large_scale_characteristics_cohort_2 <- c("original", "sampled", "matched")
-values_subset[values_subset != "compare_large_scale_characteristics_cohort_name"]
+values_subset$compare_large_scale_characteristics_cohort_name <- values$shared_cohort_names
+values_subset$compare_large_scale_characteristics_cohort_compare <- values$shared_cohort_names
 values <- append(values, values_subset)
 
 # Compare cohorts
@@ -104,6 +105,7 @@ selected$compare_large_scale_characteristics_variable_level <- "-inf to -1"
 selected$compare_large_scale_characteristics_table_name     <- "condition_occurrence"
 selected$compare_large_scale_characteristics_cohort_1  <- "sampled"
 selected$compare_large_scale_characteristics_cohort_2  <- "matched"
+selected$compare_large_scale_characteristics_compare_cohort <- values$compare_large_scale_characteristics_compare_cohort[1]
 
 selected$incidence_analysis_interval  <- "years"
 selected$incidence_denominator_age_group <- "0 to 150"
