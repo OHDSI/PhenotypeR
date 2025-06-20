@@ -96,8 +96,18 @@ server <- function(input, output, session) {
   output$download_raw <- shiny::downloadHandler(
     filename = "results.csv",
     content = function(file) {
-      rawData <- omopgenerics::importSummarisedResult(file.path(getwd(),"data", "raw"))
-      omopgenerics::exportSummarisedResult(rawData, fileName = file)
+      
+      # Initialize a progress bar
+      shiny::withProgress(value = 0, {
+        
+        # Step 1: Importing data
+        shiny::incProgress(.25, message = "Importing data", detail = "Preparing summarised result...")
+        rawData <- omopgenerics::importSummarisedResult(file.path(getwd(), "data", "raw"))
+        
+        # Step 2: Exporting data
+        shiny::incProgress(.75, message = "Exporting data", detail = "Preparing file for download...")
+        omopgenerics::exportSummarisedResult(rawData, fileName = file)
+      })
     }
   )
 
