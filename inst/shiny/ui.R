@@ -2,13 +2,13 @@ ui <- fluidPage(
   bslib::page_navbar(
     theme = bs_theme(5, "pulse"),
     navbar_options =list(class = "bg-dark", theme = "dark"),
-
+    
     title = "PhenotypeR",
-
+    
     bslib::nav_panel(title = "Background",
                      icon = shiny::icon("disease"),
                      shiny::includeMarkdown(path = "background.md")),
-
+    
     # Database diagnostics -----
     bslib::nav_menu(
       title = "Database diagnostics",
@@ -43,7 +43,7 @@ ui <- fluidPage(
         )
       )
     ),
-
+    
     # Codelist diagnostics -----
     bslib::nav_menu(
       title = "Codelist diagnostics",
@@ -58,16 +58,16 @@ ui <- fluidPage(
             style = "width: 225px;",
             tags$div(
               style = "margin-top: 15px;",
-            shinyWidgets::pickerInput(
-              inputId = "achilles_code_use_cdm_name",
-              label = NULL,
-              selected = selected$achilles_code_use_cdm_name,
-              choices = choices$achilles_code_use_cdm_name,
-              multiple = TRUE,
-              options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                             `deselect-all-text` = "None", `select-all-text` = "All"),
-              width = "100%"
-            )
+              shinyWidgets::pickerInput(
+                inputId = "achilles_code_use_cdm_name",
+                label = NULL,
+                selected = selected$achilles_code_use_cdm_name,
+                choices = choices$achilles_code_use_cdm_name,
+                multiple = TRUE,
+                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                               `deselect-all-text` = "None", `select-all-text` = "All"),
+                width = "100%"
+              )
             )
           ),
           tags$div(
@@ -238,16 +238,16 @@ ui <- fluidPage(
             style = "width: 225px;",
             tags$div(
               style = "margin-top: 15px;",
-            shinyWidgets::pickerInput(
-              inputId = "orphan_code_use_cdm_name",
-              label = NULL,
-              selected = selected$orphan_code_use_cdm_name,
-              choices = choices$orphan_code_use_cdm_name,
-              multiple = TRUE,
-              options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                             `deselect-all-text` = "None", `select-all-text` = "All"),
-              width = "100%"
-            )
+              shinyWidgets::pickerInput(
+                inputId = "orphan_code_use_cdm_name",
+                label = NULL,
+                selected = selected$orphan_code_use_cdm_name,
+                choices = choices$orphan_code_use_cdm_name,
+                multiple = TRUE,
+                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                               `deselect-all-text` = "None", `select-all-text` = "All"),
+                width = "100%"
+              )
             )
           ),
           tags$div(
@@ -338,16 +338,16 @@ ui <- fluidPage(
             style = "width: 225px;",
             tags$div(
               style = "margin-top: 15px;",
-            shinyWidgets::pickerInput(
-              inputId = "cohort_code_use_cdm_name",
-              label = NULL,
-              selected = selected$cohort_code_use_cdm_name,
-              choices = choices$cohort_code_use_cdm_name,
-              multiple = TRUE,
-              options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                             `deselect-all-text` = "None", `select-all-text` = "All"),
-              width = "100%"
-            )
+              shinyWidgets::pickerInput(
+                inputId = "cohort_code_use_cdm_name",
+                label = NULL,
+                selected = selected$cohort_code_use_cdm_name,
+                choices = choices$cohort_code_use_cdm_name,
+                multiple = TRUE,
+                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                               `deselect-all-text` = "None", `select-all-text` = "All"),
+                width = "100%"
+              )
             )
           ),
           tags$label("Select Cohort(s):"),
@@ -355,16 +355,16 @@ ui <- fluidPage(
             style = "width: 225px;",
             tags$div(
               style = "margin-top: 15px;",
-            shinyWidgets::pickerInput(
-              inputId = "cohort_code_use_cohort_name",
-              label = NULL,
-              selected = selected$cohort_code_use_cohort_name,
-              choices = choices$cohort_code_use_cohort_name,
-              multiple = TRUE,
-              options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                             `deselect-all-text` = "None", `select-all-text` = "All"),
-              width = "100%"
-            )
+              shinyWidgets::pickerInput(
+                inputId = "cohort_code_use_cohort_name",
+                label = NULL,
+                selected = selected$cohort_code_use_cohort_name,
+                choices = choices$cohort_code_use_cohort_name,
+                multiple = TRUE,
+                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                               `deselect-all-text` = "None", `select-all-text` = "All"),
+                width = "100%"
+              )
             )
           ),
           tags$div(
@@ -449,7 +449,7 @@ ui <- fluidPage(
         )
       )
     ),
-
+    
     # Cohort diagnostics -----
     bslib::nav_menu(
       title = "Cohort diagnostics",
@@ -464,16 +464,16 @@ ui <- fluidPage(
             style = "width: 225px;",
             tags$div(
               style = "margin-top: 15px;",
-            shinyWidgets::pickerInput(
-              inputId = "summarise_cohort_count_cdm_name",
-              label = NULL,
-              selected = selected$summarise_cohort_count_cdm_name,
-              choices = choices$summarise_cohort_count_cdm_name,
-              multiple = TRUE,
-              options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                             `deselect-all-text` = "None", `select-all-text` = "All"),
-              width = "100%"
-            )
+              shinyWidgets::pickerInput(
+                inputId = "summarise_cohort_count_cdm_name",
+                label = NULL,
+                selected = selected$summarise_cohort_count_cdm_name,
+                choices = choices$summarise_cohort_count_cdm_name,
+                multiple = TRUE,
+                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                               `deselect-all-text` = "None", `select-all-text` = "All"),
+                width = "100%"
+              )
             )
           ),
           tags$label("Select Cohort(s):"),
@@ -481,16 +481,16 @@ ui <- fluidPage(
             style = "width: 225px;",
             tags$div(
               style = "margin-top: 15px;",
-            shinyWidgets::pickerInput(
-              inputId = "summarise_cohort_count_cohort_name",
-              label = NULL,
-              selected = selected$summarise_cohort_count_cohort_name,
-              choices = choices$summarise_cohort_count_cohort_name,
-              multiple = TRUE,
-              options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                             `deselect-all-text` = "None", `select-all-text` = "All"),
-              width = "100%"
-            )
+              shinyWidgets::pickerInput(
+                inputId = "summarise_cohort_count_cohort_name",
+                label = NULL,
+                selected = selected$summarise_cohort_count_cohort_name,
+                choices = choices$summarise_cohort_count_cohort_name,
+                multiple = TRUE,
+                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                               `deselect-all-text` = "None", `select-all-text` = "All"),
+                width = "100%"
+              )
             )
           ),
           tags$div(
@@ -573,7 +573,7 @@ ui <- fluidPage(
           )
         )
       ),
-
+      
       ## Cohort characteristics -----
       bslib::nav_panel(
         title = "Cohort characteristics",
@@ -584,16 +584,16 @@ ui <- fluidPage(
             style = "width: 225px;",
             tags$div(
               style = "margin-top: 15px;",
-            shinyWidgets::pickerInput(
-              inputId = "summarise_characteristics_cdm_name",
-              label = NULL,
-              selected = selected$shared_cdm_names,
-              choices = choices$shared_cdm_names,
-              multiple = TRUE,
-              options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                             `deselect-all-text` = "None", `select-all-text` = "All"),
-              width = "100%"
-            )
+              shinyWidgets::pickerInput(
+                inputId = "summarise_characteristics_cdm_name",
+                label = NULL,
+                selected = selected$shared_cdm_names,
+                choices = choices$shared_cdm_names,
+                multiple = TRUE,
+                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                               `deselect-all-text` = "None", `select-all-text` = "All"),
+                width = "100%"
+              )
             )
           ),
           tags$label("Select Cohort(s):"),
@@ -601,16 +601,16 @@ ui <- fluidPage(
             style = "width: 225px;",
             tags$div(
               style = "margin-top: 15px;",
-            shinyWidgets::pickerInput(
-              inputId = "summarise_characteristics_cohort_name",
-              label = NULL,
-              selected = selected$shared_cohort_names,
-              choices = choices$shared_cohort_names,
-              multiple = TRUE,
-              options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                             `deselect-all-text` = "None", `select-all-text` = "All"),
-              width = "100%"
-            )
+              shinyWidgets::pickerInput(
+                inputId = "summarise_characteristics_cohort_name",
+                label = NULL,
+                selected = selected$shared_cohort_names,
+                choices = choices$shared_cohort_names,
+                multiple = TRUE,
+                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                               `deselect-all-text` = "None", `select-all-text` = "All"),
+                width = "100%"
+              )
             )
           ),
           tags$div(
@@ -722,7 +722,7 @@ ui <- fluidPage(
           )
         )
       ),
-
+      
       ## Large scale characteristics -----
       bslib::nav_panel(
         title = "Large scale characteristics",
@@ -733,16 +733,16 @@ ui <- fluidPage(
             style = "width: 225px;",
             tags$div(
               style = "margin-top: 15px;",
-            shinyWidgets::pickerInput(
-              inputId = "summarise_large_scale_characteristics_cdm_name",
-              label = NULL,
-              selected = selected$shared_cdm_names,
-              choices = choices$shared_cdm_names,
-              multiple = TRUE,
-              options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                             `deselect-all-text` = "None", `select-all-text` = "All"),
-              width = "100%"
-            )
+              shinyWidgets::pickerInput(
+                inputId = "summarise_large_scale_characteristics_cdm_name",
+                label = NULL,
+                selected = selected$shared_cdm_names,
+                choices = choices$shared_cdm_names,
+                multiple = TRUE,
+                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                               `deselect-all-text` = "None", `select-all-text` = "All"),
+                width = "100%"
+              )
             )
           ),
           tags$label("Select Cohort(s):"),
@@ -750,16 +750,16 @@ ui <- fluidPage(
             style = "width: 225px;",
             tags$div(
               style = "margin-top: 15px;",
-            shinyWidgets::pickerInput(
-              inputId = "summarise_large_scale_characteristics_cohort_name",
-              label = NULL,
-              selected = selected$shared_cohort_names,
-              choices = choices$shared_cohort_names,
-              multiple = TRUE,
-              options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                             `deselect-all-text` = "None", `select-all-text` = "All"),
-              width = "100%"
-            )
+              shinyWidgets::pickerInput(
+                inputId = "summarise_large_scale_characteristics_cohort_name",
+                label = NULL,
+                selected = selected$shared_cohort_names,
+                choices = choices$shared_cohort_names,
+                multiple = TRUE,
+                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                               `deselect-all-text` = "None", `select-all-text` = "All"),
+                width = "100%"
+              )
             )
           ),
           tags$div(
@@ -840,7 +840,7 @@ ui <- fluidPage(
           )
         )
       ),
-
+      
       ## Compare large scale characteristics -----
       bslib::nav_panel(
         title = "Compare large scale characteristics",
@@ -851,16 +851,16 @@ ui <- fluidPage(
             style = "width: 225px;",
             tags$div(
               style = "margin-top: 15px;",
-            shinyWidgets::pickerInput(
-              inputId = "compare_large_scale_characteristics_cdm_name",
-              label = NULL,
-              selected = selected$shared_cdm_names,
-              choices = choices$shared_cdm_names,
-              multiple = TRUE,
-              options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                             `deselect-all-text` = "None", `select-all-text` = "All"),
-              width = "100%"
-            )
+              shinyWidgets::pickerInput(
+                inputId = "compare_large_scale_characteristics_cdm_name",
+                label = NULL,
+                selected = selected$shared_cdm_names,
+                choices = choices$shared_cdm_names,
+                multiple = TRUE,
+                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                               `deselect-all-text` = "None", `select-all-text` = "All"),
+                width = "100%",
+              )
             )
           ),
           tags$label("Select Cohort(s):"),
@@ -868,16 +868,16 @@ ui <- fluidPage(
             style = "width: 225px;",
             tags$div(
               style = "margin-top: 15px;",
-            shinyWidgets::pickerInput(
-              inputId = "compare_large_scale_characteristics_cohort_name",
-              label = NULL,
-              selected = selected$shared_cohort_names,
-              choices = choices$shared_cohort_names,
-              multiple = TRUE,
-              options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                             `deselect-all-text` = "None", `select-all-text` = "All"),
-              width = "100%"
-            )
+              shinyWidgets::pickerInput(
+                inputId = "compare_large_scale_characteristics_cohort_name",
+                label = NULL,
+                selected = selected$shared_cohort_names,
+                choices = choices$shared_cohort_names,
+                multiple = TRUE,
+                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                               `deselect-all-text` = "None", `select-all-text` = "All"),
+                width = "100%"
+              )
             )
           ),
           tags$div(
@@ -893,26 +893,46 @@ ui <- fluidPage(
                                    bslib::accordion(
                                      bslib::accordion_panel(
                                        title = "Settings",
+                                       shinyWidgets::pickerInput(
+                                         inputId = "compare_large_scale_characteristics_cohort_compare",
+                                         label = "Comparator cohort",
+                                         choices = NULL,
+                                         selected = NULL,
+                                         multiple = FALSE,
+                                         options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                       ),
                                        shiny::fluidRow(
-                                         shiny::column(width = 6,
+                                         shiny::column(width = 5, offset = 1,
                                                        shinyWidgets::pickerInput(
                                                          inputId = "compare_large_scale_characteristics_cohort_1",
-                                                         label = "Cohort 1",
+                                                         label = "Cohort type (reference)",
                                                          choices = NULL,
                                                          selected = NULL,
                                                          multiple = FALSE,
                                                          options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                                                       )
+                                                       ),
+                                                       tags$style(HTML("
+                                                       label[for='compare_large_scale_characteristics_cohort_1'] {
+                                                       text-align: center;
+                                                       width: 100%; 
+                                                       display: block;
+                                                       }"))
                                          ),
-                                         shiny::column(width = 6,
+                                         shiny::column(width = 5, 
                                                        shinyWidgets::pickerInput(
                                                          inputId = "compare_large_scale_characteristics_cohort_2",
-                                                         label = "Cohort 2",
+                                                         label = "Cohort type (comparator)",
                                                          choices = NULL,
                                                          selected = NULL,
                                                          multiple = FALSE,
                                                          options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                                                       )
+                                                       ),
+                                                       tags$style(HTML("
+                                                       label[for='compare_large_scale_characteristics_cohort_2'] {
+                                                       text-align: center;
+                                                       width: 100%; 
+                                                       display: block;
+                                                       }"))
                                          )
                                        ),
                                        shinyWidgets::pickerInput(
@@ -1019,7 +1039,7 @@ ui <- fluidPage(
           )
         )
       ),
-
+      
       ## Compare cohorts -----
       bslib::nav_panel(
         title = "Compare cohorts",
@@ -1030,16 +1050,16 @@ ui <- fluidPage(
             style = "width: 225px;",
             tags$div(
               style = "margin-top: 15px;",
-            shinyWidgets::pickerInput(
-              inputId = "summarise_cohort_overlap_cdm_name",
-              label = NULL,
-              selected = selected$shared_cdm_names,
-              choices = choices$shared_cdm_names,
-              multiple = TRUE,
-              options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                             `deselect-all-text` = "None", `select-all-text` = "All"),
-              width = "100%"
-            )
+              shinyWidgets::pickerInput(
+                inputId = "summarise_cohort_overlap_cdm_name",
+                label = NULL,
+                selected = selected$shared_cdm_names,
+                choices = choices$shared_cdm_names,
+                multiple = TRUE,
+                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                               `deselect-all-text` = "None", `select-all-text` = "All"),
+                width = "100%"
+              )
             )
           ),
           tags$label("Select Cohort(s):"),
@@ -1047,16 +1067,16 @@ ui <- fluidPage(
             style = "width: 225px;",
             tags$div(
               style = "margin-top: 15px;",
-            shinyWidgets::pickerInput(
-              inputId = "summarise_cohort_overlap_cohort_name_reference",
-              label = NULL,
-              selected = selected$shared_cohort_names,
-              choices = choices$shared_cohort_names,
-              multiple = TRUE,
-              options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                             `deselect-all-text` = "None", `select-all-text` = "All"),
-              width = "100%"
-            )
+              shinyWidgets::pickerInput(
+                inputId = "summarise_cohort_overlap_cohort_name_reference",
+                label = NULL,
+                selected = selected$shared_cohort_names,
+                choices = choices$shared_cohort_names,
+                multiple = TRUE,
+                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                               `deselect-all-text` = "None", `select-all-text` = "All"),
+                width = "100%"
+              )
             )
           ),
           tags$div(
@@ -1341,16 +1361,16 @@ ui <- fluidPage(
             style = "width: 225px;",
             tags$div(
               style = "margin-top: 15px;",
-            shinyWidgets::pickerInput(
-              inputId = "survival_probability_cdm_name",
-              label = NULL,
-              selected = selected$shared_cdm_names,
-              choices = choices$shared_cdm_names,
-              multiple = TRUE,
-              options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                             `deselect-all-text` = "None", `select-all-text` = "All"),
-              width = "100%"
-            )
+              shinyWidgets::pickerInput(
+                inputId = "survival_probability_cdm_name",
+                label = NULL,
+                selected = selected$shared_cdm_names,
+                choices = choices$shared_cdm_names,
+                multiple = TRUE,
+                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                               `deselect-all-text` = "None", `select-all-text` = "All"),
+                width = "100%"
+              )
             )
           ),
           tags$label("Select Cohort(s):"),
@@ -1358,16 +1378,16 @@ ui <- fluidPage(
             style = "width: 225px;",
             tags$div(
               style = "margin-top: 15px;",
-            shinyWidgets::pickerInput(
-              inputId = "survival_probability_cohort_name",
-              label = NULL,
-              selected = selected$shared_cohort_names,
-              choices = choices$shared_cohort_names,
-              multiple = TRUE,
-              options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                             `deselect-all-text` = "None", `select-all-text` = "All"),
-              width = "100%"
-            )
+              shinyWidgets::pickerInput(
+                inputId = "survival_probability_cohort_name",
+                label = NULL,
+                selected = selected$shared_cohort_names,
+                choices = choices$shared_cohort_names,
+                multiple = TRUE,
+                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                               `deselect-all-text` = "None", `select-all-text` = "All"),
+                width = "100%"
+              )
             )
           ),
           tags$div(
@@ -1519,7 +1539,7 @@ ui <- fluidPage(
         )
       )
     ),
-
+    
     # Population diagnostics -----
     bslib::nav_menu(
       title = "Population diagnostics",
@@ -1534,16 +1554,16 @@ ui <- fluidPage(
             style = "width: 225px;",
             tags$div(
               style = "margin-top: 15px;",
-            shinyWidgets::pickerInput(
-              inputId = "incidence_cdm_name",
-              label = NULL,
-              selected = selected$shared_cdm_names,
-              choices = choices$shared_cdm_names,
-              multiple = TRUE,
-              options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                             `deselect-all-text` = "None", `select-all-text` = "All"),
-              width = "100%"
-            )
+              shinyWidgets::pickerInput(
+                inputId = "incidence_cdm_name",
+                label = NULL,
+                selected = selected$shared_cdm_names,
+                choices = choices$shared_cdm_names,
+                multiple = TRUE,
+                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                               `deselect-all-text` = "None", `select-all-text` = "All"),
+                width = "100%"
+              )
             )
           ),
           tags$label("Select Cohort(s):"),
@@ -1551,16 +1571,16 @@ ui <- fluidPage(
             style = "width: 225px;",
             tags$div(
               style = "margin-top: 15px;",
-            shinyWidgets::pickerInput(
-              inputId = "incidence_outcome_cohort_name",
-              label = NULL,
-              selected = selected$shared_cohort_names,
-              choices = choices$shared_cohort_names,
-              multiple = TRUE,
-              options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                             `deselect-all-text` = "None", `select-all-text` = "All"),
-              width = "100%"
-            )
+              shinyWidgets::pickerInput(
+                inputId = "incidence_outcome_cohort_name",
+                label = NULL,
+                selected = selected$shared_cohort_names,
+                choices = choices$shared_cohort_names,
+                multiple = TRUE,
+                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                               `deselect-all-text` = "None", `select-all-text` = "All"),
+                width = "100%"
+              )
             )
           ),
           tags$div(
@@ -1736,16 +1756,16 @@ ui <- fluidPage(
             style = "width: 225px;",
             tags$div(
               style = "margin-top: 15px;",
-            shinyWidgets::pickerInput(
-              inputId = "prevalence_cdm_name",
-              label = NULL,
-              selected = selected$shared_cdm_names,
-              choices = choices$shared_cdm_names,
-              multiple = TRUE,
-              options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                             `deselect-all-text` = "None", `select-all-text` = "All"),
-              width = "100%"
-            )
+              shinyWidgets::pickerInput(
+                inputId = "prevalence_cdm_name",
+                label = NULL,
+                selected = selected$shared_cdm_names,
+                choices = choices$shared_cdm_names,
+                multiple = TRUE,
+                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                               `deselect-all-text` = "None", `select-all-text` = "All"),
+                width = "100%"
+              )
             )
           ),
           tags$label("Select Cohort(s):"),
@@ -1753,16 +1773,16 @@ ui <- fluidPage(
             style = "width: 225px;",
             tags$div(
               style = "margin-top: 15px;",
-            shinyWidgets::pickerInput(
-              inputId = "prevalence_outcome_cohort_name",
-              label = NULL,
-              selected = selected$shared_cohort_names,
-              choices = choices$shared_cohort_names,
-              multiple = TRUE,
-              options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                             `deselect-all-text` = "None", `select-all-text` = "All"),
-              width = "100%"
-            )
+              shinyWidgets::pickerInput(
+                inputId = "prevalence_outcome_cohort_name",
+                label = NULL,
+                selected = selected$shared_cohort_names,
+                choices = choices$shared_cohort_names,
+                multiple = TRUE,
+                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                               `deselect-all-text` = "None", `select-all-text` = "All"),
+                width = "100%"
+              )
             )
           ),
           tags$div(

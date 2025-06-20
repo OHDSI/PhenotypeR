@@ -32,7 +32,7 @@ server <- function(input, output, session) {
         updatePickerInput(session, names(choices[k]), selected = shared_cohort_names())
       }
     }
-
+  
     app_initialized_flag(TRUE)
   })
   
@@ -90,6 +90,8 @@ server <- function(input, output, session) {
         })
       })
     }
+    
+    updatePickerInput(session, "compare_large_scale_characteristics_cohort_compare", selected = shared_cohort_names())
   })
   
   # download raw data -----
@@ -965,9 +967,9 @@ server <- function(input, output, session) {
                       "matched" = paste0(cohort,"_matched"))
 
     cohort2 <- switch(input$compare_large_scale_characteristics_cohort_2,
-                      "original" = cohort,
-                      "sampled" = paste0(cohort,"_sampled"),
-                      "matched" = paste0(cohort,"_matched"))
+                      "original" = input$compare_large_scale_characteristics_cohort_compare,
+                      "sampled" = paste0(input$compare_large_scale_characteristics_cohort_compare,"_sampled"),
+                      "matched" = paste0(input$compare_large_scale_characteristics_cohort_compare,"_matched"))
 
     return(list("cohort1" = cohort1,
                 "cohort2" = cohort2))
