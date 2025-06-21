@@ -115,7 +115,7 @@ test_that("run with multiple cohorts", {
   db <- DBI::dbConnect(duckdb::duckdb())
   cdm <- CDMConnector::copyCdmTo(con = db, cdm = cdm_local,
                                  schema ="main", overwrite = TRUE)
-  result <- cohortDiagnostics(cdm$my_cohort)
+  result <- cohortDiagnostics(cdm$my_cohort, survival = TRUE)
   expect_identical(result |>
     omopgenerics::settings() |>
     dplyr::pull("result_type") |>

@@ -10,6 +10,7 @@
 #' * Overlap between cohorts (if more than one cohort is being used).
 #'
 #' @inheritParams cohortDoc
+#' @inheritParams survivalDoc
 #' @inheritParams matchedDoc
 #'
 #' @return A summarised result
@@ -27,12 +28,16 @@
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
 
-cohortDiagnostics <- function(cohort, match = TRUE, matchedSample = 1000){
+cohortDiagnostics <- function(cohort, survival = FALSE, match = TRUE, matchedSample = 1000){
 
   cli::cli_bullets(c("*" = "Starting Cohort Diagnostics"))
 
   # Initial checks ----
   cohort <- omopgenerics::validateCohortArgument(cohort = cohort)
+  omopgenerics::assertLogical(survival)
+  if(isTRUE(survival)){
+    rlang::check_installed("CohortSurvival", version = "1.0.2")
+  }
   omopgenerics::assertLogical(match)
   omopgenerics::assertNumeric(matchedSample, integerish = TRUE, min = 1, null = TRUE, length = 1)
 
@@ -143,7 +148,7 @@ cohortDiagnostics <- function(cohort, match = TRUE, matchedSample = 1000){
     excludedCodes = NULL
   )
 
-
+  if(isTRUE(survival)){
   if("death" %in% omopgenerics::listSourceTables(cdm)){
     cli::cli_bullets(c(">" = "Creating death cohort"))
     deathCohortName <- paste0(prefix, "death_cohort")
@@ -160,6 +165,7 @@ cohortDiagnostics <- function(cohort, match = TRUE, matchedSample = 1000){
   }else{
     cli::cli_warn("No table 'death' in the cdm object. Skipping survival analysis.")
     results[["single_survival_event"]] <- omopgenerics::emptySummarisedResult()
+  }
   }
 
   omopgenerics::dropTable(cdm, dplyr::starts_with(prefix))
