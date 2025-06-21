@@ -115,7 +115,7 @@ diagnostics**, **codelist diagnostics**, **cohort diagnostics**, and
 **population diagnostics**) using `phenotypeDiagnostics()`:
 
 ``` r
-result <- phenotypeDiagnostics(cdm$my_cohort)
+result <- phenotypeDiagnostics(cdm$my_cohort, survival = TRUE)
 ```
 
 Once we have our results we can quickly view them in an interactive
