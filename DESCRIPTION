@@ -53,7 +53,8 @@ Suggests:
     tidyr,
     scales,
     usethis,
-    rmarkdown
+    rmarkdown,
+    CohortSurvival (>= 1.0.2)ce
 Config/testthat/edition: 3
 RoxygenNote: 7.3.2
 Imports: 
@@ -68,7 +69,6 @@ Imports:
     magrittr,
     purrr,
     rlang,
-    vctrs,
-    CohortSurvival (>= 1.0.2)
+    vctrs
 URL: https://ohdsi.github.io/PhenotypeR/
 VignetteBuilder: knitr

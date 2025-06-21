@@ -8,6 +8,14 @@
 #' @keywords internal
 NULL
 
+#' Helper for consistent documentation of `survival`.
+#'
+#' @param survival Boolean variable. Whether to conduct survival analysis (TRUE) or not (FALSE).
+#'
+#' @name survivalDoc
+#' @keywords internal
+NULL
+
 
 #' Helper for consistent documentation of `matched` and `match`.
 #'

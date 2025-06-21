@@ -14,6 +14,7 @@
 #' @param databaseDiagnostics If TRUE, database diagnostics will be run.
 #' @param codelistDiagnostics If TRUE, codelist diagnostics will be run.
 #' @param cohortDiagnostics If TRUE, cohort diagnostics will be run.
+#' @inheritParams survivalDoc
 #' @inheritParams matchedDoc
 #' @param populationDiagnostics If TRUE, population diagnostics will be run.
 #' @inheritParams populationSampleDoc
@@ -35,6 +36,7 @@ phenotypeDiagnostics <- function(cohort,
                                  databaseDiagnostics = TRUE,
                                  codelistDiagnostics = TRUE,
                                  cohortDiagnostics = TRUE,
+                                 survival = FALSE,
                                  match = TRUE,
                                  matchedSample = 1000,
                                  populationDiagnostics = TRUE,
@@ -46,6 +48,10 @@ phenotypeDiagnostics <- function(cohort,
   omopgenerics::assertLogical(databaseDiagnostics)
   omopgenerics::assertLogical(codelistDiagnostics)
   omopgenerics::assertLogical(cohortDiagnostics)
+  omopgenerics::assertLogical(survival)
+  if(isTRUE(survival)){
+    rlang::check_installed("CohortSurvival", version = "1.0.2")
+  }
   omopgenerics::assertLogical(populationDiagnostics)
 
   results <- list()
@@ -59,7 +65,10 @@ phenotypeDiagnostics <- function(cohort,
   }
   if (isTRUE(cohortDiagnostics)) {
     cli::cli("Running cohort diagnostics")
-    results[["cohort_diag"]] <- cohortDiagnostics(cohort, match = match, matchedSample = matchedSample)
+    results[["cohort_diag"]] <- cohortDiagnostics(cohort,
+                                                  survival = survival,
+                                                  match = match,
+                                                  matchedSample = matchedSample)
   }
   if (isTRUE(populationDiagnostics)) {
     cli::cli("Running population diagnostics")

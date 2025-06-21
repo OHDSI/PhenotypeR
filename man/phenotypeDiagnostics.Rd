@@ -9,6 +9,7 @@ phenotypeDiagnostics(
   databaseDiagnostics = TRUE,
   codelistDiagnostics = TRUE,
   cohortDiagnostics = TRUE,
+  survival = FALSE,
   match = TRUE,
   matchedSample = 1000,
   populationDiagnostics = TRUE,
@@ -24,6 +25,8 @@ phenotypeDiagnostics(
 \item{codelistDiagnostics}{If TRUE, codelist diagnostics will be run.}
 
 \item{cohortDiagnostics}{If TRUE, cohort diagnostics will be run.}
+
+\item{survival}{Boolean variable. Whether to conduct survival analysis (TRUE) or not (FALSE).}
 
 \item{match}{Boolean variable. Whether to conduct the analysis for the matched cohorts (TRUE) or not (FALSE).}
 

@@ -4,10 +4,12 @@
 \alias{cohortDiagnostics}
 \title{Run cohort-level diagnostics}
 \usage{
-cohortDiagnostics(cohort, match = TRUE, matchedSample = 1000)
+cohortDiagnostics(cohort, survival = FALSE, match = TRUE, matchedSample = 1000)
 }
 \arguments{
 \item{cohort}{Cohort table in a cdm reference}
+
+\item{survival}{Boolean variable. Whether to conduct survival analysis (TRUE) or not (FALSE).}
 
 \item{match}{Boolean variable. Whether to conduct the analysis for the matched cohorts (TRUE) or not (FALSE).}
 
