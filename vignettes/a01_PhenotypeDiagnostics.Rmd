@@ -63,7 +63,7 @@ Now we will proceed to run `phenotypeDiagnotics()`. This function will run the f
 
 -   **Database diagnostics**: This includes information about the size of the data, the time period covered, the number of people in the data, and other meta-data of the CDM object. See [Database diagnostics vignette](https://ohdsi.github.io/PhenotypeR/articles/a03_DatabaseDiagnostics.html) for more details. 
 -   **Codelist diagnostics**: This includes information on the concepts included in our cohorts' codelist. See [Codelist diagnostics vignette](https://ohdsi.github.io/PhenotypeR/articles/a04_CodelistDiagnostics.html) for further details.
--   **Cohort diagnostics**: This summarises the attrition of our cohorts, as well as overlapping between cohorts. See [Cohort diagnostics vignette](https://ohdsi.github.io/PhenotypeR/articles/a05_CohortDiagnostics.html) for further details.
+-   **Cohort diagnostics**: This summarises the characteristics of our cohorts, as well as comparing them to age and sex matched controls from the database.. See [Cohort diagnostics vignette](https://ohdsi.github.io/PhenotypeR/articles/a05_CohortDiagnostics.html) for further details.
 -   **Population diagnostics**: Calculates the frequency of our study cohorts in the database in terms of their incidence rates and prevalence. See [Population diagnostics vignette](https://ohdsi.github.io/PhenotypeR/articles/a07_PopulationDiagnostics.html) for further details.
 
 We can specify which analysis we want to perform by setting to TRUE or FALSE each one of the corresponding arguments:
@@ -84,10 +84,10 @@ result |> glimpse()
 
 Notice that we have three additional arguments:
 
--   `populationSample`: It allows to specify a number of people that randomly will be extracted from the CDM to perform the **Population diagnostics** analysis. If NULL, all the participants in the CDM will be included. It helps to reduce the computational time.
+-   `populationSample`: It allows to specify a number of people that randomly will be extracted from the CDM to perform the **Population diagnostics** analysis. If NULL, all the participants in the CDM will be included. It helps to reduce the computational time. This is particularly useful when outcomes of interest are relatively common, but when they are rarer we may wish to maximise statistical power and calculate estimates for the dataset as a whole in which case we would set this argument to NULL.
 -   `populationDateRange`: We can use it to specify the time period when we want to perform our **Population diagnostics** analysis.
--   `match`: If set to TRUE, our study cohorts will be matched with people with similar age and sex in the database, and will perform a large-scale characterisation on our original cohort, the sampled cohort (those participants from our cohort that have found a match) and the matched cohort. If set to FALSE, cohortDiagnostics will only be performed in our original cohort.
--   `matchedSample`: Similar to populationSample, this arguments subsets a random sample of people from our cohort and performs the matched analysis on this sample. 
+-   `match`: If set to TRUE, our study cohorts will be matched with people with similar age and sex in the database, and will perform a large-scale characterisation on our original cohort, the sampled cohort (those participants from our cohort that have found a match) and the matched cohort. If set to FALSE, cohortDiagnostics will only be performed on our original cohorts.
+-   `matchedSample`: Similar to populationSample, this arguments subsets a random sample of people from our cohort and performs the matched analysis on this sample. If we have very large cohorts we can use this to save computational time. 
 
 ## Save the results
 To save the results, we can use [exportSummarisedResult](https://darwin-eu.github.io/omopgenerics/reference/exportSummarisedResult.html) function from [omopgenerics](https://darwin-eu.github.io/omopgenerics/index.html) R Package:
