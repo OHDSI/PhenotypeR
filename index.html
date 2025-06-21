@@ -69,10 +69,7 @@
 <strong><em>Codelist diagnostics</em></strong> which help to answer questions like what concepts from our codelist are used in the database? What concepts were present led to individuals’ entry in the cohort? Are there any concepts being used in the database that we didn’t include in our codelist but maybe we should have?<br>
 </li>
 <li>
-<strong><em>Cohort diagnostics</em></strong> which help to answer questions like how many individuals did we include in our cohort and how many were excluded because of our inclusion criteria? If we have multiple cohorts, is there overlap between them and when do people enter one cohort relative to another? What is the incidence of cohort entry and what is the prevalence of the cohort in the database?<br>
-</li>
-<li>
-<strong><em>Matched diagnostics</em></strong> which compares our study cohorts to the overall population in the database. By matching people in the cohorts to people with a similar age and sex in the database we can see how our cohorts differ from the general database population.<br>
+<strong><em>Cohort diagnostics</em></strong> which help to answer questions like how many individuals did we include in our cohort and how many were excluded because of our inclusion criteria? If we have multiple cohorts, is there overlap between them and when do people enter one cohort relative to another? What is the incidence of cohort entry and what is the prevalence of the cohort in the database? It can also compare our study cohorts to the general population by matching people with similar age and sex.<br>
 </li>
 <li>
 <strong><em>Population diagnostics</em></strong> which estimates the frequency of our study cohorts in the database in terms of their incidence rates and prevalence.</li>
@@ -133,10 +130,10 @@
 <span>                               exit <span class="op">=</span> <span class="st">"event_end_date"</span>,</span>
 <span>                               overlap <span class="op">=</span> <span class="st">"merge"</span>,</span>
 <span>                               name <span class="op">=</span> <span class="st">"my_cohort"</span><span class="op">)</span></span></code></pre></div>
-<p>We can easily run all the analyses explained above (<strong>database diagnostics</strong>, <strong>codelist diagnostics</strong>, <strong>cohort diagnostics</strong>, <strong>matched diagnostics</strong>, and <strong>population diagnostics</strong>) using <code><a href="reference/phenotypeDiagnostics.html">phenotypeDiagnostics()</a></code>:</p>
+<p>We can easily run all the analyses explained above (<strong>database diagnostics</strong>, <strong>codelist diagnostics</strong>, <strong>cohort diagnostics</strong>, and <strong>population diagnostics</strong>) using <code><a href="reference/phenotypeDiagnostics.html">phenotypeDiagnostics()</a></code>:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/phenotypeDiagnostics.html">phenotypeDiagnostics</a></span><span class="op">(</span><span class="va">cdm</span><span class="op">$</span><span class="va">my_cohort</span><span class="op">)</span></span></code></pre></div>
-<p>Once we have our results we can quickly view them in an interactive application. Here we’ll apply a minimum cell count of 10 to our results and save our shiny app to a temporary directory, but you will likely want to save this shiny app to a local directory of your choice.</p>
+<p>Once we have our results we can quickly view them in an interactive application. Here we’ll apply a minimum cell count of 10 to our results and save our shiny app to a temporary directory.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/shinyDiagnostics.html">shinyDiagnostics</a></span><span class="op">(</span>result <span class="op">=</span> <span class="va">result</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://darwin-eu.github.io/omopgenerics/reference/suppress.html" class="external-link">suppress</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>, directory <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>See the shiny app generated from the example cohort in <a href="https://dpa-pde-oxford.shinyapps.io/Readme_PhenotypeR/" class="external-link">here</a>.</p>

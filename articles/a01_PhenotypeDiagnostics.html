@@ -120,8 +120,9 @@ diagnostics vignette</a> for more details.</li>
 the concepts included in our cohorts’ codelist. See <a href="https://ohdsi.github.io/PhenotypeR/articles/a04_CodelistDiagnostics.html">Codelist
 diagnostics vignette</a> for further details.</li>
 <li>
-<strong>Cohort diagnostics</strong>: This summarises the attrition
-of our cohorts, as well as overlapping between cohorts. See <a href="https://ohdsi.github.io/PhenotypeR/articles/a05_CohortDiagnostics.html">Cohort
+<strong>Cohort diagnostics</strong>: This summarises the
+characteristics of our cohorts, as well as comparing them to age and sex
+matched controls from the database.. See <a href="https://ohdsi.github.io/PhenotypeR/articles/a05_CohortDiagnostics.html">Cohort
 diagnostics vignette</a> for further details.</li>
 <li>
 <strong>Population diagnostics</strong>: Calculates the frequency of
@@ -150,7 +151,10 @@ or FALSE each one of the corresponding arguments:</p>
 people that randomly will be extracted from the CDM to perform the
 <strong>Population diagnostics</strong> analysis. If NULL, all the
 participants in the CDM will be included. It helps to reduce the
-computational time.</li>
+computational time. This is particularly useful when outcomes of
+interest are relatively common, but when they are rarer we may wish to
+maximise statistical power and calculate estimates for the dataset as a
+whole in which case we would set this argument to NULL.</li>
 <li>
 <code>populationDateRange</code>: We can use it to specify the time
 period when we want to perform our <strong>Population
@@ -161,11 +165,12 @@ matched with people with similar age and sex in the database, and will
 perform a large-scale characterisation on our original cohort, the
 sampled cohort (those participants from our cohort that have found a
 match) and the matched cohort. If set to FALSE, cohortDiagnostics will
-only be performed in our original cohort.</li>
+only be performed on our original cohorts.</li>
 <li>
 <code>matchedSample</code>: Similar to populationSample, this
 arguments subsets a random sample of people from our cohort and performs
-the matched analysis on this sample.</li>
+the matched analysis on this sample. If we have very large cohorts we
+can use this to save computational time.</li>
 </ul>
 </div>
 <div class="section level2">
