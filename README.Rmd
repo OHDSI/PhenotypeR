@@ -47,7 +47,7 @@ set of cohorts we have defined. This assessment includes:
     cohorts, is there overlap between them and when do people enter one
     cohort relative to another? What is the incidence of cohort entry
     and what is the prevalence of the cohort in the database? It can also
-    compare our study cohorts to the overall population by matching people
+    compare our study cohorts to the general population by matching people
     with similar age and sex.\
 -   ***Population diagnostics*** which estimates the frequency of our
     study cohorts in the database in terms of their incidence rates and
@@ -111,8 +111,7 @@ cdm$my_cohort <- conceptCohort(cdm = cdm,
                                name = "my_cohort")
 ```
 
-We can easily run all the analyses explained above (**database diagnostics**, **codelist diagnostics**, **cohort diagnostics**,
-**matched diagnostics**, and **population diagnostics**) using
+We can easily run all the analyses explained above (**database diagnostics**, **codelist diagnostics**, **cohort diagnostics**, and **population diagnostics**) using
 `phenotypeDiagnostics()`:
 
 ```{r, message = FALSE}
@@ -120,7 +119,7 @@ result <- phenotypeDiagnostics(cdm$my_cohort)
 ```
 
 Once we have our results we can quickly view them in an interactive
-application. Here we'll apply a minimum cell count of 10 to our results and save our shiny app to a temporary directory, but you will likely want to save this shiny app to a local directory of your choice.
+application. Here we'll apply a minimum cell count of 10 to our results and save our shiny app to a temporary directory.
 
 ```{r, eval=FALSE}
 shinyDiagnostics(result = result |> suppress(10), directory = tempdir())
