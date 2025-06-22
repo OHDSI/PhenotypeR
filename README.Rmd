@@ -115,7 +115,7 @@ We can easily run all the analyses explained above (**database diagnostics**, **
 `phenotypeDiagnostics()`:
 
 ```{r, message = FALSE}
-result <- phenotypeDiagnostics(cdm$my_cohort)
+result <- phenotypeDiagnostics(cdm$my_cohort, survival = TRUE)
 ```
 
 Once we have our results we can quickly view them in an interactive

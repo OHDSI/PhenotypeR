@@ -10,3 +10,4 @@ inst/shiny/*.RData
 inst/shiny/data/appData.RData
 /inst/shiny/shiny/data
 R/extra.R
+CRAN-SUBMISSION
