@@ -634,7 +634,7 @@ server <- function(input, output, session) {
   )
 
   # summarise_cohort_attrition -----
-  filterCohortAttrition <- shiny::reactive({
+  filterCohortAttrition <- eventReactive(input$updateCohortCount,({
 
     if (is.null(dataFiltered$summarise_cohort_attrition)) {
       validate("No cohort attrition in results")
@@ -656,7 +656,8 @@ server <- function(input, output, session) {
     validateFilteredResult(result)
 
     return(result)
-  })
+  }))
+  
   ## Table summarise_cohort_attrition ----
   createTableCohortAttrition <- shiny::reactive({
     filterCohortAttrition() |>
@@ -762,7 +763,7 @@ server <- function(input, output, session) {
   )
 
   ## Plot age_pyramid ----
-  createAgePyramid <- shiny::reactive({
+  createAgePyramid <- eventReactive(input$updateCohortCharacteristics, ({
     summarise_characteristics <- filterSummariseCharacteristics()
 
     summarise_table <- dataFiltered$summarise_table |>
@@ -787,7 +788,7 @@ server <- function(input, output, session) {
 
     plotAgeDensity(summarise_table, summarise_characteristics, input$summarise_characteristics_add_interquantile_range)
 
-  })
+  }))
 
   output$plot_age_pyramid <- shiny::renderPlot({
     createAgePyramid()
@@ -1228,7 +1229,7 @@ server <- function(input, output, session) {
   )
 
   # summarise_cohort_timing ----
-  filterCohortTiming <- shiny::reactive({
+  filterCohortTiming <- eventReactive(input$updateCompareCohorts, ({
 
     if (is.null(dataFiltered$summarise_cohort_timing)) {
       validate("No cohort timing in results")
@@ -1244,7 +1245,7 @@ server <- function(input, output, session) {
     validateFilteredResult(result)
 
     return(result)
-  })
+  }))
 
   ## Table cohort_timing -----
   createTableCohortTiming <- shiny::reactive({
@@ -1328,12 +1329,18 @@ server <- function(input, output, session) {
     return(result)
   }))
 
+  getTimeScale <- eventReactive(input$updateCohortSurvival, ({
+    timeScale <- input$survival_probability_time_scale
+    return(timeScale)
+  }))
+  
   ## Table cohort survival -----
   createTableSurvival <- shiny::reactive({
     result <- filterCohortSurvival()
+    timeScale <- getTimeScale()
 
     table <- CohortSurvival::tableSurvival(result,
-                                           timeScale = input$survival_probability_time_scale,
+                                           timeScale = timeScale,
                                            header    = input$survival_table_header,
                                            groupColumn = input$survival_table_groupColumn) |>
       tab_header(
@@ -1361,9 +1368,10 @@ server <- function(input, output, session) {
   ## Plot cohort survival ----
   createPlotSurvival <- shiny::reactive({
     result <- filterCohortSurvival()
-
+    timeScale <- getTimeScale()
+    
     CohortSurvival::plotSurvival(result,
-                                 timeScale = input$survival_probability_time_scale,
+                                 timeScale = timeScale,
                                  ribbon = input$survival_plot_ribbon,
                                  facet = input$survival_plot_facet,
                                  colour = input$survival_plot_colour,
