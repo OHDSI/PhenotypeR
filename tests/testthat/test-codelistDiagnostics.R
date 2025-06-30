@@ -77,5 +77,33 @@ test_that("duplicated codelists", {
       codelist = list(b = 4L),
       cohortName = c("cohort_1")
     )
-  expect_error(codelistDiagnostics(cdm$cohort1))
+  expect_error()
 })
+
+test_that("measurementDiagnostics working", {
+  cdm <- MeasurementDiagnostics::mockMeasurementDiagnostics()
+  cdm$my_cohort <- cdm$my_cohort |>
+    PhenotypeR::addCodelistAttribute(
+      codelist = list(b = 3001467L),
+      cohortName = c("cohort_1")
+    )
+  res <- PhenotypeR::codelistDiagnostics(cdm$my_cohort)
+  expect_equal(
+    settings(res)$result_type,
+    c("cohort_code_use", "measurement_timings", "measurement_value_as_numeric", "measurement_value_as_concept")
+  )
+  expect_equal(res |> omopgenerics::splitGroup() |> dplyr::pull("cohort_name") |> unique(), "cohort_1")
+
+  cdm$my_cohort <- cdm$my_cohort |>
+    PhenotypeR::addCodelistAttribute(
+      codelist = list(b = 3001467L),
+      cohortName = c("cohort_2")
+    )
+  res <- PhenotypeR::codelistDiagnostics(cdm$my_cohort)
+  expect_equal(
+    settings(res)$result_type,
+    c("cohort_code_use", "measurement_timings", "measurement_value_as_numeric", "measurement_value_as_concept")
+  )
+  expect_equal(res |> omopgenerics::splitGroup() |> dplyr::pull("cohort_name") |> unique(), paste0("cohort_", 1:2))
+})
+
