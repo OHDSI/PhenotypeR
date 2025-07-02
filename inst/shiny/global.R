@@ -1,3 +1,12 @@
+# ensure minimum versions
+rlang::check_installed("omopgenerics", version = "1.2.0")
+rlang::check_installed("visOmopResults", version = "0.5.0")
+rlang::check_installed("CodelistGenerator", version = "3.4.0")
+rlang::check_installed("CohortCharacteristics", version = "1.0.0")
+rlang::check_installed("IncidencePrevalence", version = "1.2.0")
+rlang::check_installed("OmopSketch", version = "0.3.1")
+rlang::check_installed("CohortSurvival", version = "1.0.2")
+
 library(bslib)
 library(omopgenerics)
 library(CodelistGenerator)
@@ -20,15 +29,6 @@ library(plotly)
 library(tidyr)
 library(reactable)
 
-# ensure minimum versions
-rlang::check_installed("omopgenerics", version = "1.2.0")
-rlang::check_installed("visOmopResults", version = "0.5.0")
-rlang::check_installed("CodelistGenerator", version = "3.4.0")
-rlang::check_installed("CohortCharacteristics", version = "1.0.0")
-rlang::check_installed("IncidencePrevalence", version = "1.2.0")
-rlang::check_installed("OmopSketch", version = "0.3.1")
-rlang::check_installed("CohortSurvival", version = "1.0.2")
-
 source(here::here("scripts", "functions.R"))
 
 if(file.exists(here::here("data", "appData.RData"))){
@@ -46,13 +46,13 @@ plotComparedLsc <- function(lsc, cohorts, imputeMissings, colour = NULL, facet =
   plot_data <- lsc |>
     filter(group_level %in% c(cohorts)) |>
     filter(estimate_name == "percentage") |>
-    tidy() |> 
+    tidy() |>
     select(dplyr::any_of(c(
       "database" = "cdm_name",
       "cohort_name",
       "variable_name",
       "time_window" = "variable_level",
-      "concept_id", 
+      "concept_id",
       "source_concept_name",
       "source_concept_id",
       "table" = "table_name",
@@ -62,12 +62,12 @@ plotComparedLsc <- function(lsc, cohorts, imputeMissings, colour = NULL, facet =
     mutate(percentage = as.numeric(percentage)/100) |>
     pivot_wider(names_from = cohort_name,
                 values_from = percentage)
-  
+
   if(isTRUE(imputeMissings)){
     plot_data <- plot_data |>
       mutate(across(c(cohorts[1], cohorts[2]), ~if_else(is.na(.x), 0, .x)))
   }
-  
+
   plot_data <- plot_data |>
     mutate(smd = (!!sym(cohorts[1]) - !!sym(cohorts[2]))/sqrt((!!sym(cohorts[1])*(1-!!sym(cohorts[1])) + !!sym(cohorts[2])*(1-!!sym(cohorts[2])))/2)) |>
     mutate(smd = round(smd, 2))
@@ -83,7 +83,7 @@ plotComparedLsc <- function(lsc, cohorts, imputeMissings, colour = NULL, facet =
                                "<br>SMD:", smd,
                                "<br>Cohorts: ",
                                "<br> - ", cohorts[1],": ", !!sym(cohorts[1]),
-                               "<br> - ", cohorts[2],": ", !!sym(cohorts[2]))) 
+                               "<br> - ", cohorts[2],": ", !!sym(cohorts[2])))
   } else {
     plot_data <- plot_data |>
       mutate("Details" = paste("<br>Database:", database,
@@ -94,10 +94,10 @@ plotComparedLsc <- function(lsc, cohorts, imputeMissings, colour = NULL, facet =
                                "<br>SMD:", smd,
                                "<br>Cohorts: ",
                                "<br> - ", cohorts[1],": ", !!sym(cohorts[1]),
-                               "<br> - ", cohorts[2],": ", !!sym(cohorts[2])))   
+                               "<br> - ", cohorts[2],": ", !!sym(cohorts[2])))
   }
-  
-  
+
+
   plot <- plot_data |>
     visOmopResults::scatterPlot(x = cohorts[1],
                                 y = cohorts[2],
@@ -112,13 +112,13 @@ plotComparedLsc <- function(lsc, cohorts, imputeMissings, colour = NULL, facet =
     theme_bw() +
     xlab(paste0(stringr::str_to_sentence(gsub("_"," ", cohorts[1])), " (%)")) +
     ylab(paste0(stringr::str_to_sentence(gsub("_"," ", cohorts[2])), " (%)"))
-  
+
   return(plot)
 }
 
 
 plotAgeDensity <- function(summarise_table, summarise_characteristics, show_interquantile_range){
-  
+
   data <- summarise_table |>
     filter(variable_name == "age") |>
     pivot_wider(names_from = "estimate_name", values_from = "estimate_value") |>
@@ -128,15 +128,15 @@ plotAgeDensity <- function(summarise_table, summarise_characteristics, show_inte
     mutate(density_y = if_else(sex == "Female", -density_y, density_y)) |>
     filter(!is.na(density_x),
            !is.na(density_y))
-  
+
   if (nrow(data) == 0) {
     validate("No results found for age density")
   }
-  
+
   max_density <- max(data$density_y, na.rm = TRUE)
   min_age <- (floor((data$density_x |> min(na.rm = TRUE))/5))*5
   max_age <- (ceiling((data$density_x |> max(na.rm = TRUE))/5))*5
-  
+
   iqr <- summarise_characteristics |>
     filter(variable_name == "Age",
            strata_level %in% c("Female","Male"),
@@ -155,12 +155,12 @@ plotAgeDensity <- function(summarise_table, summarise_characteristics, show_inte
       by = c("cdm_name", "group_level", "strata_level", "estimate_value_round")
     ) |>
     rename("sex" = "strata_level")
-  
+
   # keep only estimates for cohorts with density
   iqr <- iqr |>
     inner_join(data |>
                  select(group_level) |> distinct())
-  
+
   plot <- ggplot2::ggplot(data, ggplot2::aes(x = density_x, y = density_y, fill = sex)) +
     geom_polygon() +
     scale_y_continuous(labels = function(x) scales::label_percent()(abs(x)),
@@ -182,7 +182,7 @@ plotAgeDensity <- function(summarise_table, summarise_characteristics, show_inte
     scale_fill_manual(values = list("Male" = "#77A9B4","Female" = "#E1B12D")) +
     facet_wrap(c("cdm_name", "group_level")) +
     coord_flip(clip = "off")
-  
+
   if(show_interquantile_range){
     plot <- plot +
       geom_segment(data = iqr[iqr$estimate_name == "median", ],
@@ -198,18 +198,18 @@ plotAgeDensity <- function(summarise_table, summarise_characteristics, show_inte
     plot <- plot +
       labs(subtitle = "Please be aware that statistics are calculated by record, not by subject.")
   }
-  
+
   return(plot)
 }
 
 getColsForTbl <- function(tbl, sortNALast = TRUE, names = c("Standard concept ID")){
-  
+
   cols <- list()
   for(i in seq_along(names(tbl))){
     working_col <- names(tbl)[i]
-    
+
     if(working_col %in% c(names)){
-      
+
       cols[[working_col]] <- colDef(name = working_col,
                                     sortNALast = sortNALast,
                                     cell = function(value){
@@ -221,14 +221,14 @@ getColsForTbl <- function(tbl, sortNALast = TRUE, names = c("Standard concept ID
                                       }
                                     }
       )
-      
+
     }else{
       cols[[working_col]] <- colDef(name = working_col,
                                     sortNALast = sortNALast,
                                     format = colFormat(separators = TRUE))
     }
   }
-  
+
   return(cols)
 }
 
