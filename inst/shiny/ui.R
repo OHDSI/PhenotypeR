@@ -2,13 +2,13 @@ ui <- fluidPage(
   bslib::page_navbar(
     theme = bs_theme(5, "pulse"),
     navbar_options =list(class = "bg-dark", theme = "dark"),
-    
+
     title = "PhenotypeR",
-    
+
     bslib::nav_panel(title = "Background",
                      icon = shiny::icon("disease"),
                      shiny::includeMarkdown(path = "background.md")),
-    
+
     # Database diagnostics -----
     bslib::nav_menu(
       title = "Database diagnostics",
@@ -43,7 +43,7 @@ ui <- fluidPage(
         )
       )
     ),
-    
+
     # Codelist diagnostics -----
     bslib::nav_menu(
       title = "Codelist diagnostics",
@@ -685,7 +685,7 @@ ui <- fluidPage(
                                          shinyWidgets::pickerInput(
                                            inputId = "measurement_value_as_numeric_x",
                                            label = "Horizontal axis",
-                                           selected = c("concept_name"),
+                                           selected = c("unit_concept_name"),
                                            multiple = FALSE,
                                            choices = c("unit_concept_name", "codelist_name", "concept_name", "cdm_name"),
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
@@ -701,7 +701,7 @@ ui <- fluidPage(
                                          shinyWidgets::pickerInput(
                                            inputId = "measurement_value_as_numeric_facet",
                                            label = "Facet",
-                                           selected = c("codelist_name"),
+                                           selected = c("codelist_name", "concept_name"),
                                            multiple = TRUE,
                                            choices = c("unit_concept_name", "codelist_name", "concept_name", "cdm_name"),
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
@@ -827,7 +827,7 @@ ui <- fluidPage(
         )
       )
     ),
-    
+
     # Cohort diagnostics -----
     bslib::nav_menu(
       title = "Cohort diagnostics",
@@ -951,7 +951,7 @@ ui <- fluidPage(
           )
         )
       ),
-      
+
       ## Cohort characteristics -----
       bslib::nav_panel(
         title = "Cohort characteristics",
@@ -1100,7 +1100,7 @@ ui <- fluidPage(
           )
         )
       ),
-      
+
       ## Large scale characteristics -----
       bslib::nav_panel(
         title = "Large scale characteristics",
@@ -1218,7 +1218,7 @@ ui <- fluidPage(
           )
         )
       ),
-      
+
       ## Compare large scale characteristics -----
       bslib::nav_panel(
         title = "Compare large scale characteristics",
@@ -1292,11 +1292,11 @@ ui <- fluidPage(
                                                        tags$style(HTML("
                                                        label[for='compare_large_scale_characteristics_cohort_1'] {
                                                        text-align: center;
-                                                       width: 100%; 
+                                                       width: 100%;
                                                        display: block;
                                                        }"))
                                          ),
-                                         shiny::column(width = 5, 
+                                         shiny::column(width = 5,
                                                        shinyWidgets::pickerInput(
                                                          inputId = "compare_large_scale_characteristics_cohort_2",
                                                          label = "Cohort type (comparator)",
@@ -1308,7 +1308,7 @@ ui <- fluidPage(
                                                        tags$style(HTML("
                                                        label[for='compare_large_scale_characteristics_cohort_2'] {
                                                        text-align: center;
-                                                       width: 100%; 
+                                                       width: 100%;
                                                        display: block;
                                                        }"))
                                          )
@@ -1417,7 +1417,7 @@ ui <- fluidPage(
           )
         )
       ),
-      
+
       ## Compare cohorts -----
       bslib::nav_panel(
         title = "Compare cohorts",
@@ -1917,7 +1917,7 @@ ui <- fluidPage(
         )
       )
     ),
-    
+
     # Population diagnostics -----
     bslib::nav_menu(
       title = "Population diagnostics",

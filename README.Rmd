@@ -103,7 +103,7 @@ cdm
 codes <- list("warfarin" = c(1310149L, 40163554L),
               "acetaminophen" = c(1125315L, 1127078L, 1127433L, 40229134L, 40231925L, 40162522L, 19133768L),
               "morphine" = c(1110410L, 35605858L, 40169988L),
-              "measurements" = c(40660437L, 2617206L, 4034850L,  2617239L, 4098179L))
+              "measurements_cohort" = c(40660437L, 2617206L, 4034850L,  2617239L, 4098179L))
 
 # Instantiate cohorts with CohortConstructor
 cdm$my_cohort <- conceptCohort(cdm = cdm,
