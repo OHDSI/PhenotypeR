@@ -581,7 +581,7 @@ ui <- fluidPage(
                                          shinyWidgets::pickerInput(
                                            inputId = "measurement_value_as_concept_y",
                                            label = "Vertical axis",
-                                           selected = c("concept_name"),
+                                           selected = c("codelist_name"),
                                            multiple = FALSE,
                                            choices = c("count", "variable_level", "codelist_name", "concept_name", "cdm_name"),
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
@@ -589,7 +589,7 @@ ui <- fluidPage(
                                          shinyWidgets::pickerInput(
                                            inputId = "measurement_value_as_concept_colour",
                                            label = "Colour",
-                                           selected = c("cdm_name"),
+                                           selected = c("concept_name", "variable_level"),
                                            multiple = TRUE,
                                            choices = c("count", "variable_level", "codelist_name", "concept_name", "cdm_name"),
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
@@ -597,7 +597,7 @@ ui <- fluidPage(
                                          shinyWidgets::pickerInput(
                                            inputId = "measurement_value_as_concept_facet",
                                            label = "Facet",
-                                           selected = c("codelist_name"),
+                                           selected = c("cdm_name"),
                                            multiple = TRUE,
                                            choices = c("count", "variable_level", "codelist_name", "concept_name", "cdm_name"),
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
