@@ -63,16 +63,17 @@ and create the cdm reference for the data.
 library(dplyr)
 library(CohortConstructor)
 library(PhenotypeR)
+library(CodelistGenerator)
 ```
 
 ``` r
 # Connect to the database and create the cdm object
 con <- DBI::dbConnect(duckdb::duckdb(), 
-                      CDMConnector::eunomiaDir("synpuf-1k", "5.3"))
+                       CDMConnector::eunomiaDir("synpuf-1k", "5.3"))
 cdm <- CDMConnector::cdmFromCon(con = con, 
                                 cdmName = "Eunomia Synpuf",
                                 cdmSchema   = "main",
-                                writeSchema = "main", 
+                                writeSchema = "main",
                                 achillesSchema = "main")
 ```
 
@@ -98,9 +99,10 @@ cdm
 
 ``` r
 # Create a code lists
-codes <- list("warfarin" = c(1310149, 40163554),
-              "acetaminophen" = c(1125315, 1127078, 1127433, 40229134, 40231925, 40162522, 19133768),
-              "morphine" = c(1110410, 35605858, 40169988))
+codes <- list("warfarin" = c(1310149L, 40163554L),
+              "acetaminophen" = c(1125315L, 1127078L, 1127433L, 40229134L, 40231925L, 40162522L, 19133768L),
+              "morphine" = c(1110410L, 35605858L, 40169988L),
+              "measurements_cohort" = c(40660437L, 2617206L, 4034850L,  2617239L, 4098179L))
 
 # Instantiate cohorts with CohortConstructor
 cdm$my_cohort <- conceptCohort(cdm = cdm,
@@ -123,7 +125,7 @@ application. Here we’ll apply a minimum cell count of 10 to our results
 and save our shiny app to a temporary directory.
 
 ``` r
-shinyDiagnostics(result = result |> suppress(10), directory = tempdir())
+shinyDiagnostics(result = result, minCellCount = 2, directory = tempdir())
 ```
 
 See the shiny app generated from the example cohort in

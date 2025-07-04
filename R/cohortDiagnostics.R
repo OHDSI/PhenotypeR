@@ -149,7 +149,7 @@ cohortDiagnostics <- function(cohort, survival = FALSE, match = TRUE, matchedSam
   )
 
   if(isTRUE(survival)){
-  if("death" %in% omopgenerics::listSourceTables(cdm)){
+  if("death" %in% names(cdm)){
     cli::cli_bullets(c(">" = "Creating death cohort"))
     deathCohortName <- paste0(prefix, "death_cohort")
     cdm[[deathCohortName]] <- CohortConstructor::deathCohort(cdm,

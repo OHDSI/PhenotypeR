@@ -2,13 +2,13 @@ ui <- fluidPage(
   bslib::page_navbar(
     theme = bs_theme(5, "pulse"),
     navbar_options =list(class = "bg-dark", theme = "dark"),
-    
+
     title = "PhenotypeR",
-    
+
     bslib::nav_panel(title = "Background",
                      icon = shiny::icon("disease"),
                      shiny::includeMarkdown(path = "background.md")),
-    
+
     # Database diagnostics -----
     bslib::nav_menu(
       title = "Database diagnostics",
@@ -43,7 +43,7 @@ ui <- fluidPage(
         )
       )
     ),
-    
+
     # Codelist diagnostics -----
     bslib::nav_menu(
       title = "Codelist diagnostics",
@@ -447,9 +447,387 @@ ui <- fluidPage(
             )
           )
         )
+      ),
+      ## Measurement code use -----
+      bslib::nav_panel(
+        title = "Measurements Code Use",
+        tags$div(
+          style = "background-color: #750075; color: white; padding: 10px; font-weight: bold; display: flex; gap: 20px; height: 60px; align-items: center;",
+          tags$label("Select Database(s):"),
+          tags$div(
+            style = "width: 225px;",
+            tags$div(
+              style = "margin-top: 15px;",
+              shinyWidgets::pickerInput(
+                inputId = "measurement_timings_cdm_name",
+                label = NULL,
+                selected = selected$shared_cdm_name,
+                choices = choices$shared_cdm_name,
+                multiple = TRUE,
+                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                               `deselect-all-text` = "None", `select-all-text` = "All"),
+                width = "100%"
+              )
+            )
+          ),
+          tags$label("Select Cohort(s):"),
+          tags$div(
+            style = "width: 225px;",
+            tags$div(
+              style = "margin-top: 15px;",
+              shinyWidgets::pickerInput(
+                inputId = "measurement_timings_cohort_name",
+                label = NULL,
+                selected = selected$shared_cohort_name,
+                choices = choices$shared_cohort_name,
+                multiple = TRUE,
+                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                               `deselect-all-text` = "None", `select-all-text` = "All"),
+                width = "100%"
+              )
+            )
+          ),
+          tags$div(
+            style = "width: 225px;",
+            actionBttn("updateMeasurementCodeUse", "Update",
+                       style = "simple"),
+            width = "100%"
+          )
+        ),
+        icon = shiny::icon("weight-scale"),
+        bslib::navset_card_tab(
+          bslib::nav_panel(
+            title = "Table Values (Concepts)",
+            bslib::card(
+              full_screen = TRUE,
+              bslib::card_header(
+                shiny::downloadButton(outputId = "measurement_value_as_concept_gt_download", label = ""),
+                class = "text-end"
+              ),
+              bslib::layout_sidebar(
+                sidebar = bslib::sidebar(width = 400, open = "closed",
+                                         sortable::bucket_list(
+                                           header = "Table formatting",
+                                           sortable::add_rank_list(
+                                             text = "none",
+                                             labels = c("cohort_name", "variable_level",  "estimate_name"),
+                                             input_id = "measurement_value_as_concept_gt_none"
+                                           ),
+                                           sortable::add_rank_list(
+                                             text = "header",
+                                             labels = c("cdm_name"),
+                                             input_id = "measurement_value_as_concepts_gt_header"
+                                           ),
+                                           sortable::add_rank_list(
+                                             text = "groupColumn",
+                                             labels =  c("codelist_name"),
+                                             input_id = "measurement_value_as_concept_gt_groupColumn"
+                                           ),
+                                           sortable::add_rank_list(
+                                             text = "hide",
+                                             labels =  c("variable_name"),
+                                             input_id = "measurement_value_as_concept_gt_hide"
+                                           )
+                                         ),
+                                         position = "right"
+                ),
+                gt::gt_output("measurement_value_as_concept_tbl") |> withSpinner()
+              )
+            )
+          ),
+          bslib::nav_panel(
+            title = "Plot Values (Concepts)",
+            bslib::card(
+              full_screen = TRUE,
+              bslib::card_header(
+                bslib::popover(
+                  shiny::icon("download"),
+                  shiny::numericInput(
+                    inputId = "plot_measurement_value_as_concept_download_width",
+                    label = "Width",
+                    value = 15
+                  ),
+                  shiny::numericInput(
+                    inputId = "plot_measurement_value_as_concept_download_height",
+                    label = "Height",
+                    value = 10
+                  ),
+                  shinyWidgets::pickerInput(
+                    inputId = "plot_measurement_value_as_concept_download_units",
+                    label = "Units",
+                    selected = "cm",
+                    choices = c("px", "cm", "inch"),
+                    multiple = FALSE
+                  ),
+                  shiny::numericInput(
+                    inputId = "plot_measurement_value_as_concept_download_dpi",
+                    label = "dpi",
+                    value = 300
+                  ),
+                  shiny::downloadButton(outputId = "plot_measurement_value_as_concept_download", label = "Download")
+                ),
+                class = "text-end"
+              ),
+              bslib::layout_sidebar(
+                sidebar = bslib::sidebar(width = 400, open = "closed",
+                                         shinyWidgets::pickerInput(
+                                           inputId = "measurement_value_as_concept_x",
+                                           label = "Horizontal axis",
+                                           selected = c("count"),
+                                           multiple = FALSE,
+                                           choices = c("count", "variable_level", "codelist_name", "concept_name", "cdm_name"),
+                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                         ),
+                                         shinyWidgets::pickerInput(
+                                           inputId = "measurement_value_as_concept_y",
+                                           label = "Vertical axis",
+                                           selected = c("codelist_name"),
+                                           multiple = FALSE,
+                                           choices = c("count", "variable_level", "codelist_name", "concept_name", "cdm_name"),
+                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                         ),
+                                         shinyWidgets::pickerInput(
+                                           inputId = "measurement_value_as_concept_colour",
+                                           label = "Colour",
+                                           selected = c("concept_name", "variable_level"),
+                                           multiple = TRUE,
+                                           choices = c("count", "variable_level", "codelist_name", "concept_name", "cdm_name"),
+                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                         ),
+                                         shinyWidgets::pickerInput(
+                                           inputId = "measurement_value_as_concept_facet",
+                                           label = "Facet",
+                                           selected = c("cdm_name"),
+                                           multiple = TRUE,
+                                           choices = c("count", "variable_level", "codelist_name", "concept_name", "cdm_name"),
+                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                         ),
+                                         position = "right"
+                ),
+                shiny::plotOutput("plot_measurement_value_as_concept")
+              )
+            )
+          ),
+          bslib::nav_panel(
+            title = "Table Values (Numeric)",
+            bslib::card(
+              full_screen = TRUE,
+              bslib::card_header(
+                shiny::downloadButton(outputId = "measurement_value_as_numeric_gt_download", label = ""),
+                class = "text-end"
+              ),
+              bslib::layout_sidebar(
+                sidebar = bslib::sidebar(width = 400, open = "closed",
+                                         sortable::bucket_list(
+                                           header = "Table formatting",
+                                           sortable::add_rank_list(
+                                             text = "none",
+                                             labels = c("cohort_name", "estimate_name"),
+                                             input_id = "measurement_value_as_numeric_gt_none"
+                                           ),
+                                           sortable::add_rank_list(
+                                             text = "header",
+                                             labels = c("cdm_name"),
+                                             input_id = "measurement_value_as_numeric_gt_header"
+                                           ),
+                                           sortable::add_rank_list(
+                                             text = "groupColumn",
+                                             labels =  c("codelist_name"),
+                                             input_id = "measurement_value_as_numeric_gt_groupColumn"
+                                           ),
+                                           sortable::add_rank_list(
+                                             text = "hide",
+                                             labels =  c("variable_name", "variable_level"),
+                                             input_id = "measurement_value_as_numeric_gt_hide"
+                                           )
+                                         ),
+                                         position = "right"
+                ),
+                gt::gt_output("measurement_value_as_numeric_tbl") |> withSpinner()
+              )
+            )
+          ),
+          bslib::nav_panel(
+            title = "Plot Values (Numeric)",
+            bslib::card(
+              full_screen = TRUE,
+              bslib::card_header(
+                bslib::popover(
+                  shiny::icon("download"),
+                  shiny::numericInput(
+                    inputId = "plot_measurement_value_as_numeric_download_width",
+                    label = "Width",
+                    value = 15
+                  ),
+                  shiny::numericInput(
+                    inputId = "plot_measurement_value_as_numeric_download_height",
+                    label = "Height",
+                    value = 10
+                  ),
+                  shinyWidgets::pickerInput(
+                    inputId = "plot_measurement_value_as_numeric_download_units",
+                    label = "Units",
+                    selected = "cm",
+                    choices = c("px", "cm", "inch"),
+                    multiple = FALSE
+                  ),
+                  shiny::numericInput(
+                    inputId = "plot_measurement_value_as_numeric_download_dpi",
+                    label = "dpi",
+                    value = 300
+                  ),
+                  shiny::downloadButton(outputId = "plot_measurement_value_as_numeric_download", label = "Download")
+                ),
+                class = "text-end"
+              ),
+              bslib::layout_sidebar(
+                sidebar = bslib::sidebar(width = 400, open = "closed",
+                                         shinyWidgets::pickerInput(
+                                           inputId = "measurement_value_as_numeric_x",
+                                           label = "Horizontal axis",
+                                           selected = c("unit_concept_name"),
+                                           multiple = FALSE,
+                                           choices = c("unit_concept_name", "codelist_name", "concept_name", "cdm_name"),
+                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                         ),
+                                         shinyWidgets::pickerInput(
+                                           inputId = "measurement_value_as_numeric_colour",
+                                           label = "Colour",
+                                           selected = c("cdm_name"),
+                                           multiple = TRUE,
+                                           choices = c("unit_concept_name", "codelist_name", "concept_name", "cdm_name"),
+                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                         ),
+                                         shinyWidgets::pickerInput(
+                                           inputId = "measurement_value_as_numeric_facet",
+                                           label = "Facet",
+                                           selected = c("codelist_name", "concept_name"),
+                                           multiple = TRUE,
+                                           choices = c("unit_concept_name", "codelist_name", "concept_name", "cdm_name"),
+                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                         ),
+                                         position = "right"
+                ),
+                shiny::plotOutput("plot_measurement_value_as_numeric")
+              )
+            )
+          ),
+          bslib::nav_panel(
+            title = "Table Timings",
+            bslib::card(
+              full_screen = TRUE,
+              bslib::card_header(
+                shiny::downloadButton(outputId = "measurement_timings_gt_download", label = ""),
+                class = "text-end"
+              ),
+              bslib::layout_sidebar(
+                sidebar = bslib::sidebar(width = 400, open = "closed",
+                                         sortable::bucket_list(
+                                           header = "Table formatting",
+                                           sortable::add_rank_list(
+                                             text = "none",
+                                             labels = c("cohort_name", "variable_name", "estimate_name"),
+                                             input_id = "measurement_timings_gt_none"
+                                           ),
+                                           sortable::add_rank_list(
+                                             text = "header",
+                                             labels = c("cdm_name"),
+                                             input_id = "measurement_timings_gt_header"
+                                           ),
+                                           sortable::add_rank_list(
+                                             text = "groupColumn",
+                                             labels =  c("codelist_name"),
+                                             input_id = "measurement_timings_gt_groupColumn"
+                                           ),
+                                           sortable::add_rank_list(
+                                             text = "hide",
+                                             labels =  c("variable_level"),
+                                             input_id = "measurement_timings_gt_hide"
+                                           )
+                                         ),
+                                         position = "right"
+                ),
+                gt::gt_output("measurement_timings_tbl") |> withSpinner()
+              )
+            )
+          ),
+          bslib::nav_panel(
+            title = "Plot timings",
+            bslib::card(
+              full_screen = TRUE,
+              bslib::card_header(
+                bslib::popover(
+                  shiny::icon("download"),
+                  shiny::numericInput(
+                    inputId = "plot_measurement_timings_download_width",
+                    label = "Width",
+                    value = 15
+                  ),
+                  shiny::numericInput(
+                    inputId = "plot_measurement_timings_download_height",
+                    label = "Height",
+                    value = 10
+                  ),
+                  shinyWidgets::pickerInput(
+                    inputId = "plot_measurement_timings_download_units",
+                    label = "Units",
+                    selected = "cm",
+                    choices = c("px", "cm", "inch"),
+                    multiple = FALSE
+                  ),
+                  shiny::numericInput(
+                    inputId = "plot_measurement_timings_download_dpi",
+                    label = "dpi",
+                    value = 300
+                  ),
+                  shiny::downloadButton(outputId = "plot_measurement_timings_download", label = "Download")
+                ),
+                class = "text-end"
+              ),
+              bslib::layout_sidebar(
+                sidebar = bslib::sidebar(width = 400, open = "closed",
+                                         shinyWidgets::pickerInput(
+                                           inputId = "measurement_timings_x",
+                                           label = "Horizontal axis",
+                                           selected = c("codelist_name"),
+                                           multiple = FALSE,
+                                           choices = c("cohort_name", "codelist_name"),
+                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                         ),
+                                         shinyWidgets::pickerInput(
+                                           inputId = "measurement_timings_time_scale",
+                                           label = "Time scale",
+                                           selected = c("days"),
+                                           multiple = FALSE,
+                                           choices = c("days", "years"),
+                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                         ),
+                                         shinyWidgets::pickerInput(
+                                           inputId = "measurement_timings_colour",
+                                           label = "Colour",
+                                           selected = c("cdm_name"),
+                                           multiple = TRUE,
+                                           choices = c("cdm_name", "codelist_name", "cohort_name"),
+                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                         ),
+                                         shinyWidgets::pickerInput(
+                                           inputId = "measurement_timings_facet",
+                                           label = "Facet",
+                                           selected = as.character(),
+                                           multiple = TRUE,
+                                           choices = c("cdm_name", "codelist_name", "cohort_name"),
+                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                         ),
+                                         position = "right"
+                ),
+                shiny::plotOutput("plot_measurement_timings")
+              )
+            )
+          )
+        )
       )
     ),
-    
+
     # Cohort diagnostics -----
     bslib::nav_menu(
       title = "Cohort diagnostics",
@@ -573,7 +951,7 @@ ui <- fluidPage(
           )
         )
       ),
-      
+
       ## Cohort characteristics -----
       bslib::nav_panel(
         title = "Cohort characteristics",
@@ -722,7 +1100,7 @@ ui <- fluidPage(
           )
         )
       ),
-      
+
       ## Large scale characteristics -----
       bslib::nav_panel(
         title = "Large scale characteristics",
@@ -840,7 +1218,7 @@ ui <- fluidPage(
           )
         )
       ),
-      
+
       ## Compare large scale characteristics -----
       bslib::nav_panel(
         title = "Compare large scale characteristics",
@@ -914,11 +1292,11 @@ ui <- fluidPage(
                                                        tags$style(HTML("
                                                        label[for='compare_large_scale_characteristics_cohort_1'] {
                                                        text-align: center;
-                                                       width: 100%; 
+                                                       width: 100%;
                                                        display: block;
                                                        }"))
                                          ),
-                                         shiny::column(width = 5, 
+                                         shiny::column(width = 5,
                                                        shinyWidgets::pickerInput(
                                                          inputId = "compare_large_scale_characteristics_cohort_2",
                                                          label = "Cohort type (comparator)",
@@ -930,7 +1308,7 @@ ui <- fluidPage(
                                                        tags$style(HTML("
                                                        label[for='compare_large_scale_characteristics_cohort_2'] {
                                                        text-align: center;
-                                                       width: 100%; 
+                                                       width: 100%;
                                                        display: block;
                                                        }"))
                                          )
@@ -1039,7 +1417,7 @@ ui <- fluidPage(
           )
         )
       ),
-      
+
       ## Compare cohorts -----
       bslib::nav_panel(
         title = "Compare cohorts",
@@ -1539,7 +1917,7 @@ ui <- fluidPage(
         )
       )
     ),
-    
+
     # Population diagnostics -----
     bslib::nav_menu(
       title = "Population diagnostics",

@@ -54,7 +54,10 @@ values$shared_cohort_names <- rbind(dataFiltered$cohort_code_use, dataFiltered$s
   dplyr::distinct() |>
   dplyr::filter(cohort_name != "overall") |>
   dplyr::pull("cohort_name")
-values$shared_cdm_names    <- unique(dataFiltered$cohort_code_use$cdm_name)
+values$shared_cdm_names <- rbind(dataFiltered$cohort_code_use, dataFiltered$summarise_cohort_count, dataFiltered$incidence) |>
+  dplyr::select("cdm_name") |>
+  dplyr::distinct() |>
+  dplyr::pull("cdm_name")
 
 # Filter not needed values
 values <- values[!stringr::str_detect(names(values), "summarise_omop_snapshot")]
@@ -98,27 +101,39 @@ choices <- values
 selected <- choices
 
 # Pre-define some selected
-selected$summarise_large_scale_characteristics_variable_level <- "-inf to -1"
-selected$summarise_large_scale_characteristics_table_name     <- "condition_occurrence"
+if("summarise_large_scale_characteristics_variable_level" %in% names(values)){
+  selected$summarise_large_scale_characteristics_variable_level <- "-inf to -1"
+  selected$summarise_large_scale_characteristics_table_name     <- "condition_occurrence"
+}
 
-selected$compare_large_scale_characteristics_variable_level <- "-inf to -1"
-selected$compare_large_scale_characteristics_table_name     <- "condition_occurrence"
-selected$compare_large_scale_characteristics_cohort_1  <- "sampled"
-selected$compare_large_scale_characteristics_cohort_2  <- "matched"
-selected$compare_large_scale_characteristics_compare_cohort <- values$compare_large_scale_characteristics_compare_cohort[1]
+if("compare_large_scale_characteristics_variable_level" %in% names(values)){
+  selected$compare_large_scale_characteristics_variable_level <- "-inf to -1"
+  selected$compare_large_scale_characteristics_table_name     <- "condition_occurrence"
+  selected$compare_large_scale_characteristics_cohort_1  <- "sampled"
+  selected$compare_large_scale_characteristics_cohort_2  <- "matched"
+  selected$compare_large_scale_characteristics_compare_cohort <- values$compare_large_scale_characteristics_compare_cohort[1]
+}
 
-selected$incidence_analysis_interval  <- "years"
-selected$incidence_denominator_age_group <- "0 to 150"
-selected$incidence_denominator_sex <- "Both"
-selected$incidence_denominator_days_prior_observation <- "0"
+if("incidence_analysis_interval" %in% names(values)){
+  selected$incidence_analysis_interval  <- "years"
+  selected$incidence_denominator_age_group <- "0 to 150"
+  selected$incidence_denominator_sex <- "Both"
+  selected$incidence_denominator_days_prior_observation <- "0"
+}
 
-selected$prevalence_analysis_interval <- "years"
-selected$prevalence_denominator_age_group <- "0 to 150"
-selected$prevalence_denominator_sex <- "Both"
-selected$prevalence_denominator_days_prior_observation <- "0"
+if("prevalence_analysis_interval" %in% names(values)){
+  selected$prevalence_analysis_interval <- "years"
+  selected$prevalence_denominator_age_group <- "0 to 150"
+  selected$prevalence_denominator_sex <- "Both"
+  selected$prevalence_denominator_days_prior_observation <- "0"
+}
 
-selected$survival_probability_target_cohort <- c(paste0(gsub("_matched|sampled", "", selected$survival_probability_target_cohort[1]),"_sampled"),
-                                                 paste0(gsub("_matched|sampled", "", selected$survival_probability_target_cohort[1]),"_matched"))
+if("survival_probability_cohort_name" %in% names(values)){
+  selected$survival_probability_cohort_name <- c(paste0(gsub("_matched|sampled", "", selected$survival_probability_cohort_name[1]),"_sampled"),
+                                                 paste0(gsub("_matched|sampled", "", selected$survival_probability_cohort_name[1]),"_matched"))
+  
+}
+
 # Define incidence start and end date
 min_incidence_start <- min(as.Date(selected$incidence_grouping_incidence_start_date))
 max_incidence_end <- max(as.Date(selected$incidence_grouping_incidence_end_date))
