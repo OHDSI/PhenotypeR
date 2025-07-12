@@ -36,49 +36,46 @@ shinyDiagnostics <- function(result,
                              directory,
                              minCellCount = 5,
                              open = rlang::is_interactive()){
-
-  directory <- validateDirectory(directory)
+  folderName <- "PhenotypeRShiny"
+  directory <- validateDirectory(directory, folderName)
   if (isTRUE(directory)) {
     return(cli::cli_inform(c("i" = "{.strong shiny} folder will not be overwritten. Stopping process.")))
   }
 
-  dir.create(path = file.path(directory, "shiny"), showWarnings = FALSE)
+  to <- file.path(directory, folderName)
+  dir.create(path = to, showWarnings = FALSE)
   cli::cli_inform(c("i" = "Creating shiny from provided data"))
 
-  file.copy(from = system.file("shiny",
-                               package = "PhenotypeR"),
-            to = directory,
-            recursive = TRUE,
-            overwrite = TRUE)
+  from <- system.file("shiny", package = "PhenotypeR")
+  copyDirectory(from = from, to = to)
 
   omopgenerics::exportSummarisedResult(result,
                                        minCellCount = minCellCount,
                                        fileName = "result.csv",
-                                       path = file.path(directory, "shiny", "data", "raw"))
+                                       path = file.path(to, "data", "raw"))
 
-  # shiny::shinyAppDir(file.path(directory, "shiny"))
   if (isTRUE(open)) {
-  rlang::check_installed("usethis")
-  usethis::proj_activate(path = file.path(directory,"shiny"))
+    rlang::check_installed("usethis")
+    usethis::proj_activate(path = to)
   }
 
   return(invisible())
 }
 
 
-validateDirectory <- function(directory) {
+validateDirectory <- function(directory, folderName) {
   # create directory if it does not exit
   if (!dir.exists(directory)) {
     cli::cli_inform(c("i" = "Provided directory does not exist, it will be created."))
     dir.create(path = directory, recursive = TRUE)
     cli::cli_inform(c("v" = "directory created: {.pkg {directory}}"))
 
-  } else if (file.exists(file.path(directory, "shiny"))) {
+  } else if (file.exists(file.path(directory, folderName))) {
     # ask overwrite shiny
     overwrite <- "1"  # overwrite if non-interactive
     if (rlang::is_interactive()) {
       cli::cli_inform(c(
-        "!" = "A {.strong shiny} folder already exists in the provided directory. Enter choice 1 or 2:",
+        "!" = "A {.strong {folderName}} folder already exists in the provided directory. Enter choice 1 or 2:",
         " " = "1) Overwrite",
         " " = "2) Cancel"
       ))
@@ -91,12 +88,32 @@ validateDirectory <- function(directory) {
     if (overwrite == "2") {
       return(TRUE)
     } else {
-      cli::cli_inform(c("i" = "{.strong shiny} folder will be overwritten."))
-      unlink(file.path(directory, "shiny"), recursive = TRUE)
-      cli::cli_inform(c("v" = "Prior {.strong shiny} folder deleted."))
+      cli::cli_inform(c("i" = "{.strong {folderName}} folder will be overwritten."))
+      unlink(file.path(directory, folderName), recursive = TRUE)
+      cli::cli_inform(c("v" = "Prior {.strong {folderName}} folder deleted."))
     }
   }
   return(directory)
 }
+copyDirectory <- function(from, to) {
+  # files to copy
+  files <- list.files(path = from, full.names = TRUE, recursive = TRUE)
 
+  # new file names
+  newFiles <- files |>
+    purrr::map_chr(\(x) {
+      nm <- stringr::str_replace(
+        string = x,
+        pattern = paste0("^", from),
+        replacement = to
+      )
+      dir <- dirname(nm)
+      if (!dir.exists(dir)) {
+        dir.create(path = dir, recursive = TRUE)
+      }
+      nm
+    })
 
+  # copy files
+  file.copy(from = files, to = newFiles)
+}
