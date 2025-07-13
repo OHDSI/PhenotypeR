@@ -2,7 +2,7 @@
 title: "Phenotype diagnostics"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{a01_PhenotypeDiagnostics}
+  %\VignetteIndexEntry{PhenotypeDiagnostics}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

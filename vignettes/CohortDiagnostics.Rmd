@@ -2,7 +2,7 @@
 title: "Cohort diagnostics"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{a05_CohortDiagnostics}
+  %\VignetteIndexEntry{CohortDiagnostics}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

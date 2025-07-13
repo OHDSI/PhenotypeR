@@ -2,7 +2,7 @@
 title: "Database diagnostics"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{a03_DatabaseDiagnostics}
+  %\VignetteIndexEntry{DatabaseDiagnostics}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
