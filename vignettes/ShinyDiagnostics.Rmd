@@ -2,7 +2,7 @@
 title: "Shiny diagnostics"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{a02_ShinyDiagnostics}
+  %\VignetteIndexEntry{ShinyDiagnostics}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

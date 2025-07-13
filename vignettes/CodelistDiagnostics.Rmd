@@ -2,7 +2,7 @@
 title: "Codelist diagnostics"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{a04_CodelistDiagnostics}
+  %\VignetteIndexEntry{CodelistDiagnostics}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
