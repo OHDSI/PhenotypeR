@@ -37,23 +37,27 @@ shinyDiagnostics <- function(result,
                              minCellCount = 5,
                              open = rlang::is_interactive()){
   folderName <- "PhenotypeRShiny"
+
+  # check if directory needs to be overwritten directory
   directory <- validateDirectory(directory, folderName)
   if (isTRUE(directory)) {
     return(cli::cli_inform(c("i" = "{.strong shiny} folder will not be overwritten. Stopping process.")))
   }
 
-  to <- file.path(directory, folderName)
-  dir.create(path = to, showWarnings = FALSE)
   cli::cli_inform(c("i" = "Creating shiny from provided data"))
 
+  # copy files
+  to <- file.path(directory, folderName)
   from <- system.file("shiny", package = "PhenotypeR")
   copyDirectory(from = from, to = to)
 
-  omopgenerics::exportSummarisedResult(result,
+  # export data
+  omopgenerics::exportSummarisedResult(result = result,
                                        minCellCount = minCellCount,
                                        fileName = "result.csv",
                                        path = file.path(to, "data", "raw"))
 
+  # open project
   if (isTRUE(open)) {
     rlang::check_installed("usethis")
     usethis::proj_activate(path = to)
