@@ -37,7 +37,7 @@ Suggests:
     ggplot2,
     ggpubr,
     stringr,
-    shiny,
+    shiny (>= 1.11.1),
     DiagrammeR,
     DiagrammeRsvg,
     reactable,
