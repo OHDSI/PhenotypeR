@@ -61,6 +61,12 @@ shinyDiagnostics <- function(result,
   if (isTRUE(open)) {
     rlang::check_installed("usethis")
     usethis::proj_activate(path = to)
+  }else{
+    if(dir.exists(paste0(directory,"/", folderName))){
+      cli::cli_inform(c("i" = "Shiny app created in {directory}/{folderName}"))
+    }else{
+      cli::cli_inform(c("i" = "Shiny app could not be created in {directory}. Please try again."))
+    }
   }
 
   return(invisible())
