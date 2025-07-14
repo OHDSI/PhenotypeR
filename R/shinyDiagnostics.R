@@ -49,7 +49,7 @@ shinyDiagnostics <- function(result,
   # copy files
   to <- file.path(directory, folderName)
   from <- system.file("shiny", package = "PhenotypeR")
-  copyDirectory(from = from, to = to)
+  invisible(copyDirectory(from = from, to = to))
 
   # export data
   omopgenerics::exportSummarisedResult(result = result,
@@ -105,25 +105,17 @@ validateDirectory <- function(directory, folderName) {
   }
   return(directory)
 }
+
 copyDirectory <- function(from, to) {
   # files to copy
-  files <- list.files(path = from, full.names = TRUE, recursive = TRUE)
+  oldFiles <- list.files(path = from, full.names = TRUE, recursive = TRUE)
 
-  # new file names
-  newFiles <- files |>
-    purrr::map_chr(\(x) {
-      nm <- stringr::str_replace(
-        string = x,
-        pattern = paste0("^", from),
-        replacement = to
-      )
-      dir <- dirname(nm)
-      if (!dir.exists(dir)) {
-        dir.create(path = dir, recursive = TRUE)
-      }
-      nm
-    })
+  files <- list.files(path = from, full.names = FALSE, recursive = TRUE)
+  NewFiles <- paste0(to, "/", files)
+
+  dirsToCreate <- unique(dirname(NewFiles))
+  sapply(dirsToCreate, dir.create, recursive = TRUE, showWarnings = FALSE)
 
   # copy files
-  file.copy(from = files, to = newFiles)
+  file.copy(from = oldFiles, to = NewFiles)
 }
