@@ -28,18 +28,29 @@ library(shinyWidgets)
 library(plotly)
 library(tidyr)
 library(reactable)
-
 source(here::here("scripts", "functions.R"))
 
 if(file.exists(here::here("data", "appData.RData"))){
-  cli::cli_inform("Loading existing processed data")
-  load(here::here("data", "appData.RData"))
-  cli::cli_alert_success("Data loaded")
-} else {
+  if (rlang::is_interactive()) {
+    cli::cli_inform(c(
+      "!" = "Would you like to preprocess the data again? Enter choice 1 or 2",
+      " " = "1) Yes",
+      " " = "2) No"
+    ))
+    preprocess <- readline()
+    omopgenerics::assertChoice(preprocess, c(1, 2), length = 1)
+  }
+}
+
+if(preprocess == "1" | !file.exists(here::here("data", "appData.RData"))){
   cli::cli_inform("Preprocessing data from data/raw")
   source(here::here("scripts", "preprocess.R"))
   load(here::here("data", "appData.RData"))
   cli::cli_alert_success("Data processed")
+} else {
+  cli::cli_inform("Loading existing processed data")
+  load(here::here("data", "appData.RData"))
+  cli::cli_alert_success("Data loaded")
 }
 
 plotComparedLsc <- function(lsc, cohorts, imputeMissings, colour = NULL, facet = NULL){
