@@ -38,12 +38,14 @@ if(file.exists(here::here("data", "appData.RData"))){
       " " = "1) Yes",
       " " = "2) No"
     ))
-    
+
     preprocess <- readline()
     while (!preprocess %in% c("1", "2")) {
       cli::cli_inform(c("x" = "Invalid input. Please choose 1 to preprocess the data again or 2 to skip it:"))
       preprocess <- readline()
     }
+  }else{
+    preprocess <- "1"
   }
 }
 
