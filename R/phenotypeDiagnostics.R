@@ -48,11 +48,16 @@ phenotypeDiagnostics <- function(cohort,
   omopgenerics::assertLogical(databaseDiagnostics)
   omopgenerics::assertLogical(codelistDiagnostics)
   omopgenerics::assertLogical(cohortDiagnostics)
+  cohort <- omopgenerics::validateCohortArgument(cohort = cohort)
   omopgenerics::assertLogical(survival)
   if(isTRUE(survival)){
     rlang::check_installed("CohortSurvival", version = "1.0.2")
   }
+  omopgenerics::assertLogical(match)
+  omopgenerics::assertNumeric(matchedSample, integerish = TRUE, min = 1, null = TRUE, length = 1)
   omopgenerics::assertLogical(populationDiagnostics)
+  omopgenerics::assertNumeric(populationSample, integerish = TRUE, min = 1, null = TRUE, length = 1)
+  omopgenerics::assertDate(populationDateRange, na = TRUE, length = 2)
 
   results <- list()
   if (isTRUE(databaseDiagnostics)) {
