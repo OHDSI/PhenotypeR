@@ -30,6 +30,7 @@ library(CDMConnector)
 library(CohortConstructor)
 library(CodelistGenerator)
 library(PhenotypeR)
+library(MeasurementDiagnostics)
 library(dplyr)
 library(ggplot2)
 
