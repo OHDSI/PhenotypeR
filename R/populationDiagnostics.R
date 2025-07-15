@@ -37,10 +37,10 @@ populationDiagnostics <- function(cohort,
                                   populationDateRange = as.Date(c(NA, NA))) {
 
   cohort <- omopgenerics::validateCohortArgument(cohort = cohort)
+  checksPopulationDiagnostics(populationSample, populationDateRange)
+
   cdm <- omopgenerics::cdmReference(cohort)
   cohortName <- omopgenerics::tableName(cohort)
-  omopgenerics::assertNumeric(populationSample, integerish = TRUE, min = 1, null = TRUE, length = 1)
-  omopgenerics::assertDate(populationDateRange, na = TRUE, length = 2)
 
   cli::cli_bullets(c("*" = "{.strong Creating denominator for incidence and prevalence}"))
   denominatorTable <- omopgenerics::uniqueTableName()
@@ -94,3 +94,9 @@ populationDiagnostics <- function(cohort,
   results
 
 }
+
+checksPopulationDiagnostics <- function(populationSample, populationDateRange, call = parent.frame()){
+  omopgenerics::assertNumeric(populationSample, integerish = TRUE, min = 1, null = TRUE, length = 1, call = call)
+  omopgenerics::assertDate(populationDateRange, na = TRUE, length = 2, call = call)
+}
+

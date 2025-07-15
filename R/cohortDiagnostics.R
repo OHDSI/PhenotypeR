@@ -33,13 +33,7 @@ cohortDiagnostics <- function(cohort, survival = FALSE, match = TRUE, matchedSam
   cli::cli_bullets(c("*" = "Starting Cohort Diagnostics"))
 
   # Initial checks ----
-  cohort <- omopgenerics::validateCohortArgument(cohort = cohort)
-  omopgenerics::assertLogical(survival)
-  if(isTRUE(survival)){
-    rlang::check_installed("CohortSurvival", version = "1.0.2")
-  }
-  omopgenerics::assertLogical(match)
-  omopgenerics::assertNumeric(matchedSample, integerish = TRUE, min = 1, null = TRUE, length = 1)
+  checksCohortDiagnostics(survival, match, matchedSample)
 
   cdm <- omopgenerics::cdmReference(cohort)
   cohortName <- omopgenerics::tableName(cohort)
@@ -211,4 +205,11 @@ createMatchedCohorts <- function(cdm, tempCohortName, cohortName, cohortIds, mat
   return(cdm)
 }
 
-
+checksCohortDiagnostics <- function(survival, match, matchedSample, call = parent.frame()){
+  omopgenerics::assertLogical(survival, call = call)
+  if(isTRUE(survival)){
+    rlang::check_installed("CohortSurvival", version = "1.0.2")
+  }
+  omopgenerics::assertLogical(match, call = call)
+  omopgenerics::assertNumeric(matchedSample, integerish = TRUE, min = 1, null = TRUE, length = 1, call = call)
+}
