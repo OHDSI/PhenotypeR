@@ -42,18 +42,16 @@ phenotypeDiagnostics <- function(cohort,
                                  populationDiagnostics = TRUE,
                                  populationSample = 1000000,
                                  populationDateRange = as.Date(c(NA, NA))) {
-  cohort <- omopgenerics::validateCohortArgument(cohort = cohort)
-  cdm <- omopgenerics::cdmReference(cohort)
 
+  cohort <- omopgenerics::validateCohortArgument(cohort = cohort)
   omopgenerics::assertLogical(databaseDiagnostics)
   omopgenerics::assertLogical(codelistDiagnostics)
   omopgenerics::assertLogical(cohortDiagnostics)
-  omopgenerics::assertLogical(survival)
-  if(isTRUE(survival)){
-    rlang::check_installed("CohortSurvival", version = "1.0.2")
-  }
+  checksCohortDiagnostics(survival, match, matchedSample)
   omopgenerics::assertLogical(populationDiagnostics)
+  checksPopulationDiagnostics(populationSample, populationDateRange)
 
+  cdm <- omopgenerics::cdmReference(cohort)
   results <- list()
   if (isTRUE(databaseDiagnostics)) {
     cli::cli("Running database diagnostics")
@@ -88,3 +86,6 @@ phenotypeDiagnostics <- function(cohort,
 
   results
 }
+
+
+
