@@ -94,7 +94,7 @@ tableOrphanCodes(code_diag)
 
 ### Cohort code use
 ```{r}
-tableCodeUse(code_diag)
+tableCohortCodeUse(code_diag)
 ```
 
 ### Measurement timings
