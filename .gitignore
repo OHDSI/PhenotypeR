@@ -5,9 +5,10 @@ inst/doc
 /Meta/
 .Rproj.user/
 .Rhistory
+shiny/
+PhenotypeRShiny/
 inst/shiny/data/raw/*.csv
 inst/shiny/*.RData
 inst/shiny/data/appData.RData
-/inst/shiny/shiny/data
 R/extra.R
 CRAN-SUBMISSION
