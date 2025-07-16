@@ -47,12 +47,26 @@ cdm$injuries <- conceptCohort(cdm = cdm,
   name = "injuries")
 ```
 
-We can get the incidence and prevalence of our study cohort using `populationDiagnostics()`.
+We can get the incidence and prevalence of our study cohort using `populationDiagnostics()`:
 ```{r}
 pop_diag <- populationDiagnostics(cdm$injuries)
 ```
 
-We can quickly make tables with our results like so
+This function builds on [IncidencePrevalence](https://darwin-eu.github.io/IncidencePrevalence/index.html) R package to perform the following analyses:
+
+-   **Incidence:** It estimates the incidence of our cohort using [estimateIncidence()](https://darwin-eu.github.io/IncidencePrevalence/reference/estimateIncidence.html).
+-   **Prevalence:** It estimates the prevalence of our cohort on a year basis using [estimatePeriodPrevalence()](https://darwin-eu.github.io/IncidencePrevalence/reference/estimatePeriodPrevalence.html).
+
+All analyses are performed for:
+
+-   Overall and stratified by age groups: 0 to 17, 18 to 64, 65 to 150. Age groups cannot be modified.
+-   Overall and stratified by sex (Female, Male).
+-   Restricting the denominator population to those with 0 and 365 of days of prior observation.
+
+## Visualising the results
+We can use  [IncidencePrevalence](https://darwin-eu.github.io/IncidencePrevalence/index.html) package to visualise the results obtained.
+
+### Incidence
 ```{r}
 tableIncidence(pop_diag,     
                groupColumn = c("cdm_name", "outcome_cohort_name"),
@@ -62,7 +76,17 @@ tableIncidence(pop_diag,
                          "denominator_days_prior_observation",
                          "outcome_cohort_name"))
 ```
+```{r}
+results <- pop_diag |> 
+  omopgenerics::filterSettings(result_type == "incidence") |>
+  visOmopResults::filterAdditional(analysis_interval == "years")
+plotIncidence(results,
+              colour = "denominator_age_group",
+              facet = c("denominator_sex", "denominator_days_prior_observation"))
+```
 
+
+### Prevalence
 ```{r}
 tablePrevalence(pop_diag,     
                groupColumn = c("cdm_name", "outcome_cohort_name"),
@@ -71,4 +95,13 @@ tablePrevalence(pop_diag,
                          "denominator_sex",
                          "denominator_days_prior_observation",
                          "outcome_cohort_name"))
+```
+
+```{r}
+results <- pop_diag |> 
+  omopgenerics::filterSettings(result_type == "prevalence") |>
+  visOmopResults::filterAdditional(analysis_interval == "years")
+plotPrevalence(results,
+               colour = "denominator_age_group",
+               facet = c("denominator_sex", "denominator_days_prior_observation"))
 ```

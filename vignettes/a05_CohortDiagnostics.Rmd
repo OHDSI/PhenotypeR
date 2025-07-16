@@ -78,15 +78,15 @@ Cohort diagnostics builds on [CohortCharacteristics](https://darwin-eu.github.io
 -   **Cohort count:** Summarises the number of records and persons in each one of the cohorts using  [summariseCohortCount()](https://darwin-eu.github.io/CohortCharacteristics/reference/summariseCohortCount.html).
 -   **Cohort attrition:** Summarises the attrition associated with the cohorts using  [summariseCohortAttrition()](https://darwin-eu.github.io/CohortCharacteristics/reference/summariseCohortAttrition.html).
 -   **Cohort characteristics:** Summarises cohort baseline characteristics using 
-[summariseCharacteristics()](https://darwin-eu.github.io/CohortCharacteristics/reference/summariseCharacteristics.html).
+[summariseCharacteristics()](https://darwin-eu.github.io/CohortCharacteristics/reference/summariseCharacteristics.html). Results are stratified by sex and by age group (0 to 17, 18 to 64, 65 to 150). Age groups cannot be modified.
 -   **Cohort large scale characteristics:** Summarises cohort large scale characteristics using 
-[summariseLargeScaleCharacteristics()](https://darwin-eu.github.io/CohortCharacteristics/reference/summariseLargeScaleCharacteristics.html).
+[summariseLargeScaleCharacteristics()](https://darwin-eu.github.io/CohortCharacteristics/reference/summariseLargeScaleCharacteristics.html). Results are stratified by sex and by age group (0 to 17, 18 to 64, 65 to 150). Time windows (relative to cohort entry) included are: -Inf to -1, -Inf to -366, -365 to -31, -30 to -1, 0, 1 to 30, 31 to 365, 366 to Inf, and 1 to Inf. The analysis is perform at standard and source code level.
 -   **Cohort overlap:** If there is more than one cohort in the cohort table supplied, summarises the overlap between them using 
 [summariseCohortOverlap()](https://darwin-eu.github.io/CohortCharacteristics/reference/summariseCohortOverlap.html).
 -   **Cohort timing:** If there is more than one cohort in the cohort table supplied, summarises the timing between them using 
 [summariseCohortTiming()](https://darwin-eu.github.io/CohortCharacteristics/reference/summariseCohortTiming.html).
 -   **Cohort survival:** If `survival = TRUE`, summarises the survival until the event of death (if death table is present in the cdm) using  
-[estimateSingleEventSurvival()](https://darwin-eu-dev.github.io/CohortSurvival/reference/estimateSingleEventSurvival.html).
+[estimateSingleEventSurvival()](https://darwin-eu-dev.github.io/CohortSurvival/reference/estimateSingleEventSurvival.html). 
 
 If `match = TRUE`, the analyses **cohort characteristics**, **cohort age distribution**, **cohort large scale characteristics**, and **cohort survival** will also be performed in a matched cohort. The matched cohort will be created based on year of birth and sex (see [matchCohorts()](https://ohdsi.github.io/CohortConstructor/reference/matchCohorts.html) function in CohortConstructor package). This can help us to compare the results in our cohorts to those obtain in the matched cohort, representing the general population. Notice that by setting `match = TRUE`, the analysis will be performed in: (1) the original cohort, (2) individuals in the original cohorts that have a match (named the sampled cohort), and (3) the matched cohort. 
 
