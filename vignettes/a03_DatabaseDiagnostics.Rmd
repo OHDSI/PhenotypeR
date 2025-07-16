@@ -48,7 +48,7 @@ To run database diagnostics we just need to provide our cdm reference to the fun
 ```{r}
 db_diagnostics <- databaseDiagnostics(cdm)
 ```
-Database diagnostics builds on **OmopSketch** package to perform the following analyses:
+Database diagnostics builds on [OmopSketch](https://ohdsi.github.io/OmopSketch/index.html) package to perform the following analyses:
 
 -   **Snapshot:** Summarises the meta data of a CDM object by using [summariseOmopSnapshot()](https://ohdsi.github.io/OmopSketch/reference/summariseOmopSnapshot.html)
 -   **Observation periods:** Summarises the observation period table by using [summariseObservationPeriod()](https://ohdsi.github.io/OmopSketch/reference/summariseObservationPeriod.html). This will allow us to see if there are individuals with multiple, non-overlapping, observation periods and how long each observation period lasts on average.
@@ -56,7 +56,7 @@ Database diagnostics builds on **OmopSketch** package to perform the following a
 The output is a summarised result object.
 
 ## Visualise the results
-We can use **OmopSketch** package functions to visualise the results obtained.
+We can use [OmopSketch](https://ohdsi.github.io/OmopSketch/index.html) package functions to visualise the results obtained.
 
 ### Snapshot
 ```{r}
