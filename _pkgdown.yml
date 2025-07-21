@@ -8,10 +8,10 @@ sections:
   contents:
   - PhenotypeDiagnostics
   - ShinyDiagnostics
-  - DatabaseDiagnostics
-  - CodelistDiagnostics
-  - CohortDiagnostics
-  - PopulationDisgnostics
+  - a03_DatabaseDiagnostics
+  - a04_CodelistDiagnostics
+  - a05_CohortDiagnostics
+  - a07_PopulationDiagnostics
 
 reference:
 - subtitle: Run all diagnostics

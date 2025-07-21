@@ -2,7 +2,7 @@
 title: "Population diagnostics"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{PopulationDiagnostics}
+  %\VignetteIndexEntry{a07_PopulationDiagnostics}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
