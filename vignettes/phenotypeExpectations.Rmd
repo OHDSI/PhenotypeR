@@ -1,0 +1,95 @@
+---
+title: "Phenotype expectations"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{PhenotypeExpectations}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>", 
+  warning=FALSE, 
+  message=FALSE, 
+  eval = TRUE
+)
+```
+
+# Comparing phenotype diagnostic results against expectations
+
+We use PhenotypeR to help assess the research readiness of a set of study cohorts. To help make such assessments it can help to have an explicit set of expectations to compare our results. For example, is the age of our study cohort similar to what would be expected? Is the proportion of the cohort that is male vs female similar to what would be expected based on what we know about the phenotype of interest?
+
+## Custom expectations
+
+We can define a set of custom expectations. So that we can visualise these easily using the `tableCohortExpectations()` function, we will create a tibble with the following columns: name (cohort name), estimate (the estimate of interest), value (our expectation on the value we should see in our results). As an example, say we have one cohort called "knee_osteoarthritis" and another called "knee_replacement". We could create expectations about median age of the cohort and the proportion that is male like so.
+
+```{r}
+library(dplyr)
+library(PhenotypeR)
+
+knee_oa <- tibble(name = "knee_osteoarthritis",
+                  estimate = c("Median age", "Proportion male"),
+                  value = c("60 to 65", "45%"))
+knee_replacement <- tibble(name = "knee_replacement",
+                           estimate = c("Median age", "Proportion male"),
+                           value = c("65 to 70", "50%"))
+```
+
+Now we have our structured expectaitions, we can quickly create a summary of them. We'll see in the next vignette how we can then also include them in our shiny app.
+
+```{r, warning=FALSE, message=FALSE}
+tableCohortExpectations(bind_rows(knee_oa, knee_replacement))
+```
+
+## LLM based expectations via ellmer
+
+The custom expectations created above might be based on our (or a friendly colleagues') clinical knowledge. This though will have required access to the requisite clinical knowledge and, especially if we have many cohorts and/ or start considering the many different estimates that are generated, will have been rather time-consuming.
+
+To speed up the process we can use an LLM to help us generate our expectations. We could use this to create a custom set like above. But PhenotypeR also provides the `getCohortExpectations()` which will generate a set of expectations using an LLM available via the ellmer R package. 
+
+Here for example we'll use Google Gemini to populate our expectations. 
+
+```{r, eval=FALSE}
+library(ellmer)
+
+chat <- chat_google_gemini()
+
+getCohortExpectations(chat = chat, 
+                      phenotpyes = c("ankle sprain", "prostate cancer", "morphine")) |> 
+  tableCohortExpectations()
+```
+
+Instead of passing our cohort names, we could instead pass our results set from `phenotypeDiagnostics()` instead. In this case we'll automaitcally get expectations for each of the study cohorts in our results.
+```{r, eval=FALSE}
+library(DBI)
+library(duckdb)
+library(CDMConnector)
+library(CohortConstructor)
+
+con <- dbConnect(duckdb(), dbdir = eunomiaDir())
+cdm <- cdmFromCon(
+    con = con, cdmSchema = "main", writeSchema = "main", cdmName = "Eunomia"
+  )
+
+codes <- list("ankle_sprain" = 81151,
+              "prostate_cancer" = 4163261,
+              "morphine" = c(1110410L, 35605858L, 40169988L))
+
+cdm$my_cohort <- conceptCohort(cdm = cdm,
+                                 conceptSet = codes,
+                                 exit = "event_end_date",
+                                 name = "my_cohort")
+
+diag_results <- phenotypeDiagnostics(cdm$my_cohort)
+
+
+getCohortExpectations(chat = chat, 
+                      phenotpyes = diag_results) |> 
+  tableCohortExpectations()
+```
+
+It is important to note the importance of a descriptive cohort name. These are the names passed to the LLM and so the more informative the name, the better we can expect the LLM to do.
+
+It should also go without saying that we should not treat the output of the LLM as the unequivocal truth. While LLM expectations may well prove an important starting point, clinical judgement and knowledge of the data source at hand will still be vital in appropriately interpretting our results.
