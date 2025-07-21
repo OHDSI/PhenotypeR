@@ -101,7 +101,7 @@ fetchExpectations <- function(chat, name){
 }
 
 
-#' View cohort expectations
+#' Create a table summarising cohort expectations
 #'
 #' @param expectations Data frame or tibble with cohort expectations
 #' @param type Table type to view results. See visOmopResults::tableType()
@@ -110,14 +110,21 @@ fetchExpectations <- function(chat, name){
 #' @returns Summary of cohort expectations
 #' @export
 #'
-viewCohortExpectations <- function(expectations, type = "reactable"){
-
-  rlang::check_installed("visOmopResults", version = "1.0.0")
+tableCohortExpectations <- function(expectations, type = "reactable"){
 
   omopgenerics::assertChoice(type, visOmopResults::tableType())
+  if(isFALSE(all(
+    c("name", "estimate", "value") %in%
+  colnames(expectations)))){
+    cli::cli_abort("expectations must be a dataframe or tibble with the following columns: name, estimate, and value")
+  }
+
+  expectations <- expectations |>
+    dplyr::select(dplyr::all_of(c("name", "estimate", "value")))
 
   # custom reactable
   if(type == "reactable"){
+  rlang::check_installed("reactable")
   leaders <- !duplicated(expectations$name)
   reactable::reactable(
     expectations[leaders, "name", drop = FALSE],
@@ -158,6 +165,7 @@ viewCohortExpectations <- function(expectations, type = "reactable"){
     }
   )
   } else {
+    rlang::check_installed("visOmopResults", version = "1.0.0")
     visOmopResults::visTable(expectations,
                              groupColumn = "name",
                              rename = c("Characteristic" = "estimate",

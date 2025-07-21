@@ -51,8 +51,22 @@ test_that("getting cohort expectations from ellmer - using results object", {
 
  expect_no_error(expectations <- getCohortExpectations(chat, res))
 
- expect_no_error(viewCohortExpectations(expectations, type = "reactable"))
+ expect_no_error(tableCohortExpectations(expectations, type = "reactable"))
 
- expect_no_error(viewCohortExpectations(expectations, type = "gt"))
+ expect_no_error(tableCohortExpectations(expectations, type = "gt"))
 
  })
+
+test_that("custom table of cohort expectations", {
+  skip_on_cran()
+
+  expect_error(tableCohortExpectations("a"))
+  expect_error(tableCohortExpectations(dplyr::tibble(name = 1)))
+
+  ex <- data.frame(name = "my_cohort",
+                   estimate = "summary",
+                   value = "custom description",
+                   extra = "another field")
+  expect_no_error(tableCohortExpectations(ex))
+  expect_no_error(tableCohortExpectations(ex, type = "gt"))
+})
