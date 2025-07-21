@@ -2,23 +2,37 @@ url: https://ohdsi.github.io/PhenotypeR/
 template:
   bootstrap: 5
 
-navbar:
-  structure:
-    right: [github]
+pagetitle: Articles
+sections:
+- title: All vignettes
+  contents:
+  - PhenotypeDiagnostics
+  - ShinyDiagnostics
+  - DatabaseDiagnostics
+  - CodelistDiagnostics
+  - CohortDiagnostics
+  - PopulationDisgnostics
 
 reference:
 - subtitle: Run all diagnostics
 - contents:
-  - matches("phenotypeDiagnostics")
+  - phenotypeDiagnostics
 - subtitle: Run individual diagnostics
 - contents:
-  - matches("databaseDiagnostics|codelistDiagnostics|cohortDiagnostics|populationDiagnostics")
+  - databaseDiagnostics
+  - codelistDiagnostics
+  - cohortDiagnostics
+  - populationDiagnostics
 - subtitle: Visualise results
 - contents:
-  - matches("shinyDiagnostics")
+  - shinyDiagnostics
+- subtitle: Create expectations to compare results against
+- contents:
+  - getCohortExpectations
+  - tableCohortExpectations
 - subtitle: Codelist diagnostics helper
 - contents:
-  - matches("addCodelistAttribute")
+  - addCodelistAttribute
 - subtitle: Mock data
 - contents:
-  - matches("mockPhenotypeR")
+  - mockPhenotypeR
