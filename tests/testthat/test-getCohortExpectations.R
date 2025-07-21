@@ -51,9 +51,8 @@ test_that("getting cohort expectations from ellmer - using results object", {
 
  expect_no_error(expectations <- getCohortExpectations(chat, res))
 
+ expect_no_error(viewCohortExpectations(expectations, type = "reactable"))
+
  expect_no_error(viewCohortExpectations(expectations, type = "gt"))
-
- # expect_no_error(viewCohortExpectations(expectations, type = "narrative"))
-
 
  })

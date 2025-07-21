@@ -4,7 +4,7 @@
 \alias{viewCohortExpectations}
 \title{View cohort expectations}
 \usage{
-viewCohortExpectations(expectations, type = "gt")
+viewCohortExpectations(expectations, type = "reactable")
 }
 \arguments{
 \item{expectations}{Data frame or tibble with cohort expectations}
