@@ -29,7 +29,7 @@ reference:
 - subtitle: Create expectations to compare results against
 - contents:
   - getCohortExpectations
-  - viewCohortExpectations
+  - tableCohortExpectations
 - subtitle: Codelist diagnostics helper
 - contents:
   - addCodelistAttribute
