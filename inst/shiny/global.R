@@ -29,36 +29,35 @@ library(shinyWidgets)
 library(plotly)
 library(tidyr)
 library(reactable)
+
 source(here::here("scripts", "functions.R"))
 
-if(file.exists(here::here("data", "appData.RData"))){
-  if (rlang::is_interactive()) {
-    cli::cli_inform(c(
-      "!" = "Would you like to preprocess the data again? Enter choice 1 or 2",
-      " " = "1) Yes",
-      " " = "2) No"
-    ))
-
-    preprocess <- readline()
-    while (!preprocess %in% c("1", "2")) {
-      cli::cli_inform(c("x" = "Invalid input. Please choose 1 to preprocess the data again or 2 to skip it:"))
-      preprocess <- readline()
-    }
-  }else{
-    preprocess <- "1"
+preprocess_again <- function(){
+  if (yesno("Would you like to preprocess the data again?")) {
+    return(invisible())
   }
-}
-
-if(preprocess == "1" | !file.exists(here::here("data", "appData.RData"))){
   cli::cli_inform("Preprocessing data from data/raw")
   source(here::here("scripts", "preprocess.R"))
-  load(here::here("data", "appData.RData"))
   cli::cli_alert_success("Data processed")
-} else {
-  cli::cli_inform("Loading existing processed data")
-  load(here::here("data", "appData.RData"))
-  cli::cli_alert_success("Data loaded")
 }
+
+if(file.exists(here::here("data", "appData.RData")) && 
+   rlang::is_interactive()){
+  preprocess_again()
+} 
+
+# if data does not exist (or we are not in interactive)
+if(!file.exists(here::here("data", "appData.RData"))){
+  cli::cli_inform("Preprocessing data from data/raw")
+  source(here::here("scripts", "preprocess.R"))
+  cli::cli_alert_success("Data processed")
+} 
+
+cli::cli_inform("Loading data")
+load(here::here("data", "appData.RData"))
+cli::cli_inform("Data loaded") 
+
+
 
 plotComparedLsc <- function(lsc, cohorts, imputeMissings, colour = NULL, facet = NULL){
   plot_data <- lsc |>

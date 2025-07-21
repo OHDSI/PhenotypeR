@@ -15,6 +15,7 @@ library(visOmopResults)
 library(shinycssloaders)
 library(stringr)
 library(CohortSurvival)
+
 source(here::here("scripts", "functions.R"))
 
 # Create results list
@@ -46,6 +47,7 @@ resultList <- setNames(lapply(data, function(x) list(result_type = x)), data)
 dataFiltered <- prepareResult(result, resultList)
 values <- getValues(result, resultList)
 
+if(length(dataFiltered) > 0){
 # Common variables
 values$shared_cohort_names <- rbind(dataFiltered$cohort_code_use, dataFiltered$summarise_cohort_count, dataFiltered$incidence) |>
   dplyr::mutate(group_name = gsub("outcome_cohort_name", "cohort_name", group_name)) |>
@@ -58,6 +60,7 @@ values$shared_cdm_names <- rbind(dataFiltered$cohort_code_use, dataFiltered$summ
   dplyr::select("cdm_name") |>
   dplyr::distinct() |>
   dplyr::pull("cdm_name")
+}
 
 # Filter not needed values
 values <- values[!stringr::str_detect(names(values), "summarise_omop_snapshot")]
@@ -135,8 +138,16 @@ if("survival_probability_cohort_name" %in% names(values)){
 }
 
 # Define incidence start and end date
+if(!is.null(selected$incidence_grouping_incidence_start_date)){
 min_incidence_start <- min(as.Date(selected$incidence_grouping_incidence_start_date))
+} else {
+  min_incidence_start <- as.Date(NA)
+}
+if(!is.null(selected$incidence_grouping_incidence_end_date)){
 max_incidence_end <- max(as.Date(selected$incidence_grouping_incidence_end_date))
+} else {
+  max_incidence_end <- as.Date(NA)
+}
 
 cli::cli_inform("Saving data for shiny")
 save(dataFiltered,
