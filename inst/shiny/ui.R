@@ -879,6 +879,12 @@ ui <- fluidPage(
           )
         ),
         icon = shiny::icon("person"),
+        accordion(open = FALSE,
+                  accordion_panel(
+                    title = "Show cohort expectations",
+                    value = "panel_ce_1",
+                    reactable::reactableOutput("cohort_expectations_tbl_1")
+                  )),
         bslib::layout_sidebar(
           sidebar = bslib::sidebar(width = 400, open = "closed",
                                    bslib::accordion(
@@ -999,6 +1005,12 @@ ui <- fluidPage(
           )
         ),
         icon = shiny::icon("users-gear"),
+        accordion(open = FALSE,
+                  accordion_panel(
+                    title = "Show cohort expectations",
+                    value = "panel_ce_2",
+                    reactable::reactableOutput("cohort_expectations_tbl_2")
+                  )),
         bslib::layout_sidebar(
           sidebar = bslib::sidebar(width = 400, open = "closed",
                                    bslib::accordion(
@@ -1148,6 +1160,12 @@ ui <- fluidPage(
           )
         ),
         icon = shiny::icon("arrow-up-right-dots"),
+        accordion(open = FALSE,
+                  accordion_panel(
+                    title = "Show cohort expectations",
+                    value = "panel_ce_3",
+                    reactable::reactableOutput("cohort_expectations_tbl_3")
+                  )),
         bslib::layout_sidebar(
           sidebar = bslib::sidebar(width = 400, open = "closed",
                                    bslib::accordion(
@@ -1266,6 +1284,12 @@ ui <- fluidPage(
           )
         ),
         icon = shiny::icon("people-arrows"),
+        accordion(open = FALSE,
+                  accordion_panel(
+                    title = "Show cohort expectations",
+                    value = "panel_ce_4",
+                    reactable::reactableOutput("cohort_expectations_tbl_4")
+                  )),
         bslib::layout_sidebar(
           sidebar = bslib::sidebar(width = 400, open = "closed",
                                    bslib::accordion(
@@ -1465,6 +1489,12 @@ ui <- fluidPage(
           )
         ),
         icon = shiny::icon("yin-yang"),
+        accordion(open = FALSE,
+                  accordion_panel(
+                    title = "Show cohort expectations",
+                    value = "panel_ce_5",
+                    reactable::reactableOutput("cohort_expectations_tbl_5")
+                  )),
         bslib::layout_sidebar(
           sidebar = bslib::sidebar(width = 400, open = "closed",
                                    bslib::accordion(
@@ -1776,6 +1806,12 @@ ui <- fluidPage(
           )
         ),
         icon = shiny::icon("chart-gantt"),
+        accordion(open = FALSE,
+                  accordion_panel(
+                    title = "Show cohort expectations",
+                    value = "panel_ce_6",
+                    reactable::reactableOutput("cohort_expectations_tbl_6")
+                  )),
         bslib::layout_sidebar(
           sidebar = bslib::sidebar(width = 400, open = "closed",
                                    bslib::accordion(
