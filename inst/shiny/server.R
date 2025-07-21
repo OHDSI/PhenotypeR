@@ -1898,4 +1898,25 @@ server <- function(input, output, session) {
       )
     }
   )
+  
+  # expectations
+  output_ids <- c("cohort_expectations_tbl_1", 
+                  "cohort_expectations_tbl_2",
+                  "cohort_expectations_tbl_3", 
+                  "cohort_expectations_tbl_4",
+                  "cohort_expectations_tbl_5", 
+                  "cohort_expectations_tbl_6")
+  
+  lapply(output_ids, function(id) {
+    output[[id]] <- reactable::renderReactable({
+      if (length(expectations |> 
+          filter(!is.na(name)) |> 
+          dplyr::pull("name")) == 0
+          ) {
+        validate("No expectations found.")
+      }
+      
+      PhenotypeR::tableCohortExpectations(expectations)
+    })
+  })
 }
