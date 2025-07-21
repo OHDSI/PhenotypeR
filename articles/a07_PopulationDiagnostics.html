@@ -91,10 +91,36 @@ with an ankle sprain using the Eunomia synthetic data.</p>
 <span>  <span class="op">)</span>,</span>
 <span>  name <span class="op">=</span> <span class="st">"injuries"</span><span class="op">)</span></span></code></pre></div>
 <p>We can get the incidence and prevalence of our study cohort using
-<code><a href="../reference/populationDiagnostics.html">populationDiagnostics()</a></code>.</p>
+<code><a href="../reference/populationDiagnostics.html">populationDiagnostics()</a></code>:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pop_diag</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/populationDiagnostics.html">populationDiagnostics</a></span><span class="op">(</span><span class="va">cdm</span><span class="op">$</span><span class="va">injuries</span><span class="op">)</span></span></code></pre></div>
-<p>We can quickly make tables with our results like so</p>
+<p>This function builds on <a href="https://darwin-eu.github.io/IncidencePrevalence/index.html" class="external-link">IncidencePrevalence</a>
+R package to perform the following analyses:</p>
+<ul>
+<li>
+<strong>Incidence:</strong> It estimates the incidence of our cohort
+using <a href="https://darwin-eu.github.io/IncidencePrevalence/reference/estimateIncidence.html" class="external-link">estimateIncidence()</a>.</li>
+<li>
+<strong>Prevalence:</strong> It estimates the prevalence of our
+cohort on a year basis using <a href="https://darwin-eu.github.io/IncidencePrevalence/reference/estimatePeriodPrevalence.html" class="external-link">estimatePeriodPrevalence()</a>.</li>
+</ul>
+<p>All analyses are performed for:</p>
+<ul>
+<li>Overall and stratified by age groups: 0 to 17, 18 to 64, 65 to 150.
+Age groups cannot be modified.</li>
+<li>Overall and stratified by sex (Female, Male).</li>
+<li>Restricting the denominator population to those with 0 and 365 of
+days of prior observation.</li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="visualising-the-results">Visualising the results<a class="anchor" aria-label="anchor" href="#visualising-the-results"></a>
+</h2>
+<p>We can use <a href="https://darwin-eu.github.io/IncidencePrevalence/index.html" class="external-link">IncidencePrevalence</a>
+package to visualise the results obtained.</p>
+<div class="section level3">
+<h3 id="incidence">Incidence<a class="anchor" aria-label="anchor" href="#incidence"></a>
+</h3>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://darwin-eu.github.io/IncidencePrevalence/reference/tableIncidence.html" class="external-link">tableIncidence</a></span><span class="op">(</span><span class="va">pop_diag</span>,     </span>
 <span>               groupColumn <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cdm_name"</span>, <span class="st">"outcome_cohort_name"</span><span class="op">)</span>,</span>
@@ -989,6 +1015,18 @@ with an ankle sprain using the Eunomia synthetic data.</p>
 </table>
 </div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="va">pop_diag</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">omopgenerics</span><span class="fu">::</span><span class="fu"><a href="https://darwin-eu.github.io/omopgenerics/reference/filterSettings.html" class="external-link">filterSettings</a></span><span class="op">(</span><span class="va">result_type</span> <span class="op">==</span> <span class="st">"incidence"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">visOmopResults</span><span class="fu">::</span><span class="fu"><a href="https://darwin-eu.github.io/omopgenerics/reference/filterAdditional.html" class="external-link">filterAdditional</a></span><span class="op">(</span><span class="va">analysis_interval</span> <span class="op">==</span> <span class="st">"years"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://darwin-eu.github.io/IncidencePrevalence/reference/plotIncidence.html" class="external-link">plotIncidence</a></span><span class="op">(</span><span class="va">results</span>,</span>
+<span>              colour <span class="op">=</span> <span class="st">"denominator_age_group"</span>,</span>
+<span>              facet <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"denominator_sex"</span>, <span class="st">"denominator_days_prior_observation"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="a07_PopulationDiagnostics_files/figure-html/unnamed-chunk-5-1.png" width="672"></p>
+</div>
+<div class="section level3">
+<h3 id="prevalence">Prevalence<a class="anchor" aria-label="anchor" href="#prevalence"></a>
+</h3>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://darwin-eu.github.io/IncidencePrevalence/reference/tablePrevalence.html" class="external-link">tablePrevalence</a></span><span class="op">(</span><span class="va">pop_diag</span>,     </span>
 <span>               groupColumn <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cdm_name"</span>, <span class="st">"outcome_cohort_name"</span><span class="op">)</span>,</span>
 <span>               hide <span class="op">=</span> <span class="st">"denominator_cohort_name"</span>,</span>
@@ -1794,8 +1832,18 @@ with an ankle sprain using the Eunomia synthetic data.</p>
 </tbody>
 </table>
 </div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="va">pop_diag</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">omopgenerics</span><span class="fu">::</span><span class="fu"><a href="https://darwin-eu.github.io/omopgenerics/reference/filterSettings.html" class="external-link">filterSettings</a></span><span class="op">(</span><span class="va">result_type</span> <span class="op">==</span> <span class="st">"prevalence"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">visOmopResults</span><span class="fu">::</span><span class="fu"><a href="https://darwin-eu.github.io/omopgenerics/reference/filterAdditional.html" class="external-link">filterAdditional</a></span><span class="op">(</span><span class="va">analysis_interval</span> <span class="op">==</span> <span class="st">"years"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://darwin-eu.github.io/IncidencePrevalence/reference/plotPrevalence.html" class="external-link">plotPrevalence</a></span><span class="op">(</span><span class="va">results</span>,</span>
+<span>               colour <span class="op">=</span> <span class="st">"denominator_age_group"</span>,</span>
+<span>               facet <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"denominator_sex"</span>, <span class="st">"denominator_days_prior_observation"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="a07_PopulationDiagnostics_files/figure-html/unnamed-chunk-7-1.png" width="672"></p>
 </div>
-  </main>
+</div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 

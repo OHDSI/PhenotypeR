@@ -70,8 +70,7 @@
 data.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://darwin-eu.github.io/CDMConnector/" class="external-link">CDMConnector</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ohdsi.github.io/CohortConstructor/" class="external-link">CohortConstructor</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://darwin-eu.github.io/CodelistGenerator/" class="external-link">CodelistGenerator</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://OHDSI.github.io/OmopSketch/" class="external-link">OmopSketch</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ohdsi.github.io/PhenotypeR/">PhenotypeR</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
@@ -87,34 +86,41 @@ data.</p>
 <div class="section level2">
 <h2 id="database-diagnostics">Database diagnostics<a class="anchor" aria-label="anchor" href="#database-diagnostics"></a>
 </h2>
-<p>We have created our study cohort, but to inform analytic decisions
-and interpretation of results requires an understanding of the dataset
-from which it has been derived. The <code><a href="../reference/databaseDiagnostics.html">databaseDiagnostics()</a></code>
-function will help us better understand a data source.</p>
+<p>Although we may have created our study cohort, to inform analytic
+decisions and interpretation of results requires an understanding of the
+dataset from which it has been derived. The
+<code><a href="../reference/databaseDiagnostics.html">databaseDiagnostics()</a></code> function will help us better
+understand a data source.</p>
 <p>To run database diagnostics we just need to provide our cdm reference
 to the function.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">db_diagnostics</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/databaseDiagnostics.html">databaseDiagnostics</a></span><span class="op">(</span><span class="va">cdm</span><span class="op">)</span></span>
-<span><span class="va">db_diagnostics</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Rows: 6,224</span></span>
-<span><span class="co">#&gt; Columns: 13</span></span>
-<span><span class="co">#&gt; $ result_id        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>2<span style="color: #949494;">,</span>…</span></span>
-<span><span class="co">#&gt; $ cdm_name         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "Eunomia Synpuf"<span style="color: #949494;">, </span>"Eunomia Synpuf"<span style="color: #949494;">, </span>"Eunomia Synpuf"<span style="color: #949494;">,</span>…</span></span>
-<span><span class="co">#&gt; $ group_name       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "overall"<span style="color: #949494;">, </span>"overall"<span style="color: #949494;">, </span>"overall"<span style="color: #949494;">, </span>"overall"<span style="color: #949494;">, </span>"overall"…</span></span>
-<span><span class="co">#&gt; $ group_level      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "overall"<span style="color: #949494;">, </span>"overall"<span style="color: #949494;">, </span>"overall"<span style="color: #949494;">, </span>"overall"<span style="color: #949494;">, </span>"overall"…</span></span>
-<span><span class="co">#&gt; $ strata_name      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "overall"<span style="color: #949494;">, </span>"overall"<span style="color: #949494;">, </span>"overall"<span style="color: #949494;">, </span>"overall"<span style="color: #949494;">, </span>"overall"…</span></span>
-<span><span class="co">#&gt; $ strata_level     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "overall"<span style="color: #949494;">, </span>"overall"<span style="color: #949494;">, </span>"overall"<span style="color: #949494;">, </span>"overall"<span style="color: #949494;">, </span>"overall"…</span></span>
-<span><span class="co">#&gt; $ variable_name    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "general"<span style="color: #949494;">, </span>"general"<span style="color: #949494;">, </span>"observation_period"<span style="color: #949494;">, </span>"cdm"<span style="color: #949494;">, </span>"g…</span></span>
-<span><span class="co">#&gt; $ variable_level   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">N</span>…</span></span>
-<span><span class="co">#&gt; $ estimate_name    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "snapshot_date"<span style="color: #949494;">, </span>"person_count"<span style="color: #949494;">, </span>"count"<span style="color: #949494;">, </span>"source_nam…</span></span>
-<span><span class="co">#&gt; $ estimate_type    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "date"<span style="color: #949494;">, </span>"integer"<span style="color: #949494;">, </span>"integer"<span style="color: #949494;">, </span>"character"<span style="color: #949494;">, </span>"character…</span></span>
-<span><span class="co">#&gt; $ estimate_value   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "2025-07-15"<span style="color: #949494;">, </span>"1000"<span style="color: #949494;">, </span>"1048"<span style="color: #949494;">, </span>"Synpuf"<span style="color: #949494;">, </span>"v5.0 06-AUG-…</span></span>
-<span><span class="co">#&gt; $ additional_name  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "overall"<span style="color: #949494;">, </span>"overall"<span style="color: #949494;">, </span>"overall"<span style="color: #949494;">, </span>"overall"<span style="color: #949494;">, </span>"overall"…</span></span>
-<span><span class="co">#&gt; $ additional_level <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "overall"<span style="color: #949494;">, </span>"overall"<span style="color: #949494;">, </span>"overall"<span style="color: #949494;">, </span>"overall"<span style="color: #949494;">, </span>"overall"…</span></span></code></pre></div>
-<p>From our results we can create a table with a summary of metadata for
-the data source.</p>
+<code class="sourceCode R"><span><span class="va">db_diagnostics</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/databaseDiagnostics.html">databaseDiagnostics</a></span><span class="op">(</span><span class="va">cdm</span><span class="op">)</span></span></code></pre></div>
+<p>Database diagnostics builds on <a href="https://ohdsi.github.io/OmopSketch/index.html" class="external-link">OmopSketch</a>
+package to perform the following analyses:</p>
+<ul>
+<li>
+<strong>Snapshot:</strong> Summarises the meta data of a CDM object
+by using <a href="https://ohdsi.github.io/OmopSketch/reference/summariseOmopSnapshot.html" class="external-link">summariseOmopSnapshot()</a>
+</li>
+<li>
+<strong>Observation periods:</strong> Summarises the observation
+period table by using <a href="https://ohdsi.github.io/OmopSketch/reference/summariseObservationPeriod.html" class="external-link">summariseObservationPeriod()</a>.
+This will allow us to see if there are individuals with multiple,
+non-overlapping, observation periods and how long each observation
+period lasts on average.</li>
+</ul>
+<p>The output is a summarised result object.</p>
+</div>
+<div class="section level2">
+<h2 id="visualise-the-results">Visualise the results<a class="anchor" aria-label="anchor" href="#visualise-the-results"></a>
+</h2>
+<p>We can use <a href="https://ohdsi.github.io/OmopSketch/index.html" class="external-link">OmopSketch</a>
+package functions to visualise the results obtained.</p>
+<div class="section level3">
+<h3 id="snapshot">Snapshot<a class="anchor" aria-label="anchor" href="#snapshot"></a>
+</h3>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">OmopSketch</span><span class="fu">::</span><span class="fu"><a href="https://OHDSI.github.io/OmopSketch/reference/tableOmopSnapshot.html" class="external-link">tableOmopSnapshot</a></span><span class="op">(</span><span class="va">db_diagnostics</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://OHDSI.github.io/OmopSketch/reference/tableOmopSnapshot.html" class="external-link">tableOmopSnapshot</a></span><span class="op">(</span><span class="va">db_diagnostics</span><span class="op">)</span></span></code></pre></div>
 <div id="ufivjubqtx" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#ufivjubqtx table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -584,7 +590,7 @@ the data source.</p>
 <tr class="gt_row_group_first">
 <td headers="General  Estimate" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">Snapshot date</td>
 <td headers="General  [header_name]Database name
-[header_level]Eunomia Synpuf" class="gt_row gt_left" style="text-align: right;">2025-07-15</td>
+[header_level]Eunomia Synpuf" class="gt_row gt_left" style="text-align: right;">2025-07-21</td>
 </tr>
 <tr>
 <td headers="General  Estimate" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">Person count</td>
@@ -655,12 +661,12 @@ the data source.</p>
 </tbody>
 </table>
 </div>
-<p>In addition, we also can see a summary of individuals’ observation
-periods. From this we can see if there are individuals with multiple,
-non-overlapping, observation periods and how long each observation
-period lasts on average.</p>
+</div>
+<div class="section level3">
+<h3 id="observation-periods">Observation periods<a class="anchor" aria-label="anchor" href="#observation-periods"></a>
+</h3>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">OmopSketch</span><span class="fu">::</span><span class="fu"><a href="https://OHDSI.github.io/OmopSketch/reference/tableObservationPeriod.html" class="external-link">tableObservationPeriod</a></span><span class="op">(</span><span class="va">db_diagnostics</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://OHDSI.github.io/OmopSketch/reference/tableObservationPeriod.html" class="external-link">tableObservationPeriod</a></span><span class="op">(</span><span class="va">db_diagnostics</span><span class="op">)</span></span></code></pre></div>
 <div id="vafbsnayor" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#vafbsnayor table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -1254,6 +1260,7 @@ period lasts on average.</p>
 </tr>
 </tbody>
 </table>
+</div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
