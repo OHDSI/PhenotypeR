@@ -41,8 +41,9 @@ jobs:
       - name: Print branch name
         if: github.event_name == 'pull_request'
         run: |
-          echo "Current branch: ${GITHUB_REF##*/}"
-          Rscript -e 'pak::pkg_install("ohdsi/PhenotypeR@${GITHUB_REF##*/}")'
+          BRANCH_NAME=${GITHUB_HEAD_REF:-${GITHUB_REF##*/}}
+          echo "Current branch: $BRANCH_NAME"
+          Rscript -e "pak::pkg_install('ohdsi/PhenotypeR@$BRANCH_NAME')"
 
       - name: install PhenotypeR from github
         if: github.event_name != 'pull_request'
