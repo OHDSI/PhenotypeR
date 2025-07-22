@@ -121,20 +121,29 @@ PhenotypeR also provides the <code><a href="../reference/getCohortExpectations.h
 will generate a set of expectations using an LLM available via the
 ellmer R package.</p>
 <p>Here for example we’ll use Google Gemini to populate our
-expectations.</p>
+expectations. Notice that you may need first to create a Gemini API to
+run the example. You can do that following this link: <a href="https://aistudio.google.com/app/apikey" class="external-link uri">https://aistudio.google.com/app/apikey</a>.</p>
+<p>And adding the API in your R environment:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/edit.html" class="external-link">edit_r_environ</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Add your API in your R environment:</span></span>
+<span><span class="va">GEMINI_API_KEY</span> <span class="op">=</span> <span class="st">"your API"</span></span>
+<span></span>
+<span><span class="co"># Restrart R</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ellmer.tidyverse.org" class="external-link">ellmer</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">chat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ellmer.tidyverse.org/reference/chat_google_gemini.html" class="external-link">chat_google_gemini</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/getCohortExpectations.html">getCohortExpectations</a></span><span class="op">(</span>chat <span class="op">=</span> <span class="va">chat</span>, </span>
-<span>                      phenotpyes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ankle sprain"</span>, <span class="st">"prostate cancer"</span>, <span class="st">"morphine"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>                      phenotypes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ankle sprain"</span>, <span class="st">"prostate cancer"</span>, <span class="st">"morphine"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="../reference/tableCohortExpectations.html">tableCohortExpectations</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Instead of passing our cohort names, we could instead pass our
 results set from <code><a href="../reference/phenotypeDiagnostics.html">phenotypeDiagnostics()</a></code> instead. In this
 case we’ll automaitcally get expectations for each of the study cohorts
 in our results.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dbi.r-dbi.org" class="external-link">DBI</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r.duckdb.org/" class="external-link">duckdb</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://darwin-eu.github.io/CDMConnector/" class="external-link">CDMConnector</a></span><span class="op">)</span></span>
@@ -158,7 +167,7 @@ in our results.</p>
 <span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/getCohortExpectations.html">getCohortExpectations</a></span><span class="op">(</span>chat <span class="op">=</span> <span class="va">chat</span>, </span>
-<span>                      phenotpyes <span class="op">=</span> <span class="va">diag_results</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>                      phenotypes <span class="op">=</span> <span class="va">diag_results</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="../reference/tableCohortExpectations.html">tableCohortExpectations</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>It is important to note the importance of a descriptive cohort name.
 These are the names passed to the LLM and so the more informative the
