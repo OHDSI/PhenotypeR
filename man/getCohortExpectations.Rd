@@ -4,12 +4,12 @@
 \alias{getCohortExpectations}
 \title{Get cohort expectations using an LLM}
 \usage{
-getCohortExpectations(chat, phenotpyes)
+getCohortExpectations(chat, phenotypes)
 }
 \arguments{
 \item{chat}{An ellmer chat}
 
-\item{phenotpyes}{Either a vector of phenotype names or results from
+\item{phenotypes}{Either a vector of phenotype names or results from
 PhenotypeR.}
 }
 \value{

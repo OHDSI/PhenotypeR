@@ -49,7 +49,19 @@ The custom expectations created above might be based on our (or a friendly colle
 
 To speed up the process we can use an LLM to help us generate our expectations. We could use this to create a custom set like above. But PhenotypeR also provides the `getCohortExpectations()` which will generate a set of expectations using an LLM available via the ellmer R package. 
 
-Here for example we'll use Google Gemini to populate our expectations. 
+Here for example we'll use Google Gemini to populate our expectations. Notice that you may need first to create a Gemini API to run the example. You can do that following this link:
+https://aistudio.google.com/app/apikey.
+
+And adding the API in your R environment:
+
+```{r, eval=FALSE}
+usethis::edit_r_environ()
+
+# Add your API in your R environment:
+GEMINI_API_KEY = "your API"
+
+# Restrart R
+```
 
 ```{r, eval=FALSE}
 library(ellmer)
@@ -57,7 +69,7 @@ library(ellmer)
 chat <- chat_google_gemini()
 
 getCohortExpectations(chat = chat, 
-                      phenotpyes = c("ankle sprain", "prostate cancer", "morphine")) |> 
+                      phenotypes = c("ankle sprain", "prostate cancer", "morphine")) |> 
   tableCohortExpectations()
 ```
 
@@ -86,7 +98,7 @@ diag_results <- phenotypeDiagnostics(cdm$my_cohort)
 
 
 getCohortExpectations(chat = chat, 
-                      phenotpyes = diag_results) |> 
+                      phenotypes = diag_results) |> 
   tableCohortExpectations()
 ```
 
