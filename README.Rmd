@@ -128,7 +128,7 @@ shinyDiagnostics(result = result, minCellCount = 2, directory = tempdir())
 ```
 
 See the shiny app generated from the example cohort in
-[here](https://dpa-pde-oxford.shinyapps.io/Readme_PhenotypeR/).
+[here](https://dpa-pde-oxford.shinyapps.io/PhenotypeRShiny/).
 
 ### More information
 

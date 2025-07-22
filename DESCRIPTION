@@ -53,10 +53,11 @@ Suggests:
     scales,
     usethis,
     rmarkdown,
-    CohortSurvival (>= 1.0.2), 
+    CohortSurvival (>= 1.0.2),
     ellmer,
     htmltools,
-    visOmopResults (>= 1.0.0)
+    visOmopResults (>= 1.0.0),
+    rsconnect
 Config/testthat/edition: 3
 RoxygenNote: 7.3.2
 Imports: 
@@ -75,5 +76,3 @@ Imports:
     MeasurementDiagnostics
 URL: https://ohdsi.github.io/PhenotypeR/
 VignetteBuilder: knitr
-Remotes:
-   ohdsi/MeasurementDiagnostics
