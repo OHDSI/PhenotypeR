@@ -45,14 +45,14 @@ jobs:
         run: Rscript -e 'renv::init()'
         working-directory: PhenotypeRShiny
 
-      - name: Deploy TEST to shinyapps.io
+      - name: Deploy test shiny to shinyapps.io
         if: github.event_name == 'pull_request'
         env:
           SHINYAPPS_TOKEN: ${{ secrets.SHINYAPPS_TOKEN }}
           SHINYAPPS_SECRET: ${{ secrets.SHINYAPPS_SECRET }}
         run: Rscript extras/testShiny.R
 
-      - name: Deploy Documentation to shinyapps.io
+      - name: Deploy shiny to shinyapps.io
         if: github.event_name != 'pull_request'
         env:
           SHINYAPPS_TOKEN: ${{ secrets.SHINYAPPS_TOKEN }}
