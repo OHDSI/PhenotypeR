@@ -35,8 +35,19 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::rcmdcheck, any::devtools
+          extra-packages: any::rcmdcheck, any::pak
           needs: check
+
+      - name: Print branch name
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "Current branch: ${GITHUB_REF##*/}"
+          Rscript -e 'pak::pkg_install("ohdsi/PhenotypeR@${GITHUB_REF##*/}")'
+
+      - name: install PhenotypeR from github
+        if: github.event_name != 'pull_request'
+        run: |
+          Rscript -e 'pak::pkg_install("ohdsi/PhenotypeR")'
 
       - name: Create shiny app
         run: Rscript extras/createShiny.R

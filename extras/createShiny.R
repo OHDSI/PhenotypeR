@@ -1,6 +1,4 @@
 
-devtools::load_all()
-
 cdm <- omock::mockCdmFromDataset(datasetName = "synpuf-1k_5.3")
 con <- duckdb::dbConnect(drv = duckdb::duckdb())
 src <- CDMConnector::dbSource(con = con, writeSchema = "main")
