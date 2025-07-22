@@ -2,28 +2,28 @@
 #' Get cohort expectations using an LLM
 #'
 #' @param chat An ellmer chat
-#' @param phenotpyes Either a vector of phenotype names or results from
+#' @param phenotypes Either a vector of phenotype names or results from
 #' PhenotypeR.
 #'
 #' @returns A tibble with expectations about the cohort.
 #' @export
 #'
-getCohortExpectations <- function(chat, phenotpyes){
+getCohortExpectations <- function(chat, phenotypes){
 
   # if summarised result, pull out cohort names
-  if(isTRUE(inherits(phenotpyes, "summarised_result"))){
-    phenotpyes <- phenotpyes |>
+  if(isTRUE(inherits(phenotypes, "summarised_result"))){
+    phenotypes <- phenotypes |>
       omopgenerics::filterSettings(result_type == "summarise_cohort_attrition") |>
       dplyr::pull("group_level") |>
       unique()
   }
   # otherwise should be character vector
-  omopgenerics::assertCharacter(phenotpyes)
+  omopgenerics::assertCharacter(phenotypes)
 
   expectations <- list()
-  for(i in seq_along(phenotpyes)){
+  for(i in seq_along(phenotypes)){
     expectations[[i]] <- fetchExpectations(chat = chat,
-                                            name = phenotpyes[[i]])
+                                            name = phenotypes[[i]])
   }
 
   expectations |>
