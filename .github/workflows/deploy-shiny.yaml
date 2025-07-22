@@ -43,7 +43,7 @@ jobs:
 
       - name: Create renv file
         run: Rscript -e 'renv::init()'
-        working-directory: PhenotypeRShiny
+        working-directory: PhenotypeRShiny/
 
       - name: Deploy test shiny to shinyapps.io
         if: github.event_name == 'pull_request'

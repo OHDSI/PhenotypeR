@@ -57,7 +57,9 @@ Suggests:
     ellmer,
     htmltools,
     visOmopResults (>= 1.0.0),
-    rsconnect
+    rsconnect,
+    cpp11,
+    progress
 Config/testthat/edition: 3
 RoxygenNote: 7.3.2
 Imports: 
