@@ -2,6 +2,15 @@ url: https://ohdsi.github.io/PhenotypeR/
 template:
   bootstrap: 5
 
+navbar:
+  structure:
+    left:  [intro, reference, articles, news, custom_shiny]
+    right: [github, lightswitch]
+  components:
+    custom_shiny:
+      text: "PhenotypeR shiny App"
+      href: https://dpa-pde-oxford.shinyapps.io/PhenotypeRShiny/
+
 pagetitle: Articles
 sections:
 - title: All vignettes
