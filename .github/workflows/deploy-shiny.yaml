@@ -38,14 +38,14 @@ jobs:
           extra-packages: any::rcmdcheck, any::pak
           needs: check
 
-      - name: Print branch name
+      - name: Install PhenotypeR from branch
         if: github.event_name == 'pull_request'
         run: |
           BRANCH_NAME=${GITHUB_HEAD_REF:-${GITHUB_REF##*/}}
           echo "Current branch: $BRANCH_NAME"
           Rscript -e "pak::pkg_install('ohdsi/PhenotypeR@$BRANCH_NAME')"
 
-      - name: install PhenotypeR from github
+      - name: install PhenotypeR from main
         if: github.event_name != 'pull_request'
         run: |
           Rscript -e 'pak::pkg_install("ohdsi/PhenotypeR")'
