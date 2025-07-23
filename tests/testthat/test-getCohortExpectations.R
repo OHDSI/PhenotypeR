@@ -63,7 +63,7 @@ test_that("custom table of cohort expectations", {
   expect_error(tableCohortExpectations("a"))
   expect_error(tableCohortExpectations(dplyr::tibble(name = 1)))
 
-  ex <- data.frame(name = "my_cohort",
+  ex <- data.frame(cohort_name = "my_cohort",
                    estimate = "summary",
                    value = "custom description",
                    extra = "another field")
