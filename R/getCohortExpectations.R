@@ -144,7 +144,7 @@ tableCohortExpectations <- function(expectations, type = "reactable"){
 
   omopgenerics::assertChoice(type, visOmopResults::tableType())
   if(isFALSE(all(
-    c("cohort_name", "estimate", "value") %in%
+    c("cohort_name", "estimate", "value", "source") %in%
   colnames(expectations)))){
     cli::cli_abort("expectations must be a dataframe or tibble with the following columns: cohort_name, estimate, value, and source")
   }
