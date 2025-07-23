@@ -28,7 +28,8 @@ getCohortExpectations <- function(chat, phenotypes){
 
   expectations |>
     dplyr::bind_rows() |>
-    dplyr::rename("cohort_name" = "name")
+    dplyr::rename("cohort_name" = "name") |>
+    dplyr::mutate("source" = chat$get_model())
 
 }
 
@@ -145,11 +146,11 @@ tableCohortExpectations <- function(expectations, type = "reactable"){
   if(isFALSE(all(
     c("cohort_name", "estimate", "value") %in%
   colnames(expectations)))){
-    cli::cli_abort("expectations must be a dataframe or tibble with the following columns: cohort_name, estimate, and value")
+    cli::cli_abort("expectations must be a dataframe or tibble with the following columns: cohort_name, estimate, value, and source")
   }
 
   expectations <- expectations |>
-    dplyr::select(dplyr::all_of(c("cohort_name", "estimate", "value")))
+    dplyr::select(dplyr::all_of(c("cohort_name", "estimate", "value", "source")))
 
   # custom reactable
   if(type == "reactable"){
@@ -178,11 +179,17 @@ tableCohortExpectations <- function(expectations, type = "reactable"){
       lines <- lapply(seq_len(nrow(rows)), function(i) {
         htmltools::div(
           style = "
-        padding: 6px 10px;
-        margin-bottom: 6px;
-        border-bottom: 1px solid #ccc;
-      ",
-          paste0(rows$estimate[i], ": ", rows$value[i])
+          padding: 6px 10px;
+          margin-bottom: 6px;
+          border-bottom: 1px solid #ccc;
+        ",
+          htmltools::tagList(
+            htmltools::span(style = "font-weight: bold;", rows$estimate[i]),
+            paste0(": ", rows$value[i]),
+            htmltools::span(style = "font-style: italic;", " (Source: "),
+            htmltools::span(style = "font-style: italic;", rows$source[i]),
+            htmltools::span(style = "font-style: italic;", ")")
+          )
         )
       })
       htmltools::tagList(
