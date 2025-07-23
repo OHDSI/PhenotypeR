@@ -1164,7 +1164,7 @@ ui <- fluidPage(
                   accordion_panel(
                     title = "Show cohort expectations",
                     value = "panel_ce_3",
-                    reactable::reactableOutput("cohort_large_scale_expectations")
+                    reactable::reactableOutput("large_scale_characteristics_expectations")
                   )),
         bslib::layout_sidebar(
           sidebar = bslib::sidebar(width = 400, open = "closed",
@@ -1288,7 +1288,7 @@ ui <- fluidPage(
                   accordion_panel(
                     title = "Show cohort expectations",
                     value = "panel_ce_4",
-                    reactable::reactableOutput("cohort_compare_large_scale_expectations")
+                    reactable::reactableOutput("compare_large_scale_characteristics_expectations")
                   )),
         bslib::layout_sidebar(
           sidebar = bslib::sidebar(width = 400, open = "closed",
@@ -1493,7 +1493,7 @@ ui <- fluidPage(
                   accordion_panel(
                     title = "Show cohort expectations",
                     value = "panel_ce_5",
-                    reactable::reactableOutput("cohort_compare_expectations")
+                    reactable::reactableOutput("compare_cohorts_expectations")
                   )),
         bslib::layout_sidebar(
           sidebar = bslib::sidebar(width = 400, open = "closed",

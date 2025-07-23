@@ -258,3 +258,15 @@ validateExpectations <- function(expectations){
     validate("No expectations results found")
   }
 }
+
+validateExpectationSections <- function(table){
+  section_names <- table |>
+    dplyr::pull("diagnostics") |> 
+    unique()
+  
+  if(!all(section_names %in% c("cohort_count", "cohort_characteristics",  "large_scale_characteristics", "compare_large_scale_characteristics", 
+                               "compare_cohorts", "cohort_survival"))){
+    validate("diagnostics column must contain any of the following values: cohort_count, cohort_characteristics, large_scale_characteristics, compare_large_scale_characteristics,
+             compare_cohorts, cohort_survival")
+  }
+}
