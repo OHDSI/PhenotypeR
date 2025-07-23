@@ -66,6 +66,7 @@ test_that("custom table of cohort expectations", {
   ex <- data.frame(cohort_name = "my_cohort",
                    estimate = "summary",
                    value = "custom description",
+                   source = "someone",
                    extra = "another field")
   expect_no_error(tableCohortExpectations(ex))
   expect_no_error(tableCohortExpectations(ex, type = "gt"))
