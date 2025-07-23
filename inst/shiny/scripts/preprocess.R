@@ -139,14 +139,24 @@ if("survival_probability_cohort_name" %in% names(values)){
 
 # Define incidence start and end date
 if(!is.null(selected$incidence_grouping_incidence_start_date)){
-min_incidence_start <- min(as.Date(selected$incidence_grouping_incidence_start_date))
+  min_incidence_start <- min(as.Date(selected$incidence_grouping_incidence_start_date))
 } else {
   min_incidence_start <- as.Date(NA)
 }
 if(!is.null(selected$incidence_grouping_incidence_end_date)){
-max_incidence_end <- max(as.Date(selected$incidence_grouping_incidence_end_date))
+  max_incidence_end <- max(as.Date(selected$incidence_grouping_incidence_end_date))
 } else {
   max_incidence_end <- as.Date(NA)
+}
+
+# Load expectations results
+if("expectations.csv" %in% list.files(path = here::here("data"))){
+  expectations <- readr::read_csv(here::here("data/expectations.csv")) |>
+    dplyr::filter(!is.na(.data$cohort_name))
+}else{
+  expectations <- tibble(name = NA_character_,
+                         estimate = NA_character_,
+                         value = NA_character_)
 }
 
 cli::cli_inform("Saving data for shiny")
@@ -155,7 +165,8 @@ save(dataFiltered,
      choices,
      min_incidence_start,
      max_incidence_end,
+     expectations,
      file = here::here("data", "appData.RData"))
 
-rm(result, data, dataFiltered, choices, selected, values, values_subset)
+rm(result, data, expectations, dataFiltered, choices, selected, values, values_subset)
 

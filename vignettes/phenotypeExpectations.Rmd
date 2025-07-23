@@ -29,10 +29,10 @@ We can define a set of custom expectations. So that we can visualise these easil
 library(dplyr)
 library(PhenotypeR)
 
-knee_oa <- tibble(name = "knee_osteoarthritis",
+knee_oa <- tibble(cohort_name = "knee_osteoarthritis",
                   estimate = c("Median age", "Proportion male"),
                   value = c("60 to 65", "45%"))
-knee_replacement <- tibble(name = "knee_replacement",
+knee_replacement <- tibble(cohort_name = "knee_replacement",
                            estimate = c("Median age", "Proportion male"),
                            value = c("65 to 70", "50%"))
 ```
@@ -73,7 +73,7 @@ getCohortExpectations(chat = chat,
   tableCohortExpectations()
 ```
 
-Instead of passing our cohort names, we could instead pass our results set from `phenotypeDiagnostics()` instead. In this case we'll automaitcally get expectations for each of the study cohorts in our results.
+Instead of passing our cohort names, we could instead pass our results set from `phenotypeDiagnostics()` instead. In this case we'll automatically get expectations for each of the study cohorts in our results.
 ```{r, eval=FALSE}
 library(DBI)
 library(duckdb)

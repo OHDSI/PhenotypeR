@@ -27,7 +27,8 @@ getCohortExpectations <- function(chat, phenotypes){
   }
 
   expectations |>
-    dplyr::bind_rows()
+    dplyr::bind_rows() |>
+    dplyr::rename("cohort_name" = "name")
 
 }
 
@@ -142,20 +143,20 @@ tableCohortExpectations <- function(expectations, type = "reactable"){
 
   omopgenerics::assertChoice(type, visOmopResults::tableType())
   if(isFALSE(all(
-    c("name", "estimate", "value") %in%
+    c("cohort_name", "estimate", "value") %in%
   colnames(expectations)))){
-    cli::cli_abort("expectations must be a dataframe or tibble with the following columns: name, estimate, and value")
+    cli::cli_abort("expectations must be a dataframe or tibble with the following columns: cohort_name, estimate, and value")
   }
 
   expectations <- expectations |>
-    dplyr::select(dplyr::all_of(c("name", "estimate", "value")))
+    dplyr::select(dplyr::all_of(c("cohort_name", "estimate", "value")))
 
   # custom reactable
   if(type == "reactable"){
   rlang::check_installed("reactable")
-  leaders <- !duplicated(expectations$name)
+  leaders <- !duplicated(expectations$cohort_name)
   reactable::reactable(
-    expectations[leaders, "name", drop = FALSE],
+    expectations[leaders, "cohort_name", drop = FALSE],
     bordered = FALSE,
     onClick = "expand",
     resizable = TRUE,
@@ -167,13 +168,13 @@ tableCohortExpectations <- function(expectations, type = "reactable"){
       headerStyle = list(display = "none")
     ),
     columns = list(
-      name = reactable::colDef(
+      cohort_name = reactable::colDef(
         name = NULL
       )
     ),
     details = function(index) {
-      person <- expectations$name[leaders][index]
-      rows <- expectations[expectations$name == person, ]
+      person <- expectations$cohort_name[leaders][index]
+      rows <- expectations[expectations$cohort_name == person, ]
       lines <- lapply(seq_len(nrow(rows)), function(i) {
         htmltools::div(
           style = "
@@ -195,7 +196,7 @@ tableCohortExpectations <- function(expectations, type = "reactable"){
   } else {
     rlang::check_installed("visOmopResults", version = "1.0.0")
     visOmopResults::visTable(expectations,
-                             groupColumn = "name",
+                             groupColumn = "cohort_name",
                              rename = c("Characteristic" = "estimate",
                                         "Expectation" = "value"),
                              type = type)

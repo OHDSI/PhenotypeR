@@ -12,3 +12,4 @@ inst/shiny/*.RData
 inst/shiny/data/appData.RData
 R/extra.R
 CRAN-SUBMISSION
+expectations.csv
