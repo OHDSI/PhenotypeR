@@ -31,16 +31,20 @@ library(PhenotypeR)
 
 knee_oa <- tibble(cohort_name = "knee_osteoarthritis",
                   estimate = c("Median age", "Proportion male"),
-                  value = c("60 to 65", "45%"))
+                  value = c("60 to 65", "45%"),
+                  source = "Clinician")
 knee_replacement <- tibble(cohort_name = "knee_replacement",
                            estimate = c("Median age", "Proportion male"),
-                           value = c("65 to 70", "50%"))
+                           value = c("65 to 70", "50%"),
+                           source = "Clinician")
+
+expectations <- bind_rows(knee_oa, knee_replacement)
 ```
 
 Now we have our structured expectaitions, we can quickly create a summary of them. We'll see in the next vignette how we can then also include them in our shiny app.
 
 ```{r, warning=FALSE, message=FALSE}
-tableCohortExpectations(bind_rows(knee_oa, knee_replacement))
+tableCohortExpectations(expectations)
 ```
 
 ## LLM based expectations via ellmer
