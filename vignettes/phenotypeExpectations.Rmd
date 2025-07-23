@@ -29,10 +29,10 @@ We can define a set of custom expectations. So that we can visualise these easil
 library(dplyr)
 library(PhenotypeR)
 
-knee_oa <- tibble(name = "knee_osteoarthritis",
+knee_oa <- tibble(cohort_name = "knee_osteoarthritis",
                   estimate = c("Median age", "Proportion male"),
                   value = c("60 to 65", "45%"))
-knee_replacement <- tibble(name = "knee_replacement",
+knee_replacement <- tibble(cohort_name = "knee_replacement",
                            estimate = c("Median age", "Proportion male"),
                            value = c("65 to 70", "50%"))
 ```
