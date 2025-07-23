@@ -151,7 +151,8 @@ if(!is.null(selected$incidence_grouping_incidence_end_date)){
 
 # Load expectations results
 if("expectations.csv" %in% list.files(path = here::here("data"))){
-  expectations <- readr::read_csv(here::here("data/expectations.csv"))
+  expectations <- readr::read_csv(here::here("data/expectations.csv")) |>
+    dplyr::filter(!is.na(.data$cohort_name))
 }else{
   expectations <- tibble(name = NA_character_,
                          estimate = NA_character_,

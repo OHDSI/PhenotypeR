@@ -252,3 +252,9 @@ validateFilteredResult <- function(result){
     validate("No results found for selected inputs")
   }
 }
+
+validateExpectations <- function(expectations){
+  if (nrow(expectations) == 0) {
+    validate("No expectations results found")
+  }
+}
