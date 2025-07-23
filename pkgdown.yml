@@ -2,14 +2,14 @@ pandoc: 3.1.11
 pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
-  a01_PhenotypeDiagnostics: a01_PhenotypeDiagnostics.html
-  a02_ShinyDiagnostics: a02_ShinyDiagnostics.html
-  a03_DatabaseDiagnostics: a03_DatabaseDiagnostics.html
-  a04_CodelistDiagnostics: a04_CodelistDiagnostics.html
-  a05_CohortDiagnostics: a05_CohortDiagnostics.html
-  a07_PopulationDiagnostics: a07_PopulationDiagnostics.html
+  CodelistDiagnostics: CodelistDiagnostics.html
+  CohortDiagnostics: CohortDiagnostics.html
+  DatabaseDiagnostics: DatabaseDiagnostics.html
+  PhenotypeDiagnostics: PhenotypeDiagnostics.html
   phenotypeExpectations: phenotypeExpectations.html
-last_built: 2025-07-22T11:42Z
+  PopulationDiagnostics: PopulationDiagnostics.html
+  ShinyDiagnostics: ShinyDiagnostics.html
+last_built: 2025-07-23T05:49Z
 urls:
   reference: https://ohdsi.github.io/PhenotypeR/reference
   article: https://ohdsi.github.io/PhenotypeR/articles
