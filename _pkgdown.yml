@@ -5,23 +5,35 @@ template:
 navbar:
   structure:
     left:  [intro, reference, articles, news, custom_shiny]
-    right: [github, lightswitch]
+    right: [githublink]
   components:
     custom_shiny:
       text: "PhenotypeR shiny App"
       href: https://dpa-pde-oxford.shinyapps.io/PhenotypeRShiny/
-
-pagetitle: Articles
-sections:
-- title: All vignettes
-  contents:
-  - PhenotypeDiagnostics
-  - PhenotypeExpectations
-  - ShinyDiagnostics
-  - DatabaseDiagnostics
-  - CodelistDiagnostics
-  - CohortDiagnostics
-  - PopulationDisgnostics
+    githublink:
+      icon: fa-github
+      href: https://github.com/OHDSI/PhenotypeR
+      aria-label: GitHub
+    articles:
+      text: Articles
+      menu:
+      - text: "Main functionality"
+      - text: PhenotypeDiagnostics
+        href: articles/PhenotypeDiagnostics.html
+      - text: PhenotypeExpectations
+        href: articles/PhenotypeExpectations.html
+      - text: ShinyDiagnostics
+        href: articles/ShinyDiagnostics.html
+      - text: -------
+      - text: "Individual functions"
+      - text: DatabaseDiagnostics
+        href: articles/DatabaseDiagnostics.html
+      - text: CodelistDiagnostics
+        href: articles/CodelistDiagnostics.html
+      - text: CohortDiagnostics
+        href: articles/CohortDiagnostics.html
+      - text: PopulationDisgnostics
+        href: articles/PopulationDisgnostics.html
 
 reference:
 - subtitle: Run all diagnostics
