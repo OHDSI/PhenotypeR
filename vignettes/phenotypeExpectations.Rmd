@@ -73,7 +73,7 @@ getCohortExpectations(chat = chat,
   tableCohortExpectations()
 ```
 
-Instead of passing our cohort names, we could instead pass our results set from `phenotypeDiagnostics()` instead. In this case we'll automaitcally get expectations for each of the study cohorts in our results.
+Instead of passing our cohort names, we could instead pass our results set from `phenotypeDiagnostics()` instead. In this case we'll automatically get expectations for each of the study cohorts in our results.
 ```{r, eval=FALSE}
 library(DBI)
 library(duckdb)

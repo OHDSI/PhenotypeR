@@ -57,14 +57,6 @@ cli::cli_inform("Loading data")
 load(here::here("data", "appData.RData"))
 cli::cli_inform("Data loaded") 
 
-# add expectations
-# replace the below with your expectations
-# for example, use PhenotypeR::getCohortExpectations() to generate these
-expectations <- tibble(name = NA_character_,
-                       estimate = NA_character_,
-                       value = NA_character_)
-
-
 plotComparedLsc <- function(lsc, cohorts, imputeMissings, colour = NULL, facet = NULL){
   plot_data <- lsc |>
     filter(group_level %in% c(cohorts)) |>

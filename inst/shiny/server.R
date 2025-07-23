@@ -1916,7 +1916,9 @@ server <- function(input, output, session) {
         validate("No expectations found.")
       }
       
-      PhenotypeR::tableCohortExpectations(expectations)
+      expectations |>
+        dplyr::filter(name %in% shared_cohort_names()) |>
+        PhenotypeR::tableCohortExpectations()
     })
   })
 }
