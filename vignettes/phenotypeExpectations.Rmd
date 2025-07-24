@@ -76,6 +76,10 @@ getCohortExpectations(chat = chat,
                       phenotypes = c("ankle sprain", "prostate cancer", "morphine")) |> 
   tableCohortExpectations()
 ```
+```{r, echo=FALSE}
+readr::read_csv("inst/cohort_expectations/vignette_phenotype_expectations/expectations_1.csv") |>
+    tableCohortExpectations()
+```
 
 Instead of passing our cohort names, we could instead pass our results set from `phenotypeDiagnostics()` instead. In this case we'll automatically get expectations for each of the study cohorts in our results.
 ```{r, eval=FALSE}
@@ -100,9 +104,12 @@ cdm$my_cohort <- conceptCohort(cdm = cdm,
 
 diag_results <- phenotypeDiagnostics(cdm$my_cohort)
 
-
 getCohortExpectations(chat = chat, 
                       phenotypes = diag_results) |> 
+  tableCohortExpectations()
+```
+```{r, echo=FALSE}
+readr::read_csv("inst/expectations_2.csv") |>
   tableCohortExpectations()
 ```
 
