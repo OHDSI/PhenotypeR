@@ -8,7 +8,8 @@ shinyDiagnostics(
   result,
   directory,
   minCellCount = 5,
-  open = rlang::is_interactive()
+  open = rlang::is_interactive(),
+  expectations = NULL
 )
 }
 \arguments{
@@ -20,6 +21,8 @@ shinyDiagnostics(
 
 \item{open}{If TRUE, the shiny app will be launched in a new session. If
 FALSE, the shiny app will be created but not launched.}
+
+\item{expectations}{Data frame or tibble with cohort expectations. It must contain the following columns: cohort_name, estimate, value, and source.}
 }
 \value{
 A shiny app
@@ -37,12 +40,17 @@ includes:
 \examples{
 \donttest{
 library(PhenotypeR)
+library(dplyr)
 
 cdm <- mockPhenotypeR()
 
 result <- phenotypeDiagnostics(cdm$my_cohort)
+expectations <- tibble("cohort_name" = rep(c("cohort_1", "cohort_2"),3),
+                       "value" = c(rep(c("Mean age"),2), rep("Male percentage",2), rep("Survival probability after 5y",2)),
+                       "estimate" = c("32", "54", "25\%", "74\%", "95\%", "21\%"),
+                       "source" = rep(c("AlbertAI"),6))
 
-shinyDiagnostics(result, tempdir())
+shinyDiagnostics(result, tempdir(), expectations = expectations)
 
 CDMConnector::cdmDisconnect(cdm = cdm)
 }

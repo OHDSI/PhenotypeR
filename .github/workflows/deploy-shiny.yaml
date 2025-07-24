@@ -9,6 +9,8 @@ on:
 jobs:
   deploy:
     runs-on: ${{ matrix.config.os }}
+    permissions:
+      contents: write
 
     name: ${{ matrix.config.os }} (${{ matrix.config.r }})
 

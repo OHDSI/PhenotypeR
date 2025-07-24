@@ -16,6 +16,7 @@
 #' @param minCellCount Minimum cell count for suppression when exporting results.
 #' @param open If TRUE, the shiny app will be launched in a new session. If
 #' FALSE, the shiny app will be created but not launched.
+#' @inheritParams expectationsDoc
 #'
 #' @return A shiny app
 #' @export
@@ -23,20 +24,31 @@
 #' @examples
 #' \donttest{
 #' library(PhenotypeR)
+#' library(dplyr)
 #'
 #' cdm <- mockPhenotypeR()
 #'
 #' result <- phenotypeDiagnostics(cdm$my_cohort)
+#' expectations <- tibble("cohort_name" = rep(c("cohort_1", "cohort_2"),3),
+#'                        "value" = c(rep(c("Mean age"),2),
+#'                                    rep("Male percentage",2),
+#'                                    rep("Survival probability after 5y",2)),
+#'                        "estimate" = c("32", "54", "25%", "74%", "95%", "21%"),
+#'                        "source" = rep(c("AlbertAI"),6))
 #'
-#' shinyDiagnostics(result, tempdir())
+#' shinyDiagnostics(result, tempdir(), expectations = expectations)
 #'
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
 shinyDiagnostics <- function(result,
                              directory,
                              minCellCount = 5,
-                             open = rlang::is_interactive()){
+                             open = rlang::is_interactive(),
+                             expectations = NULL){
   folderName <- "PhenotypeRShiny"
+  omopgenerics::assertTable(expectations,
+                            columns = c("cohort_name", "estimate", "value", "source"),
+                            allowExtraColumns = TRUE, null = TRUE)
 
   # check if directory needs to be overwritten directory
   directory <- validateDirectory(directory, folderName)
@@ -51,11 +63,22 @@ shinyDiagnostics <- function(result,
   from <- system.file("shiny", package = "PhenotypeR")
   invisible(copyDirectory(from = from, to = to))
 
-  # export data
+  # export summarised results
   omopgenerics::exportSummarisedResult(result = result,
                                        minCellCount = minCellCount,
                                        fileName = "result.csv",
                                        path = file.path(to, "data", "raw"))
+  # export expectations
+  dir.create(file.path(to,"data","raw","expectations"))
+  if(!is.null(expectations)){
+    readr::write_csv(expectations, file = file.path(to, "data", "raw", "expectations", "expectations.csv"))
+  }else{
+    dplyr::tibble("cohort_name" = NA_character_,
+                   "value" = NA_character_,
+                   "estimate" = NA_character_,
+                   "source" = NA_character_) |>
+      readr::write_csv(file = file.path(to, "data", "raw", "expectations", "expectations.csv"))
+  }
 
   # open project
   if (isTRUE(open)) {

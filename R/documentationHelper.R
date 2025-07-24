@@ -1,5 +1,13 @@
 # Argument descriptions repeated > 1:
 
+#' Helper for consistent documentation of `expectations`.
+#'
+#' @param expectations Data frame or tibble with cohort expectations. It must contain the following columns: cohort_name, estimate, value, and source.
+#'
+#' @name expectationsDoc
+#' @keywords internal
+NULL
+
 #' Helper for consistent documentation of `cohort`.
 #'
 #' @param cohort Cohort table in a cdm reference
