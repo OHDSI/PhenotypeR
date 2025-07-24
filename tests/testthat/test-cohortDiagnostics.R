@@ -17,7 +17,7 @@ test_that("run with a single cohort", {
                           schema ="main", overwrite = TRUE)
 
   expect_no_error(result <- cdm$my_cohort |>
-    cohortDiagnostics())
+    cohortDiagnostics(matchedSample = 0))
 
   # Check all the expected summarised results have been calculated)
   expect_true(all(c((dplyr::pull(omopgenerics::settings(result), "result_type") |> unique()) %in%
