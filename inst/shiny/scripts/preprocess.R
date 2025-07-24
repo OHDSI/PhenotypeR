@@ -150,7 +150,8 @@ if(!is.null(selected$incidence_grouping_incidence_end_date)){
 }
 
 # Load expectations results
-expectations <- readr::read_csv(list.files(path = file.path("data","raw","expectations"), full.names = TRUE))  |>
+list_exp <- list.files(path = file.path("data","raw","expectations"), full.names = TRUE)
+expectations <- dplyr::bind_rows(purrr:::map(.f = ~readr::read_csv(.), .x = list_exp))  |>
   dplyr::filter(!is.na(.data$cohort_name))
 
 cli::cli_inform("Saving data for shiny")
