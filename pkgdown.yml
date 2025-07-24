@@ -6,10 +6,10 @@ articles:
   CohortDiagnostics: CohortDiagnostics.html
   DatabaseDiagnostics: DatabaseDiagnostics.html
   PhenotypeDiagnostics: PhenotypeDiagnostics.html
-  phenotypeExpectations: phenotypeExpectations.html
+  PhenotypeExpectations: PhenotypeExpectations.html
   PopulationDiagnostics: PopulationDiagnostics.html
   ShinyDiagnostics: ShinyDiagnostics.html
-last_built: 2025-07-24T16:30Z
+last_built: 2025-07-24T16:50Z
 urls:
   reference: https://ohdsi.github.io/PhenotypeR/reference
   article: https://ohdsi.github.io/PhenotypeR/articles
