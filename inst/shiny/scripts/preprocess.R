@@ -150,16 +150,8 @@ if(!is.null(selected$incidence_grouping_incidence_end_date)){
 }
 
 # Load expectations results
-if("expectations.csv" %in% list.files(path = here::here("data"))){
-  expectations <- readr::read_csv(here::here("data/expectations.csv")) |>
-    dplyr::filter(!is.na(.data$cohort_name))
-}else{
-  expectations <- tibble(cohort_name = NA_character_,
-                         estimate = NA_character_,
-                         value = NA_character_,
-                         diagnostics = NA_character_,
-                         source = NA_character_)
-}
+expectations <- readr::read_csv(here::here("data","raw","expectations","expectations.csv"))  |>
+  dplyr::filter(!is.na(.data$cohort_name))
 
 cli::cli_inform("Saving data for shiny")
 save(dataFiltered,

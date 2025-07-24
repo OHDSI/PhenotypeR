@@ -143,7 +143,7 @@ fetchExpectations <- function(chat, name){
 
 #' Create a table summarising cohort expectations
 #'
-#' @param expectations Data frame or tibble with cohort expectations
+#' @inheritParams expectations
 #' @param type Table type to view results. See visOmopResults::tableType()
 #' for supported tables.
 #'
