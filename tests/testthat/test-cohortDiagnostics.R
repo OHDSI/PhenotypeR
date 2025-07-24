@@ -17,7 +17,7 @@ test_that("run with a single cohort", {
                           schema ="main", overwrite = TRUE)
 
   expect_no_error(result <- cdm$my_cohort |>
-    cohortDiagnostics(match = FALSE))
+    cohortDiagnostics())
 
   # Check all the expected summarised results have been calculated)
   expect_true(all(c((dplyr::pull(omopgenerics::settings(result), "result_type") |> unique()) %in%
@@ -49,8 +49,8 @@ test_that("run with multiple cohorts", {
   db <- DBI::dbConnect(duckdb::duckdb())
   cdm <- CDMConnector::copyCdmTo(con = db, cdm = cdm_local,
                                  schema ="main", overwrite = TRUE)
-  expect_warning(result <- cdm$my_cohort |>
-                   cohortDiagnostics())
+  expect_no_error(result <- cdm$my_cohort |>
+                    cohortDiagnostics())
 
   # check density is being calculated
   expect_true(any(stringr::str_detect(
@@ -97,7 +97,7 @@ test_that("run with multiple cohorts", {
 
   # empty death table
   cdm <- omopgenerics::emptyOmopTable(cdm, name = "death")
-  expect_warning(cohortDiagnostics(cdm$my_cohort))
+  expect_no_error(cohortDiagnostics(cdm$my_cohort))
 
   # check survival analysis is being done
   cdm_local <- omock::mockCdmReference() |>
