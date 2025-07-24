@@ -43,6 +43,7 @@ fetchExpectations <- function(chat, name){
   type_my_df <- ellmer::type_array(
     items = ellmer::type_object(
       clinical_description = ellmer::type_string(),
+      frequently_seen = ellmer::type_string(),
       median_age_estimate_low = ellmer::type_number(),
       median_age_estimate_high = ellmer::type_number(),
       median_age_elaboration = ellmer::type_string(),
@@ -64,6 +65,7 @@ fetchExpectations <- function(chat, name){
   chat$chat_structured(
     ellmer::interpolate(
       "Give a one or two sentence clinical description of {{name}}, with focus on disease aetiology.
+       Give a one or two sentence terse summary of how frequently seen is {{name}} and whether we can expect to identify cases in real-world health care data.
        What is the median age for incident cases presenting with {{name}} - give a range with a low and high plausible value? Provide one terse and simple sentence giving elaboration on age at which individuals typically present.
        What proportion would you expect of {{name}} cases to be male (between 0 and 1) - give a range with a low and high plausible value? Provide one terse and simple sentence giving elaboration on sex of individuals presenting.
        What is expected median survival 1 year and 5 years after presenting with with {{name}} (between 0 all died and 1 all survived) - give a range with a low and high plausible value? Provide one terse and simple sentence giving elaboration on mortality of individuals presenting.
@@ -110,6 +112,7 @@ fetchExpectations <- function(chat, name){
     dplyr::select(!medications_elaboration) |>
     dplyr::mutate_all(as.character) %>%
     dplyr::rename("Clinical description" = "clinical_description",
+                  "Frequency" = "frequently_seen",
                   "Median age of incident cases" = "median_age",
                   "Percentage male" = "proportion_male",
                   "Survival at five years" = "five_year_survival",
@@ -117,6 +120,7 @@ fetchExpectations <- function(chat, name){
                   "Frequently seen signs and symptoms" = "signs_symptoms",
                   "Frequently seen medications" = "medications") |>
     tidyr::pivot_longer(cols = c("Clinical description",
+                                 "Frequency",
                                  "Median age of incident cases",
                                  "Percentage male",
                                  "Survival at five years",
@@ -126,7 +130,8 @@ fetchExpectations <- function(chat, name){
                         names_to = "estimate") %>%
     dplyr::mutate(name = name) |>
     dplyr::relocate("name") |>
-    dplyr::mutate("diagnostics" = c("cohort_characteristics",
+    dplyr::mutate("diagnostics" = c("cohort_count",
+                                    "cohort_count",
                                 "cohort_characteristics",
                                 "cohort_characteristics",
                                 "cohort_survival",
