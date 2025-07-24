@@ -68,7 +68,6 @@ cdm$injuries <- conceptCohort(cdm = cdm,
 We can run cohort diagnostics analyses for each of our overall cohorts like so:
 ```{r}
 cohort_diag <- cohortDiagnostics(cdm$injuries, 
-                                 match = TRUE, 
                                  matchedSample = NULL,
                                  survival = TRUE)
 ```
@@ -88,9 +87,9 @@ Cohort diagnostics builds on [CohortCharacteristics](https://darwin-eu.github.io
 -   **Cohort survival:** If `survival = TRUE`, summarises the survival until the event of death (if death table is present in the cdm) using  
 [estimateSingleEventSurvival()](https://darwin-eu-dev.github.io/CohortSurvival/reference/estimateSingleEventSurvival.html). 
 
-If `match = TRUE`, the analyses **cohort characteristics**, **cohort age distribution**, **cohort large scale characteristics**, and **cohort survival** will also be performed in a matched cohort. The matched cohort will be created based on year of birth and sex (see [matchCohorts()](https://ohdsi.github.io/CohortConstructor/reference/matchCohorts.html) function in CohortConstructor package). This can help us to compare the results in our cohorts to those obtain in the matched cohort, representing the general population. Notice that by setting `match = TRUE`, the analysis will be performed in: (1) the original cohort, (2) individuals in the original cohorts that have a match (named the sampled cohort), and (3) the matched cohort. 
+The analyses **cohort characteristics**, **cohort age distribution**, **cohort large scale characteristics**, and **cohort survival** will also be performed (by default) in a matched cohort. The matched cohort will be created based on year of birth and sex (see [matchCohorts()](https://ohdsi.github.io/CohortConstructor/reference/matchCohorts.html) function in CohortConstructor package). This can help us to compare the results in our cohorts to those obtain in the matched cohort, representing the general population. Notice that the analysis will be performed in: (1) the original cohort, (2) individuals in the original cohorts that have a match (named the sampled cohort), and (3) the matched cohort. 
 
-As the matched process can be computationally expensive, specially when the cohorts are very big, we can reduce the matching analysis to a subset of participants from the original cohort using the `matchedSample` parameter. 
+As the matched process can be computationally expensive, specially when the cohorts are very big, we can reduce the matching analysis to a subset of participants from the original cohort using the `matchedSample` parameter. Alternatively, if we do not want to create the matched cohorts, we can use `matchedSample = 0`.
 
 The output of `cohortDiagnostics()` will be a summarised result table.
 

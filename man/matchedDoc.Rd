@@ -2,14 +2,13 @@
 % Please edit documentation in R/documentationHelper.R
 \name{matchedDoc}
 \alias{matchedDoc}
-\title{Helper for consistent documentation of `matched` and `match`.}
+\title{Helper for consistent documentation of `matched`.}
 \arguments{
-\item{match}{Boolean variable. Whether to conduct the analysis for the matched cohorts (TRUE) or not (FALSE).}
-
-\item{matchedSample}{Only if match = TRUE. The number of people to take a random sample for
-matching. If NULL, no sampling will be performed.}
+\item{matchedSample}{The number of people to take a random sample for
+matching. If `matchedSample = NULL`, no sampling will be performed. If `matchedSample = 0`, no
+matched cohorts will be created.}
 }
 \description{
-Helper for consistent documentation of `matched` and `match`.
+Helper for consistent documentation of `matched`.
 }
 \keyword{internal}

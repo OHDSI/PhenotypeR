@@ -25,11 +25,11 @@ NULL
 NULL
 
 
-#' Helper for consistent documentation of `matched` and `match`.
+#' Helper for consistent documentation of `matched`.
 #'
-#' @param match Boolean variable. Whether to conduct the analysis for the matched cohorts (TRUE) or not (FALSE).
-#' @param matchedSample Only if match = TRUE. The number of people to take a random sample for
-#' matching. If NULL, no sampling will be performed.
+#' @param matchedSample The number of people to take a random sample for
+#' matching. If `matchedSample = NULL`, no sampling will be performed. If `matchedSample = 0`, no
+#' matched cohorts will be created.
 #'
 #' @name matchedDoc
 #' @keywords internal

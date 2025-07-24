@@ -70,12 +70,9 @@ We can specify which analysis we want to perform by setting to TRUE or FALSE eac
 ```{r, eval=FALSE}
 result <- phenotypeDiagnostics(
   cohort = cdm$my_cohort, 
-  databaseDiagnostics = TRUE, 
-  codelistDiagnostics = TRUE, 
-  cohortDiagnostics   = TRUE, 
-  match = TRUE,
+  diagnostics = c("databaseDiagnostics", "codelistDiagnostics", 
+                  "cohortDiagnostics", "populationDiagnostics"),
   matchedSample = 1000
-  populationDiagnostics = TRUE,
   populationSample = 1e+06,
   populationDateRange = as.Date(c(NA, NA))
   )
@@ -86,8 +83,7 @@ Notice that we have three additional arguments:
 
 -   `populationSample`: It allows to specify a number of people that randomly will be extracted from the CDM to perform the **Population diagnostics** analysis. If NULL, all the participants in the CDM will be included. It helps to reduce the computational time. This is particularly useful when outcomes of interest are relatively common, but when they are rarer we may wish to maximise statistical power and calculate estimates for the dataset as a whole in which case we would set this argument to NULL.
 -   `populationDateRange`: We can use it to specify the time period when we want to perform our **Population diagnostics** analysis.
--   `match`: If set to TRUE, our study cohorts will be matched with people with similar age and sex in the database, and will perform a large-scale characterisation on our original cohort, the sampled cohort (those participants from our cohort that have found a match) and the matched cohort. If set to FALSE, cohortDiagnostics will only be performed on our original cohorts.
--   `matchedSample`: Similar to populationSample, this arguments subsets a random sample of people from our cohort and performs the matched analysis on this sample. If we have very large cohorts we can use this to save computational time. 
+-   `matchedSample`: Similar to populationSample, this arguments subsets a random sample of people from our cohort and performs the matched analysis on this sample. If we have very large cohorts we can use this to save computational time. If we do not want to create matched cohorts, we can define `matchedSample = 0`. 
 
 ## Save the results
 To save the results, we can use [exportSummarisedResult](https://darwin-eu.github.io/omopgenerics/reference/exportSummarisedResult.html) function from [omopgenerics](https://darwin-eu.github.io/omopgenerics/index.html) R Package:
