@@ -1,5 +1,13 @@
 # Argument descriptions repeated > 1:
 
+#' Helper for consistent documentation of `diagnostics`
+#'
+#' @param diagnostics A vector indicating which diagnostic analyses to perform. Options include:
+#' `databaseDiagnostics`, `codelistDiagnostics`, `cohortDiagnostics`, and `populationDiagnostics`.
+#' @name diagnosticsDoc
+#' @keywords  internal
+NULL
+
 #' Helper for consistent documentation of `cohort`.
 #'
 #' @param cohort Cohort table in a cdm reference
@@ -19,9 +27,9 @@ NULL
 
 #' Helper for consistent documentation of `matched` and `match`.
 #'
-#' @param match Boolean variable. Whether to conduct the analysis for the matched cohorts (TRUE) or not (FALSE).
-#' @param matchedSample Only if match = TRUE. The number of people to take a random sample for
-#' matching. If NULL, no sampling will be performed.
+#' @param matchedSample The number of people to take a random sample for
+#' matching. If `matchedSample = NULL`, no sampling will be performed. If `matchedSample = 0`,
+#' no matching cohorts will be created.
 #'
 #' @name matchedDoc
 #' @keywords internal

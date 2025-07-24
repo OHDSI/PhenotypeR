@@ -27,10 +27,7 @@ test_that("overall diagnostics function", {
 
   # Only database diagnostics
   dd_only <- phenotypeDiagnostics(cdm$my_cohort,
-                                  databaseDiagnostics = TRUE,
-                                  codelistDiagnostics = FALSE,
-                                  cohortDiagnostics = FALSE,
-                                  match = TRUE,
+                                  diagnostics = "databaseDiagnostics",
                                   populationDiagnostics = FALSE)
   expect_true("summarise_omop_snapshot" %in%
                 (settings(dd_only) |> dplyr::pull("result_type")))
@@ -39,29 +36,19 @@ test_that("overall diagnostics function", {
 
   # Only codelist diagnostics
   expect_identical(phenotypeDiagnostics(cdm$my_cohort,
-                                        databaseDiagnostics = FALSE,
-                                        codelistDiagnostics = TRUE,
-                                        cohortDiagnostics = FALSE,
-                                        match = FALSE,
+                                        diagnostics = c("codelistDiagnostics"),
                                         populationDiagnostics = FALSE),
                    omopgenerics::emptySummarisedResult())
 
 
   # Only cohort diagnostics
   expect_identical(phenotypeDiagnostics(cdm$my_cohort,
-                                        databaseDiagnostics = FALSE,
-                                        codelistDiagnostics = FALSE,
-                                        cohortDiagnostics = FALSE,
-                                        match = TRUE,
-                                        populationDiagnostics = FALSE),
+                                        diagnostics = c("")),
                    omopgenerics::emptySummarisedResult())
 
 
   cohort_diag_only <-  phenotypeDiagnostics(cdm$my_cohort,
-                                            databaseDiagnostics = FALSE,
-                                            codelistDiagnostics = FALSE,
-                                            cohortDiagnostics = TRUE,
-                                            match = FALSE,
+                                            diagnostics = "cohortDiagnostics",
                                             populationDiagnostics = FALSE)
   expect_true(
     all(c("summarise_characteristics", "summarise_table",
@@ -77,29 +64,16 @@ test_that("overall diagnostics function", {
                                                         "cohort_2", "cohort_2 &&& cohort_1"))
   )
 
-  cohort_diag_only <-  phenotypeDiagnostics(cdm$my_cohort,
-                                            databaseDiagnostics = FALSE,
-                                            codelistDiagnostics = FALSE,
-                                            cohortDiagnostics = FALSE,
-                                            match = TRUE,
-                                            populationDiagnostics = FALSE)
-  expect_identical(cohort_diag_only, expected = omopgenerics::emptySummarisedResult())
-
   cohort_pop_diag_only <-  phenotypeDiagnostics(cdm$my_cohort,
-                                            databaseDiagnostics = FALSE,
-                                            codelistDiagnostics = FALSE,
-                                            cohortDiagnostics = FALSE,
-                                            match = FALSE,
-                                            populationDiagnostics = TRUE)
+                                                diagnostics = "populationDiagnostics",
+                                                populationDiagnostics = TRUE)
   expect_true(
     all(c("incidence", "incidence_attrition", "prevalence", "prevalence_attrition") %in%
           unique(settings(cohort_pop_diag_only) |>
                    dplyr::pull("result_type"))))
 
-  expect_error(phenotypeDiagnostics(cdm$my_cohort, databaseDiagnostics = "hello"))
-  expect_error(phenotypeDiagnostics(cdm$my_cohort, codelistDiagnostics = 1))
-  expect_error(phenotypeDiagnostics(cdm$my_cohort, cohortDiagnostics   = "f"))
-  expect_error(phenotypeDiagnostics(cdm$my_cohort, match  = -10))
-  expect_error(phenotypeDiagnostics(cdm$my_cohort, populationDiagnostics = "hhh"))
-
+  expect_error(phenotypeDiagnostics(cdm$my_cohort, matchedSample = -10))
+  expect_error(phenotypeDiagnostics(cdm$my_cohort, diagnostics = "hola"))
+  expect_error(phenotypeDiagnostics(cdm$my_cohort, populationSample = "he"))
+  expect_error(phenotypeDiagnostics(cdm$my_cohort, populationDateRange = "hola"))
 })

@@ -22,18 +22,17 @@
 #'
 #' cdm <- mockPhenotypeR()
 #'
-#' result <- cohortDiagnostics(cdm$my_cohort,
-#'                             match = TRUE)
+#' result <- cohortDiagnostics(cdm$my_cohort)
 #'
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
 
-cohortDiagnostics <- function(cohort, survival = FALSE, match = TRUE, matchedSample = 1000){
+cohortDiagnostics <- function(cohort, survival = FALSE, matchedSample = 1000){
 
   cli::cli_bullets(c("*" = "Starting Cohort Diagnostics"))
 
   # Initial checks ----
-  checksCohortDiagnostics(survival, match, matchedSample)
+  checksCohortDiagnostics(survival, matchedSample)
 
   cdm <- omopgenerics::cdmReference(cohort)
   cohortName <- omopgenerics::tableName(cohort)
@@ -64,7 +63,7 @@ cohortDiagnostics <- function(cohort, survival = FALSE, match = TRUE, matchedSam
       CohortCharacteristics::summariseCohortTiming(estimates = c("median", "q25", "q75", "min", "max", "density"))
   }
 
-  if(match){
+  if(is.null(match) || match != 0){
     cli::cli_bullets(c(">" = "Creating matching cohorts"))
     cdm <- createMatchedCohorts(cdm, tempCohortName, cohortName, cohortIds, matchedSample)
     cdm <- bind(cdm[[cohortName]], cdm[[tempCohortName]], name = tempCohortName)
@@ -205,11 +204,10 @@ createMatchedCohorts <- function(cdm, tempCohortName, cohortName, cohortIds, mat
   return(cdm)
 }
 
-checksCohortDiagnostics <- function(survival, match, matchedSample, call = parent.frame()){
+checksCohortDiagnostics <- function(survival, matchedSample, call = parent.frame()){
   omopgenerics::assertLogical(survival, call = call)
   if(isTRUE(survival)){
     rlang::check_installed("CohortSurvival", version = "1.0.2")
   }
-  omopgenerics::assertLogical(match, call = call)
-  omopgenerics::assertNumeric(matchedSample, integerish = TRUE, min = 1, null = TRUE, length = 1, call = call)
+  omopgenerics::assertNumeric(matchedSample, integerish = TRUE, min = 0, null = TRUE, length = 1, call = call)
 }
