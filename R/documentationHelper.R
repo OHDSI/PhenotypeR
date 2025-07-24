@@ -6,6 +6,13 @@
 #' `databaseDiagnostics`, `codelistDiagnostics`, `cohortDiagnostics`, and `populationDiagnostics`.
 #' @name diagnosticsDoc
 #' @keywords  internal
+
+#' Helper for consistent documentation of `expectations`.
+#'
+#' @param expectations Data frame or tibble with cohort expectations. It must contain the following columns: cohort_name, estimate, value, and source.
+#'
+#' @name expectationsDoc
+#' @keywords internal
 NULL
 
 #' Helper for consistent documentation of `cohort`.
