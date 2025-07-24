@@ -20,7 +20,7 @@ source(here::here("scripts", "functions.R"))
 
 # Create results list
 cli::cli_inform("Importing results")
-result <- omopgenerics::importSummarisedResult(file.path(getwd(),"data", "raw"))
+result <- omopgenerics::importSummarisedResult(file.path(getwd(),"data", "raw"), recursive = FALSE)
 cli::cli_alert_success("Results imported")
 
 if(nrow(result) == 0){
@@ -150,7 +150,7 @@ if(!is.null(selected$incidence_grouping_incidence_end_date)){
 }
 
 # Load expectations results
-expectations <- readr::read_csv(here::here("data","raw","expectations","expectations.csv"))  |>
+expectations <- readr::read_csv(list.files(path = file.path("data","raw","expectations"), full.names = TRUE))  |>
   dplyr::filter(!is.na(.data$cohort_name))
 
 cli::cli_inform("Saving data for shiny")
