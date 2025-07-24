@@ -51,8 +51,11 @@ ui <- fluidPage(
       ## achilles code use -----
       bslib::nav_panel(
         title = "Achilles code use",
+        bslib::accordion(
+          bslib::accordion_panel(
+            title = "Shared inputs",
         tags$div(
-          style = "background-color: #750075; color: white; padding: 10px; font-weight: bold; display: flex; gap: 20px; height: 60px; align-items: center;",
+          style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
           tags$label("Select Database(s):"),
           tags$div(
             style = "width: 225px;",
@@ -76,7 +79,8 @@ ui <- fluidPage(
                        style = "simple"),
             width = "100%"
           )
-        ),
+        )
+        )),
         icon = shiny::icon("database"),
         bslib::layout_sidebar(
           sidebar = bslib::sidebar(width = 400, open = "closed",
@@ -231,8 +235,11 @@ ui <- fluidPage(
       ## Orphan codes -----
       bslib::nav_panel(
         title = "Orphan codes",
+        bslib::accordion(
+          bslib::accordion_panel(
+            title = "Shared inputs",
         tags$div(
-          style = "background-color: #750075; color: white; padding: 10px; font-weight: bold; display: flex; gap: 20px; height: 60px; align-items: center;",
+          style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
           tags$label("Select Database(s):"), # Explicitly use tags$label
           tags$div(
             style = "width: 225px;",
@@ -256,7 +263,8 @@ ui <- fluidPage(
                        style = "simple"),
             width = "100%"
           )
-        ),
+        )
+        )),
         icon = shiny::icon("circle-half-stroke"),
         bslib::layout_sidebar(
           sidebar = bslib::sidebar(width = 400, open = "closed",
@@ -331,8 +339,11 @@ ui <- fluidPage(
       ## Cohort code use -----
       bslib::nav_panel(
         title = "Cohort code use",
+        bslib::accordion(
+          bslib::accordion_panel(
+            title = "Shared inputs",
         tags$div(
-          style = "background-color: #750075; color: white; padding: 10px; font-weight: bold; display: flex; gap: 20px; height: 60px; align-items: center;",
+          style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
           tags$label("Select Database(s):"),
           tags$div(
             style = "width: 225px;",
@@ -373,7 +384,8 @@ ui <- fluidPage(
                        style = "simple"),
             width = "100%"
           )
-        ),
+        )
+        )),
         icon = shiny::icon("chart-column"),
         bslib::layout_sidebar(
           sidebar = bslib::sidebar(width = 400, open = "closed",
@@ -451,8 +463,11 @@ ui <- fluidPage(
       ## Measurement code use -----
       bslib::nav_panel(
         title = "Measurements Code Use",
+        bslib::accordion(
+          bslib::accordion_panel(
+            title = "Shared inputs",
         tags$div(
-          style = "background-color: #750075; color: white; padding: 10px; font-weight: bold; display: flex; gap: 20px; height: 60px; align-items: center;",
+          style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
           tags$label("Select Database(s):"),
           tags$div(
             style = "width: 225px;",
@@ -493,7 +508,8 @@ ui <- fluidPage(
                        style = "simple"),
             width = "100%"
           )
-        ),
+        )
+        )),
         icon = shiny::icon("weight-scale"),
         bslib::navset_card_tab(
           bslib::nav_panel(
@@ -835,8 +851,11 @@ ui <- fluidPage(
       ## Cohort count ----
       bslib::nav_panel(
         title = "Cohort count",
+        bslib::accordion(
+          bslib::accordion_panel(
+            title = "Shared inputs",
         tags$div(
-          style = "background-color: #750075; color: white; padding: 10px; font-weight: bold; display: flex; gap: 20px; height: 60px; align-items: center;",
+          style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
           tags$label("Select Database(s):"),
           tags$div(
             style = "width: 225px;",
@@ -877,7 +896,8 @@ ui <- fluidPage(
                        style = "simple"),
             width = "100%"
           )
-        ),
+        )
+        )),
         icon = shiny::icon("person"),
         accordion(open = FALSE,
                   accordion_panel(
@@ -961,8 +981,11 @@ ui <- fluidPage(
       ## Cohort characteristics -----
       bslib::nav_panel(
         title = "Cohort characteristics",
+        bslib::accordion(
+          bslib::accordion_panel(
+            title = "Shared inputs",
         tags$div(
-          style = "background-color: #750075; color: white; padding: 10px; font-weight: bold; display: flex; gap: 20px; height: 60px; align-items: center;",
+          style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
           tags$label("Select Database(s):"),
           tags$div(
             style = "width: 225px;",
@@ -1003,7 +1026,8 @@ ui <- fluidPage(
                        style = "simple"),
             width = "100%"
           )
-        ),
+        )
+        )),
         icon = shiny::icon("users-gear"),
         accordion(open = FALSE,
                   accordion_panel(
@@ -1116,8 +1140,11 @@ ui <- fluidPage(
       ## Large scale characteristics -----
       bslib::nav_panel(
         title = "Large scale characteristics",
+        bslib::accordion(
+          bslib::accordion_panel(
+            title = "Shared inputs",
         tags$div(
-          style = "background-color: #750075; color: white; padding: 10px; font-weight: bold; display: flex; gap: 20px; height: 60px; align-items: center;",
+          style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
           tags$label("Select Database(s):"),
           tags$div(
             style = "width: 225px;",
@@ -1158,7 +1185,8 @@ ui <- fluidPage(
                        style = "simple"),
             width = "100%"
           )
-        ),
+        )
+        )),
         icon = shiny::icon("arrow-up-right-dots"),
         accordion(open = FALSE,
                   accordion_panel(
@@ -1240,8 +1268,11 @@ ui <- fluidPage(
       ## Compare large scale characteristics -----
       bslib::nav_panel(
         title = "Compare large scale characteristics",
+        bslib::accordion(
+          bslib::accordion_panel(
+            title = "Shared inputs",
         tags$div(
-          style = "background-color: #750075; color: white; padding: 10px; font-weight: bold; display: flex; gap: 20px; height: 60px; align-items: center;",
+          style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
           tags$label("Select Database(s):"),
           tags$div(
             style = "width: 225px;",
@@ -1282,7 +1313,8 @@ ui <- fluidPage(
                        style = "simple"),
             width = "100%"
           )
-        ),
+        )
+        )),
         icon = shiny::icon("people-arrows"),
         accordion(open = FALSE,
                   accordion_panel(
@@ -1445,8 +1477,11 @@ ui <- fluidPage(
       ## Compare cohorts -----
       bslib::nav_panel(
         title = "Compare cohorts",
+        bslib::accordion(
+          bslib::accordion_panel(
+            title = "Shared inputs",
         tags$div(
-          style = "background-color: #750075; color: white; padding: 10px; font-weight: bold; display: flex; gap: 20px; height: 60px; align-items: center;",
+          style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
           tags$label("Select Database(s):"),
           tags$div(
             style = "width: 225px;",
@@ -1487,7 +1522,8 @@ ui <- fluidPage(
                        style = "simple"),
             width = "100%"
           )
-        ),
+        )
+        )),
         icon = shiny::icon("yin-yang"),
         accordion(open = FALSE,
                   accordion_panel(
@@ -1762,8 +1798,11 @@ ui <- fluidPage(
       ## Cohort survival -----
       bslib::nav_panel(
         title = "Cohort survival",
+        bslib::accordion(
+          bslib::accordion_panel(
+            title = "Shared inputs",
         tags$div(
-          style = "background-color: #750075; color: white; padding: 10px; font-weight: bold; display: flex; gap: 20px; height: 60px; align-items: center;",
+          style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
           tags$label("Select Database(s):"),
           tags$div(
             style = "width: 225px;",
@@ -1804,7 +1843,8 @@ ui <- fluidPage(
                        style = "simple"),
             width = "100%"
           )
-        ),
+        )
+        )),
         icon = shiny::icon("chart-gantt"),
         accordion(open = FALSE,
                   accordion_panel(
@@ -1961,8 +2001,11 @@ ui <- fluidPage(
       ## Incidence -----
       bslib::nav_panel(
         title = "Incidence",
+        bslib::accordion(
+          bslib::accordion_panel(
+            title = "Shared inputs",
         tags$div(
-          style = "background-color: #750075; color: white; padding: 10px; font-weight: bold; display: flex; gap: 20px; height: 60px; align-items: center;",
+          style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
           tags$label("Select Database(s):"),
           tags$div(
             style = "width: 225px;",
@@ -2003,7 +2046,8 @@ ui <- fluidPage(
                        style = "simple"),
             width = "100%"
           )
-        ),
+        )
+        )),
         icon = shiny::icon("shower"),
         bslib::layout_sidebar(
           sidebar = bslib::sidebar(width = 400, open = "closed",
@@ -2163,8 +2207,11 @@ ui <- fluidPage(
       ## Prevalence -----
       bslib::nav_panel(
         title = "Prevalence",
-        tags$div(
-          style = "background-color: #750075; color: white; padding: 10px; font-weight: bold; display: flex; gap: 20px; height: 60px; align-items: center;",
+        bslib::accordion(
+          bslib::accordion_panel(
+            title = "Shared inputs",
+            tags$div(
+          style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
           tags$label("Select Database(s):"),
           tags$div(
             style = "width: 225px;",
@@ -2205,7 +2252,8 @@ ui <- fluidPage(
                        style = "simple"),
             width = "100%"
           )
-        ),
+        )
+        )),
         icon = shiny::icon("bath"),
         bslib::layout_sidebar(
           sidebar = bslib::sidebar(width = 400, open = "closed",
