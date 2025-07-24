@@ -1903,7 +1903,29 @@ server <- function(input, output, session) {
   createExpectationsOutput <- function(trigger_input, output_id) {
     filteredExpectations <- eventReactive(trigger_input(), {
       validateExpectations(expectations)
-      expectations |> dplyr::filter(.data$cohort_name %in% shared_cohort_names())
+      
+      section_name <- gsub("_expectations","",output_id)
+      
+      result <- expectations |> 
+        dplyr::filter(.data$cohort_name %in% shared_cohort_names()) 
+
+      section_name <- gsub("_expectations","",output_id)
+      
+      if("diagnostics" %in% colnames(expectations)){
+        result <- result |>
+          mutate(diagnostics = strsplit(diagnostics, ",\\s*"))  |>
+          unnest(diagnostics) 
+        
+        validateExpectationSections(result)
+        
+        result <- result |>
+          dplyr::filter(.data$diagnostics %in% section_name)
+      }
+      
+      if(nrow(result) == 0){
+        validate(glue::glue("No expectations for {section_name}"))
+      }
+      result
     })
     
     output[[output_id]] <- reactable::renderReactable({
@@ -1914,9 +1936,9 @@ server <- function(input, output, session) {
   
   createExpectationsOutput(reactive(input$updateCohortCount), "cohort_count_expectations")
   createExpectationsOutput(reactive(input$updateCohortCharacteristics), "cohort_characteristics_expectations")
-  createExpectationsOutput(reactive(input$updateLSC), "cohort_large_scale_expectations")
-  createExpectationsOutput(reactive(input$updateCompareLSC), "cohort_compare_large_scale_expectations")
-  createExpectationsOutput(reactive(input$updateCompareCohorts), "cohort_compare_expectations")
+  createExpectationsOutput(reactive(input$updateLSC), "large_scale_characteristics_expectations")
+  createExpectationsOutput(reactive(input$updateCompareLSC), "compare_large_scale_characteristics_expectations")
+  createExpectationsOutput(reactive(input$updateCompareCohorts), "compare_cohorts_expectations")
   createExpectationsOutput(reactive(input$updateCohortSurvival), "cohort_survival_expectations")
 }
 

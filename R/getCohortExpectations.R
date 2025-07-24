@@ -30,7 +30,6 @@ getCohortExpectations <- function(chat, phenotypes){
     dplyr::bind_rows() |>
     dplyr::rename("cohort_name" = "name") |>
     dplyr::mutate("source" = chat$get_model())
-
 }
 
 # go and get expectations cohort by cohort
@@ -126,8 +125,14 @@ fetchExpectations <- function(chat, name){
                                  "Frequently seen medications"),
                         names_to = "estimate") %>%
     dplyr::mutate(name = name) |>
-    dplyr::relocate("name")
-
+    dplyr::relocate("name") |>
+    dplyr::mutate("diagnostics" = c("cohort_characteristics",
+                                "cohort_characteristics",
+                                "cohort_characteristics",
+                                "cohort_survival",
+                                "large_scale_characteristics, compare_large_scale_characteristics",
+                                "large_scale_characteristics, compare_large_scale_characteristics",
+                                "large_scale_characteristics, compare_large_scale_characteristics"))
 }
 
 
