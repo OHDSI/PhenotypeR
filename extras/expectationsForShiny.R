@@ -1,4 +1,3 @@
-
 cdm <- omock::mockCdmFromDataset(datasetName = "synpuf-1k_5.3")
 con <- duckdb::dbConnect(drv = duckdb::duckdb())
 src <- CDMConnector::dbSource(con = con, writeSchema = "main")
@@ -33,8 +32,8 @@ cdm$my_cohort <- CohortConstructor::conceptCohort(
 
 result <- PhenotypeR::phenotypeDiagnostics(cohort = cdm$my_cohort, survival = TRUE)
 
-expectations <- readr::read_csv(here::here("extras", "shiny_expectations.csv"))
+chat <- ellmer::chat_google_gemini()
+expectations <- PhenotypeR::getCohortExpectations(chat = chat,
+                      phenotypes = result)
 
-PhenotypeR::shinyDiagnostics(result = result,
-                             expectations = expectations,
-                             minCellCount = 2, directory = getwd(), open = FALSE)
+readr::write_csv(expectations, here::here("extras", "shiny_expectations.csv"))
