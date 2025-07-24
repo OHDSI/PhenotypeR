@@ -67,6 +67,7 @@ shinyDiagnostics <- function(result,
                                        fileName = "result.csv",
                                        path = file.path(to, "data", "raw"))
   # export expectations
+  dir.create(file.path(to,"data","raw","expectations"))
   if(!is.null(expectations)){
     readr::write_csv(expectations, file = file.path(to, "data", "raw", "expectations", "expectations.csv"))
   }else{
