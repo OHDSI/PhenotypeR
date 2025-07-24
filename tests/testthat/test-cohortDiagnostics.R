@@ -50,7 +50,7 @@ test_that("run with multiple cohorts", {
   cdm <- CDMConnector::copyCdmTo(con = db, cdm = cdm_local,
                                  schema ="main", overwrite = TRUE)
   expect_warning(result <- cdm$my_cohort |>
-                   cohortDiagnostics(match = TRUE))
+                   cohortDiagnostics())
 
   # check density is being calculated
   expect_true(any(stringr::str_detect(

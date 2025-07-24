@@ -24,7 +24,7 @@ test_that("basic working example with one cohort", {
   db <- DBI::dbConnect(duckdb::duckdb())
   cdm <- CDMConnector::copyCdmTo(con = db, cdm = cdm_local,
                                  schema ="main", overwrite = TRUE)
-  my_result_code_diag <- cohortDiagnostics(cdm$my_cohort, match = TRUE)
+  my_result_code_diag <- cohortDiagnostics(cdm$my_cohort)
   expect_no_error(shinyDiagnostics(my_result_code_diag,
                                    directory = tempdir()))
 

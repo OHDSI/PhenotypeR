@@ -27,8 +27,7 @@ test_that("overall diagnostics function", {
 
   # Only database diagnostics
   dd_only <- phenotypeDiagnostics(cdm$my_cohort,
-                                  diagnostics = "databaseDiagnostics",
-                                  populationDiagnostics = FALSE)
+                                  diagnostics = "databaseDiagnostics")
   expect_true("summarise_omop_snapshot" %in%
                 (settings(dd_only) |> dplyr::pull("result_type")))
   expect_true("summarise_observation_period" %in%
