@@ -8,15 +8,13 @@
 #' * A diagnostics on the cohort_codelist attribute of the cohort via `codelistDiagnostics`.
 #' * A diagnostics on the cohort via `cohortDiagnostics`.
 #' * A diagnostics on the population via `populationDiagnostics`.
-#' * A diagnostics on the matched cohort via `matchedDiagnostics`.
 #'
 #' @inheritParams cohortDoc
-#' @param databaseDiagnostics If TRUE, database diagnostics will be run.
-#' @param codelistDiagnostics If TRUE, codelist diagnostics will be run.
-#' @param cohortDiagnostics If TRUE, cohort diagnostics will be run.
+#' @param diagnostics Vector indicating which diagnostics to perform. Options
+#' include: `databaseDiagnostics`, `codelistDiagnostics`, `cohortDiagnostics`,
+#' and `populationDiagnostics`.
 #' @inheritParams survivalDoc
 #' @inheritParams matchedDoc
-#' @param populationDiagnostics If TRUE, population diagnostics will be run.
 #' @inheritParams populationSampleDoc
 #'
 #' @return A summarised result
@@ -33,42 +31,38 @@
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
 phenotypeDiagnostics <- function(cohort,
-                                 databaseDiagnostics = TRUE,
-                                 codelistDiagnostics = TRUE,
-                                 cohortDiagnostics = TRUE,
+                                 diagnostics = c("databaseDiagnostics", "codelistDiagnostics",
+                                                 "cohortDiagnostics", "populationDiagnostics"),
                                  survival = FALSE,
-                                 match = TRUE,
                                  matchedSample = 1000,
-                                 populationDiagnostics = TRUE,
                                  populationSample = 1000000,
                                  populationDateRange = as.Date(c(NA, NA))) {
 
   cohort <- omopgenerics::validateCohortArgument(cohort = cohort)
-  omopgenerics::assertLogical(databaseDiagnostics)
-  omopgenerics::assertLogical(codelistDiagnostics)
-  omopgenerics::assertLogical(cohortDiagnostics)
-  checksCohortDiagnostics(survival, match, matchedSample)
-  omopgenerics::assertLogical(populationDiagnostics)
+  omopgenerics::assertChoice(diagnostics,
+                             c("databaseDiagnostics", "codelistDiagnostics",
+                               "cohortDiagnostics", "populationDiagnostics"),
+                             unique = TRUE)
+  checksCohortDiagnostics(survival, matchedSample)
   checksPopulationDiagnostics(populationSample, populationDateRange)
 
   cdm <- omopgenerics::cdmReference(cohort)
   results <- list()
-  if (isTRUE(databaseDiagnostics)) {
+  if ("databaseDiagnostics" %in% diagnostics) {
     cli::cli("Running database diagnostics")
     results[["db_diag"]] <- databaseDiagnostics(cdm)
   }
-  if (isTRUE(codelistDiagnostics)) {
+  if ("codelistDiagnostics" %in% diagnostics) {
     cli::cli("Running codelist diagnostics")
     results[["code_diag"]] <- codelistDiagnostics(cohort)
   }
-  if (isTRUE(cohortDiagnostics)) {
+  if ("cohortDiagnostics" %in% diagnostics) {
     cli::cli("Running cohort diagnostics")
     results[["cohort_diag"]] <- cohortDiagnostics(cohort,
                                                   survival = survival,
-                                                  match = match,
                                                   matchedSample = matchedSample)
   }
-  if (isTRUE(populationDiagnostics)) {
+  if ("populationDiagnostics" %in% diagnostics) {
     cli::cli("Running population diagnostics")
     results[["pop_diag"]] <- populationDiagnostics(cohort,
                                                    populationSample = populationSample,

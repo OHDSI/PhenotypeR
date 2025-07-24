@@ -6,13 +6,10 @@
 \usage{
 phenotypeDiagnostics(
   cohort,
-  databaseDiagnostics = TRUE,
-  codelistDiagnostics = TRUE,
-  cohortDiagnostics = TRUE,
+  diagnostics = c("databaseDiagnostics", "codelistDiagnostics", "cohortDiagnostics",
+    "populationDiagnostics"),
   survival = FALSE,
-  match = TRUE,
   matchedSample = 1000,
-  populationDiagnostics = TRUE,
   populationSample = 1e+06,
   populationDateRange = as.Date(c(NA, NA))
 )
@@ -20,20 +17,15 @@ phenotypeDiagnostics(
 \arguments{
 \item{cohort}{Cohort table in a cdm reference}
 
-\item{databaseDiagnostics}{If TRUE, database diagnostics will be run.}
-
-\item{codelistDiagnostics}{If TRUE, codelist diagnostics will be run.}
-
-\item{cohortDiagnostics}{If TRUE, cohort diagnostics will be run.}
+\item{diagnostics}{Vector indicating which diagnostics to perform. Options
+include: `databaseDiagnostics`, `codelistDiagnostics`, `cohortDiagnostics`,
+and `populationDiagnostics`.}
 
 \item{survival}{Boolean variable. Whether to conduct survival analysis (TRUE) or not (FALSE).}
 
-\item{match}{Boolean variable. Whether to conduct the analysis for the matched cohorts (TRUE) or not (FALSE).}
-
-\item{matchedSample}{Only if match = TRUE. The number of people to take a random sample for
-matching. If NULL, no sampling will be performed.}
-
-\item{populationDiagnostics}{If TRUE, population diagnostics will be run.}
+\item{matchedSample}{The number of people to take a random sample for
+matching. If `matchedSample = NULL`, no sampling will be performed. If `matchedSample = 0`, no
+matched cohorts will be created.}
 
 \item{populationSample}{Number of people from the cdm to sample. If NULL no
 sampling will be performed. Sample will be within populationDateRange if
@@ -57,7 +49,6 @@ this includes:
 * A diagnostics on the cohort_codelist attribute of the cohort via `codelistDiagnostics`.
 * A diagnostics on the cohort via `cohortDiagnostics`.
 * A diagnostics on the population via `populationDiagnostics`.
-* A diagnostics on the matched cohort via `matchedDiagnostics`.
 }
 \examples{
 \donttest{
