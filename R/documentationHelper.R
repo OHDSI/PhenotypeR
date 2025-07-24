@@ -25,7 +25,7 @@ NULL
 NULL
 
 
-#' Helper for consistent documentation of `matched` and `match`.
+#' Helper for consistent documentation of `matchedSample`
 #'
 #' @param matchedSample The number of people to take a random sample for
 #' matching. If `matchedSample = NULL`, no sampling will be performed. If `matchedSample = 0`,

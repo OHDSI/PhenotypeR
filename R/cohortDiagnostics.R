@@ -63,7 +63,7 @@ cohortDiagnostics <- function(cohort, survival = FALSE, matchedSample = 1000){
       CohortCharacteristics::summariseCohortTiming(estimates = c("median", "q25", "q75", "min", "max", "density"))
   }
 
-  if(is.null(match) || match != 0){
+  if(is.null(matchedSample) || matchedSample != 0){
     cli::cli_bullets(c(">" = "Creating matching cohorts"))
     cdm <- createMatchedCohorts(cdm, tempCohortName, cohortName, cohortIds, matchedSample)
     cdm <- bind(cdm[[cohortName]], cdm[[tempCohortName]], name = tempCohortName)

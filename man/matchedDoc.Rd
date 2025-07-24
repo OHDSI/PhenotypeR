@@ -2,13 +2,13 @@
 % Please edit documentation in R/documentationHelper.R
 \name{matchedDoc}
 \alias{matchedDoc}
-\title{Helper for consistent documentation of `matched` and `match`.}
+\title{Helper for consistent documentation of `matchedSample`}
 \arguments{
 \item{matchedSample}{The number of people to take a random sample for
 matching. If `matchedSample = NULL`, no sampling will be performed. If `matchedSample = 0`,
 no matching cohorts will be created.}
 }
 \description{
-Helper for consistent documentation of `matched` and `match`.
+Helper for consistent documentation of `matchedSample`
 }
 \keyword{internal}
