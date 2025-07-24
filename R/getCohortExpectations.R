@@ -98,18 +98,18 @@ fetchExpectations <- function(chat, name){
                   medications = paste0(.data$medications,
                                          " (",
                                        .data$medications_elaboration, ")")) |>
-    dplyr::select(!median_age_estimate_low) |>
-    dplyr::select(!median_age_estimate_high) |>
-    dplyr::select(!median_age_elaboration) |>
-    dplyr::select(!proportion_male_estimate_low) |>
-    dplyr::select(!proportion_male_estimate_high) |>
-    dplyr::select(!proportion_male_elaboration) |>
-    dplyr::select(!five_year_survival_estimate_low) |>
-    dplyr::select(!five_year_survival_estimate_high) |>
-    dplyr::select(!five_year_survival_elaboration) |>
-    dplyr::select(!comorbidities_elaboration) |>
-    dplyr::select(!signs_symptoms_elaboration) |>
-    dplyr::select(!medications_elaboration) |>
+    dplyr::select(!.data$median_age_estimate_low) |>
+    dplyr::select(!.data$median_age_estimate_high) |>
+    dplyr::select(!.data$median_age_elaboration) |>
+    dplyr::select(!.data$proportion_male_estimate_low) |>
+    dplyr::select(!.data$proportion_male_estimate_high) |>
+    dplyr::select(!.data$proportion_male_elaboration) |>
+    dplyr::select(!.data$five_year_survival_estimate_low) |>
+    dplyr::select(!.data$five_year_survival_estimate_high) |>
+    dplyr::select(!.data$five_year_survival_elaboration) |>
+    dplyr::select(!.data$comorbidities_elaboration) |>
+    dplyr::select(!.data$signs_symptoms_elaboration) |>
+    dplyr::select(!.data$medications_elaboration) |>
     dplyr::mutate_all(as.character) %>%
     dplyr::rename("Clinical description" = "clinical_description",
                   "Frequency" = "frequently_seen",

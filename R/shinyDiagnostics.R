@@ -30,7 +30,9 @@
 #'
 #' result <- phenotypeDiagnostics(cdm$my_cohort)
 #' expectations <- tibble("cohort_name" = rep(c("cohort_1", "cohort_2"),3),
-#'                        "value" = c(rep(c("Mean age"),2), rep("Male percentage",2), rep("Survival probability after 5y",2)),
+#'                        "value" = c(rep(c("Mean age"),2),
+#'                                    rep("Male percentage",2),
+#'                                    rep("Survival probability after 5y",2)),
 #'                        "estimate" = c("32", "54", "25%", "74%", "95%", "21%"),
 #'                        "source" = rep(c("AlbertAI"),6))
 #'
