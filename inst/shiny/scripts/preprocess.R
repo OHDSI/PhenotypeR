@@ -134,7 +134,7 @@ if("prevalence_analysis_interval" %in% names(values)){
 if("survival_probability_cohort_name" %in% names(values)){
   selected$survival_probability_cohort_name <- c(paste0(gsub("_matched|sampled", "", selected$survival_probability_cohort_name[1]),"_sampled"),
                                                  paste0(gsub("_matched|sampled", "", selected$survival_probability_cohort_name[1]),"_matched"))
-  
+
 }
 
 # Define incidence start and end date
@@ -154,9 +154,11 @@ if("expectations.csv" %in% list.files(path = here::here("data"))){
   expectations <- readr::read_csv(here::here("data/expectations.csv")) |>
     dplyr::filter(!is.na(.data$cohort_name))
 }else{
-  expectations <- tibble(name = NA_character_,
+  expectations <- tibble(cohort_name = NA_character_,
                          estimate = NA_character_,
-                         value = NA_character_)
+                         value = NA_character_,
+                         diagnostics = NA_character_,
+                         source = NA_character_)
 }
 
 cli::cli_inform("Saving data for shiny")

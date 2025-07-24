@@ -29,6 +29,7 @@ library(shinyWidgets)
 library(plotly)
 library(tidyr)
 library(reactable)
+library(stringr)
 
 source(here::here("scripts", "functions.R"))
 
@@ -41,21 +42,21 @@ preprocess_again <- function(){
   cli::cli_alert_success("Data processed")
 }
 
-if(file.exists(here::here("data", "appData.RData")) && 
+if(file.exists(here::here("data", "appData.RData")) &&
    rlang::is_interactive()){
   preprocess_again()
-} 
+}
 
 # if data does not exist (or we are not in interactive)
 if(!file.exists(here::here("data", "appData.RData"))){
   cli::cli_inform("Preprocessing data from data/raw")
   source(here::here("scripts", "preprocess.R"))
   cli::cli_alert_success("Data processed")
-} 
+}
 
 cli::cli_inform("Loading data")
 load(here::here("data", "appData.RData"))
-cli::cli_inform("Data loaded") 
+cli::cli_inform("Data loaded")
 
 plotComparedLsc <- function(lsc, cohorts, imputeMissings, colour = NULL, facet = NULL){
   plot_data <- lsc |>
@@ -261,10 +262,10 @@ validateExpectations <- function(expectations){
 
 validateExpectationSections <- function(table){
   section_names <- table |>
-    dplyr::pull("diagnostics") |> 
+    dplyr::pull("diagnostics") |>
     unique()
-  
-  if(!all(section_names %in% c("cohort_count", "cohort_characteristics",  "large_scale_characteristics", "compare_large_scale_characteristics", 
+
+  if(!all(section_names %in% c("cohort_count", "cohort_characteristics",  "large_scale_characteristics", "compare_large_scale_characteristics",
                                "compare_cohorts", "cohort_survival"))){
     validate("diagnostics column must contain any of the following values: cohort_count, cohort_characteristics, large_scale_characteristics, compare_large_scale_characteristics,
              compare_cohorts, cohort_survival")
