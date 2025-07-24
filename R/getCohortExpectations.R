@@ -13,7 +13,7 @@ getCohortExpectations <- function(chat, phenotypes){
   # if summarised result, pull out cohort names
   if(isTRUE(inherits(phenotypes, "summarised_result"))){
     phenotypes <- phenotypes |>
-      omopgenerics::filterSettings(result_type == "summarise_cohort_attrition") |>
+      omopgenerics::filterSettings(.data$result_type == "summarise_cohort_attrition") |>
       dplyr::pull("group_level") |>
       unique()
   }
@@ -74,30 +74,30 @@ fetchExpectations <- function(chat, name){
        Give up to 10 most common medications taken by people with {{name}}. Provide one simple and terse sentence providing elaboration for why we would expect to see these medications among cases.
        No decimal places for age. Two decimal places for survival. Give only full names for commorbidities, signs and symptoms, and medications (no abbreviations, no explanation)."),
     type = type_my_df)   %>%
-    dplyr::mutate(median_age = paste0(median_age_estimate_low,
+    dplyr::mutate(median_age = paste0(.data$median_age_estimate_low,
                                       " to ",
-                                      median_age_estimate_high,
+                                      .data$median_age_estimate_high,
                                       " (",
                                       median_age_elaboration, ")"),
-                  proportion_male = paste0(paste0(proportion_male_estimate_low*100, "%"),
+                  proportion_male = paste0(paste0(.data$proportion_male_estimate_low*100, "%"),
                                            " to ",
-                                           paste0(proportion_male_estimate_high*100, "%"),
+                                           paste0(.data$proportion_male_estimate_high*100, "%"),
                                            " (",
-                                           proportion_male_elaboration, ")"),
-                  five_year_survival = paste0(paste0(five_year_survival_estimate_low*100, "%"),
+                                           .data$proportion_male_elaboration, ")"),
+                  five_year_survival = paste0(paste0(.data$five_year_survival_estimate_low*100, "%"),
                                               " to ",
-                                              paste0(five_year_survival_estimate_high*100, "%"),
+                                              paste0(.data$five_year_survival_estimate_high*100, "%"),
                                            " (",
-                                           five_year_survival_elaboration, ")"),
-                  comorbidities = paste0(comorbidities,
+                                           .data$five_year_survival_elaboration, ")"),
+                  comorbidities = paste0(.data$comorbidities,
                                          " (",
-                                         comorbidities_elaboration, ")"),
-                  signs_symptoms = paste0(signs_symptoms,
+                                         .data$comorbidities_elaboration, ")"),
+                  signs_symptoms = paste0(.data$signs_symptoms,
                                          " (",
-                                         signs_symptoms_elaboration, ")"),
-                  medications = paste0(medications,
+                                         .data$signs_symptoms_elaboration, ")"),
+                  medications = paste0(.data$medications,
                                          " (",
-                                       medications_elaboration, ")")) |>
+                                       .data$medications_elaboration, ")")) |>
     dplyr::select(!median_age_estimate_low) |>
     dplyr::select(!median_age_estimate_high) |>
     dplyr::select(!median_age_elaboration) |>
@@ -143,7 +143,7 @@ fetchExpectations <- function(chat, name){
 
 #' Create a table summarising cohort expectations
 #'
-#' @inheritParams expectations
+#' @inheritParams expectationsDoc
 #' @param type Table type to view results. See visOmopResults::tableType()
 #' for supported tables.
 #'

@@ -7,7 +7,7 @@
 tableCohortExpectations(expectations, type = "reactable")
 }
 \arguments{
-\item{expectations}{Data frame or tibble with cohort expectations}
+\item{expectations}{Data frame or tibble with cohort expectations. It must contain the following columns: cohort_name, estimate, value, and source.}
 
 \item{type}{Table type to view results. See visOmopResults::tableType()
 for supported tables.}
