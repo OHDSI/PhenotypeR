@@ -14,7 +14,8 @@ populationDiagnostics(
 \item{cohort}{Cohort table in a cdm reference}
 
 \item{populationSample}{Number of people from the cdm to sample. If NULL no
-sampling will be performed}
+sampling will be performed. Sample will be within populationDateRange if
+specified.}
 
 \item{populationDateRange}{Two dates. The first indicating the earliest cohort
 start date and the second indicating the latest possible cohort end date. If

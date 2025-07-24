@@ -48,8 +48,44 @@ populationDiagnostics <- function(cohort,
   # add population sampling
   if(!is.null(populationSample)){
     cli::cli_bullets(c("*" = "{.strong Sampling person table to {populationSample}}"))
-  cdm$person <- cdm$person |>
-    dplyr::slice_sample(n = populationSample)
+    if(is.na(populationDateRange[[1]]) && is.na(populationDateRange[[2]])){
+      cdm$person <- cdm$person |>
+        dplyr::slice_sample(n = populationSample)
+    } else {
+      # sample within date range
+      if(!is.na(populationDateRange[[1]]) & is.na(populationDateRange[[2]])){
+        cdm$person <- cdm$person |>
+          dplyr::inner_join(cdm$observation_period|>
+                              dplyr::filter(.data$observation_period_start_date >=
+                                              !!populationDateRange[[1]]) |>
+                              dplyr::select("person_id") |>
+                              dplyr::distinct(),
+                            by = "person_id") |>
+          dplyr::slice_sample(n = populationSample)
+      } else if(is.na(populationDateRange[[1]]) & !is.na(populationDateRange[[2]])){
+        cdm$person <- cdm$person |>
+          dplyr::inner_join(cdm$observation_period|>
+                              dplyr::filter(.data$observation_period_start_date <=
+                                              !!populationDateRange[[2]]) |>
+                              dplyr::select("person_id") |>
+                              dplyr::distinct(),
+                            by = "person_id") |>
+          dplyr::slice_sample(n = populationSample)
+      } else {
+        cdm$person <- cdm$person |>
+          dplyr::inner_join(cdm$observation_period|>
+                              dplyr::filter(.data$observation_period_start_date >=
+                                              !!populationDateRange[[1]],
+                                            .data$observation_period_start_date <=
+                                              !!populationDateRange[[2]]) |>
+                              dplyr::select("person_id") |>
+                              dplyr::distinct(),
+                            by = "person_id") |>
+          dplyr::slice_sample(n = populationSample)
+      }
+    }
+cdm$person <- cdm$person |>
+  dplyr::compute(temporary = TRUE)
   }
 
   cdm <- IncidencePrevalence::generateDenominatorCohortSet(
