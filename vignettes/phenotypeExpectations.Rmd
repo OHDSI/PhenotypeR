@@ -77,7 +77,7 @@ getCohortExpectations(chat = chat,
   tableCohortExpectations()
 ```
 ```{r, echo=FALSE}
-readr::read_csv("inst/cohort_expectations/vignette_phenotype_expectations/expectations_1.csv") |>
+readr::read_csv("inst/vignette_phenotype_expectations/expectations_1.csv") |>
     tableCohortExpectations()
 ```
 
@@ -109,7 +109,7 @@ getCohortExpectations(chat = chat,
   tableCohortExpectations()
 ```
 ```{r, echo=FALSE}
-readr::read_csv("inst/expectations_2.csv") |>
+readr::read_csv("inst/vignette_phenotype_expectations/expectations_2.csv") |>
   tableCohortExpectations()
 ```
 
