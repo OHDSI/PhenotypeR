@@ -78,7 +78,7 @@ fetchExpectations <- function(chat, name){
                                       " to ",
                                       .data$median_age_estimate_high,
                                       " (",
-                                      median_age_elaboration, ")"),
+                                      .data$median_age_elaboration, ")"),
                   proportion_male = paste0(paste0(.data$proportion_male_estimate_low*100, "%"),
                                            " to ",
                                            paste0(.data$proportion_male_estimate_high*100, "%"),
