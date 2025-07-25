@@ -119,8 +119,7 @@ server <- function(input, output, session) {
       validate("No snapshot in results")
     }
 
-    result <- dataFiltered$summarise_omop_snapshot |>
-      dplyr::filter(.data$cdm_name %in% shared_cdm_names())
+    result <- dataFiltered$summarise_omop_snapshot
 
     validateFilteredResult(result)
 
@@ -154,8 +153,7 @@ server <- function(input, output, session) {
       validate("No observation period summary in results")
     }
 
-    result <- dataFiltered$summarise_observation_period |>
-      dplyr::filter(.data$cdm_name %in% shared_cdm_names())
+    result <- dataFiltered$summarise_observation_period
 
     validateFilteredResult(result)
 

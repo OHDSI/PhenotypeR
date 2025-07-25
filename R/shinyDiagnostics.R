@@ -88,6 +88,21 @@ shinyDiagnostics <- function(result,
                                        minCellCount = minCellCount,
                                        fileName = "result.csv",
                                        path = file.path(to, "data", "raw"))
+
+  # remove tabs
+  ui <- readLines(con = file.path(to,"ui.R"))
+  if(nrow(result) == 0){
+    cli::cli_warn("The summarised result is empty. ShinyDiagnostics will create an empty shiny app.")
+    diagnostics <- ""
+  }else{
+    diagnostics <- omopgenerics::settings(result) |> dplyr::pull("diagnostic") |> unique()
+  }
+  ui <- removeLines(ui, diagnostics, "databaseDiagnostics")
+  ui <- removeLines(ui, diagnostics, "codelistDiagnostics")
+  ui <- removeLines(ui, diagnostics, "cohortDiagnostics")
+  ui <- removeLines(ui, diagnostics, "populationDiagnostics")
+  writeLines(ui, file.path(to,"ui.R"))
+
   # export expectations
   dir.create(file.path(to,"data","raw","expectations"))
   if(!is.null(expectations)){
@@ -161,4 +176,16 @@ copyDirectory <- function(from, to) {
 
   # copy files
   file.copy(from = oldFiles, to = NewFiles)
+}
+
+removeLines <- function(ui, diagnostics, diagnostic_type){
+  if(!diagnostic_type %in% diagnostics){
+    startLine <- which(stringr::str_detect(ui, paste0(diagnostic_type, "_start")))
+    endLine   <- which(stringr::str_detect(ui, paste0(diagnostic_type, "_end")))
+    ui <- ui[-seq(startLine,endLine,1)]
+    if(length(diagnostics) == 1 && diagnostics != ""){
+      cli::cli_warn("{diagnostic_type} is not present in the summarised result. Eliminating tab from the shiny app.")
+    }
+  }
+  return(ui)
 }

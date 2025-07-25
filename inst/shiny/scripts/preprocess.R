@@ -46,20 +46,29 @@ resultList <- setNames(lapply(data, function(x) list(result_type = x)), data)
 # Prepare
 dataFiltered <- prepareResult(result, resultList)
 values <- getValues(result, resultList)
-
 if(length(dataFiltered) > 0){
-# Common variables
-values$shared_cohort_names <- rbind(dataFiltered$cohort_code_use, dataFiltered$summarise_cohort_count, dataFiltered$incidence) |>
-  dplyr::mutate(group_name = gsub("outcome_cohort_name", "cohort_name", group_name)) |>
-  visOmopResults::splitGroup() |>
-  dplyr::select("cohort_name") |>
-  dplyr::distinct() |>
-  dplyr::filter(cohort_name != "overall") |>
-  dplyr::pull("cohort_name")
-values$shared_cdm_names <- rbind(dataFiltered$cohort_code_use, dataFiltered$summarise_cohort_count, dataFiltered$incidence) |>
-  dplyr::select("cdm_name") |>
-  dplyr::distinct() |>
-  dplyr::pull("cdm_name")
+  diagnostics <- omopgenerics::settings(result) |> dplyr::pull("diagnostic") |> unique()
+  if((length(diagnostics) > 1 || diagnostics != "databaseDiagnostics")) {
+    # Common variables
+    if(length(diagnostics) == 1 && diagnostics == "populationDiagnostics"){
+      values$shared_cohort_names <- dataFiltered$incidence |>
+        visOmopResults::splitGroup() |>
+        dplyr::pull("outcome_cohort_name") |>
+        unique()
+    }else{
+      values$shared_cohort_names <- rbind(dataFiltered$cohort_code_use, dataFiltered$summarise_cohort_count, dataFiltered$incidence) |>
+        dplyr::mutate(group_name = gsub("outcome_cohort_name", "cohort_name", group_name)) |>
+        visOmopResults::splitGroup() |>
+        dplyr::select("cohort_name") |>
+        dplyr::distinct() |>
+        dplyr::filter(cohort_name != "overall") |>
+        dplyr::pull("cohort_name")
+    }
+    values$shared_cdm_names <- rbind(dataFiltered$summarise_omop_snapshot, dataFiltered$cohort_code_use, dataFiltered$summarise_cohort_count, dataFiltered$incidence) |>
+      dplyr::select("cdm_name") |>
+      dplyr::distinct() |>
+      dplyr::pull("cdm_name")
+  }
 }
 
 # Filter not needed values
