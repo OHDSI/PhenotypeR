@@ -66,10 +66,10 @@ test_that("basic working example with one cohort", {
   expect_no_error(shinyDiagnostics(result, directory = tempdir()))
 
   result <- codelistDiagnostics(cdm$new_cohort)
-  expect_no_error(shinyDiagnostics(result, directory = tempdir()))
+  expect_warning(shinyDiagnostics(result, directory = tempdir()))
 
   result <- cohortDiagnostics(cdm$new_cohort, survival = FALSE)
-  expect_no_error(shinyDiagnostics(result, directory = tempdir()))
+  expect_warning(shinyDiagnostics(result, directory = tempdir()))
 
   result <- populationDiagnostics(cdm$new_cohort)
   expect_no_error(shinyDiagnostics(result, directory = tempdir()))
