@@ -91,16 +91,8 @@ shinyDiagnostics <- function(result,
 
   # remove tabs
   ui <- readLines(con = file.path(to,"ui.R"))
-  if(nrow(result) == 0){
-    cli::cli_warn("The summarised result is empty. ShinyDiagnostics will create an empty shiny app.")
-    diagnostics <- ""
-  }else{
-    diagnostics <- omopgenerics::settings(result) |> dplyr::pull("diagnostic") |> unique()
-  }
-  ui <- removeLines(ui, diagnostics, "databaseDiagnostics")
-  ui <- removeLines(ui, diagnostics, "codelistDiagnostics")
-  ui <- removeLines(ui, diagnostics, "cohortDiagnostics")
-  ui <- removeLines(ui, diagnostics, "populationDiagnostics")
+  diag_to_remove <- checkWhichDiagnostics(result)
+  ui <- removeLines(ui, result, diag_to_remove)
   writeLines(ui, file.path(to,"ui.R"))
 
   # export expectations
@@ -178,14 +170,50 @@ copyDirectory <- function(from, to) {
   file.copy(from = oldFiles, to = NewFiles)
 }
 
-removeLines <- function(ui, diagnostics, diagnostic_type){
-  if(!diagnostic_type %in% diagnostics){
-    startLine <- which(stringr::str_detect(ui, paste0(diagnostic_type, "_start")))
-    endLine   <- which(stringr::str_detect(ui, paste0(diagnostic_type, "_end")))
-    ui <- ui[-seq(startLine,endLine,1)]
-    if(length(diagnostics) == 1 && diagnostics != ""){
-      cli::cli_warn("{diagnostic_type} is not present in the summarised result. Eliminating tab from the shiny app.")
+checkWhichDiagnostics <- function(result){
+  diag_present <- omopgenerics::settings(result) |> dplyr::pull("diagnostic") |> unique()
+  diagnostics  <- c("databaseDiagnostics", "codelistDiagnostics", "cohortDiagnostics", "populationDiagnostics")
+
+  to_remove <- diagnostics[!diagnostics %in% diag_present]
+  if(!"codelistDiagnostics" %in% to_remove){
+    if(!"achilles_code_use" %in% (omopgenerics::settings(result) |> dplyr::pull("result_type") |> unique())){
+      to_remove <- append(to_remove, "achilles_results")
+    }
+    if(!"measurement_code_use" %in% (omopgenerics::settings(result) |> dplyr::pull("result_type") |> unique())){
+      to_remove <- append(to_remove, "measurement_diagnostics")
+    }
+  }
+  if(!"cohortDiagnostics" %in% to_remove){
+    if(!"survival_probability" %in% (omopgenerics::settings(result) |> dplyr::pull("result_type") |> unique())){
+      to_remove <- append(to_remove, "cohort_survival")
+    }
+  }
+
+  return(to_remove)
+}
+removeLines <- function(ui, result, diagnostic){
+  for(x in diagnostic){
+    start <- which(stringr::str_detect(ui, paste0(x, "_start")))
+    end   <- which(stringr::str_detect(ui, paste0(x, "_end")))
+
+    if(length(start) == 1 && length(end) == 1){
+      ui <- ui[-seq(start,end,1)]
+
+      msg <- switch(x,
+             "measurement_diagnostics" = "No measurements present in the concept list. Removing tab from the shiny app.",
+             "cohort_survival" = "No survival analysis present in cohortDiagnostics. Removing tab from the shiny app.",
+             "achilles_results" = "No achilles code use or orphan codes results in codelistDiagnostics. Removing tabs from the shiny app.",
+             "{x} not present in the summarised result. Removing tab from the shiny app.")
+      cli::cli_warn(msg)
     }
   }
   return(ui)
 }
+
+
+
+
+
+
+
+

@@ -51,6 +51,7 @@ test_that("basic working example with one cohort", {
 test_that("basic working example with one cohort", {
 
   skip_on_cran()
+  CDMConnector::requireEunomia()
   con <- DBI::dbConnect(duckdb::duckdb(), CDMConnector::eunomiaDir())
   cdm <- CDMConnector::cdmFromCon(con = con,
                                   cdmName = "Eunomia Synpuf",
@@ -67,7 +68,7 @@ test_that("basic working example with one cohort", {
   result <- codelistDiagnostics(cdm$new_cohort)
   expect_no_error(shinyDiagnostics(result, directory = tempdir()))
 
-  result <- cohortDiagnostics(cdm$new_cohort)
+  result <- cohortDiagnostics(cdm$new_cohort, survival = FALSE)
   expect_no_error(shinyDiagnostics(result, directory = tempdir()))
 
   result <- populationDiagnostics(cdm$new_cohort)

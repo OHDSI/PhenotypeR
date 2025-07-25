@@ -48,6 +48,7 @@ ui <- fluidPage(
     bslib::nav_menu(
       title = "Codelist diagnostics",
       icon = shiny::icon("list"),
+      ## achilles_results_start
       ## achilles code use -----
       bslib::nav_panel(
         title = "Achilles code use",
@@ -336,6 +337,7 @@ ui <- fluidPage(
           )
         )
       ),
+      ## achilles_results_end
       ## Cohort code use -----
       bslib::nav_panel(
         title = "Cohort code use",
@@ -460,6 +462,7 @@ ui <- fluidPage(
           )
         )
       ),
+      ## measurement_diagnostics_start
       ## Measurement code use -----
       bslib::nav_panel(
         title = "Measurements Code Use",
@@ -842,6 +845,7 @@ ui <- fluidPage(
           )
         )
       )
+      ## measurement_diagnostics_end
     ),
     # codelistDiagnostics_end ----
     # cohortDiagnostics_start -----
@@ -1795,6 +1799,7 @@ ui <- fluidPage(
           )
         )
       ),
+      ## cohort_survival_start
       ## Cohort survival -----
       bslib::nav_panel(
         title = "Cohort survival",
@@ -1992,6 +1997,7 @@ ui <- fluidPage(
           )
         )
       )
+      ## cohort_survival_end
     ),
     # cohortDiagnostics_end ----
     # populationDiagnostics_start -----
