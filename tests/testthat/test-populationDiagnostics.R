@@ -21,7 +21,7 @@ test_that("population incidence and prevalence", {
                      omopgenerics::settings() |>
                      dplyr::select("populationSample", "diagnostic") |>
                      dplyr::distinct(),
-                   tibble::tibble(
+                   dplyr::tibble(
                      "populationSample" = "250",
                      "diagnostic" = "populationDiagnostics"
                    ))
@@ -44,7 +44,7 @@ test_that("population incidence and prevalence", {
                      omopgenerics::settings() |>
                      dplyr::select("populationSample", "diagnostic", "populationDateStart", "populationDateEnd") |>
                      dplyr::distinct(),
-                   tibble::tibble(
+                   dplyr::tibble(
                      "populationSample" = "100",
                      "diagnostic" = "populationDiagnostics",
                      "populationDateStart" = "2015-01-01",
