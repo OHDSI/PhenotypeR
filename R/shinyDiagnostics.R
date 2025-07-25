@@ -53,7 +53,7 @@ shinyDiagnostics <- function(result,
   # Check phenotyper version
   if(nrow(result) != 0){
     if(!"phenotyper_version" %in% colnames(result |> omopgenerics::settings())){
-      cli::cli_abort("PhenotypeDiagnostics results were generated with an old version of PhenotypeR. Please re-run the analysis with the new version to avoid version conflicts. Alternatively, use the same version to run shinyDiagnostics() to avoid version conflicts.")
+      cli::cli_abort("PhenotypeDiagnostics results were generated with an old version of PhenotypeR. Please re-run the analysis with the new version to avoid version conflicts. Alternatively, use the same version to run shinyDiagnostics().")
     }else{
       phenotyper_version <- result |>
         omopgenerics::settings() |>
