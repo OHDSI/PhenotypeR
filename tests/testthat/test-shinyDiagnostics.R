@@ -48,7 +48,7 @@ test_that("basic working example with one cohort", {
   expect_warning(shinyDiagnostics(my_results1, tempdir(), open = FALSE))
 })
 
-test_that("basic working example with one cohort", {
+test_that("only one diagnostic", {
 
   skip_on_cran()
   CDMConnector::requireEunomia()

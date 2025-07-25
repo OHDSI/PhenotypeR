@@ -171,7 +171,11 @@ copyDirectory <- function(from, to) {
 }
 
 checkWhichDiagnostics <- function(result){
-  diag_present <- omopgenerics::settings(result) |> dplyr::pull("diagnostic") |> unique()
+  if(nrow(result) == 0){
+    diag_present <- ""
+  }else{
+    diag_present <- omopgenerics::settings(result) |> dplyr::pull("diagnostic") |> unique()
+  }
   diagnostics  <- c("databaseDiagnostics", "codelistDiagnostics", "cohortDiagnostics", "populationDiagnostics")
 
   to_remove <- diagnostics[!diagnostics %in% diag_present]
