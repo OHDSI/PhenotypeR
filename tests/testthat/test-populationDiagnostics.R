@@ -15,6 +15,16 @@ test_that("population incidence and prevalence", {
 
   expect_error(pop_diag_no_sample <- populationDiagnostics(cohort = cdm$outcome,
                                                            populationDateRange = "error"))
+
+  # Check settings
+  expect_identical(pop_diag_sample |>
+                     omopgenerics::settings() |>
+                     dplyr::select("populationSample", "diagnostic") |>
+                     dplyr::distinct(),
+                   dplyr::tibble(
+                     "populationSample" = "250",
+                     "diagnostic" = "populationDiagnostics"
+                   ))
   CDMConnector::cdmDisconnect(cdm)
 
   # population sample within study period
@@ -30,6 +40,16 @@ test_that("population incidence and prevalence", {
                                                            populationDateRange =
                                                              c(as.Date("2015-01-01"),
                                                                as.Date("2020-01-01"))))
+  expect_identical(pop_diag_sample |>
+                     omopgenerics::settings() |>
+                     dplyr::select("populationSample", "diagnostic", "populationDateStart", "populationDateEnd") |>
+                     dplyr::distinct(),
+                   dplyr::tibble(
+                     "populationSample" = "100",
+                     "diagnostic" = "populationDiagnostics",
+                     "populationDateStart" = "2015-01-01",
+                     "populationDateEnd"   = "2020-01-01"
+                   ))
   expect_true(all(pop_diag_sample |>
     omopgenerics::filterSettings(result_type == "incidence_attrition") |>
     dplyr::filter(strata_level == "Cannot satisfy age criteria during the study period based on year of birth") |>

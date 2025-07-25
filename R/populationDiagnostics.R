@@ -84,8 +84,8 @@ populationDiagnostics <- function(cohort,
           dplyr::slice_sample(n = populationSample)
       }
     }
-cdm$person <- cdm$person |>
-  dplyr::compute(temporary = TRUE)
+    cdm$person <- cdm$person |>
+      dplyr::compute(temporary = TRUE)
   }
 
   cdm <- IncidencePrevalence::generateDenominatorCohortSet(
@@ -124,11 +124,20 @@ cdm$person <- cdm$person |>
 
   results <- results |>
     vctrs::list_drop_empty() |>
-    omopgenerics::bind() |>
-    omopgenerics::newSummarisedResult()
+    omopgenerics::bind()
 
-  results
+  newSettings <- results |>
+    omopgenerics::settings() |>
+    dplyr::mutate("phenotyper_version" = as.character(utils::packageVersion(pkg = "PhenotypeR")),
+                  "diagnostic" = "populationDiagnostics",
+                  "populationDateStart" = populationDateRange[1],
+                  "populationDateEnd"   = populationDateRange[2],
+                  "populationSample"    = populationSample)
 
+  results <- results |>
+    omopgenerics::newSummarisedResult(settings = newSettings)
+
+  return(results)
 }
 
 checksPopulationDiagnostics <- function(populationSample, populationDateRange, call = parent.frame()){

@@ -31,7 +31,7 @@ library(PhenotypeR)
 cdm <- mockPhenotypeR()
 
 cdm$arthropathies <- conceptCohort(cdm,
-                                   conceptSet = list("arthropathies" = c(40475132)),
+                                   conceptSet = list("arthropathies" = c(37110496)),
                                    name = "arthropathies")
 
 result <- codelistDiagnostics(cdm$arthropathies)

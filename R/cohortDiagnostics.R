@@ -164,13 +164,21 @@ cohortDiagnostics <- function(cohort, survival = FALSE, matchedSample = 1000){
   }
   }
 
-  omopgenerics::dropTable(cdm, dplyr::starts_with(prefix))
+  omopgenerics::dropSourceTable(cdm, dplyr::starts_with(prefix))
   results <- results |>
     vctrs::list_drop_empty() |>
-    omopgenerics::bind() |>
-    omopgenerics::newSummarisedResult()
+    omopgenerics::bind()
 
-  results
+  newSettings <- results |>
+    omopgenerics::settings() |>
+    dplyr::mutate("phenotyper_version" = as.character(utils::packageVersion(pkg = "PhenotypeR")),
+                  "diagnostic" = "cohortDiagnostics",
+                  "matchedSample" = .env$matchedSample)
+
+  results <- results |>
+    omopgenerics::newSummarisedResult(settings = newSettings)
+
+  return(results)
 }
 
 createMatchedCohorts <- function(cdm, tempCohortName, cohortName, cohortIds, matchedSample){
