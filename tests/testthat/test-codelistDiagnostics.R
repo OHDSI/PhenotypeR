@@ -94,6 +94,12 @@ test_that("measurementDiagnostics working", {
   )
   expect_equal(res |> omopgenerics::splitGroup() |> dplyr::pull("cohort_name") |> unique(), "cohort_1")
 
+  expect_identical(res |>
+                     omopgenerics::settings() |>
+                     dplyr::pull("diagnostic") |>
+                     unique(),
+                   "codelistDiagnostics")
+
   cdm$my_cohort <- cdm$my_cohort |>
     PhenotypeR::addCodelistAttribute(
       codelist = list(b = 3001467L),

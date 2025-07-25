@@ -19,6 +19,21 @@ test_that("run with a single cohort", {
   expect_no_error(result <- cdm$my_cohort |>
     cohortDiagnostics(matchedSample = 0))
 
+  # Check settings
+  expect_identical(
+    result |>
+      omopgenerics::settings() |>
+      dplyr::pull("diagnostic") |>
+      unique(),
+    "cohortDiagnostics")
+
+  expect_identical(
+    result |>
+      omopgenerics::settings() |>
+      dplyr::pull("matchedSample") |>
+      unique(),
+    "0")
+
   # Check all the expected summarised results have been calculated)
   expect_true(all(c((dplyr::pull(omopgenerics::settings(result), "result_type") |> unique()) %in%
                       c("summarise_cohort_attrition", "summarise_cohort_count", "summarise_characteristics",

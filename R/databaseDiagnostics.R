@@ -29,9 +29,15 @@ results[["snap"]] <- OmopSketch::summariseOmopSnapshot(cdm)
 results[["obs_period"]] <- OmopSketch::summariseObservationPeriod(cdm$observation_period)
 results <- results |>
   vctrs::list_drop_empty() |>
-  omopgenerics::bind() |>
-  omopgenerics::newSummarisedResult()
+  omopgenerics::bind()
+
+newSettings <- results |>
+  omopgenerics::settings() |>
+  dplyr::mutate("phenotyper_version" = as.character(utils::packageVersion(pkg = "PhenotypeR")),
+                "diagnostic" = "databaseDiagnostics")
+
+results <- results |>
+  omopgenerics::newSummarisedResult(settings = newSettings)
 
 results
-
 }

@@ -19,6 +19,12 @@ test_that("multiplication works", {
   db_diag <- databaseDiagnostics(cdm)
   expect_no_error(OmopSketch::tableOmopSnapshot(db_diag))
 
+  expect_identical(db_diag |>
+                     omopgenerics::settings() |>
+                     dplyr::pull("diagnostic") |>
+                     unique(),
+                   "databaseDiagnostics")
+
   CDMConnector::cdmDisconnect(cdm = cdm)
 
 })

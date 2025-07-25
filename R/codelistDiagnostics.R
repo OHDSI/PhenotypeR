@@ -24,7 +24,7 @@
 #' cdm <- mockPhenotypeR()
 #'
 #' cdm$arthropathies <- conceptCohort(cdm,
-#'                                    conceptSet = list("arthropathies" = c(40475132)),
+#'                                    conceptSet = list("arthropathies" = c(37110496)),
 #'                                    name = "arthropathies")
 #'
 #' result <- codelistDiagnostics(cdm$arthropathies)
@@ -145,43 +145,39 @@ codelistDiagnostics <- function(cohort){
   }
 
   # all other analyses require achilles, so return if not available
-  if(!"achilles_results" %in% names(cdm)){
+  if("achilles_results" %in% names(cdm)){
+    cli::cli_bullets(c("*" = "Getting code counts in database based on achilles"))
+    results[[paste0("achilles_code_use")]] <- CodelistGenerator::summariseAchillesCodeUse(x = all_codelists, cdm = cdm)
+
+    # cli::cli_bullets(c("*" = "Getting unmapped concepts"))
+    # results[[paste0("unmapped_codes", i)]] <- CodelistGenerator::summariseUnmappedCodes(
+    #   x = all_codelists,
+    #   cdm = cdm
+    # )
+
+    cli::cli_bullets(c("*" = "Getting orphan concepts"))
+    results[[paste0("orphan_codes", i)]] <- CodelistGenerator::summariseOrphanCodes(
+      x = all_codelists,
+      cdm = cdm
+    )
+  }else{
     cli::cli_warn(
       c("The CDM reference containing the cohort must also contain achilles tables.",
         "Returning only index event breakdown.")
     )
-    results <- results |>
-      vctrs::list_drop_empty() |>
-      omopgenerics::bind()
-
-    if(is.null(results)){
-      results <- omopgenerics::emptySummarisedResult()
-    }
-
-    return(results)
   }
-
-
-  cli::cli_bullets(c("*" = "Getting code counts in database based on achilles"))
-  results[[paste0("achilles_code_use")]] <- CodelistGenerator::summariseAchillesCodeUse(x = all_codelists, cdm = cdm)
-
-  # cli::cli_bullets(c("*" = "Getting unmapped concepts"))
-  # results[[paste0("unmapped_codes", i)]] <- CodelistGenerator::summariseUnmappedCodes(
-  #   x = all_codelists,
-  #   cdm = cdm
-  # )
-
-  cli::cli_bullets(c("*" = "Getting orphan concepts"))
-  results[[paste0("orphan_codes", i)]] <- CodelistGenerator::summariseOrphanCodes(
-    x = all_codelists,
-    cdm = cdm
-  )
 
   results <- results |>
     vctrs::list_drop_empty() |>
     omopgenerics::bind()
 
-  results
+  newSettings <- results |>
+    omopgenerics::settings() |>
+    dplyr::mutate("phenotyper_version" = as.character(utils::packageVersion(pkg = "PhenotypeR")),
+                  "diagnostic" = "codelistDiagnostics")
+
+  results <- results |>
+    omopgenerics::newSummarisedResult(settings = newSettings)
 }
 
 duplicatedCodelists <- function(codelists) {
