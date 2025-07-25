@@ -50,6 +50,26 @@ shinyDiagnostics <- function(result,
                             columns = c("cohort_name", "estimate", "value", "source"),
                             allowExtraColumns = TRUE, null = TRUE)
 
+  # Check phenotyper version
+  if(nrow(result) != 0){
+    if(!"phenotyper_version" %in% colnames(result |> omopgenerics::settings())){
+      cli::cli_abort("PhenotypeDiagnostics results were generated with an old version of PhenotypeR. Please re-run the analysis with the new version to avoid version conflicts. Alternatively, use the same version to run shinyDiagnostics() to avoid version conflicts.")
+    }else{
+      phenotyper_version <- result |>
+        omopgenerics::settings() |>
+        dplyr::pull("phenotyper_version") |>
+        unique()
+      if(length(phenotyper_version) > 1){
+        cli::cli_warn("result was generated using different PhenotypeR versions.")
+      }else{
+        current_version <- utils::packageVersion("PhenotypeR")
+        if(phenotyper_version != current_version){
+          cli::cli_warn("result was generated using PhenotypeR version {phenotyper_version}, whereas the version currently installed is {current_version}")
+        }
+      }
+    }
+  }
+
   # check if directory needs to be overwritten directory
   directory <- validateDirectory(directory, folderName)
   if (isTRUE(directory)) {

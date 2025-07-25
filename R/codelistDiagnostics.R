@@ -171,6 +171,10 @@ codelistDiagnostics <- function(cohort){
     vctrs::list_drop_empty() |>
     omopgenerics::bind()
 
+  if(is.null(results)){
+    results <- omopgenerics::emptySummarisedResult()
+  }
+
   newSettings <- results |>
     omopgenerics::settings() |>
     dplyr::mutate("phenotyper_version" = as.character(utils::packageVersion(pkg = "PhenotypeR")),
@@ -178,6 +182,8 @@ codelistDiagnostics <- function(cohort){
 
   results <- results |>
     omopgenerics::newSummarisedResult(settings = newSettings)
+
+ return(results)
 }
 
 duplicatedCodelists <- function(codelists) {

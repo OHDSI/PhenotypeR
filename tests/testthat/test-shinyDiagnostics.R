@@ -10,7 +10,7 @@ test_that("basic working example with one cohort", {
 
   # with results
   cdm_local <- omock::mockCdmReference() |>
-    omock::mockPerson(nPerson = 1000) |>
+    omock::mockPerson(nPerson = 100) |>
     omock::mockObservationPeriod() |>
     omock::mockConditionOccurrence() |>
     omock::mockDrugExposure() |>
@@ -31,7 +31,26 @@ test_that("basic working example with one cohort", {
   my_result_cohort_diag <- cdm$my_cohort |> phenotypeDiagnostics()
 
   expect_no_error(shinyDiagnostics(my_result_cohort_diag,
-                                   directory = tempdir()))
+                                   directory = tempdir(),
+                                   open = FALSE))
+
+  expect_error(shinyDiagnostics(my_result_cohort_diag,
+               directory = tempdir(),
+               expectations = 0))
+
+  my_results1 <- omopgenerics::newSummarisedResult(my_result_cohort_diag,
+                                                   settings = my_result_cohort_diag |>
+                                                     omopgenerics::settings() |>
+                                                     dplyr::mutate("phenotyper_version" = "0"))
+
+  expect_warning(shinyDiagnostics(my_results1, tempdir(), open = FALSE))
+
+  my_results1 <- omopgenerics::newSummarisedResult(my_result_cohort_diag,
+                                                   settings = my_result_cohort_diag |>
+                                                     omopgenerics::settings() |>
+                                                     dplyr::mutate("phenotyper_version" = c(rep(c("1","2"),24),"1")))
+
+  expect_warning(shinyDiagnostics(my_results1, tempdir(), open = FALSE))
 
 
 })
