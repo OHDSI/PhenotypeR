@@ -51,20 +51,6 @@ server <- function(input, output, session) {
     }
   })
 
-  shiny::observe({
-    cdm_values <- names(choices)[grepl("cdm_name", names(choices)) & names(choices) != "shared_cdm_names"]
-    for(inputValue in cdm_values){
-      local({
-        inputValue_local <- inputValue
-        shiny::observeEvent(input[[inputValue_local]], {
-          val <- input[[inputValue_local]]
-          if (is.null(val) || length(val) == 0 || all(val == "")) { val <- character(0) }
-          shared_cdm_names(val)
-        }, ignoreNULL = FALSE)
-      })
-    }
-  })
-
   # Define shared cohort_names values ----
   shiny::observe({
     cohort_values <- names(choices)[grepl("cohort_name", names(choices)) & names(choices) != "shared_cohort_names"]
@@ -78,20 +64,6 @@ server <- function(input, output, session) {
         }, ignoreNULL = FALSE)
       })
     }
-  })
-
-  shiny::observe({
-    cohort_values <- names(choices)[grepl("cohort_name", names(choices)) & names(choices) != "shared_cohort_names"]
-    for (inputId in cohort_values) {
-      local({
-        inputId_local <- inputId  # capture value to avoid scoping issue
-        shiny::observeEvent(shared_cohort_names(), {
-          updatePickerInput(session, inputId_local, selected = shared_cohort_names())
-        })
-      })
-    }
-
-    updatePickerInput(session, "compare_large_scale_characteristics_cohort_compare", selected = shared_cohort_names())
   })
 
   # download raw data -----
@@ -119,8 +91,7 @@ server <- function(input, output, session) {
       validate("No snapshot in results")
     }
 
-    result <- dataFiltered$summarise_omop_snapshot |>
-      dplyr::filter(.data$cdm_name %in% shared_cdm_names())
+    result <- dataFiltered$summarise_omop_snapshot
 
     validateFilteredResult(result)
 
@@ -154,8 +125,7 @@ server <- function(input, output, session) {
       validate("No observation period summary in results")
     }
 
-    result <- dataFiltered$summarise_observation_period |>
-      dplyr::filter(.data$cdm_name %in% shared_cdm_names())
+    result <- dataFiltered$summarise_observation_period
 
     validateFilteredResult(result)
 

@@ -9,7 +9,7 @@ ui <- fluidPage(
                      icon = shiny::icon("disease"),
                      shiny::includeMarkdown(path = "background.md")),
 
-    # Database diagnostics -----
+    # databaseDiagnostics_start -----
     bslib::nav_menu(
       title = "Database diagnostics",
       icon = shiny::icon("list"),
@@ -43,44 +43,45 @@ ui <- fluidPage(
         )
       )
     ),
-
-    # Codelist diagnostics -----
+    # databaseDiagnostics_end ----
+    # codelistDiagnostics_start -----
     bslib::nav_menu(
       title = "Codelist diagnostics",
       icon = shiny::icon("list"),
+      ## achilles_results_start
       ## achilles code use -----
       bslib::nav_panel(
         title = "Achilles code use",
         bslib::accordion(
           bslib::accordion_panel(
             title = "Shared inputs",
-        tags$div(
-          style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
-          tags$label("Select Database(s):"),
-          tags$div(
-            style = "width: 225px;",
             tags$div(
-              style = "margin-top: 15px;",
-              shinyWidgets::pickerInput(
-                inputId = "achilles_code_use_cdm_name",
-                label = NULL,
-                selected = selected$shared_cdm_name,
-                choices = choices$shared_cdm_name,
-                multiple = TRUE,
-                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                               `deselect-all-text` = "None", `select-all-text` = "All"),
+              style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
+              tags$label("Select Database(s):"),
+              tags$div(
+                style = "width: 225px;",
+                tags$div(
+                  style = "margin-top: 15px;",
+                  shinyWidgets::pickerInput(
+                    inputId = "achilles_code_use_cdm_name",
+                    label = NULL,
+                    selected = selected$shared_cdm_name,
+                    choices = choices$shared_cdm_name,
+                    multiple = TRUE,
+                    options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                                   `deselect-all-text` = "None", `select-all-text` = "All"),
+                    width = "100%"
+                  )
+                )
+              ),
+              tags$div(
+                style = "width: 225px;",
+                actionBttn("updateAchillesCodeUse", "Update",
+                           style = "simple"),
                 width = "100%"
               )
             )
-          ),
-          tags$div(
-            style = "width: 225px;",
-            actionBttn("updateAchillesCodeUse", "Update",
-                       style = "simple"),
-            width = "100%"
-          )
-        )
-        )),
+          )),
         icon = shiny::icon("database"),
         bslib::layout_sidebar(
           sidebar = bslib::sidebar(width = 400, open = "closed",
@@ -238,33 +239,33 @@ ui <- fluidPage(
         bslib::accordion(
           bslib::accordion_panel(
             title = "Shared inputs",
-        tags$div(
-          style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
-          tags$label("Select Database(s):"), # Explicitly use tags$label
-          tags$div(
-            style = "width: 225px;",
             tags$div(
-              style = "margin-top: 15px;",
-              shinyWidgets::pickerInput(
-                inputId = "orphan_code_use_cdm_name",
-                label = NULL,
-                selected = selected$shared_cdm_name,
-                choices = choices$shared_cdm_name,
-                multiple = TRUE,
-                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                               `deselect-all-text` = "None", `select-all-text` = "All"),
+              style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
+              tags$label("Select Database(s):"), # Explicitly use tags$label
+              tags$div(
+                style = "width: 225px;",
+                tags$div(
+                  style = "margin-top: 15px;",
+                  shinyWidgets::pickerInput(
+                    inputId = "orphan_code_use_cdm_name",
+                    label = NULL,
+                    selected = selected$shared_cdm_name,
+                    choices = choices$shared_cdm_name,
+                    multiple = TRUE,
+                    options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                                   `deselect-all-text` = "None", `select-all-text` = "All"),
+                    width = "100%"
+                  )
+                )
+              ),
+              tags$div(
+                style = "width: 225px;",
+                actionBttn("updateOrphanCodeUse", "Update",
+                           style = "simple"),
                 width = "100%"
               )
             )
-          ),
-          tags$div(
-            style = "width: 225px;",
-            actionBttn("updateOrphanCodeUse", "Update",
-                       style = "simple"),
-            width = "100%"
-          )
-        )
-        )),
+          )),
         icon = shiny::icon("circle-half-stroke"),
         bslib::layout_sidebar(
           sidebar = bslib::sidebar(width = 400, open = "closed",
@@ -336,56 +337,57 @@ ui <- fluidPage(
           )
         )
       ),
+      ## achilles_results_end
       ## Cohort code use -----
       bslib::nav_panel(
         title = "Cohort code use",
         bslib::accordion(
           bslib::accordion_panel(
             title = "Shared inputs",
-        tags$div(
-          style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
-          tags$label("Select Database(s):"),
-          tags$div(
-            style = "width: 225px;",
             tags$div(
-              style = "margin-top: 15px;",
-              shinyWidgets::pickerInput(
-                inputId = "cohort_code_use_cdm_name",
-                label = NULL,
-                selected = selected$shared_cdm_name,
-                choices = choices$shared_cdm_name,
-                multiple = TRUE,
-                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                               `deselect-all-text` = "None", `select-all-text` = "All"),
+              style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
+              tags$label("Select Database(s):"),
+              tags$div(
+                style = "width: 225px;",
+                tags$div(
+                  style = "margin-top: 15px;",
+                  shinyWidgets::pickerInput(
+                    inputId = "cohort_code_use_cdm_name",
+                    label = NULL,
+                    selected = selected$shared_cdm_name,
+                    choices = choices$shared_cdm_name,
+                    multiple = TRUE,
+                    options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                                   `deselect-all-text` = "None", `select-all-text` = "All"),
+                    width = "100%"
+                  )
+                )
+              ),
+              tags$label("Select Cohort(s):"),
+              tags$div(
+                style = "width: 225px;",
+                tags$div(
+                  style = "margin-top: 15px;",
+                  shinyWidgets::pickerInput(
+                    inputId = "cohort_code_use_cohort_name",
+                    label = NULL,
+                    selected = selected$shared_cohort_name,
+                    choices = choices$shared_cohort_name,
+                    multiple = TRUE,
+                    options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                                   `deselect-all-text` = "None", `select-all-text` = "All"),
+                    width = "100%"
+                  )
+                )
+              ),
+              tags$div(
+                style = "width: 225px;",
+                actionBttn("updateCohortCodeUse", "Update",
+                           style = "simple"),
                 width = "100%"
               )
             )
-          ),
-          tags$label("Select Cohort(s):"),
-          tags$div(
-            style = "width: 225px;",
-            tags$div(
-              style = "margin-top: 15px;",
-              shinyWidgets::pickerInput(
-                inputId = "cohort_code_use_cohort_name",
-                label = NULL,
-                selected = selected$shared_cohort_name,
-                choices = choices$shared_cohort_name,
-                multiple = TRUE,
-                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                               `deselect-all-text` = "None", `select-all-text` = "All"),
-                width = "100%"
-              )
-            )
-          ),
-          tags$div(
-            style = "width: 225px;",
-            actionBttn("updateCohortCodeUse", "Update",
-                       style = "simple"),
-            width = "100%"
-          )
-        )
-        )),
+          )),
         icon = shiny::icon("chart-column"),
         bslib::layout_sidebar(
           sidebar = bslib::sidebar(width = 400, open = "closed",
@@ -460,56 +462,57 @@ ui <- fluidPage(
           )
         )
       ),
+      ## measurement_diagnostics_start
       ## Measurement code use -----
       bslib::nav_panel(
         title = "Measurements Code Use",
         bslib::accordion(
           bslib::accordion_panel(
             title = "Shared inputs",
-        tags$div(
-          style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
-          tags$label("Select Database(s):"),
-          tags$div(
-            style = "width: 225px;",
             tags$div(
-              style = "margin-top: 15px;",
-              shinyWidgets::pickerInput(
-                inputId = "measurement_timings_cdm_name",
-                label = NULL,
-                selected = selected$shared_cdm_name,
-                choices = choices$shared_cdm_name,
-                multiple = TRUE,
-                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                               `deselect-all-text` = "None", `select-all-text` = "All"),
+              style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
+              tags$label("Select Database(s):"),
+              tags$div(
+                style = "width: 225px;",
+                tags$div(
+                  style = "margin-top: 15px;",
+                  shinyWidgets::pickerInput(
+                    inputId = "measurement_timings_cdm_name",
+                    label = NULL,
+                    selected = selected$shared_cdm_name,
+                    choices = choices$shared_cdm_name,
+                    multiple = TRUE,
+                    options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                                   `deselect-all-text` = "None", `select-all-text` = "All"),
+                    width = "100%"
+                  )
+                )
+              ),
+              tags$label("Select Cohort(s):"),
+              tags$div(
+                style = "width: 225px;",
+                tags$div(
+                  style = "margin-top: 15px;",
+                  shinyWidgets::pickerInput(
+                    inputId = "measurement_timings_cohort_name",
+                    label = NULL,
+                    selected = selected$shared_cohort_name,
+                    choices = choices$shared_cohort_name,
+                    multiple = TRUE,
+                    options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                                   `deselect-all-text` = "None", `select-all-text` = "All"),
+                    width = "100%"
+                  )
+                )
+              ),
+              tags$div(
+                style = "width: 225px;",
+                actionBttn("updateMeasurementCodeUse", "Update",
+                           style = "simple"),
                 width = "100%"
               )
             )
-          ),
-          tags$label("Select Cohort(s):"),
-          tags$div(
-            style = "width: 225px;",
-            tags$div(
-              style = "margin-top: 15px;",
-              shinyWidgets::pickerInput(
-                inputId = "measurement_timings_cohort_name",
-                label = NULL,
-                selected = selected$shared_cohort_name,
-                choices = choices$shared_cohort_name,
-                multiple = TRUE,
-                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                               `deselect-all-text` = "None", `select-all-text` = "All"),
-                width = "100%"
-              )
-            )
-          ),
-          tags$div(
-            style = "width: 225px;",
-            actionBttn("updateMeasurementCodeUse", "Update",
-                       style = "simple"),
-            width = "100%"
-          )
-        )
-        )),
+          )),
         icon = shiny::icon("weight-scale"),
         bslib::navset_card_tab(
           bslib::nav_panel(
@@ -842,9 +845,10 @@ ui <- fluidPage(
           )
         )
       )
+      ## measurement_diagnostics_end
     ),
-
-    # Cohort diagnostics -----
+    # codelistDiagnostics_end ----
+    # cohortDiagnostics_start -----
     bslib::nav_menu(
       title = "Cohort diagnostics",
       icon = shiny::icon("list"),
@@ -854,50 +858,50 @@ ui <- fluidPage(
         bslib::accordion(
           bslib::accordion_panel(
             title = "Shared inputs",
-        tags$div(
-          style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
-          tags$label("Select Database(s):"),
-          tags$div(
-            style = "width: 225px;",
             tags$div(
-              style = "margin-top: 15px;",
-              shinyWidgets::pickerInput(
-                inputId = "summarise_cohort_count_cdm_name",
-                label = NULL,
-                selected = selected$shared_cdm_name,
-                choices = choices$shared_cdm_name,
-                multiple = TRUE,
-                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                               `deselect-all-text` = "None", `select-all-text` = "All"),
+              style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
+              tags$label("Select Database(s):"),
+              tags$div(
+                style = "width: 225px;",
+                tags$div(
+                  style = "margin-top: 15px;",
+                  shinyWidgets::pickerInput(
+                    inputId = "summarise_cohort_count_cdm_name",
+                    label = NULL,
+                    selected = selected$shared_cdm_name,
+                    choices = choices$shared_cdm_name,
+                    multiple = TRUE,
+                    options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                                   `deselect-all-text` = "None", `select-all-text` = "All"),
+                    width = "100%"
+                  )
+                )
+              ),
+              tags$label("Select Cohort(s):"),
+              tags$div(
+                style = "width: 225px;",
+                tags$div(
+                  style = "margin-top: 15px;",
+                  shinyWidgets::pickerInput(
+                    inputId = "summarise_cohort_count_cohort_name",
+                    label = NULL,
+                    selected = selected$shared_cohort_name,
+                    choices = choices$shared_cohort_name,
+                    multiple = TRUE,
+                    options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                                   `deselect-all-text` = "None", `select-all-text` = "All"),
+                    width = "100%"
+                  )
+                )
+              ),
+              tags$div(
+                style = "width: 225px;",
+                actionBttn("updateCohortCount", "Update",
+                           style = "simple"),
                 width = "100%"
               )
             )
-          ),
-          tags$label("Select Cohort(s):"),
-          tags$div(
-            style = "width: 225px;",
-            tags$div(
-              style = "margin-top: 15px;",
-              shinyWidgets::pickerInput(
-                inputId = "summarise_cohort_count_cohort_name",
-                label = NULL,
-                selected = selected$shared_cohort_name,
-                choices = choices$shared_cohort_name,
-                multiple = TRUE,
-                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                               `deselect-all-text` = "None", `select-all-text` = "All"),
-                width = "100%"
-              )
-            )
-          ),
-          tags$div(
-            style = "width: 225px;",
-            actionBttn("updateCohortCount", "Update",
-                       style = "simple"),
-            width = "100%"
-          )
-        )
-        )),
+          )),
         icon = shiny::icon("person"),
         accordion(open = FALSE,
                   accordion_panel(
@@ -984,50 +988,50 @@ ui <- fluidPage(
         bslib::accordion(
           bslib::accordion_panel(
             title = "Shared inputs",
-        tags$div(
-          style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
-          tags$label("Select Database(s):"),
-          tags$div(
-            style = "width: 225px;",
             tags$div(
-              style = "margin-top: 15px;",
-              shinyWidgets::pickerInput(
-                inputId = "summarise_characteristics_cdm_name",
-                label = NULL,
-                selected = selected$shared_cdm_names,
-                choices = choices$shared_cdm_names,
-                multiple = TRUE,
-                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                               `deselect-all-text` = "None", `select-all-text` = "All"),
+              style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
+              tags$label("Select Database(s):"),
+              tags$div(
+                style = "width: 225px;",
+                tags$div(
+                  style = "margin-top: 15px;",
+                  shinyWidgets::pickerInput(
+                    inputId = "summarise_characteristics_cdm_name",
+                    label = NULL,
+                    selected = selected$shared_cdm_names,
+                    choices = choices$shared_cdm_names,
+                    multiple = TRUE,
+                    options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                                   `deselect-all-text` = "None", `select-all-text` = "All"),
+                    width = "100%"
+                  )
+                )
+              ),
+              tags$label("Select Cohort(s):"),
+              tags$div(
+                style = "width: 225px;",
+                tags$div(
+                  style = "margin-top: 15px;",
+                  shinyWidgets::pickerInput(
+                    inputId = "summarise_characteristics_cohort_name",
+                    label = NULL,
+                    selected = selected$shared_cohort_names,
+                    choices = choices$shared_cohort_names,
+                    multiple = TRUE,
+                    options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                                   `deselect-all-text` = "None", `select-all-text` = "All"),
+                    width = "100%"
+                  )
+                )
+              ),
+              tags$div(
+                style = "width: 225px;",
+                actionBttn("updateCohortCharacteristics", "Update",
+                           style = "simple"),
                 width = "100%"
               )
             )
-          ),
-          tags$label("Select Cohort(s):"),
-          tags$div(
-            style = "width: 225px;",
-            tags$div(
-              style = "margin-top: 15px;",
-              shinyWidgets::pickerInput(
-                inputId = "summarise_characteristics_cohort_name",
-                label = NULL,
-                selected = selected$shared_cohort_names,
-                choices = choices$shared_cohort_names,
-                multiple = TRUE,
-                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                               `deselect-all-text` = "None", `select-all-text` = "All"),
-                width = "100%"
-              )
-            )
-          ),
-          tags$div(
-            style = "width: 225px;",
-            actionBttn("updateCohortCharacteristics", "Update",
-                       style = "simple"),
-            width = "100%"
-          )
-        )
-        )),
+          )),
         icon = shiny::icon("users-gear"),
         accordion(open = FALSE,
                   accordion_panel(
@@ -1143,50 +1147,50 @@ ui <- fluidPage(
         bslib::accordion(
           bslib::accordion_panel(
             title = "Shared inputs",
-        tags$div(
-          style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
-          tags$label("Select Database(s):"),
-          tags$div(
-            style = "width: 225px;",
             tags$div(
-              style = "margin-top: 15px;",
-              shinyWidgets::pickerInput(
-                inputId = "summarise_large_scale_characteristics_cdm_name",
-                label = NULL,
-                selected = selected$shared_cdm_names,
-                choices = choices$shared_cdm_names,
-                multiple = TRUE,
-                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                               `deselect-all-text` = "None", `select-all-text` = "All"),
+              style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
+              tags$label("Select Database(s):"),
+              tags$div(
+                style = "width: 225px;",
+                tags$div(
+                  style = "margin-top: 15px;",
+                  shinyWidgets::pickerInput(
+                    inputId = "summarise_large_scale_characteristics_cdm_name",
+                    label = NULL,
+                    selected = selected$shared_cdm_names,
+                    choices = choices$shared_cdm_names,
+                    multiple = TRUE,
+                    options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                                   `deselect-all-text` = "None", `select-all-text` = "All"),
+                    width = "100%"
+                  )
+                )
+              ),
+              tags$label("Select Cohort(s):"),
+              tags$div(
+                style = "width: 225px;",
+                tags$div(
+                  style = "margin-top: 15px;",
+                  shinyWidgets::pickerInput(
+                    inputId = "summarise_large_scale_characteristics_cohort_name",
+                    label = NULL,
+                    selected = selected$shared_cohort_names,
+                    choices = choices$shared_cohort_names,
+                    multiple = TRUE,
+                    options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                                   `deselect-all-text` = "None", `select-all-text` = "All"),
+                    width = "100%"
+                  )
+                )
+              ),
+              tags$div(
+                style = "width: 225px;",
+                actionBttn("updateLSC", "Update",
+                           style = "simple"),
                 width = "100%"
               )
             )
-          ),
-          tags$label("Select Cohort(s):"),
-          tags$div(
-            style = "width: 225px;",
-            tags$div(
-              style = "margin-top: 15px;",
-              shinyWidgets::pickerInput(
-                inputId = "summarise_large_scale_characteristics_cohort_name",
-                label = NULL,
-                selected = selected$shared_cohort_names,
-                choices = choices$shared_cohort_names,
-                multiple = TRUE,
-                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                               `deselect-all-text` = "None", `select-all-text` = "All"),
-                width = "100%"
-              )
-            )
-          ),
-          tags$div(
-            style = "width: 225px;",
-            actionBttn("updateLSC", "Update",
-                       style = "simple"),
-            width = "100%"
-          )
-        )
-        )),
+          )),
         icon = shiny::icon("arrow-up-right-dots"),
         accordion(open = FALSE,
                   accordion_panel(
@@ -1271,50 +1275,50 @@ ui <- fluidPage(
         bslib::accordion(
           bslib::accordion_panel(
             title = "Shared inputs",
-        tags$div(
-          style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
-          tags$label("Select Database(s):"),
-          tags$div(
-            style = "width: 225px;",
             tags$div(
-              style = "margin-top: 15px;",
-              shinyWidgets::pickerInput(
-                inputId = "compare_large_scale_characteristics_cdm_name",
-                label = NULL,
-                selected = selected$shared_cdm_names,
-                choices = choices$shared_cdm_names,
-                multiple = TRUE,
-                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                               `deselect-all-text` = "None", `select-all-text` = "All"),
-                width = "100%",
-              )
-            )
-          ),
-          tags$label("Select Cohort(s):"),
-          tags$div(
-            style = "width: 225px;",
-            tags$div(
-              style = "margin-top: 15px;",
-              shinyWidgets::pickerInput(
-                inputId = "compare_large_scale_characteristics_cohort_name",
-                label = NULL,
-                selected = selected$shared_cohort_names,
-                choices = choices$shared_cohort_names,
-                multiple = TRUE,
-                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                               `deselect-all-text` = "None", `select-all-text` = "All"),
+              style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
+              tags$label("Select Database(s):"),
+              tags$div(
+                style = "width: 225px;",
+                tags$div(
+                  style = "margin-top: 15px;",
+                  shinyWidgets::pickerInput(
+                    inputId = "compare_large_scale_characteristics_cdm_name",
+                    label = NULL,
+                    selected = selected$shared_cdm_names,
+                    choices = choices$shared_cdm_names,
+                    multiple = TRUE,
+                    options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                                   `deselect-all-text` = "None", `select-all-text` = "All"),
+                    width = "100%",
+                  )
+                )
+              ),
+              tags$label("Select Cohort(s):"),
+              tags$div(
+                style = "width: 225px;",
+                tags$div(
+                  style = "margin-top: 15px;",
+                  shinyWidgets::pickerInput(
+                    inputId = "compare_large_scale_characteristics_cohort_name",
+                    label = NULL,
+                    selected = selected$shared_cohort_names,
+                    choices = choices$shared_cohort_names,
+                    multiple = TRUE,
+                    options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                                   `deselect-all-text` = "None", `select-all-text` = "All"),
+                    width = "100%"
+                  )
+                )
+              ),
+              tags$div(
+                style = "width: 225px;",
+                actionBttn("updateCompareLSC", "Update",
+                           style = "simple"),
                 width = "100%"
               )
             )
-          ),
-          tags$div(
-            style = "width: 225px;",
-            actionBttn("updateCompareLSC", "Update",
-                       style = "simple"),
-            width = "100%"
-          )
-        )
-        )),
+          )),
         icon = shiny::icon("people-arrows"),
         accordion(open = FALSE,
                   accordion_panel(
@@ -1480,50 +1484,50 @@ ui <- fluidPage(
         bslib::accordion(
           bslib::accordion_panel(
             title = "Shared inputs",
-        tags$div(
-          style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
-          tags$label("Select Database(s):"),
-          tags$div(
-            style = "width: 225px;",
             tags$div(
-              style = "margin-top: 15px;",
-              shinyWidgets::pickerInput(
-                inputId = "summarise_cohort_overlap_cdm_name",
-                label = NULL,
-                selected = selected$shared_cdm_names,
-                choices = choices$shared_cdm_names,
-                multiple = TRUE,
-                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                               `deselect-all-text` = "None", `select-all-text` = "All"),
+              style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
+              tags$label("Select Database(s):"),
+              tags$div(
+                style = "width: 225px;",
+                tags$div(
+                  style = "margin-top: 15px;",
+                  shinyWidgets::pickerInput(
+                    inputId = "summarise_cohort_overlap_cdm_name",
+                    label = NULL,
+                    selected = selected$shared_cdm_names,
+                    choices = choices$shared_cdm_names,
+                    multiple = TRUE,
+                    options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                                   `deselect-all-text` = "None", `select-all-text` = "All"),
+                    width = "100%"
+                  )
+                )
+              ),
+              tags$label("Select Cohort(s):"),
+              tags$div(
+                style = "width: 225px;",
+                tags$div(
+                  style = "margin-top: 15px;",
+                  shinyWidgets::pickerInput(
+                    inputId = "summarise_cohort_overlap_cohort_name_reference",
+                    label = NULL,
+                    selected = selected$shared_cohort_names,
+                    choices = choices$shared_cohort_names,
+                    multiple = TRUE,
+                    options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                                   `deselect-all-text` = "None", `select-all-text` = "All"),
+                    width = "100%"
+                  )
+                )
+              ),
+              tags$div(
+                style = "width: 225px;",
+                actionBttn("updateCompareCohorts", "Update",
+                           style = "simple"),
                 width = "100%"
               )
             )
-          ),
-          tags$label("Select Cohort(s):"),
-          tags$div(
-            style = "width: 225px;",
-            tags$div(
-              style = "margin-top: 15px;",
-              shinyWidgets::pickerInput(
-                inputId = "summarise_cohort_overlap_cohort_name_reference",
-                label = NULL,
-                selected = selected$shared_cohort_names,
-                choices = choices$shared_cohort_names,
-                multiple = TRUE,
-                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                               `deselect-all-text` = "None", `select-all-text` = "All"),
-                width = "100%"
-              )
-            )
-          ),
-          tags$div(
-            style = "width: 225px;",
-            actionBttn("updateCompareCohorts", "Update",
-                       style = "simple"),
-            width = "100%"
-          )
-        )
-        )),
+          )),
         icon = shiny::icon("yin-yang"),
         accordion(open = FALSE,
                   accordion_panel(
@@ -1795,56 +1799,57 @@ ui <- fluidPage(
           )
         )
       ),
+      ## cohort_survival_start
       ## Cohort survival -----
       bslib::nav_panel(
         title = "Cohort survival",
         bslib::accordion(
           bslib::accordion_panel(
             title = "Shared inputs",
-        tags$div(
-          style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
-          tags$label("Select Database(s):"),
-          tags$div(
-            style = "width: 225px;",
             tags$div(
-              style = "margin-top: 15px;",
-              shinyWidgets::pickerInput(
-                inputId = "survival_probability_cdm_name",
-                label = NULL,
-                selected = selected$shared_cdm_names,
-                choices = choices$shared_cdm_names,
-                multiple = TRUE,
-                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                               `deselect-all-text` = "None", `select-all-text` = "All"),
+              style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
+              tags$label("Select Database(s):"),
+              tags$div(
+                style = "width: 225px;",
+                tags$div(
+                  style = "margin-top: 15px;",
+                  shinyWidgets::pickerInput(
+                    inputId = "survival_probability_cdm_name",
+                    label = NULL,
+                    selected = selected$shared_cdm_names,
+                    choices = choices$shared_cdm_names,
+                    multiple = TRUE,
+                    options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                                   `deselect-all-text` = "None", `select-all-text` = "All"),
+                    width = "100%"
+                  )
+                )
+              ),
+              tags$label("Select Cohort(s):"),
+              tags$div(
+                style = "width: 225px;",
+                tags$div(
+                  style = "margin-top: 15px;",
+                  shinyWidgets::pickerInput(
+                    inputId = "survival_probability_cohort_name",
+                    label = NULL,
+                    selected = selected$shared_cohort_names,
+                    choices = choices$shared_cohort_names,
+                    multiple = TRUE,
+                    options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                                   `deselect-all-text` = "None", `select-all-text` = "All"),
+                    width = "100%"
+                  )
+                )
+              ),
+              tags$div(
+                style = "width: 225px;",
+                actionBttn("updateCohortSurvival", "Update",
+                           style = "simple"),
                 width = "100%"
               )
             )
-          ),
-          tags$label("Select Cohort(s):"),
-          tags$div(
-            style = "width: 225px;",
-            tags$div(
-              style = "margin-top: 15px;",
-              shinyWidgets::pickerInput(
-                inputId = "survival_probability_cohort_name",
-                label = NULL,
-                selected = selected$shared_cohort_names,
-                choices = choices$shared_cohort_names,
-                multiple = TRUE,
-                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                               `deselect-all-text` = "None", `select-all-text` = "All"),
-                width = "100%"
-              )
-            )
-          ),
-          tags$div(
-            style = "width: 225px;",
-            actionBttn("updateCohortSurvival", "Update",
-                       style = "simple"),
-            width = "100%"
-          )
-        )
-        )),
+          )),
         icon = shiny::icon("chart-gantt"),
         accordion(open = FALSE,
                   accordion_panel(
@@ -1992,9 +1997,10 @@ ui <- fluidPage(
           )
         )
       )
+      ## cohort_survival_end
     ),
-
-    # Population diagnostics -----
+    # cohortDiagnostics_end ----
+    # populationDiagnostics_start -----
     bslib::nav_menu(
       title = "Population diagnostics",
       icon = shiny::icon("list"),
@@ -2004,50 +2010,50 @@ ui <- fluidPage(
         bslib::accordion(
           bslib::accordion_panel(
             title = "Shared inputs",
-        tags$div(
-          style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
-          tags$label("Select Database(s):"),
-          tags$div(
-            style = "width: 225px;",
             tags$div(
-              style = "margin-top: 15px;",
-              shinyWidgets::pickerInput(
-                inputId = "incidence_cdm_name",
-                label = NULL,
-                selected = selected$shared_cdm_names,
-                choices = choices$shared_cdm_names,
-                multiple = TRUE,
-                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                               `deselect-all-text` = "None", `select-all-text` = "All"),
+              style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
+              tags$label("Select Database(s):"),
+              tags$div(
+                style = "width: 225px;",
+                tags$div(
+                  style = "margin-top: 15px;",
+                  shinyWidgets::pickerInput(
+                    inputId = "incidence_cdm_name",
+                    label = NULL,
+                    selected = selected$shared_cdm_names,
+                    choices = choices$shared_cdm_names,
+                    multiple = TRUE,
+                    options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                                   `deselect-all-text` = "None", `select-all-text` = "All"),
+                    width = "100%"
+                  )
+                )
+              ),
+              tags$label("Select Cohort(s):"),
+              tags$div(
+                style = "width: 225px;",
+                tags$div(
+                  style = "margin-top: 15px;",
+                  shinyWidgets::pickerInput(
+                    inputId = "incidence_outcome_cohort_name",
+                    label = NULL,
+                    selected = selected$shared_cohort_names,
+                    choices = choices$shared_cohort_names,
+                    multiple = TRUE,
+                    options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                                   `deselect-all-text` = "None", `select-all-text` = "All"),
+                    width = "100%"
+                  )
+                )
+              ),
+              tags$div(
+                style = "width: 225px;",
+                actionBttn("updateIncidence", "Update",
+                           style = "simple"),
                 width = "100%"
               )
             )
-          ),
-          tags$label("Select Cohort(s):"),
-          tags$div(
-            style = "width: 225px;",
-            tags$div(
-              style = "margin-top: 15px;",
-              shinyWidgets::pickerInput(
-                inputId = "incidence_outcome_cohort_name",
-                label = NULL,
-                selected = selected$shared_cohort_names,
-                choices = choices$shared_cohort_names,
-                multiple = TRUE,
-                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                               `deselect-all-text` = "None", `select-all-text` = "All"),
-                width = "100%"
-              )
-            )
-          ),
-          tags$div(
-            style = "width: 225px;",
-            actionBttn("updateIncidence", "Update",
-                       style = "simple"),
-            width = "100%"
-          )
-        )
-        )),
+          )),
         icon = shiny::icon("shower"),
         bslib::layout_sidebar(
           sidebar = bslib::sidebar(width = 400, open = "closed",
@@ -2211,49 +2217,49 @@ ui <- fluidPage(
           bslib::accordion_panel(
             title = "Shared inputs",
             tags$div(
-          style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
-          tags$label("Select Database(s):"),
-          tags$div(
-            style = "width: 225px;",
-            tags$div(
-              style = "margin-top: 15px;",
-              shinyWidgets::pickerInput(
-                inputId = "prevalence_cdm_name",
-                label = NULL,
-                selected = selected$shared_cdm_names,
-                choices = choices$shared_cdm_names,
-                multiple = TRUE,
-                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                               `deselect-all-text` = "None", `select-all-text` = "All"),
+              style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
+              tags$label("Select Database(s):"),
+              tags$div(
+                style = "width: 225px;",
+                tags$div(
+                  style = "margin-top: 15px;",
+                  shinyWidgets::pickerInput(
+                    inputId = "prevalence_cdm_name",
+                    label = NULL,
+                    selected = selected$shared_cdm_names,
+                    choices = choices$shared_cdm_names,
+                    multiple = TRUE,
+                    options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                                   `deselect-all-text` = "None", `select-all-text` = "All"),
+                    width = "100%"
+                  )
+                )
+              ),
+              tags$label("Select Cohort(s):"),
+              tags$div(
+                style = "width: 225px;",
+                tags$div(
+                  style = "margin-top: 15px;",
+                  shinyWidgets::pickerInput(
+                    inputId = "prevalence_outcome_cohort_name",
+                    label = NULL,
+                    selected = selected$shared_cohort_names,
+                    choices = choices$shared_cohort_names,
+                    multiple = TRUE,
+                    options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                                   `deselect-all-text` = "None", `select-all-text` = "All"),
+                    width = "100%"
+                  )
+                )
+              ),
+              tags$div(
+                style = "width: 225px;",
+                actionBttn("updatePrevalence", "Update",
+                           style = "simple"),
                 width = "100%"
               )
             )
-          ),
-          tags$label("Select Cohort(s):"),
-          tags$div(
-            style = "width: 225px;",
-            tags$div(
-              style = "margin-top: 15px;",
-              shinyWidgets::pickerInput(
-                inputId = "prevalence_outcome_cohort_name",
-                label = NULL,
-                selected = selected$shared_cohort_names,
-                choices = choices$shared_cohort_names,
-                multiple = TRUE,
-                options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                               `deselect-all-text` = "None", `select-all-text` = "All"),
-                width = "100%"
-              )
-            )
-          ),
-          tags$div(
-            style = "width: 225px;",
-            actionBttn("updatePrevalence", "Update",
-                       style = "simple"),
-            width = "100%"
-          )
-        )
-        )),
+          )),
         icon = shiny::icon("bath"),
         bslib::layout_sidebar(
           sidebar = bslib::sidebar(width = 400, open = "closed",
@@ -2408,6 +2414,7 @@ ui <- fluidPage(
         )
       )
     ),
+    # populationDiagnostics_end ----
     nav_spacer(),
     bslib::nav_item(
       bslib::popover(
