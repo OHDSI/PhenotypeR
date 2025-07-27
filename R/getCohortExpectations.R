@@ -10,6 +10,8 @@
 #'
 getCohortExpectations <- function(chat, phenotypes){
 
+  rlang::check_installed("ellmer")
+
   # if summarised result, pull out cohort names
   if(isTRUE(inherits(phenotypes, "summarised_result"))){
     phenotypes <- phenotypes |>
@@ -22,8 +24,15 @@ getCohortExpectations <- function(chat, phenotypes){
 
   expectations <- list()
   for(i in seq_along(phenotypes)){
+    working_phenotype <- phenotypes[[i]]
+    if(length(phenotypes)>1){
+    other_phenotype <- phenotypes[which(phenotypes!=working_phenotype)]
+    } else {
+    other_phenotype <- NULL
+    }
     expectations[[i]] <- fetchExpectations(chat = chat,
-                                            name = phenotypes[[i]])
+                                           name = phenotypes[[i]],
+                                           others = other_phenotype)
   }
 
   expectations |>
@@ -33,13 +42,36 @@ getCohortExpectations <- function(chat, phenotypes){
 }
 
 # go and get expectations cohort by cohort
-fetchExpectations <- function(chat, name){
+fetchExpectations <- function(chat, name, others){
 
   cli::cli_inform("Getting expectations for {name}")
 
   # start from a clean slate
   chat <- chat$clone()$set_turns(list())
 
+  if(is.null(others)){
+    type_my_df <- ellmer::type_array(
+      items = ellmer::type_object(
+        clinical_description = ellmer::type_string(),
+        frequently_seen = ellmer::type_string(),
+        median_age_estimate_low = ellmer::type_number(),
+        median_age_estimate_high = ellmer::type_number(),
+        median_age_elaboration = ellmer::type_string(),
+        proportion_male_estimate_low = ellmer::type_number(),
+        proportion_male_estimate_high = ellmer::type_number(),
+        proportion_male_elaboration = ellmer::type_string(),
+        five_year_survival_estimate_low = ellmer::type_number(),
+        five_year_survival_estimate_high = ellmer::type_number(),
+        five_year_survival_elaboration = ellmer::type_string(),
+        comorbidities = ellmer::type_string(),
+        comorbidities_elaboration = ellmer::type_string(),
+        signs_symptoms = ellmer::type_string(),
+        signs_symptoms_elaboration = ellmer::type_string(),
+        medications = ellmer::type_string(),
+        medications_elaboration = ellmer::type_string()
+      )
+    )
+  } else{
   type_my_df <- ellmer::type_array(
     items = ellmer::type_object(
       clinical_description = ellmer::type_string(),
@@ -58,21 +90,39 @@ fetchExpectations <- function(chat, name){
       signs_symptoms = ellmer::type_string(),
       signs_symptoms_elaboration = ellmer::type_string(),
       medications = ellmer::type_string(),
-      medications_elaboration = ellmer::type_string()
+      medications_elaboration = ellmer::type_string(),
+      overlap = ellmer::type_string(),
+      timing = ellmer::type_string()
     )
   )
+  }
 
-  chat$chat_structured(
-    ellmer::interpolate(
-      "Give a one or two sentence clinical description of {{name}}, with focus on disease aetiology.
+  prompt <- "Give a one or two sentence clinical description of {{name}}, with focus on disease aetiology.
        Give a one or two sentence terse summary of how frequently seen is {{name}} and whether we can expect to identify cases in real-world health care data.
        What is the median age for incident cases presenting with {{name}} - give a range with a low and high plausible value? Provide one terse and simple sentence giving elaboration on age at which individuals typically present.
        What proportion would you expect of {{name}} cases to be male (between 0 and 1) - give a range with a low and high plausible value? Provide one terse and simple sentence giving elaboration on sex of individuals presenting.
        What is expected median survival 1 year and 5 years after presenting with with {{name}} (between 0 all died and 1 all survived) - give a range with a low and high plausible value? Provide one terse and simple sentence giving elaboration on mortality of individuals presenting.
        Give up to 10 most common commorbidies in people with {{name}}. Provide one simple and terse sentence providing elaboration for why we would expect to see these comorbidities among cases.
        Give up to 10 most common signs and symptoms seen for people with {{name}} (use clinical terms). Provide one simple and terse sentence providing elaboration for why we would expect to see these signs and symptoms among cases.
-       Give up to 10 most common medications taken by people with {{name}}. Provide one simple and terse sentence providing elaboration for why we would expect to see these medications among cases.
-       No decimal places for age. Two decimal places for survival. Give only full names for commorbidities, signs and symptoms, and medications (no abbreviations, no explanation)."),
+       Give up to 10 most common medications taken by people with {{name}}. Provide one simple and terse sentence providing elaboration for why we would expect to see these medications among cases."
+
+  if(!is.null(others)){
+    others <- paste0(others, collapse = ", ")
+    prompt <- paste0(
+      prompt,
+      "In my real-world data I will create a study cohort of {{name}} and more cohorts for {{others}} (will call these the other cohorts).
+       For {{name}}, how much overlap (use ranges of percentages where possible) would you expect to see with the other cohorts (in terms of people appearing in both?). Be concise, with a sentence of elaboration.
+       For people in {{name}} who also appear in other cohorts what would their relative timing of entry into other cohorts typically look like (which cohort would they enter first, or would they enter both at the same time?). Give estimates in days or years where appropriate. Be concise, with a sentence of elaboration."
+    )
+  }
+
+  prompt <- paste0(
+    prompt,
+   "No decimal places for age. Two decimal places for survival. Give only full names for commorbidities, signs and symptoms, and medications (no abbreviations, no explanation)."
+   )
+
+ chat_output <- chat$chat_structured(
+    ellmer::interpolate(prompt),
     type = type_my_df)   %>%
     dplyr::mutate(median_age = paste0(.data$median_age_estimate_low,
                                       " to ",
@@ -102,34 +152,56 @@ fetchExpectations <- function(chat, name){
                      "proportion_male_estimate_low", "proportion_male_estimate_high", "proportion_male_elaboration",
                      "five_year_survival_estimate_low", "five_year_survival_estimate_high", "five_year_survival_elaboration",
                      "comorbidities_elaboration", "signs_symptoms_elaboration", "medications_elaboration")) |>
-    dplyr::mutate_all(as.character) %>%
-    dplyr::rename("Clinical description" = "clinical_description",
-                  "Frequency" = "frequently_seen",
-                  "Median age of incident cases" = "median_age",
-                  "Percentage male" = "proportion_male",
-                  "Survival at five years" = "five_year_survival",
-                  "Frequently seen comorbidities" = "comorbidities",
-                  "Frequently seen signs and symptoms" = "signs_symptoms",
-                  "Frequently seen medications" = "medications") |>
-    tidyr::pivot_longer(cols = c("Clinical description",
+    dplyr::mutate_all(as.character)
+
+rename_map <- c(
+  "Clinical description" = "clinical_description",
+  "Frequency" = "frequently_seen",
+  "Median age of incident cases" = "median_age",
+  "Percentage male" = "proportion_male",
+  "Survival at five years" = "five_year_survival",
+  "Frequently seen comorbidities" = "comorbidities",
+  "Frequently seen signs and symptoms" = "signs_symptoms",
+  "Frequently seen medications" = "medications",
+  "Cohort overlap" = "overlap",
+  "Cohort timing" = "timing"
+)
+rename_map <- rename_map[rename_map %in% names(chat_output)]
+chat_output <- chat_output %>%
+  dplyr::rename(!!!rlang::set_names(rename_map, names(rename_map)))
+
+chat_output <- chat_output |>
+  tidyr::pivot_longer(cols = dplyr::any_of(c("Clinical description",
                                  "Frequency",
                                  "Median age of incident cases",
                                  "Percentage male",
                                  "Survival at five years",
+                                 "Cohort overlap",
+                                 "Cohort timing",
                                  "Frequently seen comorbidities",
                                  "Frequently seen signs and symptoms",
-                                 "Frequently seen medications"),
+                                 "Frequently seen medications")),
                         names_to = "estimate") %>%
     dplyr::mutate(name = name) |>
-    dplyr::relocate("name") |>
-    dplyr::mutate("diagnostics" = c("cohort_count",
-                                    "cohort_count",
-                                "cohort_characteristics",
-                                "cohort_characteristics",
-                                "cohort_survival",
-                                "large_scale_characteristics, compare_large_scale_characteristics",
-                                "large_scale_characteristics, compare_large_scale_characteristics",
-                                "large_scale_characteristics, compare_large_scale_characteristics"))
+    dplyr::relocate("name")
+
+chat_output <- chat_output |>
+  dplyr::mutate(
+    diagnostics = dplyr::case_when(estimate == "Clinical description"  ~ "cohort_count",
+                               estimate == "Frequency"  ~ "cohort_count",
+                               estimate == "Frequency"  ~ "cohort_characteristics",
+                               estimate == "Median age of incident cases"  ~ "cohort_characteristics",
+                               estimate == "Percentage male"  ~ "cohort_characteristics",
+                               estimate == "Survival at five years"  ~ "cohort_survival",
+                               estimate == "Cohort overlap"  ~ "compare_cohorts",
+                               estimate == "Cohort timing"  ~ "compare_cohorts",
+                               estimate == "Frequently seen comorbidities"  ~ "large_scale_characteristics, compare_large_scale_characteristics",
+                               estimate == "Frequently seen signs and symptoms"  ~ "large_scale_characteristics, compare_large_scale_characteristics",
+                               estimate == "Frequently seen medications"  ~ "large_scale_characteristics, compare_large_scale_characteristics")
+  )
+
+chat_output
+
 }
 
 
