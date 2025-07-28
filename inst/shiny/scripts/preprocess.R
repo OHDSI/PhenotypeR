@@ -105,59 +105,83 @@ if("cohortDiagnostics" %in% diagnostics){
   values_subset$compare_large_scale_characteristics_cohort_name <- values$shared_cohort_names
   values_subset$compare_large_scale_characteristics_cohort_compare <- values$shared_cohort_names
   values <- append(values, values_subset)
-
+  
   if("summarise_cohort_overlap" %in% names(dataFiltered)){
     values$summarise_cohort_overlap_cohort_comparator <- values$summarise_cohort_overlap_cohort_name_comparator
     values <- values[!stringr::str_detect(names(values), "summarise_cohort_overlap_cohort_name_comparator")]
   }
-
+  
   if("survival_probability" %in% names(dataFiltered)){
     # survival
     values$survival_probability_cohort_name <- values$survival_probability_target_cohort
     values <- values[!stringr::str_detect(names(values), "survival_probability_target_cohort")]
   }
-
+  
 }
 
 choices <- values
 selected <- choices
 
+msgMatchedSample <- ""
 if("cohortDiagnostics" %in% diagnostics){
   selected$compare_large_scale_characteristics_variable_level <- "-inf to -1"
   selected$compare_large_scale_characteristics_table_name     <- "condition_occurrence"
   selected$compare_large_scale_characteristics_cohort_1  <- "sampled"
   selected$compare_large_scale_characteristics_cohort_2  <- "matched"
   selected$compare_large_scale_characteristics_compare_cohort <- values$compare_large_scale_characteristics_compare_cohort[1]
-
+  
   if("survival_probability" %in% names(dataFiltered)){
     selected$survival_probability_cohort_name <- c(paste0(gsub("_matched|sampled", "", selected$survival_probability_cohort_name[1]),"_sampled"),
                                                    paste0(gsub("_matched|sampled", "", selected$survival_probability_cohort_name[1]),"_matched"))
-
+    
+  }
+  
+  if("matchedSample" %in% (omopgenerics::settings(result) |> colnames())){
+    matchedSample <- as.numeric(omopgenerics::settings(dataFiltered$summarise_large_scale_characteristics) |> dplyr::pull("matchedSample") |> unique())
+    if(all(matchedSample != 0)){
+      matchedSample <- formatC(matchedSample, format = "f", digits = 0, big.mark = ",")
+      msgMatchedSample <- glue::glue("Matched cohorts were created based on a subsample of ", paste(matchedSample, collapse = " and ")," participants from the original cohorts.")
+    }
   }
 }
 
-if("populationDiagnostics" %in% names(values)){
+min_incidence_start <- as.Date(NA)
+max_incidence_end   <- as.Date(NA)
+msgPopulationDiag <- ""
+if("populationDiagnostics" %in% diagnostics){
   selected$incidence_analysis_interval  <- "years"
   selected$incidence_denominator_age_group <- "0 to 150"
   selected$incidence_denominator_sex <- "Both"
   selected$incidence_denominator_days_prior_observation <- "0"
-
+  
   selected$prevalence_analysis_interval <- "years"
   selected$prevalence_denominator_age_group <- "0 to 150"
   selected$prevalence_denominator_sex <- "Both"
   selected$prevalence_denominator_days_prior_observation <- "0"
-}
-
-# Define incidence start and end date
-if(!is.null(selected$incidence_grouping_incidence_start_date)){
-  min_incidence_start <- min(as.Date(selected$incidence_grouping_incidence_start_date))
-} else {
-  min_incidence_start <- as.Date(NA)
-}
-if(!is.null(selected$incidence_grouping_incidence_end_date)){
-  max_incidence_end <- max(as.Date(selected$incidence_grouping_incidence_end_date))
-} else {
-  max_incidence_end <- as.Date(NA)
+  
+  if("populationDateStart" %in% (omopgenerics::settings(dataFiltered$incidence) |> colnames())){
+    min_incidence_start <- as.Date(omopgenerics::settings(dataFiltered$incidence) |> dplyr::pull("populationDateStart") |> unique())
+    msgPopulationDiag <- paste0("Incidence is calculated using data from ", format(as.Date(min_incidence_start), "%B %d, %Y")," onwards. ")
+  }else{
+    min_incidence_start <- as.Date(NA)
+  }
+  
+  if("populationDateEnd" %in% (omopgenerics::settings(dataFiltered$incidence) |> colnames())){
+    max_incidence_end <- as.Date(omopgenerics::settings(dataFiltered$incidence) |> dplyr::pull("populationDateEnd") |> unique())
+    msgPopulationDiag <- paste0("Incidence is calculated up to ", format(as.Date(max_incidence_end), "%B %d, %Y"),". ")
+  }else{
+    max_incidence_end <- as.Date(NA)
+  }
+  
+  if(!is.na(min_incidence_start) && !is.na(max_incidence_end)){
+    msgPopulationDiag <- paste0("Incidence is calculated from ", format(as.Date(min_incidence_start), "%B %d, %Y"), " until ", format(as.Date(max_incidence_end), "%B %d, %Y"),". ")
+  }
+  
+  if("populationSample" %in% (omopgenerics::settings(dataFiltered$incidence) |> colnames())){
+    populationSample <- as.numeric(omopgenerics::settings(dataFiltered$incidence) |> dplyr::pull("populationSample") |> unique())
+    populationSample <- formatC(populationSample, format = "f", digits = 0, big.mark = ",")
+    msgPopulationDiag  <- paste0(msgPopulationDiag, "Population diagnostics was performed within a subsample of ", populationSample, " individuals.")
+  }
 }
 
 # Load expectations results
@@ -165,12 +189,16 @@ list_exp <- list.files(path = file.path("data","raw","expectations"), full.names
 expectations <- dplyr::bind_rows(purrr:::map(.f = ~readr::read_csv(.), .x = list_exp))  |>
   dplyr::filter(!is.na(.data$cohort_name))
 
+phenotyper_version <- omopgenerics::settings(result) |> dplyr::pull("phenotyper_version") |> unique()
 cli::cli_inform("Saving data for shiny")
 save(dataFiltered,
      selected,
      choices,
      min_incidence_start,
      max_incidence_end,
+     msgMatchedSample,
+     msgPopulationDiag,
+     phenotyper_version,
      expectations,
      file = here::here("data", "appData.RData"))
 
