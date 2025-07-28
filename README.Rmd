@@ -127,8 +127,8 @@ You can also create a table with the expected results, so you can compare later 
 ```{r, message = FALSE}
 expectations <- tibble(
   "cohort_name" = c("warfarin", "acetaminophen", "morphine", "measurements_cohort"),
-  "value" = c("Male percentage", "Survival probability after 5y", "Median age", "Median age"),
-  "estimate" = c("56%", "96%", "57-58", "42-45")
+  "estimate" = c("Male percentage", "Survival probability after 5y", "Median age", "Median age"),
+  "value" = c("56%", "96%", "57-58", "42-45")
 )
 ```
 Or alternatively, you can use AI to generate expectations
