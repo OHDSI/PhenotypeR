@@ -12,6 +12,24 @@ getCohortExpectations <- function(chat, phenotypes){
 
   rlang::check_installed("ellmer")
 
+  # start from a clean slate
+  chat <- chat$clone()$set_turns(list())
+
+  system_prompt <- "You are a terse assistant helping a user (with equivalent medical knowelge to that of a well-informed member of the lay public) working with real-world health care data to build a set of expectations about the characteristics they should see for the study cohorts they create."
+  system_prompt <- paste0(system_prompt,
+                          "Study cohorts can include, but not limited to, people with a particular diagnosis, people having a routine lab test, people having a procedure, and people who are users of a medication.")
+  system_prompt <- paste0(system_prompt,
+                          "Unless otherwise specified, assume no additional eligibility criteria has been applied when identifying study cohorts.")
+  system_prompt <- paste0(system_prompt,
+                   "Unless specified, real world data being used may be drawn from different settings (such as primary care and hospital care) and types (such as electronic healthcare records or insurance data).")
+  system_prompt <- paste0(system_prompt,
+                    "For medications, use ATC classifications where appropriate, but otherwise use drug ingredient names, and avoid abbreviations.")
+  system_prompt <- paste0(system_prompt,
+                      "Use British spelling.")
+  system_prompt <- paste0(system_prompt,
+                          "When giving a set of most common characteristics, give this formatted as a sentence and only capitalise words where appropriate.")
+  chat <- chat$set_system_prompt(value = system_prompt)
+
   # if summarised result, pull out cohort names
   if(isTRUE(inherits(phenotypes, "summarised_result"))){
     phenotypes <- phenotypes |>
@@ -45,9 +63,6 @@ getCohortExpectations <- function(chat, phenotypes){
 fetchExpectations <- function(chat, name, others){
 
   cli::cli_inform("Getting expectations for {name}")
-
-  # start from a clean slate
-  chat <- chat$clone()$set_turns(list())
 
   if(is.null(others)){
     type_my_df <- ellmer::type_array(
@@ -98,21 +113,21 @@ fetchExpectations <- function(chat, name, others){
   }
 
   prompt <- "Give a one or two sentence clinical description of {{name}}, with focus on disease aetiology.
-       Give a one or two sentence terse summary of how frequently seen is {{name}} and whether we can expect to identify cases in real-world health care data.
-       What is the median age for incident cases presenting with {{name}} - give a range with a low and high plausible value? Provide one terse and simple sentence giving elaboration on age at which individuals typically present.
-       What proportion would you expect of {{name}} cases to be male (between 0 and 1) - give a range with a low and high plausible value? Provide one terse and simple sentence giving elaboration on sex of individuals presenting.
-       What is expected median survival 1 year and 5 years after presenting with with {{name}} (between 0 all died and 1 all survived) - give a range with a low and high plausible value? Provide one terse and simple sentence giving elaboration on mortality of individuals presenting.
-       Give up to 10 most common commorbidies in people with {{name}}. Provide one simple and terse sentence providing elaboration for why we would expect to see these comorbidities among cases.
-       Give up to 10 most common signs and symptoms seen for people with {{name}} (use clinical terms). Provide one simple and terse sentence providing elaboration for why we would expect to see these signs and symptoms among cases.
-       Give up to 10 most common medications taken by people with {{name}}. Provide one simple and terse sentence providing elaboration for why we would expect to see these medications among cases."
+       Give a one or two sentence terse summary of how frequently seen is {{name}} and whether we can expect to identify cases in different types of real-world health care data.
+       What is the median age for incident cases presenting with {{name}} - give a range with a low and high plausible value? Provide sentence giving elaboration on age at which individuals typically present.
+       What proportion would you expect of {{name}} cases to be male (between 0 and 1) - give a range with a low and high plausible value? Provide sentence giving elaboration on sex of individuals presenting.
+       What is expected median survival 1 year and 5 years after presenting with with {{name}} (between 0 all died and 1 all survived) - give a range with a low and high plausible value? Provide one sentence giving elaboration on mortality of individuals presenting.
+       Give up to 10 most common commorbidies in people with {{name}}. Provide one sentence providing elaboration for why we would expect to see these comorbidities among cases.
+       Give up to 10 most common signs and symptoms seen for people with {{name}} (use clinical terms). Provide one sentence providing elaboration for why we would expect to see these signs and symptoms among cases.
+       Give up to 10 most common medications taken by people with {{name}}. Provide one sentence providing elaboration for why we would expect to see these medications among cases."
 
   if(!is.null(others)){
     others <- paste0(others, collapse = ", ")
     prompt <- paste0(
       prompt,
-      "In my real-world data I will create a study cohort of {{name}} and more cohorts for {{others}} (will call these the other cohorts).
-       For {{name}}, how much overlap (use ranges of percentages where possible) would you expect to see with the other cohorts (in terms of people appearing in both?). Be concise, with a sentence of elaboration.
-       For people in {{name}} who also appear in other cohorts what would their relative timing of entry into other cohorts typically look like (which cohort would they enter first, or would they enter both at the same time?). Give estimates in days or years where appropriate. Be concise, with a sentence of elaboration."
+      "In my real-world data I will create a study cohort of {{name}} and more cohorts for {{others}} (will call these the other cohorts). Only consider these specified other cohorts.
+       For {{name}}, how much overlap (use ranges of percentages where possible) would you expect to see with the named other cohorts (in terms of people appearing in both?). Provide a sentence of elaboration.
+       For people in {{name}} who also appear in other cohorts what would their relative timing of entry into other cohorts typically look like (which cohort would they enter first, or would they enter both at the same time?). Give estimates in days or years where appropriate. Provide a sentence of elaboration."
     )
   }
 
@@ -123,7 +138,8 @@ fetchExpectations <- function(chat, name, others){
 
  chat_output <- chat$chat_structured(
     ellmer::interpolate(prompt),
-    type = type_my_df)   %>%
+    type = type_my_df,
+    echo = "none")   %>%
     dplyr::mutate(median_age = paste0(.data$median_age_estimate_low,
                                       " to ",
                                       .data$median_age_estimate_high,
