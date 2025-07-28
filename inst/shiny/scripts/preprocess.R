@@ -188,6 +188,17 @@ if("populationDiagnostics" %in% diagnostics){
 list_exp <- list.files(path = file.path("data","raw","expectations"), full.names = TRUE)
 expectations <- dplyr::bind_rows(purrr:::map(.f = ~readr::read_csv(.), .x = list_exp))  |>
   dplyr::filter(!is.na(.data$cohort_name))
+all_diag <- c("cohort_count", "cohort_characteristics", "large_scale_characteristics", "compare_large_scale_characteristics",
+              "compare_cohorts", "cohort_survival")
+if("diagnostic" %in% colnames(expectations)){
+  expectations <- expectations |>
+    dplyr::mutate("diagnostic" = if_else(is.na(diagnostic), 
+                                         paste(all_diag, collapse = ", "),
+                                         diagnostic))
+}else{
+  expectations <- expectations |>
+    dplyr::mutate("diagnostic" = paste(all_diag, collapse = ", "))
+}
 
 phenotyper_version <- omopgenerics::settings(result) |> dplyr::pull("phenotyper_version") |> unique()
 cli::cli_inform("Saving data for shiny")
