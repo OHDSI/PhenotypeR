@@ -1413,6 +1413,7 @@ ui <- fluidPage(
                   shiny::downloadButton(outputId = "compare_large_scale_characteristics_tidy_download", label = ""),
                   class = "text-end"
                 ),
+                htmltools::tags$p(style = "font-size: 0.75em;", msgMatchedSample),
                 reactable::reactableOutput("compare_large_scale_characteristics_tidy") |> withSpinner()
               )
             ),
@@ -1470,6 +1471,7 @@ ui <- fluidPage(
                                            position = "right"
                   ),
                   position = "right",
+                  htmltools::tags$p(style = "font-size: 0.75em;", msgMatchedSample),
                   plotly::plotlyOutput("plotly_compare_lsc") |> withSpinner()
                 )
               )
@@ -2104,6 +2106,7 @@ ui <- fluidPage(
                   shiny::downloadButton(outputId = "incidence_gt_download", label = ""),
                   class = "text-end"
                 ),
+                htmltools::tags$p(style = "font-size: 0.75em;", msgPopulationDiag),
                 gt::gt_output("incidence_gt") |> withSpinner()
               )
             ),
@@ -2203,6 +2206,7 @@ ui <- fluidPage(
                                            ),
                                            position = "right"
                   ),
+                  htmltools::tags$p(style = "font-size: 0.75em;", msgPopulationDiag),
                   uiOutput("incidence_plot") |> withSpinner()
                 )
               )
@@ -2310,6 +2314,7 @@ ui <- fluidPage(
                   shiny::downloadButton(outputId = "prevalence_gt_download", label = ""),
                   class = "text-end"
                 ),
+                htmltools::tags$p(style = "font-size: 0.75em;", gsub("Incidence", "Prevalence", msgPopulationDiag)),
                 gt::gt_output("prevalence_gt") |> withSpinner()
               )
             ),
@@ -2406,6 +2411,7 @@ ui <- fluidPage(
                                            ),
                                            position = "right"
                   ),
+                  htmltools::tags$p(style = "font-size: 0.75em;", gsub("Incidence", "Prevalence", msgPopulationDiag)),
                   uiOutput("prevalence_plot") |> withSpinner()
                 )
               )
@@ -2416,6 +2422,26 @@ ui <- fluidPage(
     ),
     # populationDiagnostics_end ----
     nav_spacer(),
+    bslib::nav_item(
+      bslib::popover(
+        shiny::icon("circle-info"),
+        shiny::tags$img(
+          src = "phenotyper_logo.png",
+          class = "logo-img",
+          alt = "Logo",
+          height = "auto",
+          width = "30%",
+          style = "float:right"
+        ),
+        "This shiny app was generated with ",
+        shiny::a(
+          "PhenotypeR",
+          href = "https://github.com/OHDSI/PhenotypeR",
+          target = "_blank"
+        ),
+        shiny::strong(phenotyper_version)
+      )
+    ),
     bslib::nav_item(
       bslib::popover(
         shiny::icon("download"),

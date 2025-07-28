@@ -937,7 +937,6 @@ server <- function(input, output, session) {
   }))
   ## Table summarise_characteristics -----
   createTableSummariseCharacteristics <- shiny::reactive({
-
     filterSummariseCharacteristics() |>
       CohortCharacteristics::tableCharacteristics(
         header = input$summarise_characteristics_gt_header,
@@ -1163,6 +1162,10 @@ server <- function(input, output, session) {
     if(length(cohort) > 1){
       validate("Please select only one cohort")
     }
+    
+    if(length(cohort) == 0){
+      validate("Please select a cohort")
+    }
 
     cohort1 <- switch(input$compare_large_scale_characteristics_cohort_1,
                       "original" = cohort,
@@ -1213,6 +1216,11 @@ server <- function(input, output, session) {
     target_cohort     <- cohorts$cohort1
     comparator_cohort <- cohorts$cohort2
 
+    if("matchedSample" %in% (lscFiltered |> omopgenerics::settings() |> colnames())){
+      msg <- paste0("Matched cohort was created based on a subsample of ", omopgenerics::settings(lscFiltered) |> dplyr::pull("matchedSample") |> unique()," individuals.")
+    }else{
+      msg <- ""
+    }
     lsc <- lscFiltered |>
       dplyr::filter(.data$estimate_name == "percentage") |>
       tidy() |>
@@ -1245,7 +1253,8 @@ server <- function(input, output, session) {
         "Time window" = "variable_level",
         target_cohort,
         comparator_cohort,
-        "Standardised mean difference" = "smd")))
+        "Standardised mean difference" = "smd"))) |>
+      dplyr::mutate(msg)
 
     return(lsc)
   })
@@ -1254,8 +1263,11 @@ server <- function(input, output, session) {
     cohorts <- getComparedCohorts()
     target_cohort <- cohorts$cohort1
     comparator_cohort <- cohorts$cohort2
-
+      
     tbl <- createTidyDataCompareLargeScaleCharacteristics()
+    msg <- tbl$msg |> unique()
+    tbl <- tbl |> dplyr::select(-"msg")
+
     if("Source concept name (concept ID)" %in% colnames(tbl)){
       cols <- list(target_cohort = colDef(name = paste0(target_cohort, " percentage"),
                                           format = colFormat(percent = TRUE),
@@ -1300,7 +1312,7 @@ server <- function(input, output, session) {
     names(cols)[1] <- target_cohort
     names(cols)[2] <- comparator_cohort
 
-    reactable::reactable(tbl,
+    table <- reactable::reactable(tbl,
                          defaultSorted = list("Standardised mean difference"  = "desc"),
                          columns = cols,
                          filterable = TRUE,
@@ -1310,7 +1322,8 @@ server <- function(input, output, session) {
                          striped = TRUE,
                          compact = TRUE,
                          showSortable = TRUE)
-
+    
+    return(table)
   })
 
   output$compare_large_scale_characteristics_tidy_download <- shiny::downloadHandler(
