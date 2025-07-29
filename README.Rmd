@@ -140,7 +140,7 @@ library(ellmer)
 # usethis::edit_r_environ()
 # GEMINI_API_KEY = "your API"
 
-chat <- chat_google_gemini()
+chat <- chat("google_gemini")
 
 expectations <- getCohortExpectations(chat = chat, 
                       phenotypes = result)

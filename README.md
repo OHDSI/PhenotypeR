@@ -64,12 +64,14 @@ library(dplyr)
 library(CohortConstructor)
 library(PhenotypeR)
 library(CodelistGenerator)
+library(duckdb)
+library(CDMConnector)
+library(DBI)
 ```
 
 ``` r
 # Connect to the database and create the cdm object
-con <- DBI::dbConnect(duckdb::duckdb(), 
-                       CDMConnector::eunomiaDir("synpuf-1k", "5.3"))
+con <- dbConnect(duckdb(), dbdir = eunomiaDir("synpuf-1k", "5.3"))
 cdm <- CDMConnector::cdmFromCon(con = con, 
                                 cdmName = "Eunomia Synpuf",
                                 cdmSchema   = "main",
@@ -120,12 +122,39 @@ diagnostics**, **codelist diagnostics**, **cohort diagnostics**, and
 result <- phenotypeDiagnostics(cdm$my_cohort, survival = TRUE)
 ```
 
+You can also create a table with the expected results, so you can
+compare later with the actual results.
+
+``` r
+expectations <- tibble(
+  "cohort_name" = c("warfarin", "acetaminophen", "morphine", "measurements_cohort"),
+  "estimate" = c("Male percentage", "Survival probability after 5y", "Median age", "Median age"),
+  "value" = c("56%", "96%", "57-58", "42-45"),
+  "source" = c("A clinician", "A clinician", "A clinician", "A clinician"),
+  "diagnostic" = c("cohort_characteristics", "cohort_survival", "cohort_characteristics", "cohort_characteristics") 
+)
+```
+
+Or alternatively, you can use AI to generate expectations
+
+``` r
+library(ellmer)
+# Notice that you may need to generate an google gemini API with https://aistudio.google.com/app/apikey and add it to your R environment:
+# usethis::edit_r_environ()
+# GEMINI_API_KEY = "your API"
+
+chat <- chat("google_gemini")
+
+expectations <- getCohortExpectations(chat = chat, 
+                      phenotypes = result)
+```
+
 Once we have our results we can quickly view them in an interactive
 application. Here we’ll apply a minimum cell count of 10 to our results
 and save our shiny app to a temporary directory.
 
 ``` r
-shinyDiagnostics(result = result, minCellCount = 2, directory = tempdir())
+shinyDiagnostics(result = result, minCellCount = 2, directory = tempdir(), expectations = expectations)
 ```
 
 See the shiny app generated from the example cohort in
