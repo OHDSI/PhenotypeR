@@ -594,7 +594,7 @@ ui <- fluidPage(
                                            label = "Horizontal axis",
                                            selected = c("count"),
                                            multiple = FALSE,
-                                           choices = c("count", "variable_level", "codelist_name", "concept_name", "cdm_name"),
+                                           choices = c("count", "percentage"),
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                          ),
                                          shinyWidgets::pickerInput(
@@ -710,6 +710,14 @@ ui <- fluidPage(
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                          ),
                                          shinyWidgets::pickerInput(
+                                           inputId = "measurement_value_as_numeric_plottype",
+                                           label = "Plot type",
+                                           selected = "boxplot",
+                                           multiple = FALSE,
+                                           choices = c("boxplot", "densityplot"),
+                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                         ),
+                                         shinyWidgets::pickerInput(
                                            inputId = "measurement_value_as_numeric_colour",
                                            label = "Colour",
                                            selected = c("cdm_name"),
@@ -806,11 +814,11 @@ ui <- fluidPage(
               bslib::layout_sidebar(
                 sidebar = bslib::sidebar(width = 400, open = "closed",
                                          shinyWidgets::pickerInput(
-                                           inputId = "measurement_timings_x",
-                                           label = "Horizontal axis",
-                                           selected = c("codelist_name"),
+                                           inputId = "measurement_timings_y",
+                                           label = "Vertical axis",
+                                           selected = c("time"),
                                            multiple = FALSE,
-                                           choices = c("cohort_name", "codelist_name"),
+                                           choices = c("time", "measurements_per_subject"),
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                          ),
                                          shinyWidgets::pickerInput(
@@ -822,9 +830,17 @@ ui <- fluidPage(
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                          ),
                                          shinyWidgets::pickerInput(
+                                           inputId = "measurement_timings_plottype",
+                                           label = "Plot type",
+                                           selected = "boxplot",
+                                           multiple = FALSE,
+                                           choices = c("boxplot", "densityplot"),
+                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                         ),
+                                         shinyWidgets::pickerInput(
                                            inputId = "measurement_timings_colour",
                                            label = "Colour",
-                                           selected = c("cdm_name"),
+                                           selected = c("codelist_name"),
                                            multiple = TRUE,
                                            choices = c("cdm_name", "codelist_name", "cohort_name"),
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
@@ -832,7 +848,7 @@ ui <- fluidPage(
                                          shinyWidgets::pickerInput(
                                            inputId = "measurement_timings_facet",
                                            label = "Facet",
-                                           selected = as.character(),
+                                           selected = c("cdm_name"),
                                            multiple = TRUE,
                                            choices = c("cdm_name", "codelist_name", "cohort_name"),
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
