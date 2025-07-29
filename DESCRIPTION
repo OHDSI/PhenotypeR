@@ -80,4 +80,4 @@ Imports:
 URL: https://ohdsi.github.io/PhenotypeR/
 VignetteBuilder: knitr
 Remotes:
-   ohdsi/MeasurementDiagnostics
+    ohdsi/MeasurementDiagnostics
