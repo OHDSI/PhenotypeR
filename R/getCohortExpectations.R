@@ -12,24 +12,6 @@ getCohortExpectations <- function(chat, phenotypes){
 
   rlang::check_installed("ellmer")
 
-  # start from a clean slate
-  chat <- chat$clone()$set_turns(list())
-
-  system_prompt <- "You are a terse assistant helping a user (with equivalent medical knowelge to that of a well-informed member of the lay public) working with real-world health care data to build a set of expectations about the characteristics they should see for the study cohorts they create."
-  system_prompt <- paste0(system_prompt,
-                          "Study cohorts can include, but not limited to, people with a particular diagnosis, people having a routine lab test, people having a procedure, and people who are users of a medication.")
-  system_prompt <- paste0(system_prompt,
-                          "Unless otherwise specified, assume no additional eligibility criteria has been applied when identifying study cohorts.")
-  system_prompt <- paste0(system_prompt,
-                   "Unless specified, real world data being used may be drawn from different settings (such as primary care and hospital care) and types (such as electronic healthcare records or insurance data).")
-  system_prompt <- paste0(system_prompt,
-                    "For medications, use ATC classifications where appropriate, but otherwise use drug ingredient names, and avoid abbreviations.")
-  system_prompt <- paste0(system_prompt,
-                      "Use British spelling.")
-  system_prompt <- paste0(system_prompt,
-                          "When giving a set of most common characteristics, give this formatted as a sentence and only capitalise words where appropriate.")
-  chat <- chat$set_system_prompt(value = system_prompt)
-
   # if summarised result, pull out cohort names
   if(isTRUE(inherits(phenotypes, "summarised_result"))){
     phenotypes <- phenotypes |>
@@ -63,6 +45,24 @@ getCohortExpectations <- function(chat, phenotypes){
 fetchExpectations <- function(chat, name, others){
 
   cli::cli_inform("Getting expectations for {name}")
+
+  # start from a clean slate
+  chat <- chat$clone()$set_turns(list())
+
+  system_prompt <- "You are a terse assistant helping a user (with equivalent medical knowelge to that of a well-informed member of the lay public) working with real-world health care data to build a set of expectations about the characteristics they should see for the study cohorts they create."
+  system_prompt <- paste0(system_prompt,
+                          "Study cohorts can include, but not limited to, people with a particular diagnosis, people having a routine lab test, people having a procedure, and people who are users of a medication.")
+  system_prompt <- paste0(system_prompt,
+                          "Unless otherwise specified, assume no additional eligibility criteria has been applied when identifying study cohorts.")
+  system_prompt <- paste0(system_prompt,
+                          "Unless specified, real world data being used may be drawn from different settings (such as primary care and hospital care) and types (such as electronic healthcare records or insurance data).")
+  system_prompt <- paste0(system_prompt,
+                          "For medications, use ATC classifications where appropriate, but otherwise use drug ingredient names, and avoid abbreviations.")
+  system_prompt <- paste0(system_prompt,
+                          "Use British spelling.")
+  system_prompt <- paste0(system_prompt,
+                          "When giving a set of most common characteristics, give this formatted as a sentence and only capitalise words where appropriate.")
+  chat <- chat$set_system_prompt(value = system_prompt)
 
   if(is.null(others)){
     type_my_df <- ellmer::type_array(
