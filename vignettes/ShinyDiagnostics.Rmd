@@ -115,7 +115,7 @@ Notice that we have a tab for each one of the diagnostics, and those contain the
        width="90%" />
 </div>
 
-Let's now explore additional functionalities that the ShinyDiagnostics offers. If we click to *Codelist diagnostics / Achilles code use* tab, we will first find a horizontal purple bar that will show us all the databases we included:
+Let's now explore additional functionalities that the ShinyDiagnostics offers. If we click to *Codelist diagnostics / Achilles code use* or *Codelist diagnostics / Orphan code use* tab, we will first find a horizontal purple bar that will show us all the databases we included:
 
 <div style="text-align: center;">
   <img src="https://images.tango.us/workflows/ca96746e-ccf0-443d-9d2a-4d05dfd09b79/steps/bfcca651-f44a-435e-84a5-d54a55f5c7b2/7329950d-353f-4327-b692-3f9aca309dd8.png?crop=focalpoint&fit=crop&fp-x=0.2654&fp-y=0.2191&fp-z=2.0622&w=1200&border=2%2CF4F2F7&border-radius=8%2C8%2C8%2C8&border-radius-inner=8%2C8%2C8%2C8&blend-align=bottom&blend-mode=normal&blend-x=0&blend-w=1200&blend64=aHR0cHM6Ly9pbWFnZXMudGFuZ28udXMvc3RhdGljL21hZGUtd2l0aC10YW5nby13YXRlcm1hcmstdjIucG5n&mark-x=371&mark-y=366&m64=aHR0cHM6Ly9pbWFnZXMudGFuZ28udXMvc3RhdGljL2JsYW5rLnBuZz9tYXNrPWNvcm5lcnMmYm9yZGVyPTYlMkNGRjc0NDImdz00NTgmaD04OCZmaXQ9Y3JvcCZjb3JuZXItcmFkaXVzPTEw"
@@ -124,7 +124,7 @@ Let's now explore additional functionalities that the ShinyDiagnostics offers. I
 
 Once we have selected the ones of interest, we will need to click the **UPDATE** button to generate the table with the results. 
 
-For **Cohort diagnostics** and **Population diagnostics**, we will also have the option to select the cohorts of interest:
+For **Codelist diagnostics / cohort code use**, *Codelist diagnostics / measurement diagnostics**, **Cohort diagnostics** and **Population diagnostics**, we will also have the option to select the cohorts of interest:
 
 <div style="text-align: center;">
   <img src="https://images.tango.us/workflows/ca96746e-ccf0-443d-9d2a-4d05dfd09b79/steps/2ee82c56-6ed2-4975-9ffa-be595cf1d8cd/692fc4b7-ea4a-4d5c-a79d-6270de4688ed.png?crop=focalpoint&fit=crop&fp-x=0.4998&fp-y=0.0484&fp-z=1.0062&w=1200&border=2%2CF4F2F7&border-radius=8%2C8%2C8%2C8&border-radius-inner=8%2C8%2C8%2C8&blend-align=bottom&blend-mode=normal&blend-x=0&blend-w=1200&blend64=aHR0cHM6Ly9pbWFnZXMudGFuZ28udXMvc3RhdGljL21hZGUtd2l0aC10YW5nby13YXRlcm1hcmstdjIucG5n&mark-x=4&mark-y=2&m64=aHR0cHM6Ly9pbWFnZXMudGFuZ28udXMvc3RhdGljL2JsYW5rLnBuZz9tYXNrPWNvcm5lcnMmYm9yZGVyPTYlMkNGRjc0NDImdz0xMTkyJmg9ODQmZml0PWNyb3AmY29ybmVyLXJhZGl1cz0xMA%3D%3D"
