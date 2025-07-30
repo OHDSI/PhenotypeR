@@ -11,6 +11,8 @@ Authors@R: c(
     role = c("aut"), comment = c(ORCID = "0009-0001-8112-8959")),
     person("Marta", "Alcalde-Herraiz", , "marta.alcaldeherraiz@ndorms.ox.ac.uk", 
     role = c("aut"), comment = c(ORCID = "0009-0002-4405-1814")),
+    person("Nuria", "Mercade-Besora", , "nuria.mercadebesora@ndorms.ox.ac.uk", 
+    role = c("aut"), comment = c(ORCID = "0009-0006-7948-3747")),
     person("Albert", "Prats-Uribe", , "albert.prats-uribe@ndorms.ox.ac.uk", 
     role = "aut", comment = c(ORCID = "0000-0003-1202-9153")))
 Description: Phenotype study cohorts in data mapped to the 
