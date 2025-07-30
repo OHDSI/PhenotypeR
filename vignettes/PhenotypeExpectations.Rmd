@@ -77,7 +77,7 @@ GEMINI_API_KEY = "your API"
 ```{r, eval=FALSE}
 library(ellmer)
 
-chat <- chat_google_gemini()
+chat <- chat("google_gemini")
 llm_expectation <- chat$chat(
     interpolate("What are the typical characteristics we can expect to see in our real-world data for a cohort of people with an ankle sprain (average age, proportion male vs female, subsequent medications, etc)? Be brief and provide summar with a few sentences.")) 
 
@@ -139,6 +139,20 @@ getCohortExpectations(chat = chat,
 
 ```{r, echo=FALSE}
 readr::read_csv("vignette_phenotype_expectations/expectations_2.csv") |>
+    tableCohortExpectations()
+```
+
+Instead of Google Gemini we could use Mistral instead.
+```{r, eval=FALSE}
+chat <- ellmer::chat("mistral")
+diag_results <- phenotypeDiagnostics(cdm$my_cohort)
+getCohortExpectations(chat = chat, 
+                      phenotypes = diag_results) |> 
+  tableCohortExpectations()
+```
+
+```{r, echo=FALSE}
+readr::read_csv("vignette_phenotype_expectations/expectations_3.csv") |>
     tableCohortExpectations()
 ```
 

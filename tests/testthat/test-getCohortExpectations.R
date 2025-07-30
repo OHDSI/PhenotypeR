@@ -3,7 +3,7 @@ test_that("getting cohort expectations from ellmer", {
   skip_on_cran()
   skip_on_ci()
 
-  chat <- ellmer::chat_google_gemini()
+  chat <- ellmer::chat("google_gemini")
 
   # specific diagnosis
   expect_no_error(getCohortExpectations(chat, "prostate cancer"))
