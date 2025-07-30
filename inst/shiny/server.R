@@ -605,8 +605,8 @@ server <- function(input, output, session) {
 
     MeasurementDiagnostics::plotMeasurementTimings(
       result,
-      x = input$measurement_timings_x,
-      plotType = "boxplot",
+      y = input$measurement_timings_y,
+      plotType = input$measurement_timings_plottype,
       timeScale = input$measurement_timings_time_scale,
       facet = input$measurement_timings_facet,
       colour = input$measurement_timings_colour)
@@ -761,10 +761,10 @@ server <- function(input, output, session) {
     MeasurementDiagnostics::plotMeasurementValueAsNumeric(
       result,
       x = input$measurement_value_as_numeric_x,
+      plotType = input$measurement_value_as_numeric_plottype,
       facet = input$measurement_value_as_numeric_facet,
       colour = input$measurement_value_as_numeric_colour
-    ) +
-      facet_wrap(input$measurement_value_as_numeric_facet, scales = "free_y")
+    )
   })
 
   output$plot_measurement_value_as_numeric <- shiny::renderPlot({
@@ -1162,7 +1162,7 @@ server <- function(input, output, session) {
     if(length(cohort) > 1){
       validate("Please select only one cohort")
     }
-    
+
     if(length(cohort) == 0){
       validate("Please select a cohort")
     }
@@ -1263,7 +1263,7 @@ server <- function(input, output, session) {
     cohorts <- getComparedCohorts()
     target_cohort <- cohorts$cohort1
     comparator_cohort <- cohorts$cohort2
-      
+
     tbl <- createTidyDataCompareLargeScaleCharacteristics()
     msg <- tbl$msg |> unique()
     tbl <- tbl |> dplyr::select(-"msg")
@@ -1322,7 +1322,7 @@ server <- function(input, output, session) {
                          striped = TRUE,
                          compact = TRUE,
                          showSortable = TRUE)
-    
+
     return(table)
   })
 
