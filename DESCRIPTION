@@ -75,9 +75,7 @@ Imports:
     purrr,
     rlang,
     vctrs,
-    MeasurementDiagnostics,
+    MeasurementDiagnostics (>= 0.1.0),
     readr
 URL: https://ohdsi.github.io/PhenotypeR/
 VignetteBuilder: knitr
-Remotes:
-    ohdsi/MeasurementDiagnostics
