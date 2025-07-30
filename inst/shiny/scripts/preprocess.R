@@ -15,6 +15,7 @@ library(visOmopResults)
 library(shinycssloaders)
 library(stringr)
 library(CohortSurvival)
+library(tidyr)
 
 source(here::here("scripts", "functions.R"))
 
@@ -105,18 +106,18 @@ if("cohortDiagnostics" %in% diagnostics){
   values_subset$compare_large_scale_characteristics_cohort_name <- values$shared_cohort_names
   values_subset$compare_large_scale_characteristics_cohort_compare <- values$shared_cohort_names
   values <- append(values, values_subset)
-  
+
   if("summarise_cohort_overlap" %in% names(dataFiltered)){
     values$summarise_cohort_overlap_cohort_comparator <- values$summarise_cohort_overlap_cohort_name_comparator
     values <- values[!stringr::str_detect(names(values), "summarise_cohort_overlap_cohort_name_comparator")]
   }
-  
+
   if("survival_probability" %in% names(dataFiltered)){
     # survival
     values$survival_probability_cohort_name <- values$survival_probability_target_cohort
     values <- values[!stringr::str_detect(names(values), "survival_probability_target_cohort")]
   }
-  
+
 }
 
 choices <- values
@@ -129,13 +130,13 @@ if("cohortDiagnostics" %in% diagnostics){
   selected$compare_large_scale_characteristics_cohort_1  <- "sampled"
   selected$compare_large_scale_characteristics_cohort_2  <- "matched"
   selected$compare_large_scale_characteristics_compare_cohort <- values$compare_large_scale_characteristics_compare_cohort[1]
-  
+
   if("survival_probability" %in% names(dataFiltered)){
     selected$survival_probability_cohort_name <- c(paste0(gsub("_matched|sampled", "", selected$survival_probability_cohort_name[1]),"_sampled"),
                                                    paste0(gsub("_matched|sampled", "", selected$survival_probability_cohort_name[1]),"_matched"))
-    
+
   }
-  
+
   if("matchedSample" %in% (omopgenerics::settings(result) |> colnames())){
     matchedSample <- as.numeric(omopgenerics::settings(dataFiltered$summarise_large_scale_characteristics) |> dplyr::pull("matchedSample") |> unique())
     if(all(matchedSample != 0)){
@@ -153,30 +154,30 @@ if("populationDiagnostics" %in% diagnostics){
   selected$incidence_denominator_age_group <- "0 to 150"
   selected$incidence_denominator_sex <- "Both"
   selected$incidence_denominator_days_prior_observation <- "0"
-  
+
   selected$prevalence_analysis_interval <- "years"
   selected$prevalence_denominator_age_group <- "0 to 150"
   selected$prevalence_denominator_sex <- "Both"
   selected$prevalence_denominator_days_prior_observation <- "0"
-  
+
   if("populationDateStart" %in% (omopgenerics::settings(dataFiltered$incidence) |> colnames())){
-    min_incidence_start <- as.Date(omopgenerics::settings(dataFiltered$incidence) |> dplyr::pull("populationDateStart") |> unique())
+    min_incidence_start <- as.Date(omopgenerics::settings(dataFiltered$incidence) |> tidyr::drop_na() |> dplyr::pull("populationDateStart") |> unique())
     msgPopulationDiag <- paste0("Incidence is calculated using data from ", format(as.Date(min_incidence_start), "%B %d, %Y")," onwards. ")
   }else{
     min_incidence_start <- as.Date(NA)
   }
-  
+
   if("populationDateEnd" %in% (omopgenerics::settings(dataFiltered$incidence) |> colnames())){
-    max_incidence_end <- as.Date(omopgenerics::settings(dataFiltered$incidence) |> dplyr::pull("populationDateEnd") |> unique())
+    max_incidence_end <- as.Date(omopgenerics::settings(dataFiltered$incidence) |> tidyr::drop_na() |> dplyr::pull("populationDateEnd") |> unique())
     msgPopulationDiag <- paste0("Incidence is calculated up to ", format(as.Date(max_incidence_end), "%B %d, %Y"),". ")
   }else{
     max_incidence_end <- as.Date(NA)
   }
-  
+
   if(!is.na(min_incidence_start) && !is.na(max_incidence_end)){
     msgPopulationDiag <- paste0("Incidence is calculated from ", format(as.Date(min_incidence_start), "%B %d, %Y"), " until ", format(as.Date(max_incidence_end), "%B %d, %Y"),". ")
   }
-  
+
   if("populationSample" %in% (omopgenerics::settings(dataFiltered$incidence) |> colnames())){
     populationSample <- as.numeric(omopgenerics::settings(dataFiltered$incidence) |> dplyr::pull("populationSample") |> unique())
     populationSample <- formatC(populationSample, format = "f", digits = 0, big.mark = ",")
@@ -192,7 +193,7 @@ all_diag <- c("cohort_count", "cohort_characteristics", "large_scale_characteris
               "compare_cohorts", "cohort_survival")
 if("diagnostic" %in% colnames(expectations)){
   expectations <- expectations |>
-    dplyr::mutate("diagnostic" = if_else(is.na(diagnostic), 
+    dplyr::mutate("diagnostic" = if_else(is.na(diagnostic),
                                          paste(all_diag, collapse = ", "),
                                          diagnostic))
 }else{
