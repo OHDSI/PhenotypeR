@@ -56,7 +56,8 @@ if(length(dataFiltered) > 0){
       values$shared_cohort_names <- dataFiltered$incidence |>
         visOmopResults::splitGroup() |>
         dplyr::pull("outcome_cohort_name") |>
-        unique()
+        unique() |>
+        sort()
     }else{
       values$shared_cohort_names <- rbind(dataFiltered$cohort_code_use, dataFiltered$summarise_cohort_count, dataFiltered$incidence) |>
         dplyr::mutate(group_name = gsub("outcome_cohort_name", "cohort_name", group_name)) |>
@@ -64,12 +65,14 @@ if(length(dataFiltered) > 0){
         dplyr::select("cohort_name") |>
         dplyr::distinct() |>
         dplyr::filter(cohort_name != "overall") |>
-        dplyr::pull("cohort_name")
+        dplyr::pull("cohort_name") |>
+        sort()
     }
     values$shared_cdm_names <- rbind(dataFiltered$summarise_omop_snapshot, dataFiltered$cohort_code_use, dataFiltered$summarise_cohort_count, dataFiltered$incidence) |>
       dplyr::select("cdm_name") |>
       dplyr::distinct() |>
-      dplyr::pull("cdm_name")
+      dplyr::pull("cdm_name") |>
+      sort()
   }
 }else{
   diagnostics <- ""
@@ -97,6 +100,10 @@ values <- values[!stringr::str_detect(names(values), "survival_summary")]
 values <- values[!stringr::str_detect(names(values), "survival_attrition")]
 
 # Pre-define some selected
+if("codelistDiagnostics" %in% diagnostics){
+  values$achilles_code_use_codelist_name <- values$achilles_code_use_codelist_name |> sort()
+  values$orphan_code_use_codelist_name   <- values$orphan_code_use_codelist_name |> sort()
+}
 if("cohortDiagnostics" %in% diagnostics){
   # Add compare large scale characteristics
   values_subset <- values[stringr::str_detect(names(values), "large_scale")]
