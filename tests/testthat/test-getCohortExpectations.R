@@ -26,7 +26,7 @@ test_that("getting cohort expectations from ellmer - using results object", {
   skip_on_cran()
   skip_on_ci()
 
-  chat <- ellmer::chat_google_gemini()
+  chat <- ellmer::chat("google_gemini")
 
   # Create a code lists
   codes <- list("warfarin" = c(1310149L, 40163554L),
