@@ -815,7 +815,10 @@ server <- function(input, output, session) {
   ## Table summarise_cohort_count ----
   createTableCohortCount <- shiny::reactive({
 
-    CohortCharacteristics::tableCohortCount(filterCohortCount()) %>%
+    CohortCharacteristics::tableCohortCount(filterCohortCount(),
+                                            hide = c("variable_level",
+                                                     "estimate_name",
+                                                     settingsColumns(result))) %>%
       tab_header(
         title = "Cohort count",
         subtitle = "Number of records and subjects in the study cohorts."
@@ -942,7 +945,8 @@ server <- function(input, output, session) {
         header = input$summarise_characteristics_gt_header,
         groupColumn = input$summarise_characteristics_gt_groupColumn,
         hide = c(input$summarise_characteristics_gt_hide,
-                 "table_name", "value", "window", "table")
+                 "table_name", "value", "window", "table",
+                 "diagnostic", "matchedSample", "phenotyper_version")
       ) %>%
       tab_header(
         title = "Patient characteristics",
@@ -1393,7 +1397,9 @@ server <- function(input, output, session) {
       uniqueCombinations = input$summarise_cohort_overlap_gt_uniqueCombinations,
       header = input$summarise_cohort_overlap_gt_header,
       groupColumn = input$summarise_cohort_overlap_gt_groupColumn,
-      hide = input$summarise_cohort_overlap_gt_hide
+      hide = c(input$summarise_cohort_overlap_gt_hide,
+               "overlap_by",
+               "diagnostic", "matchedSample", "phenotyper_version")
     ) %>%
       tab_header(
         title = "Cohort overlap",
