@@ -4,13 +4,11 @@
 server <- function(input, output, session) {
 
   # Shared variables
-  app_initialized_flag <- reactiveVal(FALSE)
   shared_cdm_names     <- reactiveVal(NULL)
   shared_cohort_names  <- reactiveVal(NULL)
 
   # fill selectise variables ----
   shiny::observe({
-    req(!app_initialized_flag())
 
     for (k in seq_along(choices)) {
       if(!grepl("cdm_name|cohort_name", names(choices)[k])){
@@ -33,38 +31,76 @@ server <- function(input, output, session) {
       }
     }
 
-    app_initialized_flag(TRUE)
   })
 
-  # Define shared cdm_names values ----
-  shiny::observe({
-    cdm_values <- names(choices)[grepl("cdm_name", names(choices)) & names(choices) != "shared_cdm_names"]
-    for(inputValue in cdm_values){
-      local({
-        inputValue_local <- inputValue
-        shiny::observeEvent(input[[inputValue_local]], {
-          val <- input[[inputValue_local]]
-          if (is.null(val) || length(val) == 0 || all(val == "")) { val <- character(0) }
-          shared_cdm_names(val)
-        }, ignoreNULL = FALSE)
-      })
-    }
+  # update all shared selectors if one a
+  observeEvent(input$updateAchillesCodeUse, {
+    val <- input$achilles_code_use_cdm_name
+    shared_cdm_names(if (is.null(val)) character(0) else val)
   })
 
-  # Define shared cohort_names values ----
-  shiny::observe({
-    cohort_values <- names(choices)[grepl("cohort_name", names(choices)) & names(choices) != "shared_cohort_names"]
-    for(inputValue in cohort_values){
-      local({
-        inputValue_local <- inputValue
-        shiny::observeEvent(input[[inputValue_local]], {
-          val <- input[[inputValue_local]]
-          if (is.null(val) || length(val) == 0 || all(val == "")) { val <- character(0) }
-          shared_cohort_names(val)
-        }, ignoreNULL = FALSE)
-      })
-    }
+  observeEvent(input$updateOrphanCodeUse, {
+    val <- input$orphan_code_use_cdm_name
+    shared_cdm_names(if (is.null(val)) character(0) else val)
   })
+
+  observeEvent(input$updateCohortCodeUse, {
+    val_cdm <- input$cohort_code_use_cdm_name
+    val_cohort <- input$cohort_code_use_cohort_name
+    shared_cdm_names(if (is.null(val_cdm)) character(0) else val_cdm)
+    shared_cohort_names(if (is.null(val_cohort)) character(0) else val_cohort)
+  })
+
+  observeEvent(input$updateMeasurementCodeUse, {
+    val_cdm <- input$measurement_timings_cdm_name
+    val_cohort <- input$measurement_timings_cohort_name
+    shared_cdm_names(if (is.null(val_cdm)) character(0) else val_cdm)
+    shared_cohort_names(if (is.null(val_cohort)) character(0) else val_cohort)
+  })
+
+  observeEvent(input$updateCohortCount, {
+    val_cdm <- input$summarise_cohort_count_cdm_name
+    val_cohort <- input$summarise_cohort_count_cohort_name
+    shared_cdm_names(if (is.null(val_cdm)) character(0) else val_cdm)
+    shared_cohort_names(if (is.null(val_cohort)) character(0) else val_cohort)
+  })
+
+  observeEvent(input$updateCohortCharacteristics, {
+    val_cdm <- input$summarise_characteristics_cdm_name
+    val_cohort <- input$summarise_characteristics_cohort_name
+    shared_cdm_names(if (is.null(val_cdm)) character(0) else val_cdm)
+    shared_cohort_names(if (is.null(val_cohort)) character(0) else val_cohort)
+  })
+
+  observeEvent(input$updateLSC, {
+    val_cdm <- input$summarise_large_scale_characteristics_cdm_name
+    val_cohort <- input$summarise_large_scale_characteristics_cohort_name
+    shared_cdm_names(if (is.null(val_cdm)) character(0) else val_cdm)
+    shared_cohort_names(if (is.null(val_cohort)) character(0) else val_cohort)
+  })
+
+  observeEvent(input$updateCompareLSC, {
+    val_cdm <- input$compare_large_scale_characteristics_cdm_name
+    val_cohort <- input$compare_large_scale_characteristics_cohort_name
+    shared_cdm_names(if (is.null(val_cdm)) character(0) else val_cdm)
+    shared_cohort_names(if (is.null(val_cohort)) character(0) else val_cohort)
+  })
+
+  observeEvent(input$updateCompareCohorts, {
+    val_cdm <- input$summarise_cohort_overlap_cdm_name
+    val_cohort <- input$summarise_cohort_overlap_cohort_name_reference
+    shared_cdm_names(if (is.null(val_cdm)) character(0) else val_cdm)
+    shared_cohort_names(if (is.null(val_cohort)) character(0) else val_cohort)
+  })
+
+  observeEvent(input$updateCohortSurvival, {
+    val_cdm <- input$survival_probability_cdm_name
+    val_cohort <- input$survival_probability_cohort_name
+    shared_cdm_names(if (is.null(val_cdm)) character(0) else val_cdm)
+    shared_cohort_names(if (is.null(val_cohort)) character(0) else val_cohort)
+  })
+
+
 
   # download raw data -----
   output$download_raw <- shiny::downloadHandler(
@@ -158,6 +194,8 @@ server <- function(input, output, session) {
 
   # achilles_code_use -----
   filterAchillesCodeUse <- eventReactive(input$updateAchillesCodeUse, ({
+
+    req(shared_cdm_names())
 
     if (is.null(dataFiltered$achilles_code_use)) {
       validate("No achilles code use in results")
@@ -278,7 +316,7 @@ server <- function(input, output, session) {
 
   # orphan_codes -----
   filterOrphanCodes <-  eventReactive(input$updateOrphanCodeUse, ({
-
+    req(shared_cdm_names())
     if (is.null(dataFiltered$orphan_code_use)) {
       validate("No orphan codes in results")
     }
@@ -431,7 +469,8 @@ server <- function(input, output, session) {
 
   # cohort_code_use -----
   filterCohortCodeUse <- eventReactive(input$updateCohortCodeUse, ({
-
+    req(shared_cdm_names())
+    req(shared_cohort_names())
     if (is.null(dataFiltered$cohort_code_use)) {
       validate("No cohort code use in results")
     }
@@ -557,7 +596,8 @@ server <- function(input, output, session) {
 
   # summarise measurement diagnostics -----
   filterMeasurementTimings <- eventReactive(input$updateMeasurementCodeUse, ({
-
+    req(shared_cdm_names())
+    req(shared_cohort_names())
     if (is.null(dataFiltered$measurement_timings)) {
       validate("No measurement timings in results")
     }
@@ -596,7 +636,7 @@ server <- function(input, output, session) {
   output$measurement_timings_gt_download <- shiny::downloadHandler(
     filename = "summarise_measurement_timings_gt.docx",
     content = function(file){
-        gt::gtsave(data = createMeasurementTimingsGT(), filename = file)
+      gt::gtsave(data = createMeasurementTimingsGT(), filename = file)
     }
   )
   ## Plot measurement_timings ----
@@ -789,7 +829,8 @@ server <- function(input, output, session) {
 
   # summarise_cohort_count -----
   filterCohortCount <- eventReactive(input$updateCohortCount, ({
-
+    req(shared_cdm_names())
+    req(shared_cohort_names())
     if (is.null(dataFiltered$summarise_cohort_count)) {
       validate("No cohort count in results")
     }
@@ -814,11 +855,11 @@ server <- function(input, output, session) {
 
   ## Table summarise_cohort_count ----
   createTableCohortCount <- shiny::reactive({
-
-    CohortCharacteristics::tableCohortCount(filterCohortCount(),
+    res <- filterCohortCount()
+    CohortCharacteristics::tableCohortCount(res,
                                             hide = c("variable_level",
                                                      "estimate_name",
-                                                     settingsColumns(result))) %>%
+                                                     settingsColumns(res))) %>%
       tab_header(
         title = "Cohort count",
         subtitle = "Number of records and subjects in the study cohorts."
@@ -840,7 +881,8 @@ server <- function(input, output, session) {
 
   # summarise_cohort_attrition -----
   filterCohortAttrition <- eventReactive(input$updateCohortCount,({
-
+    req(shared_cdm_names())
+    req(shared_cohort_names())
     if (is.null(dataFiltered$summarise_cohort_attrition)) {
       validate("No cohort attrition in results")
     }
@@ -917,7 +959,8 @@ server <- function(input, output, session) {
 
   # summarise_characteristics -----
   filterSummariseCharacteristics <- eventReactive(input$updateCohortCharacteristics, ({
-
+    req(shared_cdm_names())
+    req(shared_cohort_names())
     if (is.null(dataFiltered$summarise_characteristics)) {
       validate("No cohort characteristics in results")
     }
@@ -1016,7 +1059,8 @@ server <- function(input, output, session) {
 
   # summarise_large_scale_characteristics -----
   filterLargeScaleCharacteristics <- eventReactive(input$updateLSC, ({
-
+    req(shared_cdm_names())
+    req(shared_cohort_names())
     if (is.null(dataFiltered$summarise_large_scale_characteristics)) {
       validate("No large scale characteristics in results")
     }
@@ -1160,7 +1204,8 @@ server <- function(input, output, session) {
 
   # compare large_scale_characteristics ----
   getComparedCohorts <- eventReactive(input$updateCompareLSC, ({
-
+    req(shared_cdm_names())
+    req(shared_cohort_names())
     cohort <- shared_cohort_names()
 
     if(length(cohort) > 1){
@@ -1317,15 +1362,15 @@ server <- function(input, output, session) {
     names(cols)[2] <- comparator_cohort
 
     table <- reactable::reactable(tbl,
-                         defaultSorted = list("Standardised mean difference"  = "desc"),
-                         columns = cols,
-                         filterable = TRUE,
-                         searchable = TRUE,
-                         defaultPageSize = 25,
-                         highlight = TRUE,
-                         striped = TRUE,
-                         compact = TRUE,
-                         showSortable = TRUE)
+                                  defaultSorted = list("Standardised mean difference"  = "desc"),
+                                  columns = cols,
+                                  filterable = TRUE,
+                                  searchable = TRUE,
+                                  defaultPageSize = 25,
+                                  highlight = TRUE,
+                                  striped = TRUE,
+                                  compact = TRUE,
+                                  showSortable = TRUE)
 
     return(table)
   })
@@ -1370,7 +1415,8 @@ server <- function(input, output, session) {
 
   # summarise_cohort_overlap -----
   filterCohortOverlap <- eventReactive(input$updateCompareCohorts, ({
-
+    req(shared_cdm_names())
+    req(shared_cohort_names())
     if (is.null(dataFiltered$summarise_cohort_overlap)) {
       validate("No cohort overlap in results")
     }
@@ -1451,7 +1497,8 @@ server <- function(input, output, session) {
 
   # summarise_cohort_timing ----
   filterCohortTiming <- eventReactive(input$updateCompareCohorts, ({
-
+    req(shared_cdm_names())
+    req(shared_cohort_names())
     if (is.null(dataFiltered$summarise_cohort_timing)) {
       validate("No cohort timing in results")
     }
@@ -1527,7 +1574,8 @@ server <- function(input, output, session) {
   )
   # summarise cohort survival -----
   filterCohortSurvival <- eventReactive(input$updateCohortSurvival, ({
-
+    req(shared_cdm_names())
+    req(shared_cohort_names())
     if (is.null(dataFiltered$survival_probability)) {
       validate("No survival in results")
     }
@@ -1626,7 +1674,8 @@ server <- function(input, output, session) {
 
   # incidence -----
   filterIncidence <- eventReactive(input$updateIncidence, ({
-
+    req(shared_cdm_names())
+    req(shared_cohort_names())
     if (is.null(dataFiltered$incidence)) {
       validate("No incidence in results")
     }
@@ -1757,7 +1806,8 @@ server <- function(input, output, session) {
 
   # prevalence -----
   filterPrevalence <- eventReactive(input$updatePrevalence, ({
-
+    req(shared_cdm_names())
+    req(shared_cohort_names())
     if (is.null(dataFiltered$prevalence)) {
       validate("No prevalence in results")
     }
@@ -1891,6 +1941,7 @@ server <- function(input, output, session) {
   # expectations ----
   createExpectationsOutput <- function(trigger_input, output_id) {
     filteredExpectations <- eventReactive(trigger_input(), {
+      req(shared_cohort_names())
       validateExpectations(expectations)
 
       section_name <- gsub("_expectations","",output_id)
