@@ -32,76 +32,59 @@ server <- function(input, output, session) {
     }
 
   })
-
-  # update all shared selectors if one a
-  observeEvent(input$updateAchillesCodeUse, {
-    val <- input$achilles_code_use_cdm_name
-    shared_cdm_names(if (is.null(val)) character(0) else val)
+  
+  # Define shared cdm_names values ----
+  shiny::observe({
+    cdm_values <- names(choices)[grepl("cdm_name", names(choices)) & names(choices) != "shared_cdm_names"]
+    for(inputValue in cdm_values){
+      local({
+        inputValue_local <- inputValue
+        shiny::observeEvent(input[[inputValue_local]], {
+          val <- input[[inputValue_local]]
+          if (is.null(val) || length(val) == 0 || all(val == "")) { val <- character(0) }
+          shared_cdm_names(val)
+        }, ignoreNULL = FALSE)
+      })
+    }
+  })
+  
+  shiny::observe({
+    cdm_values <- names(choices)[grepl("cdm_name", names(choices)) & names(choices) != "shared_cdm_names"]
+    for (inputId in cdm_values) {
+      local({
+        inputId_local <- inputId
+        shiny::observeEvent(shared_cdm_names(), {
+          updatePickerInput(session, inputId_local, selected = shared_cdm_names())
+        })
+      })}
+  })
+  
+  # Define shared cohort_names values ----
+  shiny::observe({
+    cohort_values <- names(choices)[grepl("cohort_name", names(choices)) & names(choices) != "shared_cohort_names"]
+    for(inputValue in cohort_values){
+      local({
+        inputValue_local <- inputValue
+        shiny::observeEvent(input[[inputValue_local]], {
+          val <- input[[inputValue_local]]
+          if (is.null(val) || length(val) == 0 || all(val == "")) { val <- character(0) }
+          shared_cohort_names(val)
+        }, ignoreNULL = FALSE)
+      })
+    }
   })
 
-  observeEvent(input$updateOrphanCodeUse, {
-    val <- input$orphan_code_use_cdm_name
-    shared_cdm_names(if (is.null(val)) character(0) else val)
-  })
-
-  observeEvent(input$updateCohortCodeUse, {
-    val_cdm <- input$cohort_code_use_cdm_name
-    val_cohort <- input$cohort_code_use_cohort_name
-    shared_cdm_names(if (is.null(val_cdm)) character(0) else val_cdm)
-    shared_cohort_names(if (is.null(val_cohort)) character(0) else val_cohort)
-  })
-
-  observeEvent(input$updateMeasurementCodeUse, {
-    val_cdm <- input$measurement_timings_cdm_name
-    val_cohort <- input$measurement_timings_cohort_name
-    shared_cdm_names(if (is.null(val_cdm)) character(0) else val_cdm)
-    shared_cohort_names(if (is.null(val_cohort)) character(0) else val_cohort)
-  })
-
-  observeEvent(input$updateCohortCount, {
-    val_cdm <- input$summarise_cohort_count_cdm_name
-    val_cohort <- input$summarise_cohort_count_cohort_name
-    shared_cdm_names(if (is.null(val_cdm)) character(0) else val_cdm)
-    shared_cohort_names(if (is.null(val_cohort)) character(0) else val_cohort)
-  })
-
-  observeEvent(input$updateCohortCharacteristics, {
-    val_cdm <- input$summarise_characteristics_cdm_name
-    val_cohort <- input$summarise_characteristics_cohort_name
-    shared_cdm_names(if (is.null(val_cdm)) character(0) else val_cdm)
-    shared_cohort_names(if (is.null(val_cohort)) character(0) else val_cohort)
-  })
-
-  observeEvent(input$updateLSC, {
-    val_cdm <- input$summarise_large_scale_characteristics_cdm_name
-    val_cohort <- input$summarise_large_scale_characteristics_cohort_name
-    shared_cdm_names(if (is.null(val_cdm)) character(0) else val_cdm)
-    shared_cohort_names(if (is.null(val_cohort)) character(0) else val_cohort)
-  })
-
-  observeEvent(input$updateCompareLSC, {
-    val_cdm <- input$compare_large_scale_characteristics_cdm_name
-    val_cohort <- input$compare_large_scale_characteristics_cohort_name
-    shared_cdm_names(if (is.null(val_cdm)) character(0) else val_cdm)
-    shared_cohort_names(if (is.null(val_cohort)) character(0) else val_cohort)
-  })
-
-  observeEvent(input$updateCompareCohorts, {
-    val_cdm <- input$summarise_cohort_overlap_cdm_name
-    val_cohort <- input$summarise_cohort_overlap_cohort_name_reference
-    shared_cdm_names(if (is.null(val_cdm)) character(0) else val_cdm)
-    shared_cohort_names(if (is.null(val_cohort)) character(0) else val_cohort)
-  })
-
-  observeEvent(input$updateCohortSurvival, {
-    val_cdm <- input$survival_probability_cdm_name
-    val_cohort <- input$survival_probability_cohort_name
-    shared_cdm_names(if (is.null(val_cdm)) character(0) else val_cdm)
-    shared_cohort_names(if (is.null(val_cohort)) character(0) else val_cohort)
-  })
-
-
-
+  shiny::observe({
+    cohort_values <- names(choices)[grepl("cohort_name", names(choices)) & names(choices) != "shared_cohort_names"]
+    for (inputId in cohort_values) {
+      local({
+        inputId_local <- inputId
+        shiny::observeEvent(shared_cohort_names(), {
+          updatePickerInput(session, inputId_local, selected = shared_cohort_names())
+        })
+      })}
+    })
+  
   # download raw data -----
   output$download_raw <- shiny::downloadHandler(
     filename = "results.csv",
@@ -122,17 +105,18 @@ server <- function(input, output, session) {
   )
 
   # summarise_omop_snapshot -----
-  filterOmopSnapshot <- shiny::reactive({
+  filterOmopSnapshot <- eventReactive(input$updateSnapshot, ({
     if (is.null(dataFiltered$summarise_omop_snapshot)) {
       validate("No snapshot in results")
     }
 
-    result <- dataFiltered$summarise_omop_snapshot
+    result <- dataFiltered$summarise_omop_snapshot |>
+      dplyr::filter(cdm_name %in% shared_cdm_names())
 
     validateFilteredResult(result)
 
     return(result)
-  })
+  }))
   ## Table summarise_omop_snapshot ----
   createTableOmopSnapshot <- shiny::reactive({
     filterOmopSnapshot() |>
@@ -156,17 +140,18 @@ server <- function(input, output, session) {
   )
 
   # summarise_observation_period -----
-  filterObservationPeriod <- shiny::reactive({
+  filterObservationPeriod <- eventReactive(input$updateObservationPeriod, ({
     if (is.null(dataFiltered$summarise_observation_period)) {
       validate("No observation period summary in results")
     }
 
-    result <- dataFiltered$summarise_observation_period
+    result <- dataFiltered$summarise_observation_period |>
+      dplyr::filter(cdm_name %in% shared_cdm_names())
 
     validateFilteredResult(result)
 
     return(result)
-  })
+  }))
 
   ## Table summarise_observation_period -----
   createTableObservationPeriod <- shiny::reactive({

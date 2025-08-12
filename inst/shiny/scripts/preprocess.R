@@ -79,8 +79,8 @@ if(length(dataFiltered) > 0){
 }
 
 # Filter not needed values
-values <- values[!stringr::str_detect(names(values), "summarise_omop_snapshot")]
-values <- values[!stringr::str_detect(names(values), "summarise_observation_period")]
+values <- filterValues(values, prefix = "summarise_omop_snapshot", sufix_to_include = "cdm_name")
+values <- filterValues(values, prefix = "summarise_observation_period", sufix_to_include = "cdm_name")
 values <- filterValues(values, prefix = "achilles_code_use", sufix_to_include = c("cdm_name", "codelist_name"))
 values <- filterValues(values, prefix = "orphan_code_use", sufix_to_include = c("cdm_name", "codelist_name"))
 values <- filterValues(values, prefix = "cohort_code_use", sufix_to_include = c("cdm_name", "cohort_name", "domain"))
