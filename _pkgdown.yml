@@ -32,8 +32,8 @@ navbar:
         href: articles/CodelistDiagnostics.html
       - text: CohortDiagnostics
         href: articles/CohortDiagnostics.html
-      - text: PopulationDisgnostics
-        href: articles/PopulationDisgnostics.html
+      - text: PopulationDiagnostics
+        href: articles/PopulationDiagnostics.html
 
 reference:
 - subtitle: Run all diagnostics
