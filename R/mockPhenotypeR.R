@@ -31,7 +31,7 @@ mockPhenotypeR <- function(nPerson = 100,
   omopgenerics::assertCharacter(writeSchema, length = 1, na = FALSE, null = FALSE)
 
   cdm_local <- omock::mockCdmReference() |>
-    omock::mockPerson(nPerson = 100, seed = seed) |>
+    omock::mockPerson(nPerson = nPerson, seed = seed) |>
     omock::mockObservationPeriod(seed = seed) |>
     omock::mockConditionOccurrence(seed = seed) |>
     omock::mockVisitOccurrence(seed = seed) |>
