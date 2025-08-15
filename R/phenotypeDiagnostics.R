@@ -46,6 +46,24 @@ phenotypeDiagnostics <- function(cohort,
   checksCohortDiagnostics(survival, matchedSample)
   checksPopulationDiagnostics(populationSample, populationDateRange)
 
+  # Check cohort size
+  cohorts_size <- attr(cdm$my_cohort, "cohort_attrition") |>
+    dplyr::group_by(cohort_definition_id) |>
+    dplyr::filter(.data$reason_id == max(.data$reason_id, na.rm = TRUE)) |>
+    dplyr::filter(number_records > 50000) |>
+    dplyr::collect()
+  if(nrow(cohorts_size) != 0){
+    ids <- cohorts_size$cohort_definition_id |> sort()
+    plural_s <- if (length(ids) == 1) "" else "s"
+    verb <- if (length(ids) == 1) "is" else "are"
+
+    cli::cli_warn(
+      "Cohort size of cohort{plural_s} {ids} {verb} bigger than 50,000. We recommend to use
+      {.fun CohortConstructor::sampleCohorts}(https://ohdsi.github.io/CohortConstructor/reference/sampleCohorts.html) to
+      speed up phenotypeDiagnostics.")
+  }
+
+  # Run phenotypeR diagnostics
   cdm <- omopgenerics::cdmReference(cohort)
   results <- list()
   if ("databaseDiagnostics" %in% diagnostics) {
