@@ -50,11 +50,12 @@ mockPhenotypeR <- function(nPerson = 100,
     "device_type_concept_id" = NA_integer_,
     "device_source_concept_id"	= NA_integer_
   )
+  class(cdm_local$device_exposure) <- append(class(cdm_local$device_exposure), "omop_table")
 
   cdm <- CDMConnector::copyCdmTo(con = con,
-                                   cdm = cdm_local,
-                                   schema = writeSchema,
-                                   overwrite = TRUE)
+                                 cdm = cdm_local,
+                                 schema = writeSchema,
+                                 overwrite = TRUE)
 
   cdm <- CodelistGenerator::buildAchillesTables(cdm) |>
     suppressMessages()

@@ -47,10 +47,11 @@ phenotypeDiagnostics <- function(cohort,
   checksPopulationDiagnostics(populationSample, populationDateRange)
 
   # Check cohort size
+  cdm <- omopgenerics::cdmReference(cohort)
   cohorts_size <- attr(cdm$my_cohort, "cohort_attrition") |>
-    dplyr::group_by(cohort_definition_id) |>
+    dplyr::group_by(.data$cohort_definition_id) |>
     dplyr::filter(.data$reason_id == max(.data$reason_id, na.rm = TRUE)) |>
-    dplyr::filter(number_records > 50000) |>
+    dplyr::filter(.data$number_records > 50000) |>
     dplyr::collect()
   if(nrow(cohorts_size) != 0){
     ids <- cohorts_size$cohort_definition_id |> sort()
@@ -64,7 +65,6 @@ phenotypeDiagnostics <- function(cohort,
   }
 
   # Run phenotypeR diagnostics
-  cdm <- omopgenerics::cdmReference(cohort)
   results <- list()
   if ("databaseDiagnostics" %in% diagnostics) {
     cli::cli("Running database diagnostics")
