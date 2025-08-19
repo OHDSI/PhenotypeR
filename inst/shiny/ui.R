@@ -1163,6 +1163,8 @@ ui <- fluidPage(
                                            ),
                                            position = "right"
                   ),
+                  htmltools::tags$p(style = "font-size: 0.75em;", msgCohortSample),
+                  htmltools::tags$p(style = "font-size: 0.75em;", msgMatchedSample),
                   gt::gt_output("summarise_characteristics_gt") |> withSpinner()
                 )
               )
@@ -1209,6 +1211,8 @@ ui <- fluidPage(
                                            ),
                                            position = "right"
                   ),
+                  htmltools::tags$p(style = "font-size: 0.75em;", msgCohortSample),
+                  htmltools::tags$p(style = "font-size: 0.75em;", msgMatchedSample),
                   shiny::plotOutput("plot_age_pyramid")
                 )
               )
@@ -1315,6 +1319,7 @@ ui <- fluidPage(
                   shiny::downloadButton(outputId = "summarise_large_scale_characteristics_tidy_download", label = ""),,
                   class = "text-end"
                 ),
+                htmltools::tags$p(style = "font-size: 0.75em;", msgCohortSample),
                 uiOutput("summarise_large_scale_characteristics_tidy") |> withSpinner()
               )
             ),
@@ -1337,6 +1342,7 @@ ui <- fluidPage(
                                            ),
                                            position = "right"
                   ),
+                  htmltools::tags$p(style = "font-size: 0.75em;", msgCohortSample),
                   gt::gt_output("summarise_large_scale_characteristics_gt") |> withSpinner()
                 )
               )
@@ -1489,6 +1495,7 @@ ui <- fluidPage(
                   shiny::downloadButton(outputId = "compare_large_scale_characteristics_tidy_download", label = ""),
                   class = "text-end"
                 ),
+                htmltools::tags$p(style = "font-size: 0.75em;", msgCohortSample),
                 htmltools::tags$p(style = "font-size: 0.75em;", msgMatchedSample),
                 reactable::reactableOutput("compare_large_scale_characteristics_tidy") |> withSpinner()
               )
@@ -1547,6 +1554,7 @@ ui <- fluidPage(
                                            position = "right"
                   ),
                   position = "right",
+                  htmltools::tags$p(style = "font-size: 0.75em;", msgCohortSample),
                   htmltools::tags$p(style = "font-size: 0.75em;", msgMatchedSample),
                   plotly::plotlyOutput("plotly_compare_lsc") |> withSpinner()
                 )
@@ -1992,6 +2000,8 @@ ui <- fluidPage(
                                            ),
                                            position = "right"
                   ),
+                  htmltools::tags$p(style = "font-size: 0.75em;", msgCohortSample),
+                  htmltools::tags$p(style = "font-size: 0.75em;", msgMatchedSample),
                   gt::gt_output("summarise_cohort_survival_gt") |> withSpinner()
                 )
               )
@@ -2068,6 +2078,8 @@ ui <- fluidPage(
                                            ),
                                            position = "right"
                   ),
+                  htmltools::tags$p(style = "font-size: 0.75em;", msgCohortSample),
+                  htmltools::tags$p(style = "font-size: 0.75em;", msgMatchedSample),
                   uiOutput("summarise_cohort_survival_plot") |> withSpinner()
                 )
               )

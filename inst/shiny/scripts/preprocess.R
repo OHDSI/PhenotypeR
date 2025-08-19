@@ -131,6 +131,7 @@ choices <- values
 selected <- choices
 
 msgMatchedSample <- ""
+msgCohortSample  <- ""
 if("cohortDiagnostics" %in% diagnostics){
   selected$compare_large_scale_characteristics_variable_level <- "-inf to -1"
   selected$compare_large_scale_characteristics_table_name     <- "condition_occurrence"
@@ -144,11 +145,19 @@ if("cohortDiagnostics" %in% diagnostics){
 
   }
 
+  typeCohort <- "original"
+  if("cohortSample" %in% (omopgenerics::settings(result) |> colnames())){
+    cohortSample <- as.numeric(omopgenerics::settings(dataFiltered$summarise_large_scale_characteristics) |> dplyr::pull("cohortSample") |> unique())
+    cohortSample <- formatC(cohortSample, format = "f", digits = 0, big.mark = ",")
+    msgCohortSample <- glue::glue("Cohorts were sampled to up to {cohortSample} participants")
+    typeCohort <- "sampled"
+  }
+
   if("matchedSample" %in% (omopgenerics::settings(result) |> colnames())){
     matchedSample <- as.numeric(omopgenerics::settings(dataFiltered$summarise_large_scale_characteristics) |> dplyr::pull("matchedSample") |> unique())
     if(all(matchedSample != 0)){
       matchedSample <- formatC(matchedSample, format = "f", digits = 0, big.mark = ",")
-      msgMatchedSample <- glue::glue("Matched cohorts were created based on a subsample of ", paste(matchedSample, collapse = " and ")," participants from the original cohorts.")
+      msgMatchedSample <- glue::glue("Matched cohorts were created based on a subsample of ", paste(matchedSample, collapse = " and ")," participants from the {typeCohort} cohorts.")
     }
   }
 }
@@ -215,6 +224,7 @@ save(dataFiltered,
      choices,
      min_incidence_start,
      max_incidence_end,
+     msgCohortSample,
      msgMatchedSample,
      msgPopulationDiag,
      phenotyper_version,

@@ -68,6 +68,7 @@ cdm$injuries <- conceptCohort(cdm = cdm,
 We can run cohort diagnostics analyses for each of our overall cohorts like so:
 ```{r}
 cohort_diag <- cohortDiagnostics(cdm$injuries, 
+                                 cohortSample = NULL,
                                  matchedSample = NULL,
                                  survival = TRUE)
 ```
