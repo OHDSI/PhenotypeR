@@ -55,7 +55,7 @@ cohortDiagnostics <- function(cohort, survival = FALSE, cohortSample = 20000, ma
 
   cohortNameSampled <- paste0(prefix, "sampled")
   if(is.null(cohortSample)){
-    cdm[[cohortNameSampled]] <- CohortConstructor::copyCohorts(cdm[[cohortName]], n = cohortSample, name = cohortNameSampled)
+    cdm[[cohortNameSampled]] <- CohortConstructor::copyCohorts(cdm[[cohortName]], name = cohortNameSampled)
   }else{
     cli::cli_bullets(c(">" = "Sampling cohorts to up to {cohortSample} individuals"))
     cdm[[cohortNameSampled]] <- CohortConstructor::sampleCohorts(cdm[[cohortName]], n = cohortSample, name = cohortNameSampled)
