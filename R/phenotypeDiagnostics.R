@@ -49,6 +49,7 @@ phenotypeDiagnostics <- function(cohort,
   checksPopulationDiagnostics(populationSample, populationDateRange)
 
   # Run phenotypeR diagnostics
+  cdm <- omopgenerics::cdmReference(cohort)
   results <- list()
   if ("databaseDiagnostics" %in% diagnostics) {
     cli::cli("Running database diagnostics")
