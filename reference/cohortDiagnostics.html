@@ -67,7 +67,12 @@ The diganostics include:
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cohortDiagnostics</span><span class="op">(</span><span class="va">cohort</span>, survival <span class="op">=</span> <span class="cn">FALSE</span>, matchedSample <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cohortDiagnostics</span><span class="op">(</span></span>
+<span>  <span class="va">cohort</span>,</span>
+<span>  survival <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  cohortSample <span class="op">=</span> <span class="fl">20000</span>,</span>
+<span>  matchedSample <span class="op">=</span> <span class="fl">1000</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -80,6 +85,10 @@ The diganostics include:
 
 <dt id="arg-survival">survival<a class="anchor" aria-label="anchor" href="#arg-survival"></a></dt>
 <dd><p>Boolean variable. Whether to conduct survival analysis (TRUE) or not (FALSE).</p></dd>
+
+
+<dt id="arg-cohortsample">cohortSample<a class="anchor" aria-label="anchor" href="#arg-cohortsample"></a></dt>
+<dd><p>The number of people to take a random sample for cohortDiagnostics. If `cohortSample = NULL`, no sampling will be performed,</p></dd>
 
 
 <dt id="arg-matchedsample">matchedSample<a class="anchor" aria-label="anchor" href="#arg-matchedsample"></a></dt>
@@ -108,16 +117,17 @@ matched cohorts will be created.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising cohort <span style="color: #0000BB;">cohort_1</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising cohort <span style="color: #0000BB;">cohort_2</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> summariseCharacteristics finished!</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Skipping cohort sampling as all cohorts have less than 20000 individuals.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Getting cohort overlap</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Getting cohort timing</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The following estimates will be computed:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> days_between_cohort_entries: median, q25, q75, min, max, density</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   the database side</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2025-08-19 13:05:09.019074</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2025-08-19 13:05:09.14572</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2025-08-20 13:12:22.479128</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2025-08-20 13:12:22.606809</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Creating matching cohorts</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Sampling cohort `my_cohort`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Sampling cohort `tmp_002_sampled`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Returning entry cohort as the size of the cohorts to be sampled is equal or</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> smaller than `n`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Generating an age and sex matched cohort for cohort_1</span></span>
@@ -132,7 +142,7 @@ matched cohorts will be created.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Adjusting ratio</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Binding cohorts</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Done</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Sampling cohort `my_cohort`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Sampling cohort `tmp_002_sampled`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Returning entry cohort as the size of the cohorts to be sampled is equal or</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> smaller than `n`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Generating an age and sex matched cohort for cohort_2</span></span>
@@ -164,8 +174,8 @@ matched cohorts will be created.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Calculating age density</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The following estimates will be computed:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> age: density</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2025-08-19 13:05:34.393521</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2025-08-19 13:05:34.724711</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2025-08-20 13:12:46.949426</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2025-08-20 13:12:47.285455</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Run large scale characteristics (including source and standard codes)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising large scale characteristics </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 6)</span>
@@ -186,7 +196,7 @@ matched cohorts will be created.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 6)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Formatting result</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summarising large scale characteristics</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> `matchedSample` casted to character.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> `cohortSample` and `matchedSample` casted to character.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">CDMConnector</span><span class="fu">::</span><span class="fu"><a href="https://darwin-eu.github.io/omopgenerics/reference/cdmDisconnect.html" class="external-link">cdmDisconnect</a></span><span class="op">(</span>cdm <span class="op">=</span> <span class="va">cdm</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
