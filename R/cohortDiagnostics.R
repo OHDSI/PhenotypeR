@@ -10,6 +10,7 @@
 #' * Overlap between cohorts (if more than one cohort is being used).
 #'
 #' @inheritParams cohortDoc
+#' @inheritParams cohortSampleDoc
 #' @inheritParams survivalDoc
 #' @inheritParams matchedDoc
 #'
@@ -27,12 +28,12 @@
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
 
-cohortDiagnostics <- function(cohort, survival = FALSE, matchedSample = 1000){
+cohortDiagnostics <- function(cohort, survival = FALSE, cohortSample = 20000, matchedSample = 1000){
 
   cli::cli_bullets(c("*" = "Starting Cohort Diagnostics"))
 
   # Initial checks ----
-  checksCohortDiagnostics(survival, matchedSample)
+  checksCohortDiagnostics(survival, cohortSample, matchedSample)
 
   cdm <- omopgenerics::cdmReference(cohort)
   cohortName <- omopgenerics::tableName(cohort)
@@ -52,23 +53,42 @@ cohortDiagnostics <- function(cohort, survival = FALSE, matchedSample = 1000){
   results[["cohort_count"]] <- cdm[[cohortName]] |>
     CohortCharacteristics::summariseCohortCount()
 
+  cohortNameSampled <- paste0(prefix, "sampled")
+  if(is.null(cohortSample)){
+    cdm[[cohortNameSampled]] <- CohortConstructor::copyCohorts(cdm[[cohortName]], name = cohortNameSampled)
+  }else{
+    # Check cohort sizes
+    x <- cohort |>
+      omopgenerics::cohortCount() |>
+      dplyr::filter(.data$number_subjects > !!cohortSample) |>
+      dplyr::collect()
+
+    if(nrow(x) == 0){
+      cli::cli_bullets(c(">" = "Skipping cohort sampling as all cohorts have less than {cohortSample} individuals."))
+      cdm[[cohortNameSampled]] <- CohortConstructor::copyCohorts(cdm[[cohortName]], name = cohortNameSampled)
+    }else{
+      cli::cli_bullets(c(">" = "Sampling cohorts to up to {cohortSample} individuals"))
+      cdm[[cohortNameSampled]] <- CohortConstructor::sampleCohorts(cdm[[cohortName]], n = cohortSample, name = cohortNameSampled)
+    }
+  }
+
   # if there is more than one cohort, we'll get timing and overlap of all together
   if(length(cohortIds) > 1){
     cli::cli_bullets(c(">" = "Getting cohort overlap"))
-    results[["cohort_overlap"]] <-  cdm[[cohortName]] |>
+    results[["cohort_overlap"]] <-  cdm[[cohortNameSampled]] |>
       CohortCharacteristics::summariseCohortOverlap()
 
     cli::cli_bullets(c(">" = "Getting cohort timing"))
-    results[["cohort_timing"]] <- cdm[[cohortName]] |>
+    results[["cohort_timing"]] <- cdm[[cohortNameSampled]] |>
       CohortCharacteristics::summariseCohortTiming(estimates = c("median", "q25", "q75", "min", "max", "density"))
   }
 
   if(is.null(matchedSample) || matchedSample != 0){
     cli::cli_bullets(c(">" = "Creating matching cohorts"))
-    cdm <- createMatchedCohorts(cdm, tempCohortName, cohortName, cohortIds, matchedSample)
-    cdm <- bind(cdm[[cohortName]], cdm[[tempCohortName]], name = tempCohortName)
+    cdm <- createMatchedCohorts(cdm, tempCohortName, cohortNameSampled, cohortIds, matchedSample)
+    cdm <- bind(cdm[[cohortNameSampled]], cdm[[tempCohortName]], name = tempCohortName)
   }else{
-    cdm[[tempCohortName]] <- CohortConstructor::copyCohorts(cdm[[cohortName]],
+    cdm[[tempCohortName]] <- CohortConstructor::copyCohorts(cdm[[cohortNameSampled]],
                                                             name = tempCohortName)
   }
 
@@ -142,26 +162,26 @@ cohortDiagnostics <- function(cohort, survival = FALSE, matchedSample = 1000){
   )
 
   if(isTRUE(survival)){
-  if("death" %in% names(cdm)){
-    cli::cli_bullets(c(">" = "Creating death cohort"))
-    if(cdm$death |> dplyr::summarise("n" = dplyr::n()) |> dplyr::pull("n") == 0){
-      cli::cli_warn("Death table is empty. Skipping survival analysis")
-    }else{
-      deathCohortName <- paste0(prefix, "death_cohort")
-      cdm[[deathCohortName]] <- CohortConstructor::deathCohort(cdm,
-                                                               name = deathCohortName,
-                                                               subsetCohort = tempCohortName,
-                                                               subsetCohortId = NULL)
+    if("death" %in% names(cdm)){
+      cli::cli_bullets(c(">" = "Creating death cohort"))
+      if(cdm$death |> dplyr::summarise("n" = dplyr::n()) |> dplyr::pull("n") == 0){
+        cli::cli_warn("Death table is empty. Skipping survival analysis")
+      }else{
+        deathCohortName <- paste0(prefix, "death_cohort")
+        cdm[[deathCohortName]] <- CohortConstructor::deathCohort(cdm,
+                                                                 name = deathCohortName,
+                                                                 subsetCohort = tempCohortName,
+                                                                 subsetCohortId = NULL)
 
-      cli::cli_bullets(c(">" = "Estimating single survival event"))
-      results[["single_survival_event"]] <- CohortSurvival::estimateSingleEventSurvival(cdm,
-                                                                                        targetCohortTable = tempCohortName,
-                                                                                        outcomeCohortTable = deathCohortName)
+        cli::cli_bullets(c(">" = "Estimating single survival event"))
+        results[["single_survival_event"]] <- CohortSurvival::estimateSingleEventSurvival(cdm,
+                                                                                          targetCohortTable = tempCohortName,
+                                                                                          outcomeCohortTable = deathCohortName)
+      }
+    }else{
+      cli::cli_warn("No table 'death' in the cdm object. Skipping survival analysis.")
+      results[["single_survival_event"]] <- omopgenerics::emptySummarisedResult()
     }
-  }else{
-    cli::cli_warn("No table 'death' in the cdm object. Skipping survival analysis.")
-    results[["single_survival_event"]] <- omopgenerics::emptySummarisedResult()
-  }
   }
 
   omopgenerics::dropSourceTable(cdm, dplyr::starts_with(prefix))
@@ -173,6 +193,7 @@ cohortDiagnostics <- function(cohort, survival = FALSE, matchedSample = 1000){
     omopgenerics::settings() |>
     dplyr::mutate("phenotyper_version" = as.character(utils::packageVersion(pkg = "PhenotypeR")),
                   "diagnostic" = "cohortDiagnostics",
+                  "cohortSample"  = .env$cohortSample,
                   "matchedSample" = .env$matchedSample)
 
   results <- results |>
@@ -215,10 +236,11 @@ createMatchedCohorts <- function(cdm, tempCohortName, cohortName, cohortIds, mat
   return(cdm)
 }
 
-checksCohortDiagnostics <- function(survival, matchedSample, call = parent.frame()){
+checksCohortDiagnostics <- function(survival, cohortSample, matchedSample, call = parent.frame()){
   omopgenerics::assertLogical(survival, call = call)
   if(isTRUE(survival)){
     rlang::check_installed("CohortSurvival", version = "1.0.2")
   }
+  omopgenerics::assertNumeric(cohortSample, integerish = TRUE, min = 0, null = TRUE, length = 1, call = call)
   omopgenerics::assertNumeric(matchedSample, integerish = TRUE, min = 0, null = TRUE, length = 1, call = call)
 }

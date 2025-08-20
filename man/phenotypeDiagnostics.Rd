@@ -9,6 +9,7 @@ phenotypeDiagnostics(
   diagnostics = c("databaseDiagnostics", "codelistDiagnostics", "cohortDiagnostics",
     "populationDiagnostics"),
   survival = FALSE,
+  cohortSample = 20000,
   matchedSample = 1000,
   populationSample = 1e+06,
   populationDateRange = as.Date(c(NA, NA))
@@ -22,6 +23,8 @@ include: `databaseDiagnostics`, `codelistDiagnostics`, `cohortDiagnostics`,
 and `populationDiagnostics`.}
 
 \item{survival}{Boolean variable. Whether to conduct survival analysis (TRUE) or not (FALSE).}
+
+\item{cohortSample}{The number of people to take a random sample for cohortDiagnostics. If `cohortSample = NULL`, no sampling will be performed,}
 
 \item{matchedSample}{The number of people to take a random sample for
 matching. If `matchedSample = NULL`, no sampling will be performed. If `matchedSample = 0`, no

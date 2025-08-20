@@ -24,6 +24,13 @@ NULL
 #' @keywords internal
 NULL
 
+#' Helper for consistent documentation of `cohortSample`.
+#'
+#' @param cohortSample The number of people to take a random sample for cohortDiagnostics. If `cohortSample = NULL`, no sampling will be performed,
+#'
+#' @name cohortSampleDoc
+#' @keywords internal
+NULL
 
 #' Helper for consistent documentation of `matched`.
 #'

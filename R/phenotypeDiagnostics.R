@@ -14,6 +14,7 @@
 #' include: `databaseDiagnostics`, `codelistDiagnostics`, `cohortDiagnostics`,
 #' and `populationDiagnostics`.
 #' @inheritParams survivalDoc
+#' @inheritParams cohortSampleDoc
 #' @inheritParams matchedDoc
 #' @inheritParams populationSampleDoc
 #'
@@ -34,6 +35,7 @@ phenotypeDiagnostics <- function(cohort,
                                  diagnostics = c("databaseDiagnostics", "codelistDiagnostics",
                                                  "cohortDiagnostics", "populationDiagnostics"),
                                  survival = FALSE,
+                                 cohortSample = 20000,
                                  matchedSample = 1000,
                                  populationSample = 1000000,
                                  populationDateRange = as.Date(c(NA, NA))) {
@@ -43,28 +45,11 @@ phenotypeDiagnostics <- function(cohort,
                              c("databaseDiagnostics", "codelistDiagnostics",
                                "cohortDiagnostics", "populationDiagnostics"),
                              unique = TRUE)
-  checksCohortDiagnostics(survival, matchedSample)
+  checksCohortDiagnostics(survival, cohortSample, matchedSample)
   checksPopulationDiagnostics(populationSample, populationDateRange)
 
-  # Check cohort size
-  cdm <- omopgenerics::cdmReference(cohort)
-  cohorts_size <- attr(cdm$my_cohort, "cohort_attrition") |>
-    dplyr::group_by(.data$cohort_definition_id) |>
-    dplyr::filter(.data$reason_id == max(.data$reason_id, na.rm = TRUE)) |>
-    dplyr::filter(.data$number_records > 50000) |>
-    dplyr::collect()
-  if(nrow(cohorts_size) != 0){
-    ids <- cohorts_size$cohort_definition_id |> sort()
-    plural_s <- if (length(ids) == 1) "" else "s"
-    verb <- if (length(ids) == 1) "is" else "are"
-
-    cli::cli_warn(
-      "Cohort size of cohort{plural_s} {ids} {verb} bigger than 50,000. We recommend to use
-      {.fun CohortConstructor::sampleCohorts}(https://ohdsi.github.io/CohortConstructor/reference/sampleCohorts.html) to
-      speed up phenotypeDiagnostics.")
-  }
-
   # Run phenotypeR diagnostics
+  cdm <- omopgenerics::cdmReference(cohort)
   results <- list()
   if ("databaseDiagnostics" %in% diagnostics) {
     cli::cli("Running database diagnostics")
@@ -78,6 +63,7 @@ phenotypeDiagnostics <- function(cohort,
     cli::cli("Running cohort diagnostics")
     results[["cohort_diag"]] <- cohortDiagnostics(cohort,
                                                   survival = survival,
+                                                  cohortSample  = cohortSample,
                                                   matchedSample = matchedSample)
   }
   if ("populationDiagnostics" %in% diagnostics) {
