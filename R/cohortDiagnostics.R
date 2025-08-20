@@ -54,11 +54,23 @@ cohortDiagnostics <- function(cohort, survival = FALSE, cohortSample = 20000, ma
     CohortCharacteristics::summariseCohortCount()
 
   cohortNameSampled <- paste0(prefix, "sampled")
+
+  # Check cohort sizes
+  x <- cohort |>
+    omopgenerics::cohortCount() |>
+    dplyr::filter(.data$number_subjects > !!cohortSample) |>
+    dplyr::collect()
+
   if(is.null(cohortSample)){
     cdm[[cohortNameSampled]] <- CohortConstructor::copyCohorts(cdm[[cohortName]], name = cohortNameSampled)
   }else{
-    cli::cli_bullets(c(">" = "Sampling cohorts to up to {cohortSample} individuals"))
-    cdm[[cohortNameSampled]] <- CohortConstructor::sampleCohorts(cdm[[cohortName]], n = cohortSample, name = cohortNameSampled)
+    if(nrow(x) == 0){
+      cli::cli_bullets(c(">" = "Skipping cohort sampling as all cohorts have less than {cohortSample} individuals."))
+      cdm[[cohortNameSampled]] <- CohortConstructor::copyCohorts(cdm[[cohortName]], name = cohortNameSampled)
+    }else{
+      cli::cli_bullets(c(">" = "Sampling cohorts to up to {cohortSample} individuals"))
+      cdm[[cohortNameSampled]] <- CohortConstructor::sampleCohorts(cdm[[cohortName]], n = cohortSample, name = cohortNameSampled)
+    }
   }
 
   # if there is more than one cohort, we'll get timing and overlap of all together
