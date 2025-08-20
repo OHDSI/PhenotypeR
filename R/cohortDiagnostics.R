@@ -54,16 +54,15 @@ cohortDiagnostics <- function(cohort, survival = FALSE, cohortSample = 20000, ma
     CohortCharacteristics::summariseCohortCount()
 
   cohortNameSampled <- paste0(prefix, "sampled")
-
-  # Check cohort sizes
-  x <- cohort |>
-    omopgenerics::cohortCount() |>
-    dplyr::filter(.data$number_subjects > !!cohortSample) |>
-    dplyr::collect()
-
   if(is.null(cohortSample)){
     cdm[[cohortNameSampled]] <- CohortConstructor::copyCohorts(cdm[[cohortName]], name = cohortNameSampled)
   }else{
+    # Check cohort sizes
+    x <- cohort |>
+      omopgenerics::cohortCount() |>
+      dplyr::filter(.data$number_subjects > !!cohortSample) |>
+      dplyr::collect()
+
     if(nrow(x) == 0){
       cli::cli_bullets(c(">" = "Skipping cohort sampling as all cohorts have less than {cohortSample} individuals."))
       cdm[[cohortNameSampled]] <- CohortConstructor::copyCohorts(cdm[[cohortName]], name = cohortNameSampled)
