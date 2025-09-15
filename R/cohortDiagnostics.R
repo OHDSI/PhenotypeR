@@ -148,15 +148,15 @@ cohortDiagnostics <- function(cohort, survival = FALSE, cohortSample = 20000, ma
   cli::cli_bullets(c(">" = "Run large scale characteristics (including only standard codes)"))
   results[["lsc_standard"]] <- CohortCharacteristics::summariseLargeScaleCharacteristics(
     cohort = cdm[[tempCohortName]],
-    window = list(c(-Inf, -1), c(-Inf, -366), c(-365, -31),
+    window = list(c(-Inf, -366), c(-365, -31),
                   c(-30, -1), c(0, 0),
                   c(1, 30), c(31, 365),
-                  c(366, Inf), c(1, Inf)),
+                  c(366, Inf)),
     eventInWindow = c("condition_occurrence", "visit_occurrence",
                       "measurement", "procedure_occurrence",
                       "observation"),
     episodeInWindow = c("drug_exposure"),
-    minimumFrequency = 0.0005,
+    minimumFrequency = 0.1,
     includeSource = FALSE,
     excludedCodes = NULL
   )
