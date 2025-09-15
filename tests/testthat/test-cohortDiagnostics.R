@@ -30,7 +30,7 @@ test_that("run with a single cohort", {
   expect_identical(
     result |>
       omopgenerics::settings() |>
-      dplyr::pull("matchedSample") |>
+      dplyr::pull("matched_sample") |>
       unique(),
     "0")
 
