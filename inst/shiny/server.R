@@ -32,7 +32,7 @@ server <- function(input, output, session) {
     }
 
   })
-  
+
   # Define shared cdm_names values ----
   shiny::observe({
     cdm_values <- names(choices)[grepl("cdm_name", names(choices)) & names(choices) != "shared_cdm_names"]
@@ -47,7 +47,7 @@ server <- function(input, output, session) {
       })
     }
   })
-  
+
   shiny::observe({
     cdm_values <- names(choices)[grepl("cdm_name", names(choices)) & names(choices) != "shared_cdm_names"]
     for (inputId in cdm_values) {
@@ -58,7 +58,7 @@ server <- function(input, output, session) {
         })
       })}
   })
-  
+
   # Define shared cohort_names values ----
   shiny::observe({
     cohort_values <- names(choices)[grepl("cohort_name", names(choices)) & names(choices) != "shared_cohort_names"]
@@ -84,7 +84,7 @@ server <- function(input, output, session) {
         })
       })}
     })
-  
+
   # download raw data -----
   output$download_raw <- shiny::downloadHandler(
     filename = "results.csv",
@@ -974,7 +974,7 @@ server <- function(input, output, session) {
         groupColumn = input$summarise_characteristics_gt_groupColumn,
         hide = c(input$summarise_characteristics_gt_hide,
                  "table_name", "value", "window", "table",
-                 "diagnostic", "matchedSample", "phenotyper_version")
+                 "diagnostic", "cohort_sample", "matched_sample", "phenotyper_version")
       ) %>%
       tab_header(
         title = "Patient characteristics",
