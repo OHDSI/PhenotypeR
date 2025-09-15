@@ -193,8 +193,8 @@ cohortDiagnostics <- function(cohort, survival = FALSE, cohortSample = 20000, ma
     omopgenerics::settings() |>
     dplyr::mutate("phenotyper_version" = as.character(utils::packageVersion(pkg = "PhenotypeR")),
                   "diagnostic" = "cohortDiagnostics",
-                  "cohortSample"  = .env$cohortSample,
-                  "matchedSample" = .env$matchedSample)
+                  "cohort_sample"  = .env$cohortSample,
+                  "matched_sample" = .env$matchedSample)
 
   results <- results |>
     omopgenerics::newSummarisedResult(settings = newSettings)

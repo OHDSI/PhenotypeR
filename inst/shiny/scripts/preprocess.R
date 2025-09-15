@@ -146,18 +146,18 @@ if("cohortDiagnostics" %in% diagnostics){
   }
 
   typeCohort <- "original"
-  if("cohortSample" %in% (omopgenerics::settings(result) |> colnames())){
-    cohortSample <- as.numeric(omopgenerics::settings(dataFiltered$summarise_large_scale_characteristics) |> dplyr::pull("cohortSample") |> unique())
-    cohortSample <- formatC(cohortSample, format = "f", digits = 0, big.mark = ",")
-    msgCohortSample <- glue::glue("Cohorts were sampled to up to {cohortSample} participants")
+  if("cohort_sample" %in% (omopgenerics::settings(result) |> colnames())){
+    cohort_sample <- as.numeric(omopgenerics::settings(dataFiltered$summarise_large_scale_characteristics) |> dplyr::pull("cohort_sample") |> unique())
+    cohort_sample <- formatC(cohort_sample, format = "f", digits = 0, big.mark = ",")
+    msgCohortSample <- glue::glue("Cohorts were sampled to up to {cohort_sample} participants")
     typeCohort <- "sampled"
   }
 
-  if("matchedSample" %in% (omopgenerics::settings(result) |> colnames())){
-    matchedSample <- as.numeric(omopgenerics::settings(dataFiltered$summarise_large_scale_characteristics) |> dplyr::pull("matchedSample") |> unique())
-    if(all(matchedSample != 0)){
-      matchedSample <- formatC(matchedSample, format = "f", digits = 0, big.mark = ",")
-      msgMatchedSample <- glue::glue("Matched cohorts were created based on a subsample of ", paste(matchedSample, collapse = " and ")," participants from the {typeCohort} cohorts.")
+  if("matched_sample" %in% (omopgenerics::settings(result) |> colnames())){
+    matched_sample <- as.numeric(omopgenerics::settings(dataFiltered$summarise_large_scale_characteristics) |> dplyr::pull("matched_sample") |> unique())
+    if(all(matched_sample != 0)){
+      matched_sample <- formatC(matched_sample, format = "f", digits = 0, big.mark = ",")
+      msgMatchedSample <- glue::glue("Matched cohorts were created based on a subsample of ", paste(matched_sample, collapse = " and ")," participants from the {typeCohort} cohorts.")
     }
   }
 }
