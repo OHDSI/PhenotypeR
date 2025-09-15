@@ -140,7 +140,7 @@ cohortDiagnostics <- function(cohort, survival = FALSE, cohortSample = 20000, ma
                       "measurement", "procedure_occurrence",
                       "observation"),
     episodeInWindow = c("drug_exposure"),
-    minimumFrequency = 0.0005,
+    minimumFrequency = 0.01,
     includeSource = TRUE,
     excludedCodes = NULL
   )
