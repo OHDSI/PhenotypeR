@@ -48,29 +48,61 @@ phenotypeDiagnostics <- function(cohort,
   checksCohortDiagnostics(survival, cohortSample, matchedSample)
   checksPopulationDiagnostics(populationSample, populationDateRange)
 
+  incrementalResultPath <- getOption(x = "PhenotypeR.incremenatl_save_path")
+
   # Run phenotypeR diagnostics
   cdm <- omopgenerics::cdmReference(cohort)
   results <- list()
   if ("databaseDiagnostics" %in% diagnostics) {
     cli::cli("Running database diagnostics")
     results[["db_diag"]] <- databaseDiagnostics(cdm)
+    if(!is.null(incrementalResultPath)){
+      if (dir.exists(incrementalResultPath)) {
+      exportSummarisedResult(results[["db_diag"]] ,
+                             fileName = "incremental_database_diagnostics.csv",
+                             path = incrementalResultPath)
+      }
+      }
   }
+
   if ("codelistDiagnostics" %in% diagnostics) {
     cli::cli("Running codelist diagnostics")
     results[["code_diag"]] <- codelistDiagnostics(cohort)
-  }
+    if(!is.null(incrementalResultPath)){
+      if (dir.exists(incrementalResultPath)) {
+        exportSummarisedResult(results[["code_diag"]],
+                               fileName = "incremental_codelist_diagnostics.csv",
+                               path = incrementalResultPath)
+      }
+    }
+}
+
   if ("cohortDiagnostics" %in% diagnostics) {
     cli::cli("Running cohort diagnostics")
     results[["cohort_diag"]] <- cohortDiagnostics(cohort,
                                                   survival = survival,
                                                   cohortSample  = cohortSample,
                                                   matchedSample = matchedSample)
+    if(!is.null(incrementalResultPath)){
+      if (dir.exists(incrementalResultPath)) {
+        exportSummarisedResult(results[["cohort_diag"]] ,
+                               fileName = "incremental_cohort_diagnostics.csv",
+                               path = incrementalResultPath)
+      }
+    }
   }
   if ("populationDiagnostics" %in% diagnostics) {
     cli::cli("Running population diagnostics")
     results[["pop_diag"]] <- populationDiagnostics(cohort,
                                                    populationSample = populationSample,
                                                    populationDateRange = populationDateRange)
+    if(!is.null(incrementalResultPath)){
+      if (dir.exists(incrementalResultPath)) {
+        exportSummarisedResult(results[["pop_diag"]] ,
+                               fileName = "incremental_population_diagnostics.csv",
+                               path = incrementalResultPath)
+      }
+    }
   }
 
   cli::cli("Combining results")
