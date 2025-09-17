@@ -69,3 +69,39 @@ test_that("overall diagnostics function", {
   expect_error(phenotypeDiagnostics(cdm$my_cohort, populationSample = 0))
   expect_error(phenotypeDiagnostics(cdm$my_cohort, populationDateRange = 0))
 })
+
+test_that("incremental save", {
+
+  skip_on_cran()
+
+  cdm_local <- omock::mockCdmReference() |>
+    omock::mockPerson(nPerson = 100) |>
+    omock::mockObservationPeriod() |>
+    omock::mockConditionOccurrence() |>
+    omock::mockDrugExposure() |>
+    omock::mockObservation() |>
+    omock::mockMeasurement() |>
+    omock::mockVisitOccurrence() |>
+    omock::mockProcedureOccurrence() |>
+    omock::mockCohort(name = "my_cohort",
+                      numberCohorts = 2)
+
+  db <- DBI::dbConnect(duckdb::duckdb())
+  cdm <- CDMConnector::copyCdmTo(con = db, cdm = cdm_local,
+                                 schema ="main", overwrite = TRUE)
+
+
+  pathToSave <- tempdir()
+  options("PhenotypeR.incremenatl_save_path" = pathToSave)
+  diag <- phenotypeDiagnostics(cdm$my_cohort)
+  end_files <- list.files(pathToSave)
+  expect_true("incremental_codelist_diagnostics.csv" %in% end_files)
+  expect_true("incremental_cohort_diagnostics.csv" %in% end_files)
+  expect_true("incremental_database_diagnostics.csv" %in% end_files)
+  expect_true("incremental_population_diagnostics.csv" %in% end_files)
+
+  # no error if file doesn't exist
+  options("PhenotypeR.incremenatl_save_path" = "not_a_path")
+  expect_no_error(phenotypeDiagnostics(cdm$my_cohort))
+
+})
