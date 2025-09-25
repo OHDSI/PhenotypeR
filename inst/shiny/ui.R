@@ -502,7 +502,7 @@ ui <- fluidPage(
                                          ),
                                          sortable::add_rank_list(
                                            text = "hide",
-                                           labels = character(),
+                                           labels = c("diagnostic", "phenotyper_version"),
                                            input_id = "cohort_code_use_gt_hide"
                                          )
                                        )
@@ -1157,7 +1157,7 @@ ui <- fluidPage(
                                              ),
                                              sortable::add_rank_list(
                                                text = "hide",
-                                               labels = character(),
+                                               labels = c("diagnostic", "phenotyper_version", "matchedSample"),
                                                input_id = "summarise_characteristics_gt_hide"
                                              )
                                            ),
@@ -1680,7 +1680,7 @@ ui <- fluidPage(
                                              ),
                                              sortable::add_rank_list(
                                                text = "hide",
-                                               labels = "variable_level",
+                                               labels = c("variable_level", "diagnostic", "phenotyper_version", "matchedSample"),
                                                input_id = "summarise_cohort_overlap_gt_hide"
                                              )
                                            ),
