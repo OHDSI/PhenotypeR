@@ -7,6 +7,7 @@ rlang::check_installed("IncidencePrevalence", version = "1.2.0")
 rlang::check_installed("OmopSketch", version = "0.5.1")
 rlang::check_installed("CohortSurvival", version = "1.0.2")
 rlang::check_installed("shiny", version = "1.11.1")
+rlang::check_installed("reactablefmtr", version = "2.0.0")
 
 library(bslib)
 library(omopgenerics)
