@@ -177,6 +177,9 @@ plotAgeDensity <- function(summarise_table, summarise_characteristics, show_inte
     inner_join(data |>
                  select(group_level) |> distinct())
 
+  data <- data |>
+    dplyr::filter(sex %in% c("Female", "Male"))
+
   plot <- ggplot2::ggplot(data, ggplot2::aes(x = density_x, y = density_y, fill = sex)) +
     geom_polygon() +
     scale_y_continuous(labels = function(x) scales::label_percent()(abs(x)),
@@ -208,11 +211,11 @@ plotAgeDensity <- function(summarise_table, summarise_characteristics, show_inte
                    aes(x = estimate_value, y = 0, xend = estimate_value, yend = density_y),
                    linetype = 2,
                    linewidth = 0.75) +
-      labs(subtitle = "The solid line represents the median, while the dotted lines indicate the interquartile range. Notice that these may not appear if in the cohort there are less than the minimum cell count specified. Please be aware that statistics are calculated by record, not by subject.") +
+      labs(subtitle = "The solid line represents the median, while the dotted lines indicate the interquartile range. Notice that these may not appear if in the cohort there are less than the minimum cell count specified. Please be aware that statistics are calculated by record, not by subject. Records with missing sex do not appear in the figure.") +
       facet_wrap(c("cdm_name", "group_level"))
   }else{
     plot <- plot +
-      labs(subtitle = "Please be aware that statistics are calculated by record, not by subject.")
+      labs(subtitle = "Please be aware that statistics are calculated by record, not by subject. Records with missing sex do not appear in the figure.")
   }
 
   return(plot)
