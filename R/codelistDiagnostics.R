@@ -84,23 +84,24 @@ codelistDiagnostics <- function(cohort){
   results[[1]] <- omopgenerics::emptySummarisedResult()
 
   # Check empty cohorts
-  ids <- CDMConnector::cohortCount(cdm[[cohortTable]]) |>
+  ids <- omopgenerics::cohortCount(cdm[[cohortTable]]) |>
     dplyr::filter(.data$number_subjects == 0) |>
     dplyr::pull("cohort_definition_id")
 
   cli::cli_bullets(c("*" = "Getting index event breakdown"))
   for (i in seq_along(cohortIds)){
-    if (i %in% ids) {
-      cli::cli_warn(message = c("!" = paste0("cohort_definition_id ", i, " is empty. Skipping code use for this cohort.")))
+    cohortId <- cohortIds[i]
+    if (cohortId %in% ids) {
+      cli::cli_warn(message = c("!" = paste0("cohort_definition_id ", cohortId, " is empty. Skipping code use for this cohort.")))
       results[[paste0("index_event_", i)]] <- omopgenerics::emptySummarisedResult()
     } else {
-      codes <- omopgenerics::cohortCodelist(cdm[[cohortTable]], cohortIds[[i]])
+      codes <- omopgenerics::cohortCodelist(cohortTable = cdm[[cohortTable]], cohortId = cohortId)
       if (length(codes) > 0) {
         results[[paste0("index_event_", i)]] <- CodelistGenerator::summariseCohortCodeUse(
           x = codes,
           cdm = cdm,
           cohortTable = cohortTable,
-          cohortId = cohortIds[[i]],
+          cohortId = cohortId,
           timing = "entry",
           countBy = c("record", "person"),
           byConcept = TRUE
