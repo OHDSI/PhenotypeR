@@ -61,6 +61,32 @@ test_that("run with multiple cohorts", {
     omock::mockProcedureOccurrence() |>
     omock::mockCohort(name = "my_cohort", numberCohorts = 2)
 
+  # device exposure and drug era not yet supported by omock
+  cdm_local <- omopgenerics::insertTable(
+    cdm = cdm_local,
+    name = "device_exposure",
+    table = dplyr::tibble(
+      device_exposure_id = NA_integer_,
+      person_id = NA_integer_,
+      device_concept_id = NA_integer_,
+      device_exposure_start_date = as.Date(NA),
+      device_exposure_end_date = as.Date(NA),
+      device_type_concept_id = NA_integer_,
+      device_source_concept_id = NA_integer_
+    )
+  )
+  cdm_local <- omopgenerics::insertTable(
+    cdm = cdm_local,
+    name = "drug_era",
+    table = dplyr::tibble(
+      drug_era_id = NA_integer_,
+      person_id = NA_integer_,
+      drug_concept_id = NA_integer_,
+      drug_era_start_date = as.Date(NA),
+      drug_era_end_date = as.Date(NA)
+    )
+  )
+
   db <- DBI::dbConnect(duckdb::duckdb())
   cdm <- CDMConnector::copyCdmTo(con = db, cdm = cdm_local,
                                  schema ="main", overwrite = TRUE)
@@ -126,6 +152,32 @@ test_that("run with multiple cohorts", {
     omock::mockProcedureOccurrence() |>
     omock::mockDeath() |>
     omock::mockCohort(name = "my_cohort", numberCohorts = 2)
+
+  # device exposure and drug era not yet supported by omock
+  cdm_local <- omopgenerics::insertTable(
+    cdm = cdm_local,
+    name = "device_exposure",
+    table = dplyr::tibble(
+      device_exposure_id = NA_integer_,
+      person_id = NA_integer_,
+      device_concept_id = NA_integer_,
+      device_exposure_start_date = as.Date(NA),
+      device_exposure_end_date = as.Date(NA),
+      device_type_concept_id = NA_integer_,
+      device_source_concept_id = NA_integer_
+    )
+  )
+  cdm_local <- omopgenerics::insertTable(
+    cdm = cdm_local,
+    name = "drug_era",
+    table = dplyr::tibble(
+      drug_era_id = NA_integer_,
+      person_id = NA_integer_,
+      drug_concept_id = NA_integer_,
+      drug_era_start_date = as.Date(NA),
+      drug_era_end_date = as.Date(NA)
+    )
+  )
 
   db <- DBI::dbConnect(duckdb::duckdb())
   cdm <- CDMConnector::copyCdmTo(con = db, cdm = cdm_local,
