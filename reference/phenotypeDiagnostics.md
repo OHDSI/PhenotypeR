@@ -77,7 +77,6 @@ A summarised result
 library(PhenotypeR)
 
 cdm <- mockPhenotypeR()
-#> ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■     94% | ETA:  0s
 #> Error in vec_data(data): `x` must be a vector, not a <tbl_df/tbl/data.frame/omop_table> object.
 
 result <- phenotypeDiagnostics(cdm$my_cohort)
