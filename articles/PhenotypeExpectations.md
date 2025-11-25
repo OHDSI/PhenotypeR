@@ -1,0 +1,178 @@
+# Phenotype expectations
+
+## Comparing phenotype diagnostic results against phenotype expectations
+
+We use PhenotypeR to help assess the research readiness of a set of
+study cohorts. To help make such assessments it can help to have an
+explicit set of expectations to compare our results. For example, is the
+age of our study cohort similar to what would be expected? Is the
+proportion of the cohort that is male vs female similar to what would be
+expected based on what we know about the phenotype of interest?
+
+### Creating phenotype expectations
+
+We can define a set of expectations about what we expect to see in our
+phenotype diagnostic results. So that we can visualise these easily
+using the
+[`tableCohortExpectations()`](https://ohdsi.github.io/PhenotypeR/reference/tableCohortExpectations.md)
+function, we will create a tibble with the following columns:
+cohort_name (so we know which expectation corresponds to which cohort),
+estimate (the estimate for which our expectation is associated with),
+value (our expectation on the value we should see in our results). As an
+example, say we have one cohort called “knee_osteoarthritis” and another
+called “knee_replacement”. We could create expectations about median age
+and the proportion that is male for each cohort like so.
+
+``` r
+library(dplyr)
+library(PhenotypeR)
+
+knee_oa <- tibble(cohort_name = "knee_osteoarthritis",
+                  estimate = c("Median age", "Proportion male"),
+                  value = c("60 to 65", "45%"),
+                  source = "Clinician")
+knee_replacement <- tibble(cohort_name = "knee_replacement",
+                           estimate = c("Median age", "Proportion male"),
+                           value = c("65 to 70", "50%"),
+                           source = "Clinician")
+
+expectations <- bind_rows(knee_oa, knee_replacement)
+```
+
+Now we have our structured expectations, we can quickly create a summary
+of them (we’ll see in the next vignette how we can then also include
+them in our shiny app).
+
+``` r
+tableCohortExpectations(expectations)
+```
+
+Note as long as we make sure to include our four required columns we can
+create any set of expectations that is relevant for our cohorts.
+
+``` r
+tibble(cohort_name = "knee_osteoarthritis",
+                  estimate = c("Commonly seen subsequent procedures"),
+                  value = c("Knee replacement"),
+                  source = "Expert opinion") |> 
+  tableCohortExpectations()
+```
+
+### Using an LLM to draft your phenotype expectations
+
+The custom expectations created above might be based on our (or a
+friendly colleagues’) clinical knowledge. This though requires access to
+the requisite clinical knowledge and is often time-consuming, especially
+if we have many cohorts and start considering the many different
+estimates from phenotype diagnostics.
+
+To speed up the process we can use an LLM to help us draft our
+expectations. We could use this to create a custom set. Here for example
+we’ll use Google Gemini to populate our expectations.
+
+Notice that you may need first to create a Gemini API to run the
+example. You can do that following this link:
+<https://aistudio.google.com/app/apikey>. And then add the API in your R
+environment:
+
+``` r
+usethis::edit_r_environ()
+
+# Add your API in your R environment:
+GEMINI_API_KEY = "your API"
+
+# Restrart R
+```
+
+``` r
+library(ellmer)
+
+chat <- chat("google_gemini")
+llm_expectation <- chat$chat(
+    interpolate("What are the typical characteristics we can expect to see in our real-world data for a cohort of people with an ankle sprain (average age, proportion male vs female, subsequent medications, etc)? Be brief and provide summar with a few sentences.")) 
+
+tibble(cohort_name = "diagnosis_of_ankle_sprain",
+       estimate = "General summary",
+       value = llm_expectation,
+       source = "llm") |> 
+  tableCohortExpectations()
+```
+
+To help us create a consistent set of phenotype expectations from LLMs,
+PhenotypeR provides the
+[`getCohortExpectations()`](https://ohdsi.github.io/PhenotypeR/reference/getCohortExpectations.md).
+This function will generate a set of expectations that are associated
+with the various cohort diagnostic function results.
+
+``` r
+getCohortExpectations(chat = chat, 
+                      phenotypes = c("diagnosis_of_ankle_sprain", 
+                                     "diagnosis_of_prostate_cancer", 
+                                     "new_user_of_morphine")) |> 
+  tableCohortExpectations()
+```
+
+Instead of passing our cohort names, we could instead pass our results
+set from
+[`phenotypeDiagnostics()`](https://ohdsi.github.io/PhenotypeR/reference/phenotypeDiagnostics.md)
+instead. In this case we’ll automatically get expectations for each of
+the study cohorts in our results.
+
+``` r
+library(DBI)
+library(duckdb)
+library(CDMConnector)
+library(CohortConstructor)
+
+con <- dbConnect(duckdb(), dbdir = eunomiaDir())
+cdm <- cdmFromCon(
+    con = con, cdmSchema = "main", writeSchema = "main", cdmName = "Eunomia"
+  )
+
+codes <- list("diagnosis_of_ankle_sprain" = 81151,
+              "diagnosis_of_prostate_cancer" = 4163261,
+              "new_user_of_morphine" = c(1110410L, 35605858L, 40169988L))
+
+cdm$my_cohort <- conceptCohort(cdm = cdm,
+                                 conceptSet = codes,
+                                 exit = "event_end_date",
+                                 name = "my_cohort")
+
+diag_results <- phenotypeDiagnostics(cdm$my_cohort)
+
+getCohortExpectations(chat = chat, 
+                      phenotypes = diag_results) |> 
+  tableCohortExpectations()
+```
+
+Instead of Google Gemini we could use Mistral instead.
+
+``` r
+chat <- ellmer::chat("mistral")
+diag_results <- phenotypeDiagnostics(cdm$my_cohort)
+getCohortExpectations(chat = chat, 
+                      phenotypes = diag_results) |> 
+  tableCohortExpectations()
+```
+
+It is important to note the importance of a descriptive cohort name.
+These are the names passed to the LLM and so the more informative the
+name, the better we can expect the LLM to do when generating our
+expectations. In general to make them amenable to the LLM workflow when
+naming cohorts we should:
+
+- avoid abbreviations as they could be misinterpreted
+- indicate type of cohort
+  (e.g. “incident_diagnosis_of_knee_osteoarthritis”,
+  “routine_measurement_of_creatine”, “new_user_of_paracetamol”)
+- include key eligibility criteria
+  (e.g. “new_user_of_paracetamol_under_age_21”)
+
+It should also go without saying that we should not treat the output of
+the LLM as the unequivocal truth. While LLM expectations may well prove
+a useful starting point, clinical judgement and knowledge of the data
+source at hand will still be vital in appropriately interpreting our
+results. Our typical workflow may well be using LLMs to help generate
+phenotype expectations for review by a clinical expert which should save
+them time while ensuring we have an appropriate set to compare our
+results against.

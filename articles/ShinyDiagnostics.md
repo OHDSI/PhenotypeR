@@ -1,0 +1,141 @@
+# Shiny diagnostics
+
+## Introduction: Run ShinyDiagnostics
+
+In the previous vignettes we have seen how to run a phenotype
+diagnostics and it’s expectations. ShinyDiagnostics can help us to
+visualise all the results in an interactive shiny app. See an example of
+how to run it below:
+
+``` r
+library(CohortConstructor)
+library(PhenotypeR)
+library(dplyr)
+
+con <- DBI::dbConnect(duckdb::duckdb(), 
+                      CDMConnector::eunomiaDir("synpuf-1k", "5.3"))
+cdm <- CDMConnector::cdmFromCon(con = con, 
+                                cdmName = "Eunomia Synpuf",
+                                cdmSchema   = "main",
+                                writeSchema = "main", 
+                                achillesSchema = "main")
+
+# Create a code lists
+codes <- list("user_of_warfarin" = c(1310149L, 40163554L),
+              "user_of_acetaminophen" = c(1125315L, 1127078L, 1127433L, 40229134L, 
+                                          40231925L, 40162522L, 19133768L),
+              "user_of_morphine" = c(1110410L, 35605858L, 40169988L),
+              "measurements_cohort" = c(40660437L, 2617206L, 4034850L,  2617239L, 
+                                        4098179L))
+
+# Instantiate cohorts with CohortConstructor
+cdm$my_cohort <- conceptCohort(cdm = cdm,
+                               conceptSet = codes, 
+                               exit = "event_end_date",
+                               overlap = "merge",
+                               name = "my_cohort")
+
+# Run PhenotypeDiagnostics including all diagnostics
+result <- phenotypeDiagnostics(cdm$my_cohort, survival = TRUE)
+
+# Generate expectations
+chat <- chat("google_gemini")
+
+expectations <- getCohortExpectations(chat = chat, 
+                      phenotypes = result)
+
+# Create the shiny app based on PhenotypeDiagnostics results, suppressing all 
+# cell counts smaller than 2, saved in a temporary directory, and with the 
+# expectations created using "gemini".
+shinyDiagnostics(result = result, minCellCount = 2, directory = tempdir(), expectations = expectations)
+```
+
+## Shiny App Overview
+
+Let’s now explore the Shiny App created together! Please, find it
+[here](https://dpa-pde-oxford.shinyapps.io/Readme_PhenotypeR/).
+
+The first thing we will find when creating the PhenotypeR Shiny
+Diagnostics is a **Background** tab with a small summary of all the
+diagnostics:
+
+![](https://images.tango.us/workflows/ca96746e-ccf0-443d-9d2a-4d05dfd09b79/steps/b4b51d14-328e-4af6-998e-ea93e9b3e145/d15f4486-c1d1-4fca-a8be-6c6612a205a0.png?crop=focalpoint&fit=crop&w=1200&border=2%2CF4F2F7&border-radius=8%2C8%2C8%2C8&border-radius-inner=8%2C8%2C8%2C8&blend-align=bottom&blend-mode=normal&blend-x=0&blend-w=1200&blend64=aHR0cHM6Ly9pbWFnZXMudGFuZ28udXMvc3RhdGljL21hZGUtd2l0aC10YW5nby13YXRlcm1hcmstdjIucG5n)
+
+You can see which PhenotypeR version was used to generate the Shiny App
+by clicking the *i* tab at the top.
+
+![](https://images.tango.us/workflows/ca96746e-ccf0-443d-9d2a-4d05dfd09b79/steps/d840b82f-65e7-4e72-8e9c-75d75b408f04/f16eada5-592e-47b2-8536-a73815fe6fad.png?crop=focalpoint&fit=crop&fp-x=0.9490&fp-y=0.0417&fp-z=3.0761&w=1200&border=2%2CF4F2F7&border-radius=8%2C8%2C8%2C8&border-radius-inner=8%2C8%2C8%2C8&blend-align=bottom&blend-mode=normal&blend-x=0&blend-w=1200&blend64=aHR0cHM6Ly9pbWFnZXMudGFuZ28udXMvc3RhdGljL21hZGUtd2l0aC10YW5nby13YXRlcm1hcmstdjIucG5n&mark-x=977&mark-y=81&m64=aHR0cHM6Ly9pbWFnZXMudGFuZ28udXMvc3RhdGljL2JsYW5rLnBuZz9tYXNrPWNvcm5lcnMmYm9yZGVyPTYlMkNGRjc0NDImdz03MCZoPTcwJmZpdD1jcm9wJmNvcm5lci1yYWRpdXM9MTA%3D)
+
+Or download the summarised result by clicking the *download* tab:
+
+![](https://images.tango.us/workflows/ca96746e-ccf0-443d-9d2a-4d05dfd09b79/steps/753afbf7-e341-4364-9d02-e0152aec396a/f0cef53a-0350-4dd0-84e9-e74da6050ee0.png?crop=focalpoint&fit=crop&fp-x=0.9746&fp-y=0.0417&fp-z=3.0761&w=1200&border=2%2CF4F2F7&border-radius=8%2C8%2C8%2C8&border-radius-inner=8%2C8%2C8%2C8&blend-align=bottom&blend-mode=normal&blend-x=0&blend-w=1200&blend64=aHR0cHM6Ly9pbWFnZXMudGFuZ28udXMvc3RhdGljL21hZGUtd2l0aC10YW5nby13YXRlcm1hcmstdjIucG5n&mark-x=1071&mark-y=81&m64=aHR0cHM6Ly9pbWFnZXMudGFuZ28udXMvc3RhdGljL2JsYW5rLnBuZz9tYXNrPWNvcm5lcnMmYm9yZGVyPTYlMkNGRjc0NDImdz03MCZoPTcwJmZpdD1jcm9wJmNvcm5lci1yYWRpdXM9MTA%3D)
+
+Notice that we have a tab for each one of the diagnostics, and those
+contain the specific analyses performed. Results are visualised in the
+form of interactive tables and plots.
+
+**Database Diagnostics:**
+
+![](https://images.tango.us/workflows/ca96746e-ccf0-443d-9d2a-4d05dfd09b79/steps/74de0ecb-abbc-4fa9-93e1-c253fa07a5bb/951f5b8b-ed55-40b8-b9c3-b533ef9948c8.png?crop=focalpoint&fit=crop&fp-x=0.3008&fp-y=0.0420&fp-z=2.1606&w=1200&border=2%2CF4F2F7&border-radius=8%2C8%2C8%2C8&border-radius-inner=8%2C8%2C8%2C8&blend-align=bottom&blend-mode=normal&blend-x=0&blend-w=1200&blend64=aHR0cHM6Ly9pbWFnZXMudGFuZ28udXMvc3RhdGljL21hZGUtd2l0aC10YW5nby13YXRlcm1hcmstdjIucG5n&mark-x=389&mark-y=31&m64=aHR0cHM6Ly9pbWFnZXMudGFuZ28udXMvc3RhdGljL2JsYW5rLnBuZz9tYXNrPWNvcm5lcnMmYm9yZGVyPTYlMkNGRjc0NDImdz00MjImaD0xMDMmZml0PWNyb3AmY29ybmVyLXJhZGl1cz0xMA%3D%3D)
+
+**Codelist Diagnostics:**
+
+![](https://images.tango.us/workflows/ca96746e-ccf0-443d-9d2a-4d05dfd09b79/steps/dbdef269-1bc9-43c3-95b8-8cd9b8aa9333/26e29e56-a2f5-4807-a207-9a776e37e386.png?crop=focalpoint&fit=crop&fp-x=0.4671&fp-y=0.0420&fp-z=2.1940&w=1200&border=2%2CF4F2F7&border-radius=8%2C8%2C8%2C8&border-radius-inner=8%2C8%2C8%2C8&blend-align=bottom&blend-mode=normal&blend-x=0&blend-w=1200&blend64=aHR0cHM6Ly9pbWFnZXMudGFuZ28udXMvc3RhdGljL21hZGUtd2l0aC10YW5nby13YXRlcm1hcmstdjIucG5n&mark-x=395&mark-y=31&m64=aHR0cHM6Ly9pbWFnZXMudGFuZ28udXMvc3RhdGljL2JsYW5rLnBuZz9tYXNrPWNvcm5lcnMmYm9yZGVyPTYlMkNGRjc0NDImdz00MTAmaD0xMDUmZml0PWNyb3AmY29ybmVyLXJhZGl1cz0xMA%3D%3D)
+
+**Cohort Diagnostics:**
+
+![](https://images.tango.us/workflows/ca96746e-ccf0-443d-9d2a-4d05dfd09b79/steps/4d9e0589-20b1-4044-8dbd-f891587e8cb3/3819d210-4245-4d8c-b84f-651b6af2a7eb.png?crop=focalpoint&fit=crop&fp-x=0.6256&fp-y=0.0420&fp-z=2.2286&w=1200&border=2%2CF4F2F7&border-radius=8%2C8%2C8%2C8&border-radius-inner=8%2C8%2C8%2C8&blend-align=bottom&blend-mode=normal&blend-x=0&blend-w=1200&blend64=aHR0cHM6Ly9pbWFnZXMudGFuZ28udXMvc3RhdGljL21hZGUtd2l0aC10YW5nby13YXRlcm1hcmstdjIucG5n&mark-x=401&mark-y=32&m64=aHR0cHM6Ly9pbWFnZXMudGFuZ28udXMvc3RhdGljL2JsYW5rLnBuZz9tYXNrPWNvcm5lcnMmYm9yZGVyPTYlMkNGRjc0NDImdz0zOTgmaD0xMDYmZml0PWNyb3AmY29ybmVyLXJhZGl1cz0xMA%3D%3D)
+
+**Population Diagnostics:**
+
+![](https://images.tango.us/workflows/ca96746e-ccf0-443d-9d2a-4d05dfd09b79/steps/4f39b227-4d43-4096-bdc8-e837b9162f0e/51726bf5-6b93-49b9-9fdd-da2a9ac4588f.png?crop=focalpoint&fit=crop&fp-x=0.7897&fp-y=0.0420&fp-z=2.8368&w=1200&border=2%2CF4F2F7&border-radius=8%2C8%2C8%2C8&border-radius-inner=8%2C8%2C8%2C8&blend-align=bottom&blend-mode=normal&blend-x=0&blend-w=1200&blend64=aHR0cHM6Ly9pbWFnZXMudGFuZ28udXMvc3RhdGljL21hZGUtd2l0aC10YW5nby13YXRlcm1hcmstdjIucG5n&mark-x=312&mark-y=41&m64=aHR0cHM6Ly9pbWFnZXMudGFuZ28udXMvc3RhdGljL2JsYW5rLnBuZz9tYXNrPWNvcm5lcnMmYm9yZGVyPTYlMkNGRjc0NDImdz01NzUmaD0xMzUmZml0PWNyb3AmY29ybmVyLXJhZGl1cz0xMA%3D%3D)
+
+Let’s now explore additional functionalities that the ShinyDiagnostics
+offers. If we click to *Codelist diagnostics / Achilles code use* or
+*Codelist diagnostics / Orphan code use* tab, we will first find a
+horizontal purple bar that will show us all the databases we included:
+
+![](https://images.tango.us/workflows/ca96746e-ccf0-443d-9d2a-4d05dfd09b79/steps/bfcca651-f44a-435e-84a5-d54a55f5c7b2/7329950d-353f-4327-b692-3f9aca309dd8.png?crop=focalpoint&fit=crop&fp-x=0.2654&fp-y=0.2191&fp-z=2.0622&w=1200&border=2%2CF4F2F7&border-radius=8%2C8%2C8%2C8&border-radius-inner=8%2C8%2C8%2C8&blend-align=bottom&blend-mode=normal&blend-x=0&blend-w=1200&blend64=aHR0cHM6Ly9pbWFnZXMudGFuZ28udXMvc3RhdGljL21hZGUtd2l0aC10YW5nby13YXRlcm1hcmstdjIucG5n&mark-x=371&mark-y=366&m64=aHR0cHM6Ly9pbWFnZXMudGFuZ28udXMvc3RhdGljL2JsYW5rLnBuZz9tYXNrPWNvcm5lcnMmYm9yZGVyPTYlMkNGRjc0NDImdz00NTgmaD04OCZmaXQ9Y3JvcCZjb3JuZXItcmFkaXVzPTEw)
+
+Once we have selected the ones of interest, we will need to click the
+**UPDATE** button to generate the table with the results.
+
+For **Codelist diagnostics / cohort code use**, \*Codelist diagnostics /
+measurement diagnostics**,** Cohort diagnostics **and** Population
+diagnostics\*\*, we will also have the option to select the cohorts of
+interest:
+
+![](https://images.tango.us/workflows/ca96746e-ccf0-443d-9d2a-4d05dfd09b79/steps/2ee82c56-6ed2-4975-9ffa-be595cf1d8cd/692fc4b7-ea4a-4d5c-a79d-6270de4688ed.png?crop=focalpoint&fit=crop&fp-x=0.4998&fp-y=0.0484&fp-z=1.0062&w=1200&border=2%2CF4F2F7&border-radius=8%2C8%2C8%2C8&border-radius-inner=8%2C8%2C8%2C8&blend-align=bottom&blend-mode=normal&blend-x=0&blend-w=1200&blend64=aHR0cHM6Ly9pbWFnZXMudGFuZ28udXMvc3RhdGljL21hZGUtd2l0aC10YW5nby13YXRlcm1hcmstdjIucG5n&mark-x=4&mark-y=2&m64=aHR0cHM6Ly9pbWFnZXMudGFuZ28udXMvc3RhdGljL2JsYW5rLnBuZz9tYXNrPWNvcm5lcnMmYm9yZGVyPTYlMkNGRjc0NDImdz0xMTkyJmg9ODQmZml0PWNyb3AmY29ybmVyLXJhZGl1cz0xMA%3D%3D)
+
+We will always find (in all the tabs) a *download* icon on the right
+which will download the table, gt table, or plot that is being shown:
+
+![](https://images.tango.us/workflows/ca96746e-ccf0-443d-9d2a-4d05dfd09b79/steps/c97c9f65-afb1-485d-8fff-7d6fbacffb34/71ec72da-5426-434b-893e-273f5ac4353f.png?crop=focalpoint&fit=crop&fp-x=0.8963&fp-y=0.3451&fp-z=2.8797&w=1200&border=2%2CF4F2F7&border-radius=8%2C8%2C8%2C8&border-radius-inner=8%2C8%2C8%2C8&blend-align=bottom&blend-mode=normal&blend-x=0&blend-w=1200&blend64=aHR0cHM6Ly9pbWFnZXMudGFuZ28udXMvc3RhdGljL21hZGUtd2l0aC10YW5nby13YXRlcm1hcmstdjIucG5n&mark-x=775&mark-y=392&m64=aHR0cHM6Ly9pbWFnZXMudGFuZ28udXMvc3RhdGljL2JsYW5rLnBuZz9tYXNrPWNvcm5lcnMmYm9yZGVyPTYlMkNGRjc0NDImdz0xMzQmaD0xMjQmZml0PWNyb3AmY29ybmVyLXJhZGl1cz0xMA%3D%3D)
+
+In some tabs, we will also find a left tab that will show additional
+filtering or formatting options (remember to click **UPDATE** every time
+you change a parameter!):
+
+![](https://images.tango.us/workflows/ca96746e-ccf0-443d-9d2a-4d05dfd09b79/steps/12d15497-9f91-4741-bcf0-ed741f144717/80a95e21-0b19-4e62-88fc-27db5fdd0531.png?crop=focalpoint&fit=crop&fp-x=0.4932&fp-y=0.0484&fp-z=1.0062&w=1200&border=2%2CF4F2F7&border-radius=8%2C8%2C8%2C8&border-radius-inner=8%2C8%2C8%2C8&blend-align=bottom&blend-mode=normal&blend-x=0&blend-w=1200&blend64=aHR0cHM6Ly9pbWFnZXMudGFuZ28udXMvc3RhdGljL21hZGUtd2l0aC10YW5nby13YXRlcm1hcmstdjIucG5n&mark-x=7&mark-y=2&m64=aHR0cHM6Ly9pbWFnZXMudGFuZ28udXMvc3RhdGljL2JsYW5rLnBuZz9tYXNrPWNvcm5lcnMmYm9yZGVyPTYlMkNGRjc0NDImdz0xMTc2Jmg9ODQmZml0PWNyb3AmY29ybmVyLXJhZGl1cz0xMA%3D%3D)
+
+When we have two (or more) subtabs with different formatting formats
+(which is the case for *Population diagnositcs / Incidence*, where we
+have a table and a plot), the formatting tab will be on the right:
+
+![](https://images.tango.us/workflows/ca96746e-ccf0-443d-9d2a-4d05dfd09b79/steps/a8b29859-4641-47ff-9f18-3d3543a09a72/785acbac-8afb-4c48-847d-f3433809f7b2.png?crop=focalpoint&fit=crop&fp-x=0.5000&fp-y=0.5000&fp-z=1.0018&w=1200&border=2%2CF4F2F7&border-radius=8%2C8%2C8%2C8&border-radius-inner=8%2C8%2C8%2C8&blend-align=bottom&blend-mode=normal&blend-x=0&blend-w=1200&blend64=aHR0cHM6Ly9pbWFnZXMudGFuZ28udXMvc3RhdGljL21hZGUtd2l0aC10YW5nby13YXRlcm1hcmstdjIucG5n&mark-x=1&mark-y=1&m64=aHR0cHM6Ly9pbWFnZXMudGFuZ28udXMvc3RhdGljL2JsYW5rLnBuZz9tYXNrPWNvcm5lcnMmYm9yZGVyPTYlMkNGRjc0NDImdz0xMTk4Jmg9OTA1JmZpdD1jcm9wJmNvcm5lci1yYWRpdXM9MTA%3D)
+
+Now it’s your turn to explore the [Shiny
+App](https://dpa-pde-oxford.shinyapps.io/Readme_PhenotypeR/)!
+
+## Special cases
+
+As mentioned, `ShinyDiagnostics()` can be run with specific diagnostic
+results. This includes `DatabaseDiagnostics()`, `CodelistDiagnostics()`,
+`CohortDiagnostics()`, and `PopulationDiagnostics()`. Alternatively, you
+can disable diagnostics within `PhenotypeDiagnostics()`. If a diagnostic
+is not performed, its corresponding tab will not appear in the Shiny
+App. Similarly, if survival analysis is skipped in
+`CohortDiagnostics()`, its tab will be removed. The same applies if your
+CDM lacks ACHILLES tables, which means “achilles code use” and “orphan
+code use” cannot be performed. In such cases, their tabs will also be
+automatically removed from the Shiny App.

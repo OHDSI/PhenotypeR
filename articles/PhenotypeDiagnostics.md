@@ -1,0 +1,149 @@
+# Phenotype diagnostics
+
+## Introduction: Run PhenotypeDiagnostics
+
+In this vignette, we are going to present how to run
+`PhenotypeDiagnostics()`. We are going to use the following packages and
+mock data:
+
+``` r
+library(CohortConstructor)
+library(PhenotypeR)
+library(dplyr)
+
+con <- DBI::dbConnect(duckdb::duckdb(), 
+                      CDMConnector::eunomiaDir("synpuf-1k", "5.3"))
+cdm <- CDMConnector::cdmFromCon(con = con, 
+                                cdmName = "Eunomia Synpuf",
+                                cdmSchema   = "main",
+                                writeSchema = "main", 
+                                achillesSchema = "main")
+cdm
+```
+
+Note that we have included [achilles
+tables](https://github.com/OHDSI/Achilles) in our cdm reference, which
+will be used to speed up some of the analyses.
+
+## Create a cohort
+
+First, we are going to use the package
+[CohortConstructor](https://ohdsi.github.io/CohortConstructor/) to
+generate three cohorts of *warfarin*, *acetaminophen* and *morphine*
+users.
+
+``` r
+# Create a codelist
+codes <- list("warfarin" = c(1310149, 40163554),
+              "acetaminophen" = c(1125315, 1127078, 1127433, 40229134, 40231925, 40162522, 19133768),
+              "morphine" = c(1110410, 35605858, 40169988))
+
+# Instantiate cohorts with CohortConstructor
+cdm$my_cohort <- conceptCohort(cdm = cdm,
+                               conceptSet = codes, 
+                               exit = "event_end_date",
+                               overlap = "merge",
+                               name = "my_cohort")
+```
+
+## Run PhenotypeDiagnostics
+
+Now we will proceed to run `phenotypeDiagnotics()`. This function will
+run the following analyses:
+
+- **Database diagnostics**: This includes information about the size of
+  the data, the time period covered, the number of people in the data,
+  and other meta-data of the CDM object. See [Database diagnostics
+  vignette](https://ohdsi.github.io/PhenotypeR/articles/a03_DatabaseDiagnostics.html)
+  for more details.
+- **Codelist diagnostics**: This includes information on the concepts
+  included in our cohorts’ codelist. See [Codelist diagnostics
+  vignette](https://ohdsi.github.io/PhenotypeR/articles/a04_CodelistDiagnostics.html)
+  for further details.
+- **Cohort diagnostics**: This summarises the characteristics of our
+  cohorts, as well as comparing them to age and sex matched controls
+  from the database.. See [Cohort diagnostics
+  vignette](https://ohdsi.github.io/PhenotypeR/articles/a05_CohortDiagnostics.html)
+  for further details.
+- **Population diagnostics**: Calculates the frequency of our study
+  cohorts in the database in terms of their incidence rates and
+  prevalence. See [Population diagnostics
+  vignette](https://ohdsi.github.io/PhenotypeR/articles/a07_PopulationDiagnostics.html)
+  for further details.
+
+We can specify which analysis we want to perform by setting to TRUE or
+FALSE each one of the corresponding arguments:
+
+``` r
+result <- phenotypeDiagnostics(
+  cohort = cdm$my_cohort, 
+  diagnostics = c("databaseDiagnostics", "codelistDiagnostics", 
+                  "cohortDiagnostics", "populationDiagnostics"),
+  cohortSample = 20000,
+  matchedSample = 1000
+  populationSample = 1e+06,
+  populationDateRange = as.Date(c(NA, NA))
+  )
+result |> glimpse()
+```
+
+Notice that we have three additional arguments:
+
+- `populationSample`: It allows to specify a number of people that
+  randomly will be extracted from the CDM to perform the **Population
+  diagnostics** analysis. If NULL, all the participants in the CDM will
+  be included. It helps to reduce the computational time. This is
+  particularly useful when outcomes of interest are relatively common,
+  but when they are rarer we may wish to maximise statistical power and
+  calculate estimates for the dataset as a whole in which case we would
+  set this argument to NULL.
+- `populationDateRange`: We can use it to specify the time period when
+  we want to perform our **Population diagnostics** analysis.
+- `cohortSample`: This argument will subset a random sample of people
+  from our cohort and performs the cohortDiagnostics on this sample
+  (notice that the attrition and the cohort counts will be calculated
+  from the original cohorts, not the sampled ones). If the sample
+  specified is bigger than the number of individuals in the cohort, no
+  sampling will be performed. We recommend to use this option when there
+  are cohorts bigger than 20,000 individuals.
+- `matchedSample`: Similar to populationSample, this arguments subsets a
+  random sample of people from our cohort and performs the matched
+  analysis on this sample. If the sample specified is bigger than the
+  size of the cohort, no sampling will be performed. If we have
+  specified a cohortSample, the sampling will be performed on top of the
+  sampled cohorts. If we do not want to create matched cohorts, we can
+  define `matchedSample = 0`.
+
+## Save the results
+
+To save the results, we can use
+[exportSummarisedResult](https://darwin-eu.github.io/omopgenerics/reference/exportSummarisedResult.html)
+function from
+[omopgenerics](https://darwin-eu.github.io/omopgenerics/index.html) R
+Package:
+
+``` r
+exportSummarisedResult(result, directory = here::here(), minCellCount = 5)
+```
+
+## Visualisation of the results
+
+Once we get our **Phenotype diagnostics** result, we can use
+`shinyDiagnostics` to easily create a shiny app and visualise our
+results:
+
+``` r
+result <- shinyDiagnostics(result,
+                           directory = tempdir(),
+                           minCellCount = 5, 
+                           open = TRUE)
+```
+
+Notice that we have specified the minimum number of counts
+(`minCellCount`) for suppression to be shown in the shiny app, and also
+that we want the shiny to be launched in a new R session (`open`). You
+can see the shiny app generated for this example in
+[here](https://dpa-pde-oxford.shinyapps.io/PhenotypeRShiny/).See [Shiny
+diagnostics
+vignette](https://ohdsi.github.io/PhenotypeR/articles/a02_ShinyDiagnostics.html)
+for a full explanation of the shiny app.
