@@ -21,12 +21,5 @@ Diagnostics include:
 }
 \examples{
 \donttest{
-library(PhenotypeR)
-
-cdm <- mockPhenotypeR()
-
-result <- databaseDiagnostics(cdm)
-
-CDMConnector::cdmDisconnect(cdm = cdm)
 }
 }
