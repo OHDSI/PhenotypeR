@@ -19,15 +19,18 @@
 #'
 #' @examples
 #' \donttest{
+#' library(omock)
+#' library(CohortConstructor)
 #' library(PhenotypeR)
 #'
-#' cdm <- mockPhenotypeR()
+#' cdm <- mockCdmFromDataset(source = "duckdb")
+#' cdm$warfarin <- conceptCohort(cdm,
+#'                               conceptSet =  list(warfarin = c(1310149L,
+#'                                                               40163554L)),
+#'                               name = "warfarin")
 #'
-#' result <- cohortDiagnostics(cdm$my_cohort)
-#'
-#' CDMConnector::cdmDisconnect(cdm = cdm)
+#' result <- cohortDiagnostics(cdm$warfarin)
 #' }
-
 cohortDiagnostics <- function(cohort, survival = FALSE, cohortSample = 20000, matchedSample = 1000){
 
   cli::cli_bullets(c("*" = "Starting Cohort Diagnostics"))

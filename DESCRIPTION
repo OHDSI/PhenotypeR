@@ -63,7 +63,7 @@ Suggests:
     cpp11,
     progress
 Config/testthat/edition: 3
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Imports: 
     CodelistGenerator (>= 3.4.0),
     CohortCharacteristics (>= 1.1.0),

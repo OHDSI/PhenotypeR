@@ -14,13 +14,13 @@
 #'
 #' @examples
 #' \donttest{
-#' library(PhenotypeR)
-#'
-#' cdm <- mockPhenotypeR()
-#'
-#' result <- databaseDiagnostics(cdm)
-#'
-#' CDMConnector::cdmDisconnect(cdm = cdm)
+# library(PhenotypeR)
+#
+# cdm <- mockPhenotypeR()
+#
+# result <- databaseDiagnostics(cdm)
+#
+# CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
 databaseDiagnostics <- function(cdm){
 
