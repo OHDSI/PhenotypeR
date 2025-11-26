@@ -39,11 +39,11 @@ cdm$injuries |>
   glimpse()
 #> Rows: ??
 #> Columns: 4
-#> Database: DuckDB 1.4.2 [unknown@Linux 6.11.0-1018-azure:R 4.5.2//tmp/RtmpxCjYqt/file1e183de93790.duckdb]
+#> Database: DuckDB 1.4.2 [unknown@Linux 6.11.0-1018-azure:R 4.5.2//tmp/RtmplZnSL0/file1e7e628d7b27.duckdb]
 #> $ cohort_definition_id <int> 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5…
-#> $ subject_id           <int> 793, 820, 1076, 811, 559, 678, 266, 197, 955, 412…
-#> $ cohort_start_date    <date> 2008-04-18, 2010-11-24, 2008-05-16, 2008-06-25, …
-#> $ cohort_end_date      <date> 2008-04-18, 2010-11-24, 2008-05-16, 2008-06-25, …
+#> $ subject_id           <int> 666, 395, 1178, 169, 1375, 392, 1187, 582, 924, 2…
+#> $ cohort_start_date    <date> 2008-07-24, 2009-03-20, 2010-09-27, 2009-09-03, …
+#> $ cohort_end_date      <date> 2008-07-24, 2009-03-20, 2010-09-27, 2009-09-03, …
 ```
 
 ## Summarising code use
@@ -161,11 +161,11 @@ tableMeasurementValueAsConcept(code_diag)
 |---------------------|---------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------|-------------|-----------------------|-----------------------|---------------------|---------------|----------------|
 | measurements_cohort |                     |                                                                                                                                                                                                                               |            |             |                       |                       |                     |               |                |
 | Eunomia Synpuf      | measurements_cohort | overall                                                                                                                                                                                                                       | overall    | overall     | Value as concept name | No matching concept   | 0                   | N (%)         | 364 (100.00%)  |
-|                     |                     | Screening cytopathology, cervical or vaginal (any reporting system), collected in preservative fluid, automated thin layer preparation, with screening by automated system and manual rescreening under physician supervision | 2617239    | Measurement | Value as concept name | No matching concept   | 0                   | N (%)         | 52 (100.00%)   |
 |                     |                     | Immunology laboratory test                                                                                                                                                                                                    | 4098179    | Measurement | Value as concept name | No matching concept   | 0                   | N (%)         | 20 (100.00%)   |
+|                     |                     | Drug screen, qualitative; multiple drug classes by high complexity test method (e.g., immunoassay, enzyme assay), per patient encounter                                                                                       | 40660437   | Measurement | Value as concept name | No matching concept   | 0                   | N (%)         | 45 (100.00%)   |
+|                     |                     | Screening cytopathology, cervical or vaginal (any reporting system), collected in preservative fluid, automated thin layer preparation, with screening by automated system and manual rescreening under physician supervision | 2617239    | Measurement | Value as concept name | No matching concept   | 0                   | N (%)         | 52 (100.00%)   |
 |                     |                     | Laboratory test                                                                                                                                                                                                               | 4034850    | Measurement | Value as concept name | No matching concept   | 0                   | N (%)         | 101 (100.00%)  |
 |                     |                     | Prostate cancer screening; prostate specific antigen test (psa)                                                                                                                                                               | 2617206    | Measurement | Value as concept name | No matching concept   | 0                   | N (%)         | 146 (100.00%)  |
-|                     |                     | Drug screen, qualitative; multiple drug classes by high complexity test method (e.g., immunoassay, enzyme assay), per patient encounter                                                                                       | 40660437   | Measurement | Value as concept name | No matching concept   | 0                   | N (%)         | 45 (100.00%)   |
 
 ``` r
 plotMeasurementValueAsConcept(code_diag)
