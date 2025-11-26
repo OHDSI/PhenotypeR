@@ -57,7 +57,7 @@ mockPhenotypeR <- function(nPerson = 100,
                               "device_source_concept_id"	= NA_integer_
                             ))
 
-  cdm <- CodelistGenerator:::buildAchillesTables(cdm) |>
+  cdm <- CodelistGenerator::buildAchillesTables(cdm) |>
     suppressMessages()
 
   attr(cdm, "write_schema") <- writeSchema
