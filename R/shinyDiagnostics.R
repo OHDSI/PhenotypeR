@@ -35,7 +35,7 @@
 #'
 #' result <- phenotypeDiagnostics(cdm$warfarin)
 #'
-#' expectations <- tibble("cohort_name" = "warfarin",
+#' expectations <- dplyr::tibble("cohort_name" = "warfarin",
 #'                        "value" = c("Mean age",
 #'                                    "Male percentage",
 #'                                    "Survival probability after 5y"),
