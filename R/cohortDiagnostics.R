@@ -19,15 +19,18 @@
 #'
 #' @examples
 #' \donttest{
+#' library(omock)
+#' library(CohortConstructor)
 #' library(PhenotypeR)
 #'
-#' cdm <- mockPhenotypeR()
+#' cdm <- mockCdmFromDataset(source = "duckdb")
+#' cdm$warfarin <- conceptCohort(cdm,
+#'                               conceptSet =  list(warfarin = c(1310149L,
+#'                                                               40163554L)),
+#'                               name = "warfarin")
 #'
-#' result <- cohortDiagnostics(cdm$my_cohort)
-#'
-#' CDMConnector::cdmDisconnect(cdm = cdm)
+#' result <- cohortDiagnostics(cdm$warfarin)
 #' }
-
 cohortDiagnostics <- function(cohort, survival = FALSE, cohortSample = 20000, matchedSample = 1000){
 
   cli::cli_bullets(c("*" = "Starting Cohort Diagnostics"))
@@ -133,32 +136,29 @@ cohortDiagnostics <- function(cohort, survival = FALSE, cohortSample = 20000, ma
                      c(-30, -1), c(0, 0),
                      c(1, 30), c(31, 365),
                      c(366, Inf))
-  lscTableEvents<-c("condition_occurrence", "visit_occurrence",
-                    "measurement", "procedure_occurrence",
+
+  lscTableEvents<-c("condition_occurrence",
+                    "visit_occurrence",
+                    # "visit_detail",  # not currently supported by CohortCharacteristics
+                    "measurement",
+                    "procedure_occurrence",
+                    "device_exposure",
                     "observation")
-  lscTableEpisodes<- c("drug_exposure")
+  lscTableEvents<-intersect(lscTableEvents, names(cdm))
+
+  lscTableEpisodes<- c("drug_exposure", "drug_era")
+  lscTableEpisodes<-intersect(lscTableEpisodes, names(cdm))
+
   lscMminimumFrequency <- 0.01
 
-
-  cli::cli_bullets(c(">" = "Run large scale characteristics (including source and standard codes)"))
+  cli::cli_bullets(c(">" = "Run large scale characteristics"))
   results[["lsc_standard_source"]] <- CohortCharacteristics::summariseLargeScaleCharacteristics(
     cohort = cdm[[tempCohortName]],
     window = lscWindows,
     eventInWindow = lscTableEvents,
     episodeInWindow = lscTableEpisodes,
     minimumFrequency = lscMminimumFrequency,
-    includeSource = TRUE,
-    excludedCodes = NULL
-  )
-
-  cli::cli_bullets(c(">" = "Run large scale characteristics (including only standard codes)"))
-  results[["lsc_standard"]] <- CohortCharacteristics::summariseLargeScaleCharacteristics(
-    cohort = cdm[[tempCohortName]],
-    window = lscWindows,
-    eventInWindow = lscTableEvents,
-    episodeInWindow = lscTableEpisodes,
-    minimumFrequency = lscMminimumFrequency,
-    includeSource = FALSE,
+    includeSource = c(TRUE, FALSE),
     excludedCodes = NULL
   )
 

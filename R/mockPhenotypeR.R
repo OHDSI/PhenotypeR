@@ -42,20 +42,20 @@ mockPhenotypeR <- function(nPerson = 100,
     omock::mockDeath(seed = seed) |>
     omock::mockCohort(name = "my_cohort", numberCohorts = 2, seed = seed)
 
-  cdm_local$device_exposure <- dplyr::tibble(
-    "device_exposure_id" = NA_integer_,
-    "person_id" = NA_integer_,
-    "device_concept_id" = NA_integer_,
-    "device_exposure_start_date" = as.Date(NA),
-    "device_type_concept_id" = NA_integer_,
-    "device_source_concept_id"	= NA_integer_
-  )
-  class(cdm_local$device_exposure) <- append(class(cdm_local$device_exposure), "omop_table")
-
   cdm <- CDMConnector::copyCdmTo(con = con,
                                  cdm = cdm_local,
                                  schema = writeSchema,
                                  overwrite = TRUE)
+
+  cdm <- omopgenerics::insertTable(cdm = cdm, name = "device_exposure",
+                            dplyr::tibble(
+                              "device_exposure_id" = NA_integer_,
+                              "person_id" = NA_integer_,
+                              "device_concept_id" = NA_integer_,
+                              "device_exposure_start_date" = as.Date(NA),
+                              "device_type_concept_id" = NA_integer_,
+                              "device_source_concept_id"	= NA_integer_
+                            ))
 
   cdm <- CodelistGenerator::buildAchillesTables(cdm) |>
     suppressMessages()
