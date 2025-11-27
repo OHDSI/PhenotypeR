@@ -124,8 +124,8 @@ result <- phenotypeDiagnostics(cdm$warfarin)
 #> • age: density
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side
-#> → Start summary of data, at 2025-11-27 09:13:53.968467
-#> ✔ Summary finished, at 2025-11-27 09:13:54.119148
+#> → Start summary of data, at 2025-11-27 09:32:29.06706
+#> ✔ Summary finished, at 2025-11-27 09:32:29.224814
 #> → Run large scale characteristics
 #> ℹ Summarising large scale characteristics 
 #>  - getting characteristics from table condition_occurrence (1 of 8)
@@ -193,7 +193,7 @@ result <- phenotypeDiagnostics(cdm$warfarin)
 #>  - getting characteristics from table drug_era (8 of 8) for time window 31 and …
 #>  - getting characteristics from table drug_era (8 of 8) for time window 366 and…
 #> Formatting result
-#> 920 estimates dropped as frequency less than 1%
+#> 852 estimates dropped as frequency less than 1%
 #> ✔ Summarising large scale characteristics
 #> `cohort_sample` and `matched_sample` casted to character.
 #> 
@@ -239,8 +239,8 @@ shinyDiagnostics(result, tempdir(), expectations = expectations)
 #> Warning: No measurements present in the concept list. Removing tab from the shiny app.
 #> Warning: No survival analysis present in cohortDiagnostics. Removing tab from the shiny
 #> app.
-#> Warning: '/tmp/Rtmp3v5pZT/PhenotypeRShiny/data/raw/expectations' already exists
-#> ℹ Shiny app created in /tmp/Rtmp3v5pZT/PhenotypeRShiny
+#> Warning: '/tmp/RtmpFm9lZd/PhenotypeRShiny/data/raw/expectations' already exists
+#> ℹ Shiny app created in /tmp/RtmpFm9lZd/PhenotypeRShiny
 
 CDMConnector::cdmDisconnect(cdm = cdm)
 # }
