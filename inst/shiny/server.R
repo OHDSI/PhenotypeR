@@ -112,6 +112,8 @@ server <- function(input, output, session) {
 
     result <- dataFiltered$summarise_omop_snapshot |>
       dplyr::filter(cdm_name %in% shared_cdm_names())
+    attr(result, "settings")  <- attr(result, "settings") |>
+      dplyr::select(!c("diagnostic", "phenotyper_version"))
 
     validateFilteredResult(result)
 
@@ -147,7 +149,8 @@ server <- function(input, output, session) {
 
     result <- dataFiltered$summarise_observation_period |>
       dplyr::filter(cdm_name %in% shared_cdm_names())
-
+    attr(result, "settings")  <- attr(result, "settings") |>
+      dplyr::select(!c("diagnostic", "phenotyper_version"))
     validateFilteredResult(result)
 
     return(result)
