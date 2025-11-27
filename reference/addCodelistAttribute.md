@@ -40,14 +40,15 @@ A cohort
 library(PhenotypeR)
 
 cdm <- mockPhenotypeR()
-#> Error in vec_data(data): `x` must be a vector, not a <tbl_df/tbl/data.frame/omop_table> object.
 
 cohort <- addCodelistAttribute(cohort = cdm$my_cohort, codelist = list("cohort_1" = 1L))
-#> Error: object 'cdm' not found
 attr(cohort, "cohort_codelist")
-#> Error: object 'cohort' not found
+#> # Source:   table<my_cohort_codelist> [?? x 4]
+#> # Database: DuckDB 1.4.2 [unknown@Linux 6.11.0-1018-azure:R 4.5.2/:memory:]
+#>   cohort_definition_id codelist_name concept_id codelist_type
+#>                  <int> <chr>              <int> <chr>        
+#> 1                    1 cohort_1               1 index event  
 
 CDMConnector::cdmDisconnect(cdm)
-#> Error: object 'cdm' not found
 # }
 ```

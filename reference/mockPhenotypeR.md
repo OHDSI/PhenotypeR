@@ -43,9 +43,16 @@ cdm object
 library(PhenotypeR)
 
 cdm <- mockPhenotypeR()
-#> Error in vec_data(data): `x` must be a vector, not a <tbl_df/tbl/data.frame/omop_table> object.
 
 cdm
-#> Error: object 'cdm' not found
+#> 
+#> ── # OMOP CDM reference (duckdb) of mock database ──────────────────────────────
+#> • omop tables: cdm_source, concept, concept_ancestor, concept_relationship,
+#> concept_synonym, condition_occurrence, death, device_exposure, drug_exposure,
+#> drug_strength, measurement, observation, observation_period, person,
+#> procedure_occurrence, visit_occurrence, vocabulary
+#> • cohort tables: my_cohort
+#> • achilles tables: achilles_analysis, achilles_results, achilles_results_dist
+#> • other tables: -
 # }
 ```

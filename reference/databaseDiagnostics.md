@@ -27,15 +27,5 @@ A summarised result
 
 ``` r
 # \donttest{
-library(PhenotypeR)
-
-cdm <- mockPhenotypeR()
-#> Error in vec_data(data): `x` must be a vector, not a <tbl_df/tbl/data.frame/omop_table> object.
-
-result <- databaseDiagnostics(cdm)
-#> Error: object 'cdm' not found
-
-CDMConnector::cdmDisconnect(cdm = cdm)
-#> Error: object 'cdm' not found
 # }
 ```
