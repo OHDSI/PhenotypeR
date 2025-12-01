@@ -487,7 +487,7 @@ ui <- fluidPage(
                                          header = NULL,
                                          sortable::add_rank_list(
                                            text = "none",
-                                           labels = c("cohort_name", "codelist_name", "source_concept_name", "source_concept_id", "domain_id", "variable_name", "variable_level"),
+                                           labels = c("cohort_name", "codelist_name", "source_concept_name", "source_concept_id", "variable_name", "variable_level"),
                                            input_id = "cohort_code_use_gt_none"
                                          ),
                                          sortable::add_rank_list(
@@ -502,7 +502,8 @@ ui <- fluidPage(
                                          ),
                                          sortable::add_rank_list(
                                            text = "hide",
-                                           labels = c("diagnostic", "phenotyper_version"),
+                                           labels = c("diagnostic", "phenotyper_version",
+                                                      "domain_id", "timing"),
                                            input_id = "cohort_code_use_gt_hide"
                                          )
                                        )
