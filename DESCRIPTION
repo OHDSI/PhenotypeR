@@ -70,6 +70,7 @@ Imports:
     CohortConstructor (>= 0.4.0),
     cli,
     dplyr,
+    DrugUtilisation,
     IncidencePrevalence (>= 1.2.0),
     omopgenerics (>= 1.2.0),
     OmopSketch (>= 1.0.0),
