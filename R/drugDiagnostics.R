@@ -16,7 +16,7 @@
 #' @param byConcept Whether to stratify results by concept id.
 #'
 #' @return A summarised_result object with the checks.
-#' @export
+#' @noRd
 #'
 #' @examples
 #' \donttest{
@@ -733,7 +733,7 @@ summariseCheckDaysBetween <- function(table, strata, set) {
 #' more details, see the Styles vignette on the package website.
 #'
 #' @return A table visualisation.
-#' @export
+#' @noRd
 #'
 #' @examples
 #' \donttest{
@@ -815,3 +815,5 @@ getAllCheckOptions <- function() {
            "daysSupply", "verbatimEndDate", "dose", "sig", "quantity", "daysBetween",
            "diagnosticsSummary"))
 }
+
+
