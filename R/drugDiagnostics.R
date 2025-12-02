@@ -105,8 +105,8 @@ summariseDrugExposureDiagnostics <- function(cdm,
       set <- dplyr::tibble(
         result_id = 1L,
         result_type = "summarise_drug_exposure_diagnostics",
-        package_name = "DrugExposureDiagnostics",
-        package_version = as.character(utils::packageVersion(pkg = "DrugExposureDiagnostics")),
+        package_name = "PhenotypeR",
+        package_version = as.character(utils::packageVersion(pkg = "PhenotypeR")),
         check = "",
         sample = as.character(sample %||% "Inf")
       )
@@ -816,4 +816,48 @@ getAllCheckOptions <- function() {
            "diagnosticsSummary"))
 }
 
+findIngredients <- function(conceptSet, cdm) {
+  threshold <- min(1, as.numeric(getOption("PhenotypeR_ingredient_threshold", "0.8")))
 
+  if (length(conceptSet) == 0) {
+    return(omopgenerics::emptyCodelist())
+  }
+
+  conceptsTib <- dplyr::as_tibble(conceptSet)
+
+  nm <- omopgenerics::uniqueTableName()
+  cdm <- omopgenerics::insertTable(cdm = cdm, name = nm, table = conceptsTib)
+
+  x <- cdm$concept_ancestor |>
+    dplyr::inner_join(
+      cdm$concept |>
+        dplyr::filter(.data$concept_class_id == "Ingredient") |>
+        dplyr::select("ancestor_concept_id" = "concept_id"),
+      by = "ancestor_concept_id"
+    ) |>
+    dplyr::inner_join(
+      cdm[[nm]] |>
+        dplyr::select("codelist_name", "descendant_concept_id" = "concept_id"),
+      by = "descendant_concept_id"
+    ) |>
+    dplyr::group_by(.data$codelist_name, .data$ancestor_concept_id) |>
+    dplyr::summarise(n = as.numeric(dplyr::n()), .groups = "drop") |>
+    dplyr::collect()
+
+  ingredients <- conceptsTib |>
+    dplyr::group_by(.data$codelist_name) |>
+    dplyr::summarise(den = as.numeric(dplyr::n())) |>
+    dplyr::inner_join(x, by = "codelist_name") |>
+    dplyr::mutate(freq = .data$n / .data$den) |>
+    dplyr::filter(.data$freq >= .env$threshold)
+
+  names(conceptSet) |>
+    rlang::set_names() |>
+    purrr::map(\(x) {
+      ingredients |>
+        dplyr::filter(.data$codelist_name == .env$x) |>
+        dplyr::pull("ancestor_concept_id") |>
+        as.integer()
+    }) |>
+    omopgenerics::newCodelist()
+}
