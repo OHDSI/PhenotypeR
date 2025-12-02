@@ -816,14 +816,14 @@ getAllCheckOptions <- function() {
            "diagnosticsSummary"))
 }
 
-findIngredients <- function(conceptSet, cdm) {
+findIngredients <- function(codes, cdm) {
   threshold <- min(1, as.numeric(getOption("PhenotypeR_ingredient_threshold", "0.8")))
 
-  if (length(conceptSet) == 0) {
+  if (length(codes) == 0) {
     return(omopgenerics::emptyCodelist())
   }
 
-  conceptsTib <- dplyr::as_tibble(conceptSet)
+  conceptsTib <- dplyr::as_tibble(codes)
 
   nm <- omopgenerics::uniqueTableName()
   cdm <- omopgenerics::insertTable(cdm = cdm, name = nm, table = conceptsTib)
@@ -851,7 +851,7 @@ findIngredients <- function(conceptSet, cdm) {
     dplyr::mutate(freq = .data$n / .data$den) |>
     dplyr::filter(.data$freq >= .env$threshold)
 
-  names(conceptSet) |>
+  names(codes) |>
     rlang::set_names() |>
     purrr::map(\(x) {
       ingredients |>
