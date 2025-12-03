@@ -15,20 +15,18 @@
 #'
 #' @examples
 #' \donttest{
+#' library(omock)
+#' library(CohortConstructor)
 #' library(PhenotypeR)
-#' library(dplyr)
 #'
-#' cdm <- mockPhenotypeR()
+#' cdm <- mockCdmFromDataset(source = "duckdb")
+#' cdm$warfarin <- conceptCohort(cdm,
+#'                               conceptSet =  list(warfarin = c(1310149L,
+#'                                                               40163554L)),
+#'                               name = "warfarin")
 #'
-#' dateStart <- cdm$my_cohort |>
-#'   summarise(start = min(cohort_start_date, na.rm = TRUE)) |>
-#'   pull("start")
-#' dateEnd   <- cdm$my_cohort |>
-#'   summarise(start = max(cohort_start_date, na.rm = TRUE)) |>
-#'   pull("start")
-#'
-#' result <- cdm$my_cohort |>
-#'   populationDiagnostics(populationDateRange = c(dateStart, dateEnd))
+#' result <- cdm$warfarin |>
+#'   populationDiagnostics()
 #'
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }

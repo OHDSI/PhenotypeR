@@ -27,11 +27,18 @@ underlying assumption is that the cohort that is fed into
 }
 \examples{
 \donttest{
+library(omock)
+library(CohortConstructor)
 library(PhenotypeR)
 
-cdm <- mockPhenotypeR()
+cdm <- mockCdmFromDataset(source = "duckdb")
+cdm$warfarin <- conceptCohort(cdm,
+                              conceptSet =  list(warfarin = c(1310149L,
+                                                              40163554L)),
+                              name = "warfarin")
 
-cohort <- addCodelistAttribute(cohort = cdm$my_cohort, codelist = list("cohort_1" = 1L))
+cohort <- addCodelistAttribute(cohort = cdm$warfarin,
+               codelist = list("warfarin" = c(1310149L,  40163554L)))
 attr(cohort, "cohort_codelist")
 
 CDMConnector::cdmDisconnect(cdm)
