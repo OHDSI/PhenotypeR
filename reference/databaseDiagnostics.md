@@ -27,5 +27,14 @@ A summarised result
 
 ``` r
 # \donttest{
+library(omock)
+library(CohortConstructor)
+library(PhenotypeR)
+
+cdm <- mockCdmFromDataset(source = "duckdb")
+#> ℹ Reading GiBleed tables.
+#> ℹ Adding drug_strength table.
+#> ℹ Creating local <cdm_reference> object.
+#> ℹ Inserting <cdm_reference> into duckdb.
 # }
 ```

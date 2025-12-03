@@ -32,8 +32,3 @@
 
 - [`addCodelistAttribute()`](https://ohdsi.github.io/PhenotypeR/reference/addCodelistAttribute.md)
   : Adds the cohort_codelist attribute to a cohort
-
-### Mock data
-
-- [`mockPhenotypeR()`](https://ohdsi.github.io/PhenotypeR/reference/mockPhenotypeR.md)
-  : Function to create a mock cdm reference for mockPhenotypeR

@@ -30,33 +30,31 @@ A summarised result
 
 ``` r
 # \donttest{
+library(omock)
 library(CohortConstructor)
 library(PhenotypeR)
 
-cdm <- mockPhenotypeR()
-
-cdm$arthropathies <- conceptCohort(cdm,
-                                   conceptSet = list("arthropathies" = c(37110496)),
-                                   name = "arthropathies")
-#> Warning: ! `codelist` casted to integers.
-#> ℹ Subsetting table condition_occurrence using 1 concept with domain: condition.
+cdm <- mockCdmFromDataset(source = "duckdb")
+#> ℹ Reading GiBleed tables.
+#> ℹ Adding drug_strength table.
+#> ℹ Creating local <cdm_reference> object.
+#> ℹ Inserting <cdm_reference> into duckdb.
+cdm$warfarin <- conceptCohort(cdm,
+                              conceptSet =  list(warfarin = c(1310149L,
+                                                              40163554L)),
+                              name = "warfarin")
+#> ℹ Subsetting table drug_exposure using 2 concepts with domain: drug.
 #> ℹ Combining tables.
 #> ℹ Creating cohort attributes.
 #> ℹ Applying cohort requirements.
 #> ℹ Merging overlapping records.
-#> ✔ Cohort arthropathies created.
-
-result <- codelistDiagnostics(cdm$arthropathies)
+#> ✔ Cohort warfarin created.
+result <- codelistDiagnostics(cdm$warfarin)
 #> • Getting codelists from cohorts
 #> • Getting index event breakdown
-#> Getting counts of arthropathies codes for cohort arthropathies
-#> • Getting code counts in database based on achilles
-#> 
-#> • Getting orphan concepts
-#> PHOEBE results not available
-#> ℹ The concept_recommended table is not present in the cdm.
-#> Getting orphan codes for arthropathies
-#> 
+#> Getting counts of warfarin codes for cohort warfarin
+#> Warning: The CDM reference containing the cohort must also contain achilles tables.
+#> Returning only index event breakdown.
 
 CDMConnector::cdmDisconnect(cdm = cdm)
 # }

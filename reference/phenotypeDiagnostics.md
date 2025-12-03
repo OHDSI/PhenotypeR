@@ -113,7 +113,7 @@ result <- phenotypeDiagnostics(cdm$warfarin)
 #> ✔ summariseCharacteristics finished!
 #> → Skipping cohort sampling as all cohorts have less than 20000 individuals.
 #> → Creating matching cohorts
-#> → Sampling cohort `tmp_016_sampled`
+#> → Sampling cohort `tmp_017_sampled`
 #> Returning entry cohort as the size of the cohorts to be sampled is equal or
 #> smaller than `n`.
 #> • Generating an age and sex matched cohort for warfarin
@@ -144,8 +144,8 @@ result <- phenotypeDiagnostics(cdm$warfarin)
 #> • age: density
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side
-#> → Start summary of data, at 2025-12-01 11:00:52.108334
-#> ✔ Summary finished, at 2025-12-01 11:00:52.249501
+#> → Start summary of data, at 2025-12-03 15:33:38.792078
+#> ✔ Summary finished, at 2025-12-03 15:33:38.935707
 #> → Run large scale characteristics
 #> ℹ Summarising large scale characteristics 
 #>  - getting characteristics from table condition_occurrence (1 of 8)
@@ -213,7 +213,7 @@ result <- phenotypeDiagnostics(cdm$warfarin)
 #>  - getting characteristics from table drug_era (8 of 8) for time window 31 and …
 #>  - getting characteristics from table drug_era (8 of 8) for time window 366 and…
 #> Formatting result
-#> 886 estimates dropped as frequency less than 1%
+#> 808 estimates dropped as frequency less than 1%
 #> ✔ Summarising large scale characteristics
 #> `cohort_sample` and `matched_sample` casted to character.
 #> 

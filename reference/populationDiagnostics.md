@@ -43,66 +43,54 @@ A summarised result
 
 ``` r
 # \donttest{
+library(omock)
+library(CohortConstructor)
 library(PhenotypeR)
-library(dplyr)
-#> 
-#> Attaching package: ‘dplyr’
-#> The following objects are masked from ‘package:stats’:
-#> 
-#>     filter, lag
-#> The following objects are masked from ‘package:base’:
-#> 
-#>     intersect, setdiff, setequal, union
 
-cdm <- mockPhenotypeR()
+cdm <- mockCdmFromDataset(source = "duckdb")
+#> ℹ Reading GiBleed tables.
+#> ℹ Adding drug_strength table.
+#> ℹ Creating local <cdm_reference> object.
+#> ℹ Inserting <cdm_reference> into duckdb.
+cdm$warfarin <- conceptCohort(cdm,
+                              conceptSet =  list(warfarin = c(1310149L,
+                                                              40163554L)),
+                              name = "warfarin")
+#> ℹ Subsetting table drug_exposure using 2 concepts with domain: drug.
+#> ℹ Combining tables.
+#> ℹ Creating cohort attributes.
+#> ℹ Applying cohort requirements.
+#> ℹ Merging overlapping records.
+#> ✔ Cohort warfarin created.
 
-dateStart <- cdm$my_cohort |>
-  summarise(start = min(cohort_start_date, na.rm = TRUE)) |>
-  pull("start")
-dateEnd   <- cdm$my_cohort |>
-  summarise(start = max(cohort_start_date, na.rm = TRUE)) |>
-  pull("start")
-
-result <- cdm$my_cohort |>
-  populationDiagnostics(populationDateRange = c(dateStart, dateEnd))
+result <- cdm$warfarin |>
+  populationDiagnostics()
 #> • Creating denominator for incidence and prevalence
 #> • Sampling person table to 1e+06
 #> ℹ Creating denominator cohorts
 #> ✔ Cohorts created in 0 min and 5 sec
 #> • Estimating incidence
-#> ℹ Getting incidence for analysis 1 of 14
-#> ℹ Getting incidence for analysis 2 of 14
-#> ℹ Getting incidence for analysis 3 of 14
-#> ℹ Getting incidence for analysis 4 of 14
-#> ℹ Getting incidence for analysis 5 of 14
-#> ℹ Getting incidence for analysis 6 of 14
-#> ℹ Getting incidence for analysis 7 of 14
-#> ℹ Getting incidence for analysis 8 of 14
-#> ℹ Getting incidence for analysis 9 of 14
-#> ℹ Getting incidence for analysis 10 of 14
-#> ℹ Getting incidence for analysis 11 of 14
-#> ℹ Getting incidence for analysis 12 of 14
-#> ℹ Getting incidence for analysis 13 of 14
-#> ℹ Getting incidence for analysis 14 of 14
-#> ✔ Overall time taken: 0 mins and 13 secs
+#> ℹ Getting incidence for analysis 1 of 7
+#> ℹ Getting incidence for analysis 2 of 7
+#> ℹ Getting incidence for analysis 3 of 7
+#> ℹ Getting incidence for analysis 4 of 7
+#> ℹ Getting incidence for analysis 5 of 7
+#> ℹ Getting incidence for analysis 6 of 7
+#> ℹ Getting incidence for analysis 7 of 7
+#> ✔ Overall time taken: 0 mins and 10 secs
 #> • Estimating prevalence
-#> ℹ Getting prevalence for analysis 1 of 14
-#> ℹ Getting prevalence for analysis 2 of 14
-#> ℹ Getting prevalence for analysis 3 of 14
-#> ℹ Getting prevalence for analysis 4 of 14
-#> ℹ Getting prevalence for analysis 5 of 14
-#> ℹ Getting prevalence for analysis 6 of 14
-#> ℹ Getting prevalence for analysis 7 of 14
-#> ℹ Getting prevalence for analysis 8 of 14
-#> ℹ Getting prevalence for analysis 9 of 14
-#> ℹ Getting prevalence for analysis 10 of 14
-#> ℹ Getting prevalence for analysis 11 of 14
-#> ℹ Getting prevalence for analysis 12 of 14
-#> ℹ Getting prevalence for analysis 13 of 14
-#> ℹ Getting prevalence for analysis 14 of 14
-#> ✔ Time taken: 0 mins and 7 secs
+#> ℹ Getting prevalence for analysis 1 of 7
+#> ℹ Getting prevalence for analysis 2 of 7
+#> ℹ Getting prevalence for analysis 3 of 7
+#> ℹ Getting prevalence for analysis 4 of 7
+#> ℹ Getting prevalence for analysis 5 of 7
+#> ℹ Getting prevalence for analysis 6 of 7
+#> ℹ Getting prevalence for analysis 7 of 7
+#> ✔ Time taken: 0 mins and 6 secs
 #> `populationDateStart`, `populationDateEnd`, and `populationSample` casted to
 #> character.
+#> `populationDateStart` and `populationDateEnd` eliminated from settings as all
+#> elements are NA.
 
 CDMConnector::cdmDisconnect(cdm = cdm)
 # }
