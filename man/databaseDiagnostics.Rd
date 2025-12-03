@@ -21,5 +21,10 @@ Diagnostics include:
 }
 \examples{
 \donttest{
+library(omock)
+library(CohortConstructor)
+library(PhenotypeR)
+
+cdm <- mockCdmFromDataset(source = "duckdb")
 }
 }

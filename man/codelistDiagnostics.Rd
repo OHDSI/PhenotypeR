@@ -25,16 +25,16 @@ the cdm so that concept counts could be derived.
 }
 \examples{
 \donttest{
+library(omock)
 library(CohortConstructor)
 library(PhenotypeR)
 
-cdm <- mockPhenotypeR()
-
-cdm$arthropathies <- conceptCohort(cdm,
-                                   conceptSet = list("arthropathies" = c(37110496)),
-                                   name = "arthropathies")
-
-result <- codelistDiagnostics(cdm$arthropathies)
+cdm <- mockCdmFromDataset(source = "duckdb")
+cdm$warfarin <- conceptCohort(cdm,
+                              conceptSet =  list(warfarin = c(1310149L,
+                                                              40163554L)),
+                              name = "warfarin")
+result <- codelistDiagnostics(cdm$warfarin)
 
 CDMConnector::cdmDisconnect(cdm = cdm)
 }

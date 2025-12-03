@@ -14,9 +14,11 @@
 #'
 #' @examples
 #' \donttest{
-# library(PhenotypeR)
-#
-# cdm <- mockPhenotypeR()
+#' library(omock)
+#' library(CohortConstructor)
+#' library(PhenotypeR)
+#'
+#' cdm <- mockCdmFromDataset(source = "duckdb")
 #
 # result <- databaseDiagnostics(cdm)
 #
