@@ -65,20 +65,20 @@ Suggests:
 Config/testthat/edition: 3
 RoxygenNote: 7.3.3
 Imports: 
+    cli,
+    clock,
     CodelistGenerator (>= 3.4.0),
     CohortCharacteristics (>= 1.1.0),
     CohortConstructor (>= 0.4.0),
-    cli,
     dplyr,
     DrugUtilisation,
     IncidencePrevalence (>= 1.2.0),
+    MeasurementDiagnostics (>= 0.1.0),
     omopgenerics (>= 1.2.0),
     OmopSketch (>= 1.0.0),
-    magrittr,
     purrr,
+    readr,
     rlang,
-    vctrs,
-    MeasurementDiagnostics (>= 0.1.0),
-    readr
+    vctrs
 URL: https://ohdsi.github.io/PhenotypeR/
 VignetteBuilder: knitr
