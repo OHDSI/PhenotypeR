@@ -138,7 +138,7 @@ codelistDiagnostics <- function(cohort){
         bySex = FALSE,
         ageGroup = NULL,
         dateRange = as.Date(c(NA, NA)),
-        checks = c("measurement_timings", "measurement_value_as_numeric",
+        checks = c("measurement_summary", "measurement_value_as_number",
                    "measurement_value_as_concept")
       )
     }

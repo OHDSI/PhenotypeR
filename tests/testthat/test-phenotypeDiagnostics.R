@@ -34,10 +34,11 @@ test_that("overall diagnostics function", {
                 (settings(dd_only) |> dplyr::pull("result_type")))
 
   # Only codelist diagnostics
-  expect_identical(phenotypeDiagnostics(cdm$my_cohort,
-                                        diagnostics = "codelistDiagnostics"),
-                   omopgenerics::emptySummarisedResult())
-
+  expect_identical("summarise_log_file",
+  c(omopgenerics::settings(phenotypeDiagnostics(cdm$my_cohort,
+                       diagnostics = "codelistDiagnostics")) |>
+    dplyr::pull("result_type") |>
+    unique()))
 
   # Only cohort diagnostics
   cohort_diag_only <-  phenotypeDiagnostics(cdm$my_cohort,
@@ -52,9 +53,14 @@ test_that("overall diagnostics function", {
           (settings(cohort_diag_only) |>
              dplyr::pull("result_type") |>
              unique())))
-  expect_true(
-    all(sort(unique(cohort_diag_only$group_level)) == c("cohort_1", "cohort_1 &&& cohort_2",
-                                                        "cohort_2", "cohort_2 &&& cohort_1"))
+  expect_identical(
+      c(cohort_diag_only |>
+      omopgenerics::filterSettings(result_type != "summarise_log_file") |>
+      dplyr::pull(group_level) |>
+      unique() |>
+      sort()),
+      c("cohort_1", "cohort_1 &&& cohort_2",
+        "cohort_2", "cohort_2 &&& cohort_1")
   )
 
   cohort_pop_diag_only <-  phenotypeDiagnostics(cdm$my_cohort,
@@ -63,6 +69,12 @@ test_that("overall diagnostics function", {
     all(c("incidence", "incidence_attrition", "prevalence", "prevalence_attrition") %in%
           unique(settings(cohort_pop_diag_only) |>
                    dplyr::pull("result_type"))))
+
+  # logging is included in the overall result
+  all_diag <- phenotypeDiagnostics(cdm$my_cohort)
+  log_types <- settings(all_diag) |>
+    dplyr::pull("result_type")
+  expect_true("summarise_log_file" %in% log_types)
 
   expect_error(phenotypeDiagnostics(cdm$my_cohort, diagnostics = "hello"))
   expect_error(phenotypeDiagnostics(cdm$my_cohort, matchedSample  = -10))

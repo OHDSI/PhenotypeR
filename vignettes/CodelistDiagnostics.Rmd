@@ -100,10 +100,10 @@ tableCohortCodeUse(code_diag)
 
 ### Measurement timings
 ```{r}
-tableMeasurementTimings(code_diag)
+tableMeasurementSummary(code_diag)
 ```
 ```{r}
-plotMeasurementTimings(code_diag)
+plotMeasurementSummary(code_diag)
 ```
 
 ### Measurement value as concept
@@ -117,11 +117,11 @@ plotMeasurementValueAsConcept(code_diag)
 
 ### Measurement value as numeric
 ```{r}
-tableMeasurementValueAsNumeric(code_diag)
+tableMeasurementValueAsNumber(code_diag)
 ```
 
 ```{r}
-plotMeasurementValueAsNumeric(code_diag)
+plotMeasurementValueAsNumber(code_diag)
 ```
 
 
