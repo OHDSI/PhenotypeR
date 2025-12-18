@@ -64,6 +64,12 @@ test_that("overall diagnostics function", {
           unique(settings(cohort_pop_diag_only) |>
                    dplyr::pull("result_type"))))
 
+  # logging is included in the overall result
+  all_diag <- phenotypeDiagnostics(cdm$my_cohort)
+  log_types <- settings(all_diag) |>
+    dplyr::pull("result_type")
+  expect_true("summarise_log_file" %in% log_types)
+
   expect_error(phenotypeDiagnostics(cdm$my_cohort, diagnostics = "hello"))
   expect_error(phenotypeDiagnostics(cdm$my_cohort, matchedSample  = -10))
   expect_error(phenotypeDiagnostics(cdm$my_cohort, populationSample = 0))
