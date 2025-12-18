@@ -53,9 +53,14 @@ test_that("overall diagnostics function", {
           (settings(cohort_diag_only) |>
              dplyr::pull("result_type") |>
              unique())))
-  expect_true(
-    all(sort(unique(cohort_diag_only$group_level)) == c("cohort_1", "cohort_1 &&& cohort_2",
-                                                        "cohort_2", "cohort_2 &&& cohort_1"))
+  expect_identical(
+      c(cohort_diag_only |>
+      omopgenerics::filterSettings(result_type != "summarise_log_file") |>
+      dplyr::pull(group_level) |>
+      unique() |>
+      sort()),
+      c("cohort_1", "cohort_1 &&& cohort_2",
+        "cohort_2", "cohort_2 &&& cohort_1")
   )
 
   cohort_pop_diag_only <-  phenotypeDiagnostics(cdm$my_cohort,
