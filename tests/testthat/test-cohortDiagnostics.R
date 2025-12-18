@@ -162,7 +162,7 @@ test_that("run with multiple cohorts", {
                 omopgenerics::settings() |>
                 dplyr::pull("result_type") |>
                 unique()))
-  expect_true("survival_probability" %in%
+  expect_true("survival_estimates" %in%
                 c(result |>
                 omopgenerics::settings() |>
                 dplyr::pull("result_type") |>
