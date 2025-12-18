@@ -64,7 +64,6 @@ phenotypeDiagnostics <- function(cohort,
   cdm <- omopgenerics::cdmReference(cohort)
   results <- list()
   if ("databaseDiagnostics" %in% diagnostics) {
-    cli::cli("Running database diagnostics")
     omopgenerics::logMessage("Running database diagnostics")
     results[["db_diag"]] <- databaseDiagnostics(cdm)
     if(!is.null(incrementalResultPath)){
@@ -77,7 +76,6 @@ phenotypeDiagnostics <- function(cohort,
   }
 
   if ("codelistDiagnostics" %in% diagnostics) {
-    cli::cli("Running codelist diagnostics")
     omopgenerics::logMessage("Running codelist diagnostics")
     results[["code_diag"]] <- codelistDiagnostics(cohort)
     if(!is.null(incrementalResultPath)){
@@ -90,7 +88,6 @@ phenotypeDiagnostics <- function(cohort,
 }
 
   if ("cohortDiagnostics" %in% diagnostics) {
-    cli::cli("Running cohort diagnostics")
     omopgenerics::logMessage("Running cohort diagnostics")
     results[["cohort_diag"]] <- cohortDiagnostics(cohort,
                                                   survival = survival,
@@ -105,7 +102,6 @@ phenotypeDiagnostics <- function(cohort,
     }
   }
   if ("populationDiagnostics" %in% diagnostics) {
-    cli::cli("Running population diagnostics")
     omopgenerics::logMessage("Running population diagnostics")
     results[["pop_diag"]] <- populationDiagnostics(cohort,
                                                    populationSample = populationSample,

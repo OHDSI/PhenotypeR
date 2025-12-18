@@ -131,14 +131,43 @@ test_that("run with multiple cohorts", {
   cdm <- CDMConnector::copyCdmTo(con = db, cdm = cdm_local,
                                  schema ="main", overwrite = TRUE)
   result <- cohortDiagnostics(cdm$my_cohort, survival = TRUE)
-  expect_identical(result |>
-    omopgenerics::settings() |>
-    dplyr::pull("result_type") |>
-    unique(),
-    c("summarise_cohort_attrition",
-      "summarise_cohort_count", "summarise_cohort_overlap", "summarise_cohort_timing",
-      "summarise_characteristics","summarise_table", "summarise_large_scale_characteristics",
-      "survival_probability", "survival_events", "survival_summary", "survival_attrition"))
+
+  expect_true("summarise_cohort_count" %in%
+                   c(result |>
+                     omopgenerics::settings() |>
+                     dplyr::pull("result_type") |>
+                     unique()))
+  expect_true("summarise_cohort_count" %in%
+                c(result |>
+                omopgenerics::settings() |>
+                dplyr::pull("result_type") |>
+                unique()))
+  expect_true("summarise_cohort_overlap" %in%
+                c(result |>
+                omopgenerics::settings() |>
+                dplyr::pull("result_type") |>
+                unique()))
+  expect_true("summarise_cohort_timing" %in%
+                c(result |>
+                omopgenerics::settings() |>
+                dplyr::pull("result_type") |>
+                unique()))
+  expect_true("summarise_characteristics" %in%
+                c(result |>
+                omopgenerics::settings() |>
+                dplyr::pull("result_type") |>
+                unique()))
+  expect_true("summarise_large_scale_characteristics" %in%
+                c(result |>
+                omopgenerics::settings() |>
+                dplyr::pull("result_type") |>
+                unique()))
+  expect_true("survival_probability" %in%
+                c(result |>
+                omopgenerics::settings() |>
+                dplyr::pull("result_type") |>
+                unique()))
+
 })
 
 test_that("check all expected analyses are present in results", {

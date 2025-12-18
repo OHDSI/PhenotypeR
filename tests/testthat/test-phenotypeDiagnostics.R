@@ -34,10 +34,11 @@ test_that("overall diagnostics function", {
                 (settings(dd_only) |> dplyr::pull("result_type")))
 
   # Only codelist diagnostics
-  expect_identical(phenotypeDiagnostics(cdm$my_cohort,
-                                        diagnostics = "codelistDiagnostics"),
-                   omopgenerics::emptySummarisedResult())
-
+  expect_identical("summarise_log_file",
+  c(omopgenerics::settings(phenotypeDiagnostics(cdm$my_cohort,
+                       diagnostics = "codelistDiagnostics")) |>
+    dplyr::pull("result_type") |>
+    unique()))
 
   # Only cohort diagnostics
   cohort_diag_only <-  phenotypeDiagnostics(cdm$my_cohort,
