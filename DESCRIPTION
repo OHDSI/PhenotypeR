@@ -67,7 +67,7 @@ RoxygenNote: 7.3.3
 Imports: 
     CodelistGenerator (>= 4.0.0),
     CohortCharacteristics (>= 1.1.0),
-    CohortConstructor (>= 0.6.1),
+    CohortConstructor,
     cli,
     dplyr,
     IncidencePrevalence (>= 1.2.0),
