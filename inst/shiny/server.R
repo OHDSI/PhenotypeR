@@ -34,6 +34,281 @@ server <- function(input, output, session) {
     inputs_initialized(TRUE)
   })
 
+
+  # sortable ui elements -----
+  # have these in server to avoid race condition (if in UI)
+  output$achilles_sortable <- renderUI({
+    sortable::bucket_list(
+      header = NULL,
+      sortable::add_rank_list(
+        text = "none",
+        labels = c("codelist_name"),
+        input_id = "achilles_code_use_none"
+      ),
+      sortable::add_rank_list(
+        text = "header",
+        labels = c("cdm_name", "estimate_name"),
+        input_id = "achilles_code_use_header"
+      ),
+      sortable::add_rank_list(
+        text = "groupColumn",
+        labels = character(),
+        input_id = "achilles_code_use_groupColumn"
+      ),
+      sortable::add_rank_list(
+        text = "hide",
+        labels = character(),
+        input_id = "achilles_code_use_hide"
+      )
+    )
+  })
+  outputOptions(output, "achilles_sortable", suspendWhenHidden = FALSE)
+
+  output$orphan_sortable <- renderUI({
+    sortable::bucket_list(
+      header = NULL,
+      sortable::add_rank_list(
+        text = "none",
+        labels = c("variable_name", "cohort_name", "variable_level"),
+        input_id = "orphan_codes_gt_none"
+      ),
+      sortable::add_rank_list(
+        text = "header",
+        labels = c("cdm_name", "estimate_name"),
+        input_id = "orphan_codes_gt_header"
+      ),
+      sortable::add_rank_list(
+        text = "groupColumn",
+        labels = character(),
+        input_id = "orphan_codes_gt_groupColumn"
+      ),
+      sortable::add_rank_list(
+        text = "hide",
+        labels = character(),
+        input_id = "orphan_codes_gt_hide"
+      )
+    )
+  })
+  outputOptions(output, "orphan_sortable", suspendWhenHidden = FALSE)
+
+  output$cohort_code_use_sortable <- renderUI({
+  sortable::bucket_list(
+    header = NULL,
+    sortable::add_rank_list(
+      text = "none",
+      labels = c("cohort_name", "codelist_name", "source_concept_name", "source_concept_id", "variable_name", "variable_level"),
+      input_id = "cohort_code_use_gt_none"
+    ),
+    sortable::add_rank_list(
+      text = "header",
+      labels = c("cdm_name", "estimate_name"),
+      input_id = "cohort_code_use_gt_header"
+    ),
+    sortable::add_rank_list(
+      text = "groupColumn",
+      labels =  character(),
+      input_id = "cohort_code_use_gt_groupColumn"
+    ),
+    sortable::add_rank_list(
+      text = "hide",
+      labels = c("diagnostic", "phenotyper_version",
+                 "domain_id", "timing"),
+      input_id = "cohort_code_use_gt_hide"
+    )
+  )
+  })
+  outputOptions(output, "cohort_code_use_sortable", suspendWhenHidden = FALSE)
+
+  output$measurement_value_as_concept_sortable <- renderUI({
+  sortable::bucket_list(
+    header = "Table formatting",
+    sortable::add_rank_list(
+      text = "none",
+      labels = c("cohort_name", "variable_level",  "estimate_name"),
+      input_id = "measurement_value_as_concept_gt_none"
+    ),
+    sortable::add_rank_list(
+      text = "header",
+      labels = c("cdm_name"),
+      input_id = "measurement_value_as_concepts_gt_header"
+    ),
+    sortable::add_rank_list(
+      text = "groupColumn",
+      labels =  c("codelist_name"),
+      input_id = "measurement_value_as_concept_gt_groupColumn"
+    ),
+    sortable::add_rank_list(
+      text = "hide",
+      labels =  c("variable_name"),
+      input_id = "measurement_value_as_concept_gt_hide"
+    )
+  )
+  })
+  outputOptions(output, "measurement_value_as_concept_sortable", suspendWhenHidden = FALSE)
+
+  output$measurement_value_as_number_sortable <- renderUI({
+  sortable::bucket_list(
+    header = "Table formatting",
+    sortable::add_rank_list(
+      text = "none",
+      labels = c("cohort_name", "estimate_name"),
+      input_id = "measurement_value_as_number_gt_none"
+    ),
+    sortable::add_rank_list(
+      text = "header",
+      labels = c("cdm_name"),
+      input_id = "measurement_value_as_number_gt_header"
+    ),
+    sortable::add_rank_list(
+      text = "groupColumn",
+      labels =  c("codelist_name"),
+      input_id = "measurement_value_as_number_gt_groupColumn"
+    ),
+    sortable::add_rank_list(
+      text = "hide",
+      labels =  c("variable_name", "variable_level"),
+      input_id = "measurement_value_as_number_gt_hide"
+    )
+  )
+  })
+  outputOptions(output, "measurement_value_as_number_sortable", suspendWhenHidden = FALSE)
+
+  output$measurement_summary_sortable <- renderUI({
+  sortable::bucket_list(
+    header = "Table formatting",
+    sortable::add_rank_list(
+      text = "none",
+      labels = c("cohort_name", "variable_name", "estimate_name"),
+      input_id = "measurement_summary_gt_none"
+    ),
+    sortable::add_rank_list(
+      text = "header",
+      labels = c("cdm_name"),
+      input_id = "measurement_summary_gt_header"
+    ),
+    sortable::add_rank_list(
+      text = "groupColumn",
+      labels =  c("codelist_name"),
+      input_id = "measurement_summary_gt_groupColumn"
+    ),
+    sortable::add_rank_list(
+      text = "hide",
+      labels =  c("variable_level"),
+      input_id = "measurement_summary_gt_hide"
+    )
+  )
+  })
+  outputOptions(output, "measurement_summary_sortable", suspendWhenHidden = FALSE)
+
+  output$summarise_characteristics_sortable <- renderUI({
+  sortable::bucket_list(
+    header = "Table formatting",
+    sortable::add_rank_list(
+      text = "none",
+      labels = c("variable_name", "variable_level", "estimate_name"),
+      input_id = "summarise_characteristics_gt_none"
+    ),
+    sortable::add_rank_list(
+      text = "header",
+      labels = c("cdm_name", "cohort_name"),
+      input_id = "summarise_characteristics_gt_header"
+    ),
+    sortable::add_rank_list(
+      text = "groupColumn",
+      labels = NULL,
+      input_id = "summarise_characteristics_gt_groupColumn"
+    ),
+    sortable::add_rank_list(
+      text = "hide",
+      labels = c("diagnostic", "phenotyper_version", "matchedSample"),
+      input_id = "summarise_characteristics_gt_hide"
+    )
+  )
+  })
+  outputOptions(output, "summarise_characteristics_sortable", suspendWhenHidden = FALSE)
+
+  output$summarise_cohort_overlap_sortable <- renderUI({
+    sortable::bucket_list(
+      header = "Table formatting",
+      sortable::add_rank_list(
+        text = "none",
+        labels = c("cohort_name_reference", "cohort_name_comparator", "estimate_name"),
+        input_id = "summarise_cohort_overlap_gt_none"
+      ),
+      sortable::add_rank_list(
+        text = "header",
+        labels = "variable_name",
+        input_id = "summarise_cohort_overlap_gt_header"
+      ),
+      sortable::add_rank_list(
+        text = "groupColumn",
+        labels = "cdm_name",
+        input_id = "summarise_cohort_overlap_gt_groupColumn"
+      ),
+      sortable::add_rank_list(
+        text = "hide",
+        labels = c("variable_level", "diagnostic", "phenotyper_version", "matchedSample"),
+        input_id = "summarise_cohort_overlap_gt_hide"
+      )
+    )
+  })
+  outputOptions(output, "summarise_cohort_overlap_sortable", suspendWhenHidden = FALSE)
+
+  output$summarise_cohort_timing_sortable <- renderUI({
+  sortable::bucket_list(
+    header = "Table formatting",
+    sortable::add_rank_list(
+      text = "none",
+      labels = c("cohort_name_reference", "cohort_name_comparator", "estimate_name"),
+      input_id = "summarise_cohort_timing_gt_none"
+    ),
+    sortable::add_rank_list(
+      text = "header",
+      labels = "variable_name",
+      input_id = "summarise_cohort_timing_gt_header"
+    ),
+    sortable::add_rank_list(
+      text = "groupColumn",
+      labels = "cdm_name",
+      input_id = "summarise_cohort_timing_gt_groupColumn"
+    ),
+    sortable::add_rank_list(
+      text = "hide",
+      labels = "variable_level",
+      input_id = "summarise_cohort_timing_gt_hide"
+    )
+  )
+  })
+  outputOptions(output, "summarise_cohort_timing_sortable", suspendWhenHidden = FALSE)
+
+  output$summarise_cohort_survival_sortable<- renderUI({
+  sortable::bucket_list(
+    header = "Table formatting",
+    sortable::add_rank_list(
+      text = "none",
+      labels = c("cdm_name", "target_cohort"),
+      input_id = "survival_table_none"
+    ),
+    sortable::add_rank_list(
+      text = "header",
+      labels = "estimate_name",
+      input_id = "survival_table_header"
+    ),
+    sortable::add_rank_list(
+      text = "groupColumn",
+      labels = character(),
+      input_id = "survival_table_groupColumn"
+    ),
+    sortable::add_rank_list(
+      text = "hide",
+      labels = character(),
+      input_id = "survival_table_hide"
+    )
+  )
+  })
+  outputOptions(output, "summarise_cohort_survival_sortable", suspendWhenHidden = FALSE)
+
+
   # Define shared cdm_names values ----
   shiny::observe({
     cdm_values <- names(choices)[grepl("cdm_name", names(choices)) & names(choices) != "shared_cdm_names"]
