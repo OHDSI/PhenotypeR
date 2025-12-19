@@ -45,7 +45,7 @@ test_that("overall diagnostics function", {
                                             diagnostics = "cohortDiagnostics",
                                             matchedSample = 0)
   expect_true(
-    all(c("summarise_characteristics", "summarise_table",
+    all(c("summarise_characteristics",
           "summarise_cohort_attrition",
           "summarise_cohort_attrition",
           "summarise_cohort_overlap", "summarise_cohort_timing",

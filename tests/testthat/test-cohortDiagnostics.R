@@ -68,14 +68,15 @@ test_that("run with multiple cohorts", {
                     cohortDiagnostics())
 
   # check density is being calculated
-  expect_true(any(stringr::str_detect(
-    omopgenerics::settings(result) |>
-      dplyr::pull("result_type"),
-    "table")))
+  expect_true(any(
+    stringr::str_detect(
+      result$variable_level |> unique(),
+      "Density"
+    )))
 
   # Check density is calculated by cohort
   expect_identical(result |>
-                     dplyr::filter(variable_name == "age") |>
+                     dplyr::filter(variable_name == "Age") |>
                      dplyr::select("group_level") |>
                      dplyr::distinct() |>
                      dplyr::pull() |>

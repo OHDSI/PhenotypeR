@@ -137,14 +137,14 @@ plotComparedLsc <- function(lsc, cohorts, imputeMissings, colour = NULL, facet =
 plotAgeDensity <- function(summarise_table, summarise_characteristics, show_interquantile_range){
 
   data <- summarise_table |>
-    filter(variable_name == "age") |>
+    filter(variable_name == "Age") |>
     pivot_wider(names_from = "estimate_name", values_from = "estimate_value") |>
-    mutate(density_x = as.numeric(density_x),
-           density_y = as.numeric(density_y)) |>
+    mutate(density_x = as.numeric(.data$density_x),
+           density_y = as.numeric(.data$density_y)) |>
     splitStrata() |>
-    mutate(density_y = if_else(sex == "Female", -density_y, density_y)) |>
-    filter(!is.na(density_x),
-           !is.na(density_y))
+    mutate(density_y = if_else(sex == "Female", -.data$density_y, .data$density_y)) |>
+    filter(!is.na(.data$density_x),
+           !is.na(.data$density_y))
 
   if (nrow(data) == 0) {
     validate("No results found for age density")

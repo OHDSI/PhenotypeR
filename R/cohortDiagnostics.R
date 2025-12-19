@@ -110,25 +110,13 @@ cohortDiagnostics <- function(cohort, survival = FALSE, cohortSample = 20000, ma
   results[["cohort_summary"]] <- cdm[[tempCohortName]] |>
     CohortCharacteristics::summariseCharacteristics(
       strata = list("age_group", "sex"),
+      estimates = list("age" = "density"),
       tableIntersectCount = list(
         "Number visits prior year" = list(
           tableName = "visit_occurrence",
           window = c(-365, -1)
         )
       )
-    )
-
-  cli::cli_bullets(c(">" = "Calculating age density"))
-  results[["cohort_density"]] <- cdm[[tempCohortName]] |>
-    PatientProfiles::addCohortName() |>
-    PatientProfiles::summariseResult(
-      counts = FALSE,
-      strata    = "sex",
-      includeOverallStrata = FALSE,
-      group     = "cohort_name",
-      includeOverallGroup  = FALSE,
-      variables = "age",
-      estimates = "density"
     )
 
   # Large scale characteristics
