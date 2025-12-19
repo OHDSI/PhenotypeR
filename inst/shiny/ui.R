@@ -177,29 +177,7 @@ ui <- fluidPage(
                                                       value = TRUE,
                                                       label = "Interactive",
                                                       status = "primary"),
-                                       sortable::bucket_list(
-                                         header = NULL,
-                                         sortable::add_rank_list(
-                                           text = "none",
-                                           labels = c("codelist_name"),
-                                           input_id = "achilles_code_use_none"
-                                         ),
-                                         sortable::add_rank_list(
-                                           text = "header",
-                                           labels = c("cdm_name", "estimate_name"),
-                                           input_id = "achilles_code_use_header"
-                                         ),
-                                         sortable::add_rank_list(
-                                           text = "groupColumn",
-                                           labels = character(),
-                                           input_id = "achilles_code_use_groupColumn"
-                                         ),
-                                         sortable::add_rank_list(
-                                           text = "hide",
-                                           labels = character(),
-                                           input_id = "achilles_code_use_hide"
-                                         )
-                                       )
+                                       uiOutput("achilles_sortable")
                                      )
                                    )
           ),
@@ -361,29 +339,8 @@ ui <- fluidPage(
                                                       value = TRUE,
                                                       label = "Interactive",
                                                       status = "primary"),
-                                       sortable::bucket_list(
-                                         header = NULL,
-                                         sortable::add_rank_list(
-                                           text = "none",
-                                           labels = c("variable_name", "cohort_name", "variable_level"),
-                                           input_id = "orphan_codes_gt_none"
-                                         ),
-                                         sortable::add_rank_list(
-                                           text = "header",
-                                           labels = c("cdm_name", "estimate_name"),
-                                           input_id = "orphan_codes_gt_header"
-                                         ),
-                                         sortable::add_rank_list(
-                                           text = "groupColumn",
-                                           labels = character(),
-                                           input_id = "orphan_codes_gt_groupColumn"
-                                         ),
-                                         sortable::add_rank_list(
-                                           text = "hide",
-                                           labels = character(),
-                                           input_id = "orphan_codes_gt_hide"
-                                         )
-                                       )
+                                       uiOutput("orphan_sortable")
+
                                      )
                                    )
           ),
@@ -483,30 +440,7 @@ ui <- fluidPage(
                                                       value = TRUE,
                                                       label = "Interactive",
                                                       status = "primary"),
-                                       sortable::bucket_list(
-                                         header = NULL,
-                                         sortable::add_rank_list(
-                                           text = "none",
-                                           labels = c("cohort_name", "codelist_name", "source_concept_name", "source_concept_id", "variable_name", "variable_level"),
-                                           input_id = "cohort_code_use_gt_none"
-                                         ),
-                                         sortable::add_rank_list(
-                                           text = "header",
-                                           labels = c("cdm_name", "estimate_name"),
-                                           input_id = "cohort_code_use_gt_header"
-                                         ),
-                                         sortable::add_rank_list(
-                                           text = "groupColumn",
-                                           labels =  character(),
-                                           input_id = "cohort_code_use_gt_groupColumn"
-                                         ),
-                                         sortable::add_rank_list(
-                                           text = "hide",
-                                           labels = c("diagnostic", "phenotyper_version",
-                                                      "domain_id", "timing"),
-                                           input_id = "cohort_code_use_gt_hide"
-                                         )
-                                       )
+                                       uiOutput("cohort_code_use_sortable")
                                      )
                                    )
           ),
@@ -586,29 +520,7 @@ ui <- fluidPage(
               ),
               bslib::layout_sidebar(
                 sidebar = bslib::sidebar(width = 400, open = "closed",
-                                         sortable::bucket_list(
-                                           header = "Table formatting",
-                                           sortable::add_rank_list(
-                                             text = "none",
-                                             labels = c("cohort_name", "variable_level",  "estimate_name"),
-                                             input_id = "measurement_value_as_concept_gt_none"
-                                           ),
-                                           sortable::add_rank_list(
-                                             text = "header",
-                                             labels = c("cdm_name"),
-                                             input_id = "measurement_value_as_concepts_gt_header"
-                                           ),
-                                           sortable::add_rank_list(
-                                             text = "groupColumn",
-                                             labels =  c("codelist_name"),
-                                             input_id = "measurement_value_as_concept_gt_groupColumn"
-                                           ),
-                                           sortable::add_rank_list(
-                                             text = "hide",
-                                             labels =  c("variable_name"),
-                                             input_id = "measurement_value_as_concept_gt_hide"
-                                           )
-                                         ),
+                                         uiOutput("measurement_value_as_concept_sortable"),
                                          position = "right"
                 ),
                 gt::gt_output("measurement_value_as_concept_tbl") |> withSpinner()
