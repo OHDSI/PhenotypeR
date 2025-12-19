@@ -58,15 +58,15 @@ Diagnostics include:
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">databaseDiagnostics</span><span class="op">(</span><span class="va">cdm</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">databaseDiagnostics</span><span class="op">(</span><span class="va">cohort</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-cdm">cdm<a class="anchor" aria-label="anchor" href="#arg-cdm"></a></dt>
-<dd><p>CDM reference</p></dd>
+<dl><dt id="arg-cohort">cohort<a class="anchor" aria-label="anchor" href="#arg-cohort"></a></dt>
+<dd><p>Cohort table in a cdm reference</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -78,14 +78,26 @@ Diagnostics include:
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ohdsi.github.io/omock/" class="external-link">omock</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ohdsi.github.io/CohortConstructor/" class="external-link">CohortConstructor</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ohdsi.github.io/PhenotypeR/">PhenotypeR</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ohdsi.github.io/CohortConstructor/" class="external-link">CohortConstructor</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">cdm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ohdsi.github.io/omock/reference/mockCdmFromDataset.html" class="external-link">mockCdmFromDataset</a></span><span class="op">(</span>source <span class="op">=</span> <span class="st">"duckdb"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Reading <span style="color: #0000BB;">GiBleed</span> tables.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Adding <span style="color: #0000BB;">drug_strength</span> table.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Creating local <span style="color: #0000BB;">&lt;cdm_reference&gt;</span> object.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Inserting <span style="color: #0000BB;">&lt;cdm_reference&gt;</span> into <span style="color: #0000BB;">duckdb</span>.</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">cdm</span><span class="op">$</span><span class="va">new_cohort</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ohdsi.github.io/CohortConstructor/reference/conceptCohort.html" class="external-link">conceptCohort</a></span><span class="op">(</span><span class="va">cdm</span>,</span></span>
+<span class="r-in"><span>                                conceptSet <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"codes"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">40213201L</span>, <span class="fl">4336464L</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                                name <span class="op">=</span> <span class="st">"new_cohort"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Subsetting table <span style="font-weight: bold;">drug_exposure</span> using 1 concept with domain: <span style="font-weight: bold;">drug</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Subsetting table <span style="font-weight: bold;">procedure_occurrence</span> using 1 concept with domain: <span style="font-weight: bold;">procedure</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Combining tables.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Creating cohort attributes.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Applying cohort requirements.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Merging overlapping records.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Cohort <span style="font-weight: bold;">new_cohort</span> created.</span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

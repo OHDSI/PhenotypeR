@@ -9,7 +9,7 @@ library(CDMConnector)
 library(OmopSketch)
 library(PhenotypeR)
 library(dplyr)
-library(ggplot2)
+library(CohortConstructor)
 
 con <- DBI::dbConnect(duckdb::duckdb(), 
                       CDMConnector::eunomiaDir("synpuf-1k", "5.3"))
@@ -18,6 +18,15 @@ cdm <- CDMConnector::cdmFromCon(con = con,
                                 cdmSchema   = "main",
                                 writeSchema = "main", 
                                 achillesSchema = "main")
+
+cdm$injuries <- conceptCohort(cdm = cdm,
+  conceptSet = list(
+    "ankle_sprain" = 81151L,
+    "ankle_fracture" = 4059173L,
+    "forearm_fracture" = 4278672L,
+    "hip_fracture" = 4230399L
+  ),
+  name = "injuries")
 ```
 
 ## Database diagnostics
@@ -32,7 +41,7 @@ To run database diagnostics we just need to provide our cdm reference to
 the function.
 
 ``` r
-db_diagnostics <- databaseDiagnostics(cdm)
+db_diagnostics <- databaseDiagnostics(cdm$injuries)
 ```
 
 Database diagnostics builds on
@@ -47,6 +56,11 @@ perform the following analyses:
   This will allow us to see if there are individuals with multiple,
   non-overlapping, observation periods and how long each observation
   period lasts on average.
+- **Clinical Records**: The diagnostics will detect which domains
+  appears to the codelist associated to your cohort (i.e., Drug), and
+  use
+  [summariseClinicalRecords()](https://ohdsi.github.io/OmopSketch/reference/summariseClinicalRecords.html)
+  to summarise the clinical table associated (i.e., “drug_exposure”).
 
 The output is a summarised result object.
 
@@ -65,7 +79,7 @@ tableOmopSnapshot(db_diagnostics)
 
 Snapshot of the cdm Eunomia Synpuf
 
-### Observation periods
+### Observation Periods
 
 ``` r
 tableObservationPeriod(db_diagnostics)
@@ -74,3 +88,13 @@ tableObservationPeriod(db_diagnostics)
 [TABLE]
 
 Summary of observation_period table
+
+### Clinical Records
+
+``` r
+tableClinicalRecords(db_diagnostics)
+```
+
+[TABLE]
+
+Summary of condition_occurrence table

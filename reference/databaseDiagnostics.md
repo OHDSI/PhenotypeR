@@ -10,14 +10,14 @@ summarised_result object.
 ## Usage
 
 ``` r
-databaseDiagnostics(cdm)
+databaseDiagnostics(cohort)
 ```
 
 ## Arguments
 
-- cdm:
+- cohort:
 
-  CDM reference
+  Cohort table in a cdm reference
 
 ## Value
 
@@ -28,13 +28,25 @@ A summarised result
 ``` r
 # \donttest{
 library(omock)
-library(CohortConstructor)
 library(PhenotypeR)
+library(CohortConstructor)
 
 cdm <- mockCdmFromDataset(source = "duckdb")
 #> ℹ Reading GiBleed tables.
 #> ℹ Adding drug_strength table.
 #> ℹ Creating local <cdm_reference> object.
 #> ℹ Inserting <cdm_reference> into duckdb.
+
+cdm$new_cohort <- conceptCohort(cdm,
+                                conceptSet = list("codes" = c(40213201L, 4336464L)),
+                                name = "new_cohort")
+#> ℹ Subsetting table drug_exposure using 1 concept with domain: drug.
+#> ℹ Subsetting table procedure_occurrence using 1 concept with domain: procedure.
+#> ℹ Combining tables.
+#> ℹ Creating cohort attributes.
+#> ℹ Applying cohort requirements.
+#> ℹ Merging overlapping records.
+#> ✔ Cohort new_cohort created.
+
 # }
 ```

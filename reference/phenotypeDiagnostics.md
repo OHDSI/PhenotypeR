@@ -96,19 +96,35 @@ cdm$warfarin <- conceptCohort(cdm,
 
 result <- phenotypeDiagnostics(cdm$warfarin)
 #> ℹ Creating log file:
-#>   /tmp/RtmpEPmpId/phenotypeDiagnostics_log_2025_12_19_11_02_001eed5b6a258b.txt.
-#> [2025-12-19 11:02:00] - Log file created
-#> [2025-12-19 11:02:00] - Started phenotypeDiagnostics
-#> [2025-12-19 11:02:00] - Running database diagnostics
+#>   /tmp/RtmpjNHBkB/phenotypeDiagnostics_log_2025_12_19_14_22_521eee4ec693ba.txt.
+#> [2025-12-19 14:22:52] - Log file created
+#> [2025-12-19 14:22:52] - Started phenotypeDiagnostics
+#> [2025-12-19 14:22:52] - Running database diagnostics
+#> • Starting Database Diagnostics
+#> → Getting CDM Snapshot
+#> → Summarising Observation Period
 #> ℹ retrieving cdm object from cdm_table.
 #> Warning: ! There are 2649 individuals not included in the person table.
-#> [2025-12-19 11:02:03] - Running codelist diagnostics
+#> → Summarising OMOP tables
+#> ℹ Adding variables of interest to drug_exposure.
+#> ℹ Summarising records per person in drug_exposure.
+#> ℹ Summarising subjects not in person table in drug_exposure.
+#> ℹ Summarising records in observation in drug_exposure.
+#> ℹ Summarising records with start before birth date in drug_exposure.
+#> ℹ Summarising records with end date before start date in drug_exposure.
+#> ℹ Summarising domains in drug_exposure.
+#> ℹ Summarising standard concepts in drug_exposure.
+#> ℹ Summarising source vocabularies in drug_exposure.
+#> ℹ Summarising concept types in drug_exposure.
+#> ℹ Summarising concept class in drug_exposure.
+#> ℹ Summarising missing data in drug_exposure.
+#> [2025-12-19 14:22:59] - Running codelist diagnostics
 #> • Getting codelists from cohorts
 #> • Getting index event breakdown
 #> Getting counts of warfarin codes for cohort warfarin
 #> Warning: The CDM reference containing the cohort must also contain achilles tables.
 #> Returning only index event breakdown.
-#> [2025-12-19 11:02:05] - Running cohort diagnostics
+#> [2025-12-19 14:23:01] - Running cohort diagnostics
 #> • Starting Cohort Diagnostics
 #> → Getting cohort attrition
 #> → Getting cohort count
@@ -117,7 +133,7 @@ result <- phenotypeDiagnostics(cdm$warfarin)
 #> ✔ summariseCharacteristics finished!
 #> → Skipping cohort sampling as all cohorts have less than 20000 individuals.
 #> → Creating matching cohorts
-#> → Sampling cohort `tmp_017_sampled`
+#> → Sampling cohort `tmp_021_sampled`
 #> Returning entry cohort as the size of the cohorts to be sampled is equal or
 #> smaller than `n`.
 #> • Generating an age and sex matched cohort for warfarin
@@ -148,8 +164,8 @@ result <- phenotypeDiagnostics(cdm$warfarin)
 #> • age: density
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side
-#> → Start summary of data, at 2025-12-19 11:02:23.600216
-#> ✔ Summary finished, at 2025-12-19 11:02:23.750366
+#> → Start summary of data, at 2025-12-19 14:23:19.713661
+#> ✔ Summary finished, at 2025-12-19 14:23:19.858887
 #> → Run large scale characteristics
 #> ℹ Summarising large scale characteristics 
 #>  - getting characteristics from table condition_occurrence (1 of 8)
@@ -217,10 +233,10 @@ result <- phenotypeDiagnostics(cdm$warfarin)
 #>  - getting characteristics from table drug_era (8 of 8) for time window 31 and …
 #>  - getting characteristics from table drug_era (8 of 8) for time window 366 and…
 #> Formatting result
-#> 842 estimates dropped as frequency less than 1%
+#> 862 estimates dropped as frequency less than 1%
 #> ✔ Summarising large scale characteristics
 #> `cohort_sample` and `matched_sample` casted to character.
-#> [2025-12-19 11:02:58] - Running population diagnostics
+#> [2025-12-19 14:23:54] - Running population diagnostics
 #> • Creating denominator for incidence and prevalence
 #> • Sampling person table to 1e+06
 #> ℹ Creating denominator cohorts
@@ -248,7 +264,7 @@ result <- phenotypeDiagnostics(cdm$warfarin)
 #> `populationDateStart` and `populationDateEnd` eliminated from settings as all
 #> elements are NA.
 #> 
-#> [2025-12-19 11:03:22] - Exporting log file
+#> [2025-12-19 14:24:18] - Exporting log file
 #> 
 # }
 ```

@@ -77,19 +77,35 @@ cdm$warfarin <- conceptCohort(cdm,
 result <- phenotypeDiagnostics(cdm$warfarin)
 #> ! Overwriting current log file
 #> ℹ Creating log file:
-#>   /tmp/RtmpEPmpId/phenotypeDiagnostics_log_2025_12_19_11_04_081eed73bbbfb3.txt.
-#> [2025-12-19 11:04:08] - Log file created
-#> [2025-12-19 11:04:08] - Started phenotypeDiagnostics
-#> [2025-12-19 11:04:08] - Running database diagnostics
+#>   /tmp/RtmpjNHBkB/phenotypeDiagnostics_log_2025_12_19_14_25_041eee7823eb25.txt.
+#> [2025-12-19 14:25:04] - Log file created
+#> [2025-12-19 14:25:04] - Started phenotypeDiagnostics
+#> [2025-12-19 14:25:04] - Running database diagnostics
+#> • Starting Database Diagnostics
+#> → Getting CDM Snapshot
+#> → Summarising Observation Period
 #> ℹ retrieving cdm object from cdm_table.
 #> Warning: ! There are 2649 individuals not included in the person table.
-#> [2025-12-19 11:04:11] - Running codelist diagnostics
+#> → Summarising OMOP tables
+#> ℹ Adding variables of interest to drug_exposure.
+#> ℹ Summarising records per person in drug_exposure.
+#> ℹ Summarising subjects not in person table in drug_exposure.
+#> ℹ Summarising records in observation in drug_exposure.
+#> ℹ Summarising records with start before birth date in drug_exposure.
+#> ℹ Summarising records with end date before start date in drug_exposure.
+#> ℹ Summarising domains in drug_exposure.
+#> ℹ Summarising standard concepts in drug_exposure.
+#> ℹ Summarising source vocabularies in drug_exposure.
+#> ℹ Summarising concept types in drug_exposure.
+#> ℹ Summarising concept class in drug_exposure.
+#> ℹ Summarising missing data in drug_exposure.
+#> [2025-12-19 14:25:11] - Running codelist diagnostics
 #> • Getting codelists from cohorts
 #> • Getting index event breakdown
 #> Getting counts of warfarin codes for cohort warfarin
 #> Warning: The CDM reference containing the cohort must also contain achilles tables.
 #> Returning only index event breakdown.
-#> [2025-12-19 11:04:13] - Running cohort diagnostics
+#> [2025-12-19 14:25:13] - Running cohort diagnostics
 #> • Starting Cohort Diagnostics
 #> → Getting cohort attrition
 #> → Getting cohort count
@@ -98,7 +114,7 @@ result <- phenotypeDiagnostics(cdm$warfarin)
 #> ✔ summariseCharacteristics finished!
 #> → Skipping cohort sampling as all cohorts have less than 20000 individuals.
 #> → Creating matching cohorts
-#> → Sampling cohort `tmp_031_sampled`
+#> → Sampling cohort `tmp_038_sampled`
 #> Returning entry cohort as the size of the cohorts to be sampled is equal or
 #> smaller than `n`.
 #> • Generating an age and sex matched cohort for warfarin
@@ -129,8 +145,8 @@ result <- phenotypeDiagnostics(cdm$warfarin)
 #> • age: density
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side
-#> → Start summary of data, at 2025-12-19 11:04:31.172315
-#> ✔ Summary finished, at 2025-12-19 11:04:31.323097
+#> → Start summary of data, at 2025-12-19 14:25:31.430361
+#> ✔ Summary finished, at 2025-12-19 14:25:31.579159
 #> → Run large scale characteristics
 #> ℹ Summarising large scale characteristics 
 #>  - getting characteristics from table condition_occurrence (1 of 8)
@@ -198,10 +214,10 @@ result <- phenotypeDiagnostics(cdm$warfarin)
 #>  - getting characteristics from table drug_era (8 of 8) for time window 31 and …
 #>  - getting characteristics from table drug_era (8 of 8) for time window 366 and…
 #> Formatting result
-#> 862 estimates dropped as frequency less than 1%
+#> 848 estimates dropped as frequency less than 1%
 #> ✔ Summarising large scale characteristics
 #> `cohort_sample` and `matched_sample` casted to character.
-#> [2025-12-19 11:05:05] - Running population diagnostics
+#> [2025-12-19 14:26:05] - Running population diagnostics
 #> • Creating denominator for incidence and prevalence
 #> • Sampling person table to 1e+06
 #> ℹ Creating denominator cohorts
@@ -229,7 +245,7 @@ result <- phenotypeDiagnostics(cdm$warfarin)
 #> `populationDateStart` and `populationDateEnd` eliminated from settings as all
 #> elements are NA.
 #> 
-#> [2025-12-19 11:05:29] - Exporting log file
+#> [2025-12-19 14:26:29] - Exporting log file
 #> 
 
 expectations <- dplyr::tibble("cohort_name" = "warfarin",
@@ -241,14 +257,14 @@ expectations <- dplyr::tibble("cohort_name" = "warfarin",
 
 shinyDiagnostics(result, tempdir(), expectations = expectations)
 #> ℹ Creating shiny from provided data
-#> [2025-12-19 11:05:29] - Exporting log file
+#> [2025-12-19 14:26:29] - Exporting log file
 #> Warning: No achilles code use or orphan codes results in codelistDiagnostics. Removing
 #> tabs from the shiny app.
 #> Warning: No measurements present in the concept list. Removing tab from the shiny app.
 #> Warning: No survival analysis present in cohortDiagnostics. Removing tab from the shiny
 #> app.
-#> Warning: '/tmp/RtmpEPmpId/PhenotypeRShiny/data/raw/expectations' already exists
-#> ℹ Shiny app created in /tmp/RtmpEPmpId/PhenotypeRShiny
+#> Warning: '/tmp/RtmpjNHBkB/PhenotypeRShiny/data/raw/expectations' already exists
+#> ℹ Shiny app created in /tmp/RtmpjNHBkB/PhenotypeRShiny
 
 CDMConnector::cdmDisconnect(cdm = cdm)
 # }
