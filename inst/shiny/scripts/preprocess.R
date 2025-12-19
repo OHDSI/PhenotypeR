@@ -116,7 +116,7 @@ if("cohortDiagnostics" %in% diagnostics){
   values <- append(values, values_subset)
 
   values$summarise_large_scale_characteristics_variable_level <-c("-inf to -366", "-365 to -31", "-30 to -1", "0 to 0", "1 to 30", "31 to 365", "366 to inf")
-  
+
   if("summarise_cohort_overlap" %in% names(dataFiltered)){
     values$summarise_cohort_overlap_cohort_comparator <- values$summarise_cohort_overlap_cohort_name_comparator
     values <- values[!stringr::str_detect(names(values), "summarise_cohort_overlap_cohort_name_comparator")]
@@ -220,8 +220,10 @@ if("diagnostic" %in% colnames(expectations)){
   expectations <- expectations |>
     dplyr::mutate("diagnostic" = paste(all_diag, collapse = ", "))
 }
-
-phenotyper_version <- omopgenerics::settings(result) |> dplyr::pull("phenotyper_version") |> unique()
+phenotyper_version <- omopgenerics::settings(result) |>
+  dplyr::filter(!is.na(phenotyper_version)) |>
+  dplyr::pull("phenotyper_version") |>
+  unique()
 cli::cli_inform("Saving data for shiny")
 save(dataFiltered,
      selected,

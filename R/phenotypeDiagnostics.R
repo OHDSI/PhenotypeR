@@ -119,6 +119,12 @@ phenotypeDiagnostics <- function(cohort,
   results[["log"]] <- omopgenerics::summariseLogFile(
     cdmName = omopgenerics::cdmName(cdm)
   )
+  newSettings <- results[["log"]]  |>
+    omopgenerics::settings() |>
+    dplyr::mutate("phenotyper_version" = as.character(utils::packageVersion(pkg = "PhenotypeR")),
+                  "diagnostic" = "Logging")
+  results[["log"]] <- results[["log"]] |>
+    omopgenerics::newSummarisedResult(settings = newSettings)
 
   cli::cli("Combining results")
   results <- results |>
