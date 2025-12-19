@@ -1940,6 +1940,15 @@ server <- function(input, output, session) {
     }
   )
 
+  output$summarise_log_file_gt <- gt::render_gt({
+    dataFiltered$summarise_log_file |>
+      visOmopResults::visOmopTable(
+        header = c('cdm_name','estimate_name'),
+        hide = c('variable_level')
+      ) |>
+      gt::tab_options(container.width = "100%")
+  })
+
   # expectations ----
   createExpectationsOutput <- function(trigger_input, output_id) {
     filteredExpectations <- eventReactive(trigger_input(), {

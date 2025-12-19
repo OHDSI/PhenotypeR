@@ -2511,6 +2511,33 @@ ui <- fluidPage(
     ),
     # populationDiagnostics_end ----
     nav_spacer(),
+    tags$head(
+      # custom styling so the table is shown in full
+      tags$style(HTML("
+    .log-popover-wide {
+      max-width: 95vw !important;
+    }
+
+    @media (min-width: 800px) {
+      .log-popover-wide {
+        max-width: 800px !important;
+      }
+    }
+
+    .log-popover-wide .popover-body {
+      padding: 10px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+  "))
+    ),
+    bslib::nav_item(
+      bslib::popover(
+        icon("clipboard-list"),
+        gt::gt_output("summarise_log_file_gt"),
+        options = list(customClass = "log-popover-wide")
+      )
+    ),
     bslib::nav_item(
       bslib::popover(
         shiny::icon("circle-info"),
