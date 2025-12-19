@@ -135,5 +135,8 @@ phenotypeDiagnostics <- function(cohort,
     results <- omopgenerics::emptySummarisedResult()
   }
 
+  unlink(log_file)
+  options("omopgenerics.logFile" = NULL)
+
   results
 }
