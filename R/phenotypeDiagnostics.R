@@ -65,7 +65,7 @@ phenotypeDiagnostics <- function(cohort,
   results <- list()
   if ("databaseDiagnostics" %in% diagnostics) {
     omopgenerics::logMessage("Running database diagnostics")
-    results[["db_diag"]] <- databaseDiagnostics(cdm)
+    results[["db_diag"]] <- databaseDiagnostics(cohort)
     if(!is.null(incrementalResultPath)){
       if (dir.exists(incrementalResultPath)) {
       exportSummarisedResult(results[["db_diag"]] ,

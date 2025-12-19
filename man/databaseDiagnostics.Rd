@@ -4,10 +4,10 @@
 \alias{databaseDiagnostics}
 \title{Database diagnostics}
 \usage{
-databaseDiagnostics(cdm)
+databaseDiagnostics(cohort)
 }
 \arguments{
-\item{cdm}{CDM reference}
+\item{cohort}{Cohort table in a cdm reference}
 }
 \value{
 A summarised result
@@ -22,9 +22,14 @@ Diagnostics include:
 \examples{
 \donttest{
 library(omock)
-library(CohortConstructor)
 library(PhenotypeR)
+library(CohortConstructor)
 
 cdm <- mockCdmFromDataset(source = "duckdb")
+
+cdm$new_cohort <- conceptCohort(cdm,
+                                conceptSet = list("codes" = c(40213201L, 4336464L)),
+                                name = "new_cohort")
+
 }
 }
