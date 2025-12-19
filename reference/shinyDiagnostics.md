@@ -77,10 +77,10 @@ cdm$warfarin <- conceptCohort(cdm,
 result <- phenotypeDiagnostics(cdm$warfarin)
 #> ! Overwriting current log file
 #> ℹ Creating log file:
-#>   /tmp/RtmpglEaQU/phenotypeDiagnostics_log_2025_12_19_18_17_321ee78240680.txt.
-#> [2025-12-19 18:17:32] - Log file created
-#> [2025-12-19 18:17:32] - Started phenotypeDiagnostics
-#> [2025-12-19 18:17:32] - Running database diagnostics
+#>   /tmp/RtmpcRmuX0/phenotypeDiagnostics_log_2025_12_19_20_27_581ed18015c2a.txt.
+#> [2025-12-19 20:27:58] - Log file created
+#> [2025-12-19 20:27:58] - Started phenotypeDiagnostics
+#> [2025-12-19 20:27:58] - Running database diagnostics
 #> • Starting Database Diagnostics
 #> → Getting CDM Snapshot
 #> → Summarising Observation Period
@@ -99,13 +99,13 @@ result <- phenotypeDiagnostics(cdm$warfarin)
 #> ℹ Summarising concept types in drug_exposure.
 #> ℹ Summarising concept class in drug_exposure.
 #> ℹ Summarising missing data in drug_exposure.
-#> [2025-12-19 18:17:40] - Running codelist diagnostics
+#> [2025-12-19 20:28:05] - Running codelist diagnostics
 #> • Getting codelists from cohorts
 #> • Getting index event breakdown
 #> Getting counts of warfarin codes for cohort warfarin
 #> Warning: The CDM reference containing the cohort must also contain achilles tables.
 #> Returning only index event breakdown.
-#> [2025-12-19 18:17:41] - Running cohort diagnostics
+#> [2025-12-19 20:28:08] - Running cohort diagnostics
 #> • Starting Cohort Diagnostics
 #> → Getting cohort attrition
 #> → Getting cohort count
@@ -145,8 +145,8 @@ result <- phenotypeDiagnostics(cdm$warfarin)
 #> • age: density
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side
-#> → Start summary of data, at 2025-12-19 18:17:59.619789
-#> ✔ Summary finished, at 2025-12-19 18:17:59.759113
+#> → Start summary of data, at 2025-12-19 20:28:28.208155
+#> ✔ Summary finished, at 2025-12-19 20:28:28.367254
 #> → Run large scale characteristics
 #> ℹ Summarising large scale characteristics 
 #>  - getting characteristics from table condition_occurrence (1 of 8)
@@ -214,14 +214,14 @@ result <- phenotypeDiagnostics(cdm$warfarin)
 #>  - getting characteristics from table drug_era (8 of 8) for time window 31 and …
 #>  - getting characteristics from table drug_era (8 of 8) for time window 366 and…
 #> Formatting result
-#> 976 estimates dropped as frequency less than 1%
+#> 864 estimates dropped as frequency less than 1%
 #> ✔ Summarising large scale characteristics
 #> `cohort_sample` and `matched_sample` casted to character.
-#> [2025-12-19 18:18:34] - Running population diagnostics
+#> [2025-12-19 20:29:06] - Running population diagnostics
 #> • Creating denominator for incidence and prevalence
 #> • Sampling person table to 1e+06
 #> ℹ Creating denominator cohorts
-#> ✔ Cohorts created in 0 min and 5 sec
+#> ✔ Cohorts created in 0 min and 6 sec
 #> • Estimating incidence
 #> ℹ Getting incidence for analysis 1 of 7
 #> ℹ Getting incidence for analysis 2 of 7
@@ -230,7 +230,7 @@ result <- phenotypeDiagnostics(cdm$warfarin)
 #> ℹ Getting incidence for analysis 5 of 7
 #> ℹ Getting incidence for analysis 6 of 7
 #> ℹ Getting incidence for analysis 7 of 7
-#> ✔ Overall time taken: 0 mins and 10 secs
+#> ✔ Overall time taken: 0 mins and 11 secs
 #> • Estimating prevalence
 #> ℹ Getting prevalence for analysis 1 of 7
 #> ℹ Getting prevalence for analysis 2 of 7
@@ -245,7 +245,7 @@ result <- phenotypeDiagnostics(cdm$warfarin)
 #> `populationDateStart` and `populationDateEnd` eliminated from settings as all
 #> elements are NA.
 #> 
-#> [2025-12-19 18:18:58] - Exporting log file
+#> [2025-12-19 20:29:31] - Exporting log file
 #> 
 
 expectations <- dplyr::tibble("cohort_name" = "warfarin",
@@ -257,14 +257,14 @@ expectations <- dplyr::tibble("cohort_name" = "warfarin",
 
 shinyDiagnostics(result, tempdir(), expectations = expectations)
 #> ℹ Creating shiny from provided data
-#> [2025-12-19 18:18:59] - Exporting log file
+#> [2025-12-19 20:29:32] - Exporting log file
 #> Warning: No achilles code use or orphan codes results in codelistDiagnostics. Removing
 #> tabs from the shiny app.
 #> Warning: No measurements present in the concept list. Removing tab from the shiny app.
 #> Warning: No survival analysis present in cohortDiagnostics. Removing tab from the shiny
 #> app.
-#> Warning: '/tmp/RtmpglEaQU/PhenotypeRShiny/data/raw/expectations' already exists
-#> ℹ Shiny app created in /tmp/RtmpglEaQU/PhenotypeRShiny
+#> Warning: '/tmp/RtmpcRmuX0/PhenotypeRShiny/data/raw/expectations' already exists
+#> ℹ Shiny app created in /tmp/RtmpcRmuX0/PhenotypeRShiny
 
 CDMConnector::cdmDisconnect(cdm = cdm)
 # }
