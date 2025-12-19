@@ -222,7 +222,7 @@ plotAgeDensity <- function(summarise_table, summarise_characteristics, show_inte
   return(plot)
 }
 
-getColsForTbl <- function(tbl, sortNALast = TRUE, names = c("Standard concept ID")){
+getColsForTbl <- function(tbl, sortNALast = TRUE, names = c("Standard concept ID", "Source Concept ID")){
 
   cols <- list()
   for(i in seq_along(names(tbl))){
