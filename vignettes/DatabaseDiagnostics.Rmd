@@ -28,6 +28,7 @@ library(CDMConnector)
 library(OmopSketch)
 library(PhenotypeR)
 library(dplyr)
+library(CohortConstructor)
 
 con <- DBI::dbConnect(duckdb::duckdb(), 
                       CDMConnector::eunomiaDir("synpuf-1k", "5.3"))
