@@ -243,7 +243,6 @@ server <- function(input, output, session) {
 
   output$achilles_code_use_tbl <- shiny::renderUI({
 
-
     if(isFALSE(input$achilles_interactive)){
       tbl <- createAchillesCodeUseGT()
       return(tbl)
@@ -255,7 +254,7 @@ server <- function(input, output, session) {
       # column ordering by codelist and first column with a count
       order <- list("Codelist name"  = "asc",
                     "count" = "desc")
-      names(order)[2] <- names(tbl)[7]
+      names(order)[2] <- names(tbl)[9]
 
       # suppressed to NA
       tbl <- tbl |>
@@ -267,6 +266,7 @@ server <- function(input, output, session) {
 
       tbl <- reactable::reactable(tbl,
                                   defaultSorted = order,
+                                  groupBy = c("Codelist name"),
                                   columns = getColsForTbl(tbl),
                                   filterable = TRUE,
                                   searchable = TRUE,
