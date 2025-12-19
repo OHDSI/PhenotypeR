@@ -54,7 +54,7 @@ test_that("only one diagnostic", {
   cdm$new_cohort <- CohortConstructor::conceptCohort(cdm, conceptSet = list("concept" = 40481087L), name = "new_cohort")
 
   # examples with single diagnostics ----
-  result <- databaseDiagnostics(cdm)
+  result <- databaseDiagnostics(cdm$new_cohort)
   expect_no_error(shinyDiagnostics(result, directory = tempdir()))
 
   result <- codelistDiagnostics(cdm$new_cohort)

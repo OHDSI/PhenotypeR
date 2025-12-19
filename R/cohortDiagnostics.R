@@ -36,6 +36,7 @@ cohortDiagnostics <- function(cohort, survival = FALSE, cohortSample = 20000, ma
   cli::cli_bullets(c("*" = "Starting Cohort Diagnostics"))
 
   # Initial checks ----
+  omopgenerics::validateCohortArgument(cohort)
   checksCohortDiagnostics(survival, cohortSample, matchedSample)
 
   cdm <- omopgenerics::cdmReference(cohort)
