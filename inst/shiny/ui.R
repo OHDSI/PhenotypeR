@@ -538,7 +538,7 @@ ui <- fluidPage(
                 tags$div(
                   style = "margin-top: 15px;",
                   shinyWidgets::pickerInput(
-                    inputId = "measurement_timings_cdm_name",
+                    inputId = "measurement_summary_cdm_name",
                     label = NULL,
                     selected = selected$shared_cdm_name,
                     choices = choices$shared_cdm_name,
@@ -555,7 +555,7 @@ ui <- fluidPage(
                 tags$div(
                   style = "margin-top: 15px;",
                   shinyWidgets::pickerInput(
-                    inputId = "measurement_timings_cohort_name",
+                    inputId = "measurement_summary_cohort_name",
                     label = NULL,
                     selected = selected$shared_cohort_name,
                     choices = choices$shared_cohort_name,
@@ -693,7 +693,7 @@ ui <- fluidPage(
             bslib::card(
               full_screen = TRUE,
               bslib::card_header(
-                shiny::downloadButton(outputId = "measurement_value_as_numeric_gt_download", label = ""),
+                shiny::downloadButton(outputId = "measurement_value_as_number_gt_download", label = ""),
                 class = "text-end"
               ),
               bslib::layout_sidebar(
@@ -703,27 +703,27 @@ ui <- fluidPage(
                                            sortable::add_rank_list(
                                              text = "none",
                                              labels = c("cohort_name", "estimate_name"),
-                                             input_id = "measurement_value_as_numeric_gt_none"
+                                             input_id = "measurement_value_as_number_gt_none"
                                            ),
                                            sortable::add_rank_list(
                                              text = "header",
                                              labels = c("cdm_name"),
-                                             input_id = "measurement_value_as_numeric_gt_header"
+                                             input_id = "measurement_value_as_number_gt_header"
                                            ),
                                            sortable::add_rank_list(
                                              text = "groupColumn",
                                              labels =  c("codelist_name"),
-                                             input_id = "measurement_value_as_numeric_gt_groupColumn"
+                                             input_id = "measurement_value_as_number_gt_groupColumn"
                                            ),
                                            sortable::add_rank_list(
                                              text = "hide",
                                              labels =  c("variable_name", "variable_level"),
-                                             input_id = "measurement_value_as_numeric_gt_hide"
+                                             input_id = "measurement_value_as_number_gt_hide"
                                            )
                                          ),
                                          position = "right"
                 ),
-                gt::gt_output("measurement_value_as_numeric_tbl") |> withSpinner()
+                gt::gt_output("measurement_value_as_number_tbl") |> withSpinner()
               )
             )
           ),
@@ -735,35 +735,35 @@ ui <- fluidPage(
                 bslib::popover(
                   shiny::icon("download"),
                   shiny::numericInput(
-                    inputId = "plot_measurement_value_as_numeric_download_width",
+                    inputId = "plot_measurement_value_as_number_download_width",
                     label = "Width",
                     value = 15
                   ),
                   shiny::numericInput(
-                    inputId = "plot_measurement_value_as_numeric_download_height",
+                    inputId = "plot_measurement_value_as_number_download_height",
                     label = "Height",
                     value = 10
                   ),
                   shinyWidgets::pickerInput(
-                    inputId = "plot_measurement_value_as_numeric_download_units",
+                    inputId = "plot_measurement_value_as_number_download_units",
                     label = "Units",
                     selected = "cm",
                     choices = c("px", "cm", "inch"),
                     multiple = FALSE
                   ),
                   shiny::numericInput(
-                    inputId = "plot_measurement_value_as_numeric_download_dpi",
+                    inputId = "plot_measurement_value_as_number_download_dpi",
                     label = "dpi",
                     value = 300
                   ),
-                  shiny::downloadButton(outputId = "plot_measurement_value_as_numeric_download", label = "Download")
+                  shiny::downloadButton(outputId = "plot_measurement_value_as_number_download", label = "Download")
                 ),
                 class = "text-end"
               ),
               bslib::layout_sidebar(
                 sidebar = bslib::sidebar(width = 400, open = "closed",
                                          shinyWidgets::pickerInput(
-                                           inputId = "measurement_value_as_numeric_x",
+                                           inputId = "measurement_value_as_number_x",
                                            label = "Horizontal axis",
                                            selected = c("unit_concept_name"),
                                            multiple = FALSE,
@@ -771,7 +771,7 @@ ui <- fluidPage(
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                          ),
                                          shinyWidgets::pickerInput(
-                                           inputId = "measurement_value_as_numeric_plottype",
+                                           inputId = "measurement_value_as_number_plottype",
                                            label = "Plot type",
                                            selected = "boxplot",
                                            multiple = FALSE,
@@ -779,7 +779,7 @@ ui <- fluidPage(
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                          ),
                                          shinyWidgets::pickerInput(
-                                           inputId = "measurement_value_as_numeric_colour",
+                                           inputId = "measurement_value_as_number_colour",
                                            label = "Colour",
                                            selected = c("cdm_name"),
                                            multiple = TRUE,
@@ -787,7 +787,7 @@ ui <- fluidPage(
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                          ),
                                          shinyWidgets::pickerInput(
-                                           inputId = "measurement_value_as_numeric_facet",
+                                           inputId = "measurement_value_as_number_facet",
                                            label = "Facet",
                                            selected = c("codelist_name", "concept_name"),
                                            multiple = TRUE,
@@ -796,16 +796,16 @@ ui <- fluidPage(
                                          ),
                                          position = "right"
                 ),
-                shiny::plotOutput("plot_measurement_value_as_numeric")
+                shiny::plotOutput("plot_measurement_value_as_number")
               )
             )
           ),
           bslib::nav_panel(
-            title = "Table Timings",
+            title = "Table Summary",
             bslib::card(
               full_screen = TRUE,
               bslib::card_header(
-                shiny::downloadButton(outputId = "measurement_timings_gt_download", label = ""),
+                shiny::downloadButton(outputId = "measurement_summary_gt_download", label = ""),
                 class = "text-end"
               ),
               bslib::layout_sidebar(
@@ -815,67 +815,67 @@ ui <- fluidPage(
                                            sortable::add_rank_list(
                                              text = "none",
                                              labels = c("cohort_name", "variable_name", "estimate_name"),
-                                             input_id = "measurement_timings_gt_none"
+                                             input_id = "measurement_summary_gt_none"
                                            ),
                                            sortable::add_rank_list(
                                              text = "header",
                                              labels = c("cdm_name"),
-                                             input_id = "measurement_timings_gt_header"
+                                             input_id = "measurement_summary_gt_header"
                                            ),
                                            sortable::add_rank_list(
                                              text = "groupColumn",
                                              labels =  c("codelist_name"),
-                                             input_id = "measurement_timings_gt_groupColumn"
+                                             input_id = "measurement_summary_gt_groupColumn"
                                            ),
                                            sortable::add_rank_list(
                                              text = "hide",
                                              labels =  c("variable_level"),
-                                             input_id = "measurement_timings_gt_hide"
+                                             input_id = "measurement_summary_gt_hide"
                                            )
                                          ),
                                          position = "right"
                 ),
-                gt::gt_output("measurement_timings_tbl") |> withSpinner()
+                gt::gt_output("measurement_summary_tbl") |> withSpinner()
               )
             )
           ),
           bslib::nav_panel(
-            title = "Plot timings",
+            title = "Plot summary",
             bslib::card(
               full_screen = TRUE,
               bslib::card_header(
                 bslib::popover(
                   shiny::icon("download"),
                   shiny::numericInput(
-                    inputId = "plot_measurement_timings_download_width",
+                    inputId = "plot_measurement_summary_download_width",
                     label = "Width",
                     value = 15
                   ),
                   shiny::numericInput(
-                    inputId = "plot_measurement_timings_download_height",
+                    inputId = "plot_measurement_summary_download_height",
                     label = "Height",
                     value = 10
                   ),
                   shinyWidgets::pickerInput(
-                    inputId = "plot_measurement_timings_download_units",
+                    inputId = "plot_measurement_summary_download_units",
                     label = "Units",
                     selected = "cm",
                     choices = c("px", "cm", "inch"),
                     multiple = FALSE
                   ),
                   shiny::numericInput(
-                    inputId = "plot_measurement_timings_download_dpi",
+                    inputId = "plot_measurement_summary_download_dpi",
                     label = "dpi",
                     value = 300
                   ),
-                  shiny::downloadButton(outputId = "plot_measurement_timings_download", label = "Download")
+                  shiny::downloadButton(outputId = "plot_measurement_summary_download", label = "Download")
                 ),
                 class = "text-end"
               ),
               bslib::layout_sidebar(
                 sidebar = bslib::sidebar(width = 400, open = "closed",
                                          shinyWidgets::pickerInput(
-                                           inputId = "measurement_timings_y",
+                                           inputId = "measurement_summary_y",
                                            label = "Vertical axis",
                                            selected = c("time"),
                                            multiple = FALSE,
@@ -883,7 +883,7 @@ ui <- fluidPage(
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                          ),
                                          shinyWidgets::pickerInput(
-                                           inputId = "measurement_timings_time_scale",
+                                           inputId = "measurement_summary_time_scale",
                                            label = "Time scale",
                                            selected = c("days"),
                                            multiple = FALSE,
@@ -891,7 +891,7 @@ ui <- fluidPage(
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                          ),
                                          shinyWidgets::pickerInput(
-                                           inputId = "measurement_timings_plottype",
+                                           inputId = "measurement_summary_plottype",
                                            label = "Plot type",
                                            selected = "boxplot",
                                            multiple = FALSE,
@@ -899,7 +899,7 @@ ui <- fluidPage(
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                          ),
                                          shinyWidgets::pickerInput(
-                                           inputId = "measurement_timings_colour",
+                                           inputId = "measurement_summary_colour",
                                            label = "Colour",
                                            selected = c("codelist_name"),
                                            multiple = TRUE,
@@ -907,7 +907,7 @@ ui <- fluidPage(
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                          ),
                                          shinyWidgets::pickerInput(
-                                           inputId = "measurement_timings_facet",
+                                           inputId = "measurement_summary_facet",
                                            label = "Facet",
                                            selected = c("cdm_name"),
                                            multiple = TRUE,
@@ -916,7 +916,7 @@ ui <- fluidPage(
                                          ),
                                          position = "right"
                 ),
-                shiny::plotOutput("plot_measurement_timings")
+                shiny::plotOutput("plot_measurement_summary")
               )
             )
           )

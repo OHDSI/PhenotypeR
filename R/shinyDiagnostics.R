@@ -189,7 +189,7 @@ checkWhichDiagnostics <- function(result){
     if(!"achilles_code_use" %in% (omopgenerics::settings(result) |> dplyr::pull("result_type") |> unique())){
       to_remove <- append(to_remove, "achilles_results")
     }
-    if(!"measurement_timings" %in% (omopgenerics::settings(result) |> dplyr::pull("result_type") |> unique())){
+    if(!"measurement_summary" %in% (omopgenerics::settings(result) |> dplyr::pull("result_type") |> unique())){
       to_remove <- append(to_remove, "measurement_diagnostics")
     }
   }

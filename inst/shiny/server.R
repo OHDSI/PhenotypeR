@@ -587,14 +587,14 @@ server <- function(input, output, session) {
   )
 
   # summarise measurement diagnostics -----
-  filterMeasurementTimings <- eventReactive(input$updateMeasurementCodeUse, ({
+  filterMeasurementSummary <- eventReactive(input$updateMeasurementCodeUse, ({
     req(shared_cdm_names())
     req(shared_cohort_names())
-    if (is.null(dataFiltered$measurement_timings)) {
-      validate("No measurement timings in results")
+    if (is.null(dataFiltered$measurement_summary)) {
+      validate("No measurement summary in results")
     }
 
-    result <- dataFiltered$measurement_timings |>
+    result <- dataFiltered$measurement_summary |>
       dplyr::filter(.data$cdm_name %in% shared_cdm_names()) |>
       visOmopResults::filterGroup(.data$cohort_name %in% shared_cohort_names())
 
@@ -602,17 +602,17 @@ server <- function(input, output, session) {
 
     return(result)
   }))
-  ## Table measurement_timings -----
-  createMeasurementTimingsGT <- shiny::reactive({
-    tbl <- MeasurementDiagnostics::tableMeasurementTimings(
-      filterMeasurementTimings(),
-      header = input$measurement_timings_gt_header,
-      groupColumn = input$measurement_timings_gt_groupColumn,
-      hide = input$measurement_timings_gt_hide
+  ## Table measurement_summary -----
+  createMeasurementSummaryGT <- shiny::reactive({
+    tbl <- MeasurementDiagnostics::tableMeasurementSummary(
+      filterMeasurementSummary(),
+      header = input$measurement_summary_gt_header,
+      groupColumn = input$measurement_summary_gt_groupColumn,
+      hide = input$measurement_summary_gt_hide
     ) %>%
       tab_header(
-        title = "Summary of measurement timings",
-        subtitle = "Only codes from measurements are shown. Timing between individuals measurements."
+        title = "Summary of measurements",
+        subtitle = "Only codes from measurements/observations are shown. Time between measurements and number of measurements per subject."
       ) %>%
       tab_options(
         heading.align = "left"
@@ -621,44 +621,44 @@ server <- function(input, output, session) {
     return(tbl)
   })
 
-  output$measurement_timings_tbl <- shiny::renderUI({
-    createMeasurementTimingsGT()
+  output$measurement_summary_tbl <- shiny::renderUI({
+    createMeasurementSummaryGT()
   })
 
-  output$measurement_timings_gt_download <- shiny::downloadHandler(
-    filename = "summarise_measurement_timings_gt.docx",
+  output$measurement_summary_gt_download <- shiny::downloadHandler(
+    filename = "summarise_measurement_summary_gt.docx",
     content = function(file){
-      gt::gtsave(data = createMeasurementTimingsGT(), filename = file)
+      gt::gtsave(data = createMeasurementSummaryGT(), filename = file)
     }
   )
-  ## Plot measurement_timings ----
-  getPlotMeasurementTimings <- shiny::reactive({
-    result <- filterMeasurementTimings()
+  ## Plot measurement_summary ----
+  getPlotMeasurementSummary <- shiny::reactive({
+    result <- filterMeasurementSummary()
 
-    MeasurementDiagnostics::plotMeasurementTimings(
+    MeasurementDiagnostics::plotMeasurementSummary(
       result,
-      y = input$measurement_timings_y,
-      plotType = input$measurement_timings_plottype,
-      timeScale = input$measurement_timings_time_scale,
-      facet = input$measurement_timings_facet,
-      colour = input$measurement_timings_colour)
+      y = input$measurement_summary_y,
+      plotType = input$measurement_summary_plottype,
+      timeScale = input$measurement_summary_time_scale,
+      facet = input$measurement_summary_facet,
+      colour = input$measurement_summary_colour)
   })
 
-  output$plot_measurement_timings <- shiny::renderPlot({
-    getPlotMeasurementTimings()
+  output$plot_measurement_summary <- shiny::renderPlot({
+    getPlotMeasurementSummary()
   })
 
-  output$plot_measurement_timings_download <- shiny::downloadHandler(
-    filename = "output_ggplot2_measurement_timings.png",
+  output$plot_measurement_summary_download <- shiny::downloadHandler(
+    filename = "output_ggplot2_measurement_summary.png",
     content = function(file) {
-      obj <- getPlotMeasurementTimings()
+      obj <- getPlotMeasurementSummary()
       ggplot2::ggsave(
         filename = file,
         plot = obj,
-        width = as.numeric(input$plot_measurement_timings_download_width),
-        height = as.numeric(input$plot_measurement_timings_download_height),
-        units = input$plot_measurement_timings_download_units,
-        dpi = as.numeric(input$plot_measurement_timings_download_dpi)
+        width = as.numeric(input$plot_measurement_summary_download_width),
+        height = as.numeric(input$plot_measurement_summary_download_height),
+        units = input$plot_measurement_summary_download_units,
+        dpi = as.numeric(input$plot_measurement_summary_download_dpi)
       )
     }
   )
@@ -741,14 +741,14 @@ server <- function(input, output, session) {
     }
   )
 
-  # summarise measurement value as numeric
-  filterMeasurementValueAsNumeric <- eventReactive(input$updateMeasurementCodeUse, ({
+  # summarise measurement value as number
+  filterMeasurementValueAsNumber <- eventReactive(input$updateMeasurementCodeUse, ({
 
-    if (is.null(dataFiltered$measurement_value_as_numeric)) {
-      validate("No measurement value as numeric in results")
+    if (is.null(dataFiltered$measurement_value_as_number)) {
+      validate("No measurement value as number in results")
     }
 
-    result <- dataFiltered$measurement_value_as_numeric |>
+    result <- dataFiltered$measurement_value_as_number |>
       dplyr::filter(.data$cdm_name %in% shared_cdm_names()) |>
       visOmopResults::filterGroup(.data$cohort_name %in% shared_cohort_names())
 
@@ -757,17 +757,17 @@ server <- function(input, output, session) {
     return(result)
   }))
 
-  ## Table measurement_value_as_numeric -----
-  createMeasurementValueAsNumericGT <- shiny::reactive({
-    tbl <- MeasurementDiagnostics::tableMeasurementValueAsNumeric(
-      filterMeasurementValueAsNumeric(),
-      header = input$measurement_value_as_numeric_gt_header,
-      groupColumn = input$measurement_value_as_numeric_gt_groupColumn,
-      hide = input$measurement_value_as_numeric_gt_hide
+  ## Table measurement_value_as_number -----
+  createMeasurementValueAsNumberGT <- shiny::reactive({
+    tbl <- MeasurementDiagnostics::tableMeasurementValueAsNumber(
+      filterMeasurementValueAsNumber(),
+      header = input$measurement_value_as_number_gt_header,
+      groupColumn = input$measurement_value_as_number_gt_groupColumn,
+      hide = input$measurement_value_as_number_gt_hide
     ) %>%
       tab_header(
         title = "Summary of measurement values (numeric)",
-        subtitle = "Only codes from measurements that are numeric are shown."
+        subtitle = "Only codes from measurements which results are numeric are shown."
       ) %>%
       tab_options(
         heading.align = "left"
@@ -776,44 +776,44 @@ server <- function(input, output, session) {
     return(tbl)
   })
 
-  output$measurement_value_as_numeric_tbl <- shiny::renderUI({
-    createMeasurementValueAsNumericGT()
+  output$measurement_value_as_number_tbl <- shiny::renderUI({
+    createMeasurementValueAsNumberGT()
   })
 
-  output$measurement_value_as_numeric_gt_download <- shiny::downloadHandler(
-    filename = "summarise_measurement_value_as_numeric_gt.docx",
+  output$measurement_value_as_number_gt_download <- shiny::downloadHandler(
+    filename = "summarise_measurement_value_as_number_gt.docx",
     content = function(file){
-      gt::gtsave(data = createMeasurementValueAsNumericGT(), filename = file)
+      gt::gtsave(data = createMeasurementValueAsNumberGT(), filename = file)
     }
   )
-  ## Plot measurement_value_as_numeric ----
-  getPlotMeasurementValueAsNumeric <- shiny::reactive({
-    result <- filterMeasurementValueAsNumeric()
+  ## Plot measurement_value_as_number ----
+  getPlotMeasurementValueAsNumber <- shiny::reactive({
+    result <- filterMeasurementValueAsNumber()
 
-    MeasurementDiagnostics::plotMeasurementValueAsNumeric(
+    MeasurementDiagnostics::plotMeasurementValueAsNumber(
       result,
-      x = input$measurement_value_as_numeric_x,
-      plotType = input$measurement_value_as_numeric_plottype,
-      facet = input$measurement_value_as_numeric_facet,
-      colour = input$measurement_value_as_numeric_colour
+      x = input$measurement_value_as_number_x,
+      plotType = input$measurement_value_as_number_plottype,
+      facet = input$measurement_value_as_number_facet,
+      colour = input$measurement_value_as_number_colour
     )
   })
 
-  output$plot_measurement_value_as_numeric <- shiny::renderPlot({
-    getPlotMeasurementValueAsNumeric()
+  output$plot_measurement_value_as_number <- shiny::renderPlot({
+    getPlotMeasurementValueAsNumber()
   })
 
-  output$plot_measurement_value_as_numeric_download <- shiny::downloadHandler(
-    filename = "output_ggplot2_measurement_value_as_numeric.png",
+  output$plot_measurement_value_as_number_download <- shiny::downloadHandler(
+    filename = "output_ggplot2_measurement_value_as_number.png",
     content = function(file) {
-      obj <- getPlotMeasurementValueAsNumeric()
+      obj <- getPlotMeasurementValueAsNumber()
       ggplot2::ggsave(
         filename = file,
         plot = obj,
-        width = as.numeric(input$plot_measurement_value_as_numeric_download_width),
-        height = as.numeric(input$plot_measurement_value_as_numeric_download_height),
-        units = input$plot_measurement_value_as_numeric_download_units,
-        dpi = as.numeric(input$plot_measurement_value_as_numeric_download_dpi)
+        width = as.numeric(input$plot_measurement_value_as_number_download_width),
+        height = as.numeric(input$plot_measurement_value_as_number_download_height),
+        units = input$plot_measurement_value_as_number_download_units,
+        dpi = as.numeric(input$plot_measurement_value_as_number_download_dpi)
       )
     }
   )
