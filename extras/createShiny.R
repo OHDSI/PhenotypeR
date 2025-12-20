@@ -20,7 +20,10 @@ codes <- list(
   "user_of_warfarin" = c(1310149L, 40163554L),
   "user_of_acetaminophen" = c(1125315L, 1127078L, 1127433L, 40229134L, 40231925L, 40162522L, 19133768L),
   "user_of_morphine" = c(1110410L, 35605858L, 40169988L),
-  "measurement_of_prostate_specific_antigen_level" = c(2617206L)
+  "hypertension" = c(320128L),
+  "type_2_diabetes" = c(201826L, 40482801L),
+  "measurement_of_prostate_specific_antigen_level" = c(2617206L),
+  "hospitalised_inpatient" = c(9201L)
 )
 
 cdm$my_cohort <- CohortConstructor::conceptCohort(
@@ -30,6 +33,15 @@ cdm$my_cohort <- CohortConstructor::conceptCohort(
   overlap = "merge",
   name = "my_cohort"
 )
+
+cdm$my_cohort <- cdm$my_cohort |>
+  CohortConstructor::requireDuration(daysInCohort = c(2, Inf),
+                                     cohortId = "hospitalised_inpatient")
+
+cdm$my_cohort <- cdm$my_cohort |>
+  CohortConstructor::exitAtObservationEnd(cohortId = c("hypertension",
+                                                       "type_2_diabetes"))
+
 
 result <- PhenotypeR::phenotypeDiagnostics(cohort = cdm$my_cohort, survival = TRUE)
 
