@@ -1,7 +1,9 @@
 
 chat <- ellmer::chat("google_gemini")
 expectations <- PhenotypeR::getCohortExpectations(chat = chat,
-                      phenotypes = c(
+                      phenotypes = c("hypertension",
+                                     "type_2_diabetes",
+                                     "hospitalised_inpatient",
                         "user_of_warfarin",
                         "user_of_acetaminophen",
                         "user_of_morphine",
