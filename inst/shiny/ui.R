@@ -1681,7 +1681,7 @@ ui <- fluidPage(
                                            ),
                                            position = "right"
                   ),
-                  plotly::plotlyOutput("summarise_cohort_timing_plot")
+                  uiOutput("summarise_cohort_timing_plot")
                 )
               )
             )

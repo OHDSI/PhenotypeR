@@ -1805,8 +1805,8 @@ server <- function(input, output, session) {
       colour = input$summarise_cohort_timing_plot_colour
     )
   })
-  output$summarise_cohort_timing_plot <- plotly::renderPlotly({
-    createPlotCohortTiming()
+  output$summarise_cohort_timing_plot <- shiny::renderUI({
+    renderPlot(createPlotCohortTiming())
   })
   output$summarise_cohort_timing_plot_download <- shiny::downloadHandler(
     filename = "summarise_cohort_timing_plot.png",
