@@ -83,9 +83,14 @@ databaseDiagnostics <- function(cohort){
         }else{
           domains <- CodelistGenerator::associatedDomains(codes, cdm) |>
             purrr::flatten_chr() |>
-            unique()
+            unique() |>
+            sort()
+          workingOmopTables <- getTableFromDomain(domains) |>
+            stringr::str_split(pattern = ";") |>
+            purrr::flatten_chr() |>
+            sort()
           results[["omop_tabs"]] <- OmopSketch::summariseClinicalRecords(cdm,
-                                                                         omopTableName = getTableFromDomain(domains))
+                                                                         omopTableName = workingOmopTables)
         }
       }
     }
@@ -121,8 +126,6 @@ checkEmptyCodelists <- function(cdm, cohortName, call = parent.frame()){
   }
 }
 
-
-
 getTableFromDomain <- function(domains) {
   dplyr::tibble("domain_id" = tolower(domains)) |>
     dplyr::inner_join(
@@ -136,7 +139,7 @@ getTableFromDomain <- function(domains) {
                           stringr::str_detect(domain_id,"drug") ~ "drug_exposure",
                           stringr::str_detect(domain_id,"observation") ~ "observation",
                           stringr::str_detect(domain_id,"measurement") ~ "measurement",
-                          stringr::str_detect(domain_id,"visit") ~ "visit_occurrence",
+                          stringr::str_detect(domain_id,"visit") ~ "visit_occurrence;visit_detail",
                           stringr::str_detect(domain_id,"procedure") ~ "procedure_occurrence",
                           stringr::str_detect(domain_id,"device") ~ "device_exposure"
                         )
