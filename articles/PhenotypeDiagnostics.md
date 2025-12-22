@@ -80,7 +80,7 @@ result <- phenotypeDiagnostics(
   diagnostics = c("databaseDiagnostics", "codelistDiagnostics", 
                   "cohortDiagnostics", "populationDiagnostics"),
   cohortSample = 20000,
-  matchedSample = 1000
+  matchedSample = 1000,
   populationSample = 1e+06,
   populationDateRange = as.Date(c(NA, NA))
   )
@@ -123,7 +123,7 @@ function from
 Package:
 
 ``` r
-exportSummarisedResult(result, directory = here::here(), minCellCount = 5)
+exportSummarisedResult(result, path = here::here(), minCellCount = 5)
 ```
 
 ## Visualisation of the results
@@ -133,10 +133,10 @@ Once we get our **Phenotype diagnostics** result, we can use
 results:
 
 ``` r
-result <- shinyDiagnostics(result,
-                           directory = tempdir(),
-                           minCellCount = 5, 
-                           open = TRUE)
+shinyDiagnostics(result,
+                 directory = tempdir(),
+                 minCellCount = 5, 
+                 open = TRUE)
 ```
 
 Notice that we have specified the minimum number of counts
