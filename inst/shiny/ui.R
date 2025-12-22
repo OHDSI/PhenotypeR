@@ -56,6 +56,53 @@ ui <- fluidPage(
           gt::gt_output("summarise_omop_snapshot_gt") |> withSpinner()
         )
       ),
+      ## person -----
+      bslib::nav_panel(
+        title = "Person",
+        bslib::accordion(
+          bslib::accordion_panel(
+            title = "Shared inputs",
+            tags$div(
+              style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
+              tags$label("Select Database(s):"),
+              tags$div(
+                style = "width: 225px;",
+                tags$div(
+                  style = "margin-top: 15px;",
+                  shinyWidgets::pickerInput(
+                    inputId = "summarise_person_cdm_name",
+                    label = NULL,
+                    selected = selected$shared_cdm_name,
+                    choices = choices$shared_cdm_name,
+                    multiple = TRUE,
+                    options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                                   `deselect-all-text` = "None", `select-all-text` = "All"),
+                    width = "100%"
+                  )
+                )
+              ),
+              tags$div(
+                style = "width: 225px;",
+                actionBttn("updatePerson", "Update",
+                           style = "simple"),
+                width = "100%"
+              )
+            )
+          )),
+        icon = shiny::icon("eye"),
+        bslib::nav_panel(
+          title = "Table person",
+          bslib::card(
+            full_screen = TRUE,
+            bslib::card_header(
+              shiny::downloadButton(outputId = "summarise_person_gt_download", label = ""),
+              class = "text-end"
+            ),
+            gt::gt_output("summarise_person_gt") |> withSpinner()
+          )
+        )
+      ),
+
       ## observation periods -----
       bslib::nav_panel(
         title = "Observation periods",
