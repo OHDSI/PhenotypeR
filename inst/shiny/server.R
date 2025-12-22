@@ -455,6 +455,43 @@ server <- function(input, output, session) {
     }
   )
 
+  # summarise_clinical_records ----
+  filterClinicalRecords <- eventReactive(input$updateClinicalRecords, ({
+    if (is.null(dataFiltered$summarise_clinical_records)) {
+      validate("No clinical records summary in results")
+    }
+    
+    result <- dataFiltered$summarise_clinical_records |>
+      dplyr::filter(cdm_name %in% shared_cdm_names())
+    attr(result, "settings")  <- attr(result, "settings") |>
+      dplyr::select(!c("diagnostic", "phenotyper_version"))
+    validateFilteredResult(result)
+    
+    return(result)
+  }))
+  
+  ## Table summarise_clinical_records -----
+  createClinicalRecordsTable <- shiny::reactive({
+    filterClinicalRecords() |>
+      OmopSketch::tableClinicalRecords() %>%
+      tab_header(
+        title = "Summary of Clinical Records",
+        subtitle = "Summary of the clinical tables that contain the codes from the cohort codelist."
+      ) %>%
+      tab_options(
+        heading.align = "left"
+      )
+  })
+  output$summarise_clinical_records_gt <- gt::render_gt({
+    createClinicalRecordsTable()
+  })
+  output$summarise_clinical_records_gt_download <- shiny::downloadHandler(
+    filename = "summarise_clinical_records_gt.docx",
+    content = function(file) {
+      obj <- createClinicalRecordsTable()
+      gt::gtsave(data = obj, filename = file)
+    }
+  )
 
   # achilles_code_use -----
   filterAchillesCodeUse <- eventReactive(input$updateAchillesCodeUse, ({

@@ -101,7 +101,54 @@ ui <- fluidPage(
             gt::gt_output("summarise_observation_period_gt") |> withSpinner()
           )
         )
+      ),
+      ## clinical_records_start ----
+      bslib::nav_panel(
+        title = "Clinical Records",
+        bslib::accordion(
+          bslib::accordion_panel(
+            title = "Shared inputs",
+            tags$div(
+              style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
+              tags$label("Select Database(s):"),
+              tags$div(
+                style = "width: 225px;",
+                tags$div(
+                  style = "margin-top: 15px;",
+                  shinyWidgets::pickerInput(
+                    inputId = "summarise_clinical_records_cdm_name",
+                    label = NULL,
+                    selected = selected$shared_cdm_name,
+                    choices = choices$shared_cdm_name,
+                    multiple = TRUE,
+                    options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                                   `deselect-all-text` = "None", `select-all-text` = "All"),
+                    width = "100%"
+                  )
+                )
+              ),
+              tags$div(
+                style = "width: 225px;",
+                actionBttn("updateClinicalRecords", "Update",
+                           style = "simple"),
+                width = "100%"
+              )
+            )
+          )),
+        icon = shiny::icon("circle-user"),
+        bslib::nav_panel(
+          title = "Table Clinical Records",
+          bslib::card(
+            full_screen = TRUE,
+            bslib::card_header(
+              shiny::downloadButton(outputId = "summarise_clinical_records_gt_download", label = ""),
+              class = "text-end"
+            ),
+            gt::gt_output("summarise_clinical_records_gt") |> withSpinner()
+          )
+        )
       )
+      ## clinical_records_end ----
     ),
     # databaseDiagnostics_end ----
     # codelistDiagnostics_start -----
