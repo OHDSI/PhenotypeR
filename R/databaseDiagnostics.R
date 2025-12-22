@@ -6,6 +6,7 @@
 #' Diagnostics include:
 #' * Summarise a cdm_reference object, creating a snapshot with the metadata of the cdm_reference object.
 #' * Summarise the observation period table getting some overall statistics in a summarised_result object.
+#' * Summarise the person table including demographics (sex, race, ethnicity, year of birth) and related statistics.
 #'
 #' @inheritParams cohortDoc
 #'
@@ -49,6 +50,10 @@ databaseDiagnostics <- function(cohort){
   # Observation period
   cli::cli_bullets(c(">" = "Summarising Observation Period"))
   results[["obs_period"]] <- OmopSketch::summariseObservationPeriod(cdm$observation_period)
+
+  # Person table
+  cli::cli_bullets(c(">" = "Summarising Person Table"))
+  results[["person"]] <- OmopSketch::summarisePerson(cdm)
 
   # Summarising omop tables - Empty cohort codelist
   cli::cli_bullets(c(">" = "Summarising OMOP tables"))

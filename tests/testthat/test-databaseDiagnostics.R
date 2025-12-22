@@ -20,7 +20,7 @@ test_that("multiplication works", {
   # Empty codelist
  expect_warning(db_diag <- databaseDiagnostics(cdm$my_cohort))
  expect_identical(settings(db_diag)$result_type,
-                  c("summarise_omop_snapshot", "summarise_observation_period"))
+                  c("summarise_omop_snapshot", "summarise_observation_period", "summarise_person"))
 
   # Only one codelist
   cdm$my_cohort <- cdm$my_cohort |>
@@ -30,7 +30,7 @@ test_that("multiplication works", {
       cohortName = c("cohort_1", "cohort_1")
     )
   expect_no_error(db_diag <- databaseDiagnostics(cdm$my_cohort))
-  expect_identical(c("summarise_omop_snapshot", "summarise_observation_period", "summarise_clinical_records"),
+  expect_identical(c("summarise_omop_snapshot", "summarise_observation_period", "summarise_person", "summarise_clinical_records"),
                    settings(db_diag)$result_type)
   expect_identical(db_diag$group_level |> unique(),
                    c("overall", "all", "1st", "condition_occurrence", "drug_exposure"))
