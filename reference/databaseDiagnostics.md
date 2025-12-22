@@ -5,7 +5,9 @@ phenotypeR diagnostics on the cdm object.
 Diagnostics include: \* Summarise a cdm_reference object, creating a
 snapshot with the metadata of the cdm_reference object. \* Summarise the
 observation period table getting some overall statistics in a
-summarised_result object.
+summarised_result object. \* Summarise the person table including
+demographics (sex, race, ethnicity, year of birth) and related
+statistics.
 
 ## Usage
 

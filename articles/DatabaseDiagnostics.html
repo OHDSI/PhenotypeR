@@ -125,6 +125,12 @@ This will allow us to see if there are individuals with multiple,
 non-overlapping, observation periods and how long each observation
 period lasts on average.</li>
 <li>
+<strong>Person table:</strong> Summarises the person table by using
+<a href="https://ohdsi.github.io/OmopSketch/reference/summarisePerson.html" class="external-link">summarisePerson()</a>.
+This provides demographic information including sex, race, ethnicity,
+year/month/day of birth distributions, and location/provider/care site
+information.</li>
+<li>
 <strong>Clinical Records</strong>: The diagnostics will detect which
 domains appears to the codelist associated to your cohort (i.e., Drug),
 and use <a href="https://ohdsi.github.io/OmopSketch/reference/summariseClinicalRecords.html" class="external-link">summariseClinicalRecords()</a>
@@ -142,23 +148,23 @@ package functions to visualise the results obtained.</p>
 </h3>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://OHDSI.github.io/OmopSketch/reference/tableOmopSnapshot.html" class="external-link">tableOmopSnapshot</a></span><span class="op">(</span><span class="va">db_diagnostics</span><span class="op">)</span></span></code></pre></div>
-<div id="ncrookxgzu" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#ncrookxgzu table {
+<div id="aymbwmszxc" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#aymbwmszxc table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#ncrookxgzu thead, #ncrookxgzu tbody, #ncrookxgzu tfoot, #ncrookxgzu tr, #ncrookxgzu td, #ncrookxgzu th {
+#aymbwmszxc thead, #aymbwmszxc tbody, #aymbwmszxc tfoot, #aymbwmszxc tr, #aymbwmszxc td, #aymbwmszxc th {
   border-style: none;
 }
 
-#ncrookxgzu p {
+#aymbwmszxc p {
   margin: 0;
   padding: 0;
 }
 
-#ncrookxgzu .gt_table {
+#aymbwmszxc .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -184,12 +190,12 @@ package functions to visualise the results obtained.</p>
   border-left-color: #F4E9EB;
 }
 
-#ncrookxgzu .gt_caption {
+#aymbwmszxc .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#ncrookxgzu .gt_title {
+#aymbwmszxc .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -201,7 +207,7 @@ package functions to visualise the results obtained.</p>
   border-bottom-width: 0;
 }
 
-#ncrookxgzu .gt_subtitle {
+#aymbwmszxc .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -213,7 +219,7 @@ package functions to visualise the results obtained.</p>
   border-top-width: 0;
 }
 
-#ncrookxgzu .gt_heading {
+#aymbwmszxc .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -225,13 +231,13 @@ package functions to visualise the results obtained.</p>
   border-right-color: #D3D3D3;
 }
 
-#ncrookxgzu .gt_bottom_border {
+#aymbwmszxc .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#ncrookxgzu .gt_col_headings {
+#aymbwmszxc .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -246,7 +252,7 @@ package functions to visualise the results obtained.</p>
   border-right-color: #D3D3D3;
 }
 
-#ncrookxgzu .gt_col_heading {
+#aymbwmszxc .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -266,7 +272,7 @@ package functions to visualise the results obtained.</p>
   overflow-x: hidden;
 }
 
-#ncrookxgzu .gt_column_spanner_outer {
+#aymbwmszxc .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -278,15 +284,15 @@ package functions to visualise the results obtained.</p>
   padding-right: 4px;
 }
 
-#ncrookxgzu .gt_column_spanner_outer:first-child {
+#aymbwmszxc .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ncrookxgzu .gt_column_spanner_outer:last-child {
+#aymbwmszxc .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ncrookxgzu .gt_column_spanner {
+#aymbwmszxc .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -298,11 +304,11 @@ package functions to visualise the results obtained.</p>
   width: 100%;
 }
 
-#ncrookxgzu .gt_spanner_row {
+#aymbwmszxc .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#ncrookxgzu .gt_group_heading {
+#aymbwmszxc .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -328,7 +334,7 @@ package functions to visualise the results obtained.</p>
   text-align: left;
 }
 
-#ncrookxgzu .gt_empty_group_heading {
+#aymbwmszxc .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -343,15 +349,15 @@ package functions to visualise the results obtained.</p>
   vertical-align: middle;
 }
 
-#ncrookxgzu .gt_from_md > :first-child {
+#aymbwmszxc .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ncrookxgzu .gt_from_md > :last-child {
+#aymbwmszxc .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ncrookxgzu .gt_row {
+#aymbwmszxc .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -370,7 +376,7 @@ package functions to visualise the results obtained.</p>
   overflow-x: hidden;
 }
 
-#ncrookxgzu .gt_stub {
+#aymbwmszxc .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -383,7 +389,7 @@ package functions to visualise the results obtained.</p>
   padding-right: 5px;
 }
 
-#ncrookxgzu .gt_stub_row_group {
+#aymbwmszxc .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -397,15 +403,15 @@ package functions to visualise the results obtained.</p>
   vertical-align: top;
 }
 
-#ncrookxgzu .gt_row_group_first td {
+#aymbwmszxc .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#ncrookxgzu .gt_row_group_first th {
+#aymbwmszxc .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#ncrookxgzu .gt_summary_row {
+#aymbwmszxc .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -415,16 +421,16 @@ package functions to visualise the results obtained.</p>
   padding-right: 5px;
 }
 
-#ncrookxgzu .gt_first_summary_row {
+#aymbwmszxc .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#ncrookxgzu .gt_first_summary_row.thick {
+#aymbwmszxc .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#ncrookxgzu .gt_last_summary_row {
+#aymbwmszxc .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -434,7 +440,7 @@ package functions to visualise the results obtained.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#ncrookxgzu .gt_grand_summary_row {
+#aymbwmszxc .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -444,7 +450,7 @@ package functions to visualise the results obtained.</p>
   padding-right: 5px;
 }
 
-#ncrookxgzu .gt_first_grand_summary_row {
+#aymbwmszxc .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -454,7 +460,7 @@ package functions to visualise the results obtained.</p>
   border-top-color: #D3D3D3;
 }
 
-#ncrookxgzu .gt_last_grand_summary_row_top {
+#aymbwmszxc .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -464,11 +470,11 @@ package functions to visualise the results obtained.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#ncrookxgzu .gt_striped {
+#aymbwmszxc .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#ncrookxgzu .gt_table_body {
+#aymbwmszxc .gt_table_body {
   border-top-style: solid;
   border-top-width: 3px;
   border-top-color: #F4E9EB;
@@ -477,7 +483,7 @@ package functions to visualise the results obtained.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#ncrookxgzu .gt_footnotes {
+#aymbwmszxc .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -491,7 +497,7 @@ package functions to visualise the results obtained.</p>
   border-right-color: #D3D3D3;
 }
 
-#ncrookxgzu .gt_footnote {
+#aymbwmszxc .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -500,7 +506,7 @@ package functions to visualise the results obtained.</p>
   padding-right: 5px;
 }
 
-#ncrookxgzu .gt_sourcenotes {
+#aymbwmszxc .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -514,7 +520,7 @@ package functions to visualise the results obtained.</p>
   border-right-color: #D3D3D3;
 }
 
-#ncrookxgzu .gt_sourcenote {
+#aymbwmszxc .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -522,72 +528,72 @@ package functions to visualise the results obtained.</p>
   padding-right: 5px;
 }
 
-#ncrookxgzu .gt_left {
+#aymbwmszxc .gt_left {
   text-align: left;
 }
 
-#ncrookxgzu .gt_center {
+#aymbwmszxc .gt_center {
   text-align: center;
 }
 
-#ncrookxgzu .gt_right {
+#aymbwmszxc .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ncrookxgzu .gt_font_normal {
+#aymbwmszxc .gt_font_normal {
   font-weight: normal;
 }
 
-#ncrookxgzu .gt_font_bold {
+#aymbwmszxc .gt_font_bold {
   font-weight: bold;
 }
 
-#ncrookxgzu .gt_font_italic {
+#aymbwmszxc .gt_font_italic {
   font-style: italic;
 }
 
-#ncrookxgzu .gt_super {
+#aymbwmszxc .gt_super {
   font-size: 65%;
 }
 
-#ncrookxgzu .gt_footnote_marks {
+#aymbwmszxc .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#ncrookxgzu .gt_asterisk {
+#aymbwmszxc .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#ncrookxgzu .gt_indent_1 {
+#aymbwmszxc .gt_indent_1 {
   text-indent: 5px;
 }
 
-#ncrookxgzu .gt_indent_2 {
+#aymbwmszxc .gt_indent_2 {
   text-indent: 10px;
 }
 
-#ncrookxgzu .gt_indent_3 {
+#aymbwmszxc .gt_indent_3 {
   text-indent: 15px;
 }
 
-#ncrookxgzu .gt_indent_4 {
+#aymbwmszxc .gt_indent_4 {
   text-indent: 20px;
 }
 
-#ncrookxgzu .gt_indent_5 {
+#aymbwmszxc .gt_indent_5 {
   text-indent: 25px;
 }
 
-#ncrookxgzu .katex-display {
+#aymbwmszxc .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#ncrookxgzu div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#aymbwmszxc div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -800,23 +806,23 @@ package functions to visualise the results obtained.</p>
 </h3>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://OHDSI.github.io/OmopSketch/reference/tableObservationPeriod.html" class="external-link">tableObservationPeriod</a></span><span class="op">(</span><span class="va">db_diagnostics</span><span class="op">)</span></span></code></pre></div>
-<div id="ymbwmszxcq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#ymbwmszxcq table {
+<div id="jxbtellwmt" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#jxbtellwmt table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#ymbwmszxcq thead, #ymbwmszxcq tbody, #ymbwmszxcq tfoot, #ymbwmszxcq tr, #ymbwmszxcq td, #ymbwmszxcq th {
+#jxbtellwmt thead, #jxbtellwmt tbody, #jxbtellwmt tfoot, #jxbtellwmt tr, #jxbtellwmt td, #jxbtellwmt th {
   border-style: none;
 }
 
-#ymbwmszxcq p {
+#jxbtellwmt p {
   margin: 0;
   padding: 0;
 }
 
-#ymbwmszxcq .gt_table {
+#jxbtellwmt .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -842,12 +848,12 @@ package functions to visualise the results obtained.</p>
   border-left-color: #F4E9EB;
 }
 
-#ymbwmszxcq .gt_caption {
+#jxbtellwmt .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#ymbwmszxcq .gt_title {
+#jxbtellwmt .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -859,7 +865,7 @@ package functions to visualise the results obtained.</p>
   border-bottom-width: 0;
 }
 
-#ymbwmszxcq .gt_subtitle {
+#jxbtellwmt .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -871,7 +877,7 @@ package functions to visualise the results obtained.</p>
   border-top-width: 0;
 }
 
-#ymbwmszxcq .gt_heading {
+#jxbtellwmt .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -883,13 +889,13 @@ package functions to visualise the results obtained.</p>
   border-right-color: #D3D3D3;
 }
 
-#ymbwmszxcq .gt_bottom_border {
+#jxbtellwmt .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#ymbwmszxcq .gt_col_headings {
+#jxbtellwmt .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -904,7 +910,7 @@ package functions to visualise the results obtained.</p>
   border-right-color: #D3D3D3;
 }
 
-#ymbwmszxcq .gt_col_heading {
+#jxbtellwmt .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -924,7 +930,7 @@ package functions to visualise the results obtained.</p>
   overflow-x: hidden;
 }
 
-#ymbwmszxcq .gt_column_spanner_outer {
+#jxbtellwmt .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -936,15 +942,15 @@ package functions to visualise the results obtained.</p>
   padding-right: 4px;
 }
 
-#ymbwmszxcq .gt_column_spanner_outer:first-child {
+#jxbtellwmt .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ymbwmszxcq .gt_column_spanner_outer:last-child {
+#jxbtellwmt .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ymbwmszxcq .gt_column_spanner {
+#jxbtellwmt .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -956,11 +962,11 @@ package functions to visualise the results obtained.</p>
   width: 100%;
 }
 
-#ymbwmszxcq .gt_spanner_row {
+#jxbtellwmt .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#ymbwmszxcq .gt_group_heading {
+#jxbtellwmt .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -986,7 +992,7 @@ package functions to visualise the results obtained.</p>
   text-align: left;
 }
 
-#ymbwmszxcq .gt_empty_group_heading {
+#jxbtellwmt .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1001,15 +1007,15 @@ package functions to visualise the results obtained.</p>
   vertical-align: middle;
 }
 
-#ymbwmszxcq .gt_from_md > :first-child {
+#jxbtellwmt .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ymbwmszxcq .gt_from_md > :last-child {
+#jxbtellwmt .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ymbwmszxcq .gt_row {
+#jxbtellwmt .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1028,7 +1034,7 @@ package functions to visualise the results obtained.</p>
   overflow-x: hidden;
 }
 
-#ymbwmszxcq .gt_stub {
+#jxbtellwmt .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1041,7 +1047,7 @@ package functions to visualise the results obtained.</p>
   padding-right: 5px;
 }
 
-#ymbwmszxcq .gt_stub_row_group {
+#jxbtellwmt .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1055,15 +1061,15 @@ package functions to visualise the results obtained.</p>
   vertical-align: top;
 }
 
-#ymbwmszxcq .gt_row_group_first td {
+#jxbtellwmt .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#ymbwmszxcq .gt_row_group_first th {
+#jxbtellwmt .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#ymbwmszxcq .gt_summary_row {
+#jxbtellwmt .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1073,16 +1079,16 @@ package functions to visualise the results obtained.</p>
   padding-right: 5px;
 }
 
-#ymbwmszxcq .gt_first_summary_row {
+#jxbtellwmt .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#ymbwmszxcq .gt_first_summary_row.thick {
+#jxbtellwmt .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#ymbwmszxcq .gt_last_summary_row {
+#jxbtellwmt .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1092,7 +1098,7 @@ package functions to visualise the results obtained.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#ymbwmszxcq .gt_grand_summary_row {
+#jxbtellwmt .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1102,7 +1108,7 @@ package functions to visualise the results obtained.</p>
   padding-right: 5px;
 }
 
-#ymbwmszxcq .gt_first_grand_summary_row {
+#jxbtellwmt .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1112,7 +1118,7 @@ package functions to visualise the results obtained.</p>
   border-top-color: #D3D3D3;
 }
 
-#ymbwmszxcq .gt_last_grand_summary_row_top {
+#jxbtellwmt .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1122,11 +1128,11 @@ package functions to visualise the results obtained.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#ymbwmszxcq .gt_striped {
+#jxbtellwmt .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#ymbwmszxcq .gt_table_body {
+#jxbtellwmt .gt_table_body {
   border-top-style: solid;
   border-top-width: 3px;
   border-top-color: #F4E9EB;
@@ -1135,7 +1141,7 @@ package functions to visualise the results obtained.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#ymbwmszxcq .gt_footnotes {
+#jxbtellwmt .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1149,7 +1155,7 @@ package functions to visualise the results obtained.</p>
   border-right-color: #D3D3D3;
 }
 
-#ymbwmszxcq .gt_footnote {
+#jxbtellwmt .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1158,7 +1164,7 @@ package functions to visualise the results obtained.</p>
   padding-right: 5px;
 }
 
-#ymbwmszxcq .gt_sourcenotes {
+#jxbtellwmt .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1172,7 +1178,7 @@ package functions to visualise the results obtained.</p>
   border-right-color: #D3D3D3;
 }
 
-#ymbwmszxcq .gt_sourcenote {
+#jxbtellwmt .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1180,72 +1186,72 @@ package functions to visualise the results obtained.</p>
   padding-right: 5px;
 }
 
-#ymbwmszxcq .gt_left {
+#jxbtellwmt .gt_left {
   text-align: left;
 }
 
-#ymbwmszxcq .gt_center {
+#jxbtellwmt .gt_center {
   text-align: center;
 }
 
-#ymbwmszxcq .gt_right {
+#jxbtellwmt .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ymbwmszxcq .gt_font_normal {
+#jxbtellwmt .gt_font_normal {
   font-weight: normal;
 }
 
-#ymbwmszxcq .gt_font_bold {
+#jxbtellwmt .gt_font_bold {
   font-weight: bold;
 }
 
-#ymbwmszxcq .gt_font_italic {
+#jxbtellwmt .gt_font_italic {
   font-style: italic;
 }
 
-#ymbwmszxcq .gt_super {
+#jxbtellwmt .gt_super {
   font-size: 65%;
 }
 
-#ymbwmszxcq .gt_footnote_marks {
+#jxbtellwmt .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#ymbwmszxcq .gt_asterisk {
+#jxbtellwmt .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#ymbwmszxcq .gt_indent_1 {
+#jxbtellwmt .gt_indent_1 {
   text-indent: 5px;
 }
 
-#ymbwmszxcq .gt_indent_2 {
+#jxbtellwmt .gt_indent_2 {
   text-indent: 10px;
 }
 
-#ymbwmszxcq .gt_indent_3 {
+#jxbtellwmt .gt_indent_3 {
   text-indent: 15px;
 }
 
-#ymbwmszxcq .gt_indent_4 {
+#jxbtellwmt .gt_indent_4 {
   text-indent: 20px;
 }
 
-#ymbwmszxcq .gt_indent_5 {
+#jxbtellwmt .gt_indent_5 {
   text-indent: 25px;
 }
 
-#ymbwmszxcq .katex-display {
+#jxbtellwmt .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#ymbwmszxcq div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#jxbtellwmt div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1754,27 +1760,27 @@ package functions to visualise the results obtained.</p>
 </div>
 </div>
 <div class="section level3">
-<h3 id="clinical-records">Clinical Records<a class="anchor" aria-label="anchor" href="#clinical-records"></a>
+<h3 id="person-table">Person Table<a class="anchor" aria-label="anchor" href="#person-table"></a>
 </h3>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://OHDSI.github.io/OmopSketch/reference/tableClinicalRecords.html" class="external-link">tableClinicalRecords</a></span><span class="op">(</span><span class="va">db_diagnostics</span><span class="op">)</span></span></code></pre></div>
-<div id="btellwmttd" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#btellwmttd table {
+<code class="sourceCode R"><span><span class="fu"><a href="https://OHDSI.github.io/OmopSketch/reference/tablePerson.html" class="external-link">tablePerson</a></span><span class="op">(</span><span class="va">db_diagnostics</span><span class="op">)</span></span></code></pre></div>
+<div id="psnntyufgg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#psnntyufgg table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#btellwmttd thead, #btellwmttd tbody, #btellwmttd tfoot, #btellwmttd tr, #btellwmttd td, #btellwmttd th {
+#psnntyufgg thead, #psnntyufgg tbody, #psnntyufgg tfoot, #psnntyufgg tr, #psnntyufgg td, #psnntyufgg th {
   border-style: none;
 }
 
-#btellwmttd p {
+#psnntyufgg p {
   margin: 0;
   padding: 0;
 }
 
-#btellwmttd .gt_table {
+#psnntyufgg .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1800,12 +1806,12 @@ package functions to visualise the results obtained.</p>
   border-left-color: #F4E9EB;
 }
 
-#btellwmttd .gt_caption {
+#psnntyufgg .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#btellwmttd .gt_title {
+#psnntyufgg .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1817,7 +1823,7 @@ package functions to visualise the results obtained.</p>
   border-bottom-width: 0;
 }
 
-#btellwmttd .gt_subtitle {
+#psnntyufgg .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1829,7 +1835,7 @@ package functions to visualise the results obtained.</p>
   border-top-width: 0;
 }
 
-#btellwmttd .gt_heading {
+#psnntyufgg .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1841,13 +1847,13 @@ package functions to visualise the results obtained.</p>
   border-right-color: #D3D3D3;
 }
 
-#btellwmttd .gt_bottom_border {
+#psnntyufgg .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#btellwmttd .gt_col_headings {
+#psnntyufgg .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1862,7 +1868,7 @@ package functions to visualise the results obtained.</p>
   border-right-color: #D3D3D3;
 }
 
-#btellwmttd .gt_col_heading {
+#psnntyufgg .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1882,7 +1888,7 @@ package functions to visualise the results obtained.</p>
   overflow-x: hidden;
 }
 
-#btellwmttd .gt_column_spanner_outer {
+#psnntyufgg .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1894,15 +1900,15 @@ package functions to visualise the results obtained.</p>
   padding-right: 4px;
 }
 
-#btellwmttd .gt_column_spanner_outer:first-child {
+#psnntyufgg .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#btellwmttd .gt_column_spanner_outer:last-child {
+#psnntyufgg .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#btellwmttd .gt_column_spanner {
+#psnntyufgg .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1914,11 +1920,11 @@ package functions to visualise the results obtained.</p>
   width: 100%;
 }
 
-#btellwmttd .gt_spanner_row {
+#psnntyufgg .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#btellwmttd .gt_group_heading {
+#psnntyufgg .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1944,7 +1950,7 @@ package functions to visualise the results obtained.</p>
   text-align: left;
 }
 
-#btellwmttd .gt_empty_group_heading {
+#psnntyufgg .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1959,15 +1965,15 @@ package functions to visualise the results obtained.</p>
   vertical-align: middle;
 }
 
-#btellwmttd .gt_from_md > :first-child {
+#psnntyufgg .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#btellwmttd .gt_from_md > :last-child {
+#psnntyufgg .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#btellwmttd .gt_row {
+#psnntyufgg .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1986,7 +1992,7 @@ package functions to visualise the results obtained.</p>
   overflow-x: hidden;
 }
 
-#btellwmttd .gt_stub {
+#psnntyufgg .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1999,7 +2005,7 @@ package functions to visualise the results obtained.</p>
   padding-right: 5px;
 }
 
-#btellwmttd .gt_stub_row_group {
+#psnntyufgg .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2013,15 +2019,15 @@ package functions to visualise the results obtained.</p>
   vertical-align: top;
 }
 
-#btellwmttd .gt_row_group_first td {
+#psnntyufgg .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#btellwmttd .gt_row_group_first th {
+#psnntyufgg .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#btellwmttd .gt_summary_row {
+#psnntyufgg .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2031,16 +2037,16 @@ package functions to visualise the results obtained.</p>
   padding-right: 5px;
 }
 
-#btellwmttd .gt_first_summary_row {
+#psnntyufgg .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#btellwmttd .gt_first_summary_row.thick {
+#psnntyufgg .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#btellwmttd .gt_last_summary_row {
+#psnntyufgg .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2050,7 +2056,7 @@ package functions to visualise the results obtained.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#btellwmttd .gt_grand_summary_row {
+#psnntyufgg .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2060,7 +2066,7 @@ package functions to visualise the results obtained.</p>
   padding-right: 5px;
 }
 
-#btellwmttd .gt_first_grand_summary_row {
+#psnntyufgg .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2070,7 +2076,7 @@ package functions to visualise the results obtained.</p>
   border-top-color: #D3D3D3;
 }
 
-#btellwmttd .gt_last_grand_summary_row_top {
+#psnntyufgg .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2080,11 +2086,11 @@ package functions to visualise the results obtained.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#btellwmttd .gt_striped {
+#psnntyufgg .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#btellwmttd .gt_table_body {
+#psnntyufgg .gt_table_body {
   border-top-style: solid;
   border-top-width: 3px;
   border-top-color: #F4E9EB;
@@ -2093,7 +2099,7 @@ package functions to visualise the results obtained.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#btellwmttd .gt_footnotes {
+#psnntyufgg .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2107,7 +2113,7 @@ package functions to visualise the results obtained.</p>
   border-right-color: #D3D3D3;
 }
 
-#btellwmttd .gt_footnote {
+#psnntyufgg .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -2116,7 +2122,7 @@ package functions to visualise the results obtained.</p>
   padding-right: 5px;
 }
 
-#btellwmttd .gt_sourcenotes {
+#psnntyufgg .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2130,7 +2136,7 @@ package functions to visualise the results obtained.</p>
   border-right-color: #D3D3D3;
 }
 
-#btellwmttd .gt_sourcenote {
+#psnntyufgg .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2138,72 +2144,1036 @@ package functions to visualise the results obtained.</p>
   padding-right: 5px;
 }
 
-#btellwmttd .gt_left {
+#psnntyufgg .gt_left {
   text-align: left;
 }
 
-#btellwmttd .gt_center {
+#psnntyufgg .gt_center {
   text-align: center;
 }
 
-#btellwmttd .gt_right {
+#psnntyufgg .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#btellwmttd .gt_font_normal {
+#psnntyufgg .gt_font_normal {
   font-weight: normal;
 }
 
-#btellwmttd .gt_font_bold {
+#psnntyufgg .gt_font_bold {
   font-weight: bold;
 }
 
-#btellwmttd .gt_font_italic {
+#psnntyufgg .gt_font_italic {
   font-style: italic;
 }
 
-#btellwmttd .gt_super {
+#psnntyufgg .gt_super {
   font-size: 65%;
 }
 
-#btellwmttd .gt_footnote_marks {
+#psnntyufgg .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#btellwmttd .gt_asterisk {
+#psnntyufgg .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#btellwmttd .gt_indent_1 {
+#psnntyufgg .gt_indent_1 {
   text-indent: 5px;
 }
 
-#btellwmttd .gt_indent_2 {
+#psnntyufgg .gt_indent_2 {
   text-indent: 10px;
 }
 
-#btellwmttd .gt_indent_3 {
+#psnntyufgg .gt_indent_3 {
   text-indent: 15px;
 }
 
-#btellwmttd .gt_indent_4 {
+#psnntyufgg .gt_indent_4 {
   text-indent: 20px;
 }
 
-#btellwmttd .gt_indent_5 {
+#psnntyufgg .gt_indent_5 {
   text-indent: 25px;
 }
 
-#btellwmttd .katex-display {
+#psnntyufgg .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#btellwmttd div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#psnntyufgg div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+<table class="table gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<caption><span class="gt_from_md">Summary of person table</span></caption>
+  <thead>
+<tr class="gt_col_headings gt_spanner_row">
+<th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="3" style="background-color: #F4E9EB; color: #040001; font-size: 11; text-align: center; font-weight: bold; border-left-width: 1px; border-left-style: solid; border-left-color: #f4e9eb; border-right-width: 1px; border-right-style: solid; border-right-color: #f4e9eb; border-top-width: 1px; border-top-style: solid; border-top-color: #f4e9eb; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #f4e9eb;" scope="colgroup"></th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="1" style="background-color: #F4E9EB; color: #040001; font-size: 11; text-align: center; font-weight: bold; border-left-width: 1px; border-left-style: solid; border-left-color: #f4e9eb; border-right-width: 1px; border-right-style: solid; border-right-color: #f4e9eb; border-top-width: 1px; border-top-style: solid; border-top-color: #f4e9eb; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #f4e9eb;" scope="col" id="spanner-[header_name]CDM name
+[header_level]Eunomia Synpuf
+[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900">
+        <div class="gt_column_spanner">CDM name</div>
+      </th>
+    </tr>
+<tr class="gt_col_headings gt_spanner_row">
+<th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="3" style="background-color: #F4E9EB; color: #040001; font-size: 11; text-align: center; font-weight: bold; border-left-width: 1px; border-left-style: solid; border-left-color: #f4e9eb; border-right-width: 1px; border-right-style: solid; border-right-color: #f4e9eb; border-top-width: 1px; border-top-style: solid; border-top-color: #f4e9eb; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #f4e9eb;" scope="colgroup"></th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="1" style="background-color: #F4E9EB; color: #040001; font-size: 11; text-align: center; font-weight: bold; border-left-width: 1px; border-left-style: solid; border-left-color: #f4e9eb; border-right-width: 1px; border-right-style: solid; border-right-color: #f4e9eb; border-top-width: 1px; border-top-style: solid; border-top-color: #f4e9eb; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #f4e9eb;" scope="col" id="spanner-[header_level]Eunomia Synpuf
+[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900">
+        <div class="gt_column_spanner">Eunomia Synpuf</div>
+      </th>
+    </tr>
+<tr class="gt_col_headings gt_spanner_row">
+<th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="3" style="background-color: #F4E9EB; color: #040001; font-size: 11; text-align: center; font-weight: bold; border-left-width: 1px; border-left-style: solid; border-left-color: #f4e9eb; border-right-width: 1px; border-right-style: solid; border-right-color: #f4e9eb; border-top-width: 1px; border-top-style: solid; border-top-color: #f4e9eb; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #f4e9eb;" scope="colgroup"></th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="1" style="background-color: #F4E9EB; color: #040001; font-size: 11; text-align: center; font-weight: bold; border-left-width: 1px; border-left-style: solid; border-left-color: #f4e9eb; border-right-width: 1px; border-right-style: solid; border-right-color: #f4e9eb; border-top-width: 1px; border-top-style: solid; border-top-color: #f4e9eb; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #f4e9eb;" scope="col" id="spanner-[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900">
+        <div class="gt_column_spanner">Diagnostic</div>
+      </th>
+    </tr>
+<tr class="gt_col_headings gt_spanner_row">
+<th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="3" style="background-color: #F4E9EB; color: #040001; font-size: 11; text-align: center; font-weight: bold; border-left-width: 1px; border-left-style: solid; border-left-color: #f4e9eb; border-right-width: 1px; border-right-style: solid; border-right-color: #f4e9eb; border-top-width: 1px; border-top-style: solid; border-top-color: #f4e9eb; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #f4e9eb;" scope="colgroup"></th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="1" style="background-color: #F4E9EB; color: #040001; font-size: 11; text-align: center; font-weight: bold; border-left-width: 1px; border-left-style: solid; border-left-color: #f4e9eb; border-right-width: 1px; border-right-style: solid; border-right-color: #f4e9eb; border-top-width: 1px; border-top-style: solid; border-top-color: #f4e9eb; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #f4e9eb;" scope="col" id="spanner-[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900">
+        <div class="gt_column_spanner">databaseDiagnostics</div>
+      </th>
+    </tr>
+<tr class="gt_col_headings gt_spanner_row">
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="2" colspan="1" style="background-color: #F4E9EB; color: #040001; font-size: 11; text-align: center; font-weight: bold; border-left-width: 1px; border-left-style: solid; border-left-color: #f4e9eb; border-right-width: 1px; border-right-style: solid; border-right-color: #f4e9eb; border-top-width: 1px; border-top-style: solid; border-top-color: #f4e9eb; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #f4e9eb;" scope="col" id="Variable-name">Variable name</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="2" colspan="1" style="background-color: #F4E9EB; color: #040001; font-size: 11; text-align: center; font-weight: bold; border-left-width: 1px; border-left-style: solid; border-left-color: #f4e9eb; border-right-width: 1px; border-right-style: solid; border-right-color: #f4e9eb; border-top-width: 1px; border-top-style: solid; border-top-color: #f4e9eb; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #f4e9eb;" scope="col" id="Variable-level">Variable level</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="2" colspan="1" style="background-color: #F4E9EB; color: #040001; font-size: 11; text-align: center; font-weight: bold; border-left-width: 1px; border-left-style: solid; border-left-color: #f4e9eb; border-right-width: 1px; border-right-style: solid; border-right-color: #f4e9eb; border-top-width: 1px; border-top-style: solid; border-top-color: #f4e9eb; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #f4e9eb;" scope="col" id="Estimate-name">Estimate name</th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="1" style="background-color: #F4E9EB; color: #040001; font-size: 11; text-align: center; font-weight: bold; border-left-width: 1px; border-left-style: solid; border-left-color: #f4e9eb; border-right-width: 1px; border-right-style: solid; border-right-color: #f4e9eb; border-top-width: 1px; border-top-style: solid; border-top-color: #f4e9eb; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #f4e9eb;" scope="col" id="spanner-[header_name]Phenotyper version
+[header_level]0.2.0.900">
+        <div class="gt_column_spanner">Phenotyper version</div>
+      </th>
+    </tr>
+<tr class="gt_col_headings">
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="background-color: #F4E9EB; color: #040001; font-size: 11; text-align: center; font-weight: bold; border-left-width: 1px; border-left-style: solid; border-left-color: #f4e9eb; border-right-width: 1px; border-right-style: solid; border-right-color: #f4e9eb; border-top-width: 1px; border-top-style: solid; border-top-color: #f4e9eb; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #f4e9eb;" scope="col" id="[header_name]CDM-name-[header_level]Eunomia-Synpuf-[header_name]Diagnostic-[header_level]databaseDiagnostics-[header_name]Phenotyper-version-[header_level]0.2.0.900">0.2.0.900</th>
+    </tr>
+</thead>
+<tbody class="gt_table_body">
+<tr>
+<td headers="Variable name" class="gt_row gt_left" style="text-align: left; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">Number subjects</td>
+<td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">–</td>
+<td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">N</td>
+<td headers="[header_name]CDM name
+[header_level]Eunomia Synpuf
+[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900" class="gt_row gt_left" style="text-align: right; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">1,000</td>
+</tr>
+<tr>
+<td headers="Variable name" class="gt_row gt_left" style="text-align: left; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">Number subjects not in observation</td>
+<td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">–</td>
+<td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">N (%)</td>
+<td headers="[header_name]CDM name
+[header_level]Eunomia Synpuf
+[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900" class="gt_row gt_left" style="text-align: right; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">0 (0.00%)</td>
+</tr>
+<tr>
+<td headers="Variable name" class="gt_row gt_left" style="text-align: left; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">Sex</td>
+<td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">Female</td>
+<td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">N (%)</td>
+<td headers="[header_name]CDM name
+[header_level]Eunomia Synpuf
+[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900" class="gt_row gt_left" style="text-align: right; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">498 (49.80%)</td>
+</tr>
+<tr>
+<td headers="Variable name" class="gt_row gt_left" style="text-align: left; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;"></td>
+<td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">Male</td>
+<td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">N (%)</td>
+<td headers="[header_name]CDM name
+[header_level]Eunomia Synpuf
+[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900" class="gt_row gt_left" style="text-align: right; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">502 (50.20%)</td>
+</tr>
+<tr>
+<td headers="Variable name" class="gt_row gt_left" style="text-align: left; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;"></td>
+<td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">None</td>
+<td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">N (%)</td>
+<td headers="[header_name]CDM name
+[header_level]Eunomia Synpuf
+[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900" class="gt_row gt_left" style="text-align: right; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">0 (0.00%)</td>
+</tr>
+<tr>
+<td headers="Variable name" class="gt_row gt_left" style="text-align: left; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">Sex source</td>
+<td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">Female</td>
+<td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">N (%)</td>
+<td headers="[header_name]CDM name
+[header_level]Eunomia Synpuf
+[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900" class="gt_row gt_left" style="text-align: right; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">498 (49.80%)</td>
+</tr>
+<tr>
+<td headers="Variable name" class="gt_row gt_left" style="text-align: left; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;"></td>
+<td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">Male</td>
+<td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">N (%)</td>
+<td headers="[header_name]CDM name
+[header_level]Eunomia Synpuf
+[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900" class="gt_row gt_left" style="text-align: right; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">502 (50.20%)</td>
+</tr>
+<tr>
+<td headers="Variable name" class="gt_row gt_left" style="text-align: left; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">Race</td>
+<td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">Black or African American</td>
+<td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">N (%)</td>
+<td headers="[header_name]CDM name
+[header_level]Eunomia Synpuf
+[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900" class="gt_row gt_left" style="text-align: right; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">114 (11.40%)</td>
+</tr>
+<tr>
+<td headers="Variable name" class="gt_row gt_left" style="text-align: left; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;"></td>
+<td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">No matching concept</td>
+<td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">N (%)</td>
+<td headers="[header_name]CDM name
+[header_level]Eunomia Synpuf
+[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900" class="gt_row gt_left" style="text-align: right; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">67 (6.70%)</td>
+</tr>
+<tr>
+<td headers="Variable name" class="gt_row gt_left" style="text-align: left; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;"></td>
+<td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">White</td>
+<td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">N (%)</td>
+<td headers="[header_name]CDM name
+[header_level]Eunomia Synpuf
+[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900" class="gt_row gt_left" style="text-align: right; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">819 (81.90%)</td>
+</tr>
+<tr>
+<td headers="Variable name" class="gt_row gt_left" style="text-align: left; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">Race source</td>
+<td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">Black</td>
+<td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">N (%)</td>
+<td headers="[header_name]CDM name
+[header_level]Eunomia Synpuf
+[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900" class="gt_row gt_left" style="text-align: right; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">114 (11.40%)</td>
+</tr>
+<tr>
+<td headers="Variable name" class="gt_row gt_left" style="text-align: left; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;"></td>
+<td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">Hispanic</td>
+<td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">N (%)</td>
+<td headers="[header_name]CDM name
+[header_level]Eunomia Synpuf
+[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900" class="gt_row gt_left" style="text-align: right; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">17 (1.70%)</td>
+</tr>
+<tr>
+<td headers="Variable name" class="gt_row gt_left" style="text-align: left; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;"></td>
+<td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">Others</td>
+<td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">N (%)</td>
+<td headers="[header_name]CDM name
+[header_level]Eunomia Synpuf
+[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900" class="gt_row gt_left" style="text-align: right; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">50 (5.00%)</td>
+</tr>
+<tr>
+<td headers="Variable name" class="gt_row gt_left" style="text-align: left; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;"></td>
+<td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">White</td>
+<td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">N (%)</td>
+<td headers="[header_name]CDM name
+[header_level]Eunomia Synpuf
+[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900" class="gt_row gt_left" style="text-align: right; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">819 (81.90%)</td>
+</tr>
+<tr>
+<td headers="Variable name" class="gt_row gt_left" style="text-align: left; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">Ethnicity</td>
+<td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">Hispanic or Latino</td>
+<td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">N (%)</td>
+<td headers="[header_name]CDM name
+[header_level]Eunomia Synpuf
+[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900" class="gt_row gt_left" style="text-align: right; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">17 (1.70%)</td>
+</tr>
+<tr>
+<td headers="Variable name" class="gt_row gt_left" style="text-align: left; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;"></td>
+<td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">No matching concept</td>
+<td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">N (%)</td>
+<td headers="[header_name]CDM name
+[header_level]Eunomia Synpuf
+[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900" class="gt_row gt_left" style="text-align: right; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">50 (5.00%)</td>
+</tr>
+<tr>
+<td headers="Variable name" class="gt_row gt_left" style="text-align: left; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;"></td>
+<td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">Not Hispanic or Latino</td>
+<td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">N (%)</td>
+<td headers="[header_name]CDM name
+[header_level]Eunomia Synpuf
+[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900" class="gt_row gt_left" style="text-align: right; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">933 (93.30%)</td>
+</tr>
+<tr>
+<td headers="Variable name" class="gt_row gt_left" style="text-align: left; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">Ethnicity source</td>
+<td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">Hispanic or Latino</td>
+<td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">N (%)</td>
+<td headers="[header_name]CDM name
+[header_level]Eunomia Synpuf
+[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900" class="gt_row gt_left" style="text-align: right; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">17 (1.70%)</td>
+</tr>
+<tr>
+<td headers="Variable name" class="gt_row gt_left" style="text-align: left; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;"></td>
+<td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">Not Hispanic or Latino</td>
+<td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">N (%)</td>
+<td headers="[header_name]CDM name
+[header_level]Eunomia Synpuf
+[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900" class="gt_row gt_left" style="text-align: right; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">933 (93.30%)</td>
+</tr>
+<tr>
+<td headers="Variable name" class="gt_row gt_left" style="text-align: left; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;"></td>
+<td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">Others</td>
+<td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">N (%)</td>
+<td headers="[header_name]CDM name
+[header_level]Eunomia Synpuf
+[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900" class="gt_row gt_left" style="text-align: right; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">50 (5.00%)</td>
+</tr>
+<tr>
+<td headers="Variable name" class="gt_row gt_left" style="text-align: left; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">Year of birth</td>
+<td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">–</td>
+<td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">Missing (%)</td>
+<td headers="[header_name]CDM name
+[header_level]Eunomia Synpuf
+[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900" class="gt_row gt_left" style="text-align: right; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">0 (0.00%)</td>
+</tr>
+<tr>
+<td headers="Variable name" class="gt_row gt_left" style="text-align: left; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;"></td>
+<td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;"></td>
+<td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">Median [Q25 - Q75]</td>
+<td headers="[header_name]CDM name
+[header_level]Eunomia Synpuf
+[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900" class="gt_row gt_left" style="text-align: right; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">1,935 [1,928 - 1,942]</td>
+</tr>
+<tr>
+<td headers="Variable name" class="gt_row gt_left" style="text-align: left; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;"></td>
+<td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;"></td>
+<td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">90% Range [Q05 to Q95]</td>
+<td headers="[header_name]CDM name
+[header_level]Eunomia Synpuf
+[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900" class="gt_row gt_left" style="text-align: right; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">1,919 to 1,962</td>
+</tr>
+<tr>
+<td headers="Variable name" class="gt_row gt_left" style="text-align: left; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;"></td>
+<td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;"></td>
+<td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">Range [min to max]</td>
+<td headers="[header_name]CDM name
+[header_level]Eunomia Synpuf
+[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900" class="gt_row gt_left" style="text-align: right; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">1,909 to 1,983</td>
+</tr>
+<tr>
+<td headers="Variable name" class="gt_row gt_left" style="text-align: left; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">Month of birth</td>
+<td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">–</td>
+<td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">Missing (%)</td>
+<td headers="[header_name]CDM name
+[header_level]Eunomia Synpuf
+[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900" class="gt_row gt_left" style="text-align: right; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">0 (0.00%)</td>
+</tr>
+<tr>
+<td headers="Variable name" class="gt_row gt_left" style="text-align: left; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;"></td>
+<td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;"></td>
+<td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">Median [Q25 - Q75]</td>
+<td headers="[header_name]CDM name
+[header_level]Eunomia Synpuf
+[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900" class="gt_row gt_left" style="text-align: right; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">7 [3 - 10]</td>
+</tr>
+<tr>
+<td headers="Variable name" class="gt_row gt_left" style="text-align: left; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;"></td>
+<td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;"></td>
+<td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">90% Range [Q05 to Q95]</td>
+<td headers="[header_name]CDM name
+[header_level]Eunomia Synpuf
+[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900" class="gt_row gt_left" style="text-align: right; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">1 to 12</td>
+</tr>
+<tr>
+<td headers="Variable name" class="gt_row gt_left" style="text-align: left; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;"></td>
+<td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;"></td>
+<td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">Range [min to max]</td>
+<td headers="[header_name]CDM name
+[header_level]Eunomia Synpuf
+[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900" class="gt_row gt_left" style="text-align: right; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">1 to 12</td>
+</tr>
+<tr>
+<td headers="Variable name" class="gt_row gt_left" style="text-align: left; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">Day of birth</td>
+<td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">–</td>
+<td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">Missing (%)</td>
+<td headers="[header_name]CDM name
+[header_level]Eunomia Synpuf
+[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900" class="gt_row gt_left" style="text-align: right; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">0 (0.00%)</td>
+</tr>
+<tr>
+<td headers="Variable name" class="gt_row gt_left" style="text-align: left; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;"></td>
+<td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;"></td>
+<td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">Median [Q25 - Q75]</td>
+<td headers="[header_name]CDM name
+[header_level]Eunomia Synpuf
+[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900" class="gt_row gt_left" style="text-align: right; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">1 [1 - 1]</td>
+</tr>
+<tr>
+<td headers="Variable name" class="gt_row gt_left" style="text-align: left; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;"></td>
+<td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;"></td>
+<td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">90% Range [Q05 to Q95]</td>
+<td headers="[header_name]CDM name
+[header_level]Eunomia Synpuf
+[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900" class="gt_row gt_left" style="text-align: right; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">1 to 1</td>
+</tr>
+<tr>
+<td headers="Variable name" class="gt_row gt_left" style="text-align: left; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;"></td>
+<td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;"></td>
+<td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">Range [min to max]</td>
+<td headers="[header_name]CDM name
+[header_level]Eunomia Synpuf
+[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900" class="gt_row gt_left" style="text-align: right; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">1 to 1</td>
+</tr>
+<tr>
+<td headers="Variable name" class="gt_row gt_left" style="text-align: left; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">Location</td>
+<td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">–</td>
+<td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">Missing (%)</td>
+<td headers="[header_name]CDM name
+[header_level]Eunomia Synpuf
+[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900" class="gt_row gt_left" style="text-align: right; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">0 (0.00%)</td>
+</tr>
+<tr>
+<td headers="Variable name" class="gt_row gt_left" style="text-align: left; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;"></td>
+<td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;"></td>
+<td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">Zero count (%)</td>
+<td headers="[header_name]CDM name
+[header_level]Eunomia Synpuf
+[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900" class="gt_row gt_left" style="text-align: right; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">1 (0.10%)</td>
+</tr>
+<tr>
+<td headers="Variable name" class="gt_row gt_left" style="text-align: left; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;"></td>
+<td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;"></td>
+<td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">Distinct values</td>
+<td headers="[header_name]CDM name
+[header_level]Eunomia Synpuf
+[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900" class="gt_row gt_left" style="text-align: right; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">626</td>
+</tr>
+<tr>
+<td headers="Variable name" class="gt_row gt_left" style="text-align: left; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">Provider</td>
+<td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">–</td>
+<td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">Missing (%)</td>
+<td headers="[header_name]CDM name
+[header_level]Eunomia Synpuf
+[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900" class="gt_row gt_left" style="text-align: right; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">1,000 (100.00%)</td>
+</tr>
+<tr>
+<td headers="Variable name" class="gt_row gt_left" style="text-align: left; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;"></td>
+<td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;"></td>
+<td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">Zero count (%)</td>
+<td headers="[header_name]CDM name
+[header_level]Eunomia Synpuf
+[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900" class="gt_row gt_left" style="text-align: right; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">0 (0.00%)</td>
+</tr>
+<tr>
+<td headers="Variable name" class="gt_row gt_left" style="text-align: left; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;"></td>
+<td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;"></td>
+<td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">Distinct values</td>
+<td headers="[header_name]CDM name
+[header_level]Eunomia Synpuf
+[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900" class="gt_row gt_left" style="text-align: right; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">1</td>
+</tr>
+<tr>
+<td headers="Variable name" class="gt_row gt_left" style="text-align: left; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">Care site</td>
+<td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">–</td>
+<td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">Missing (%)</td>
+<td headers="[header_name]CDM name
+[header_level]Eunomia Synpuf
+[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900" class="gt_row gt_left" style="text-align: right; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">1,000 (100.00%)</td>
+</tr>
+<tr>
+<td headers="Variable name" class="gt_row gt_left" style="text-align: left; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;"></td>
+<td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;"></td>
+<td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">Zero count (%)</td>
+<td headers="[header_name]CDM name
+[header_level]Eunomia Synpuf
+[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900" class="gt_row gt_left" style="text-align: right; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">0 (0.00%)</td>
+</tr>
+<tr>
+<td headers="Variable name" class="gt_row gt_left" style="text-align: left; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;"></td>
+<td headers="Variable level" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;"></td>
+<td headers="Estimate name" class="gt_row gt_left" style="text-align: left; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208; background-color: #FFFFFF;">Distinct values</td>
+<td headers="[header_name]CDM name
+[header_level]Eunomia Synpuf
+[header_name]Diagnostic
+[header_level]databaseDiagnostics
+[header_name]Phenotyper version
+[header_level]0.2.0.900" class="gt_row gt_left" style="text-align: right; background-color: #FFFFFF; border-left-width: 0.5px; border-left-style: solid; border-left-color: #E6D208; border-right-width: 0.5px; border-right-style: solid; border-right-color: #E6D208; border-top-width: 0.5px; border-top-style: solid; border-top-color: #E6D208; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: #E6D208;">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section level3">
+<h3 id="clinical-records">Clinical Records<a class="anchor" aria-label="anchor" href="#clinical-records"></a>
+</h3>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://OHDSI.github.io/OmopSketch/reference/tableClinicalRecords.html" class="external-link">tableClinicalRecords</a></span><span class="op">(</span><span class="va">db_diagnostics</span><span class="op">)</span></span></code></pre></div>
+<div id="pkbjkhrvvq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#pkbjkhrvvq table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#pkbjkhrvvq thead, #pkbjkhrvvq tbody, #pkbjkhrvvq tfoot, #pkbjkhrvvq tr, #pkbjkhrvvq td, #pkbjkhrvvq th {
+  border-style: none;
+}
+
+#pkbjkhrvvq p {
+  margin: 0;
+  padding: 0;
+}
+
+#pkbjkhrvvq .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 3px;
+  border-top-color: #F4E9EB;
+  border-right-style: solid;
+  border-right-width: 3px;
+  border-right-color: #F4E9EB;
+  border-bottom-style: solid;
+  border-bottom-width: 3px;
+  border-bottom-color: #F4E9EB;
+  border-left-style: solid;
+  border-left-width: 3px;
+  border-left-color: #F4E9EB;
+}
+
+#pkbjkhrvvq .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#pkbjkhrvvq .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#pkbjkhrvvq .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#pkbjkhrvvq .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#pkbjkhrvvq .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#pkbjkhrvvq .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#pkbjkhrvvq .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#pkbjkhrvvq .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#pkbjkhrvvq .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#pkbjkhrvvq .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#pkbjkhrvvq .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#pkbjkhrvvq .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#pkbjkhrvvq .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#pkbjkhrvvq .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#pkbjkhrvvq .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#pkbjkhrvvq .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#pkbjkhrvvq .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#pkbjkhrvvq .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#pkbjkhrvvq .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#pkbjkhrvvq .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#pkbjkhrvvq .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#pkbjkhrvvq .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#pkbjkhrvvq .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#pkbjkhrvvq .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#pkbjkhrvvq .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#pkbjkhrvvq .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#pkbjkhrvvq .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#pkbjkhrvvq .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#pkbjkhrvvq .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#pkbjkhrvvq .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 3px;
+  border-top-color: #F4E9EB;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#pkbjkhrvvq .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#pkbjkhrvvq .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#pkbjkhrvvq .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#pkbjkhrvvq .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#pkbjkhrvvq .gt_left {
+  text-align: left;
+}
+
+#pkbjkhrvvq .gt_center {
+  text-align: center;
+}
+
+#pkbjkhrvvq .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#pkbjkhrvvq .gt_font_normal {
+  font-weight: normal;
+}
+
+#pkbjkhrvvq .gt_font_bold {
+  font-weight: bold;
+}
+
+#pkbjkhrvvq .gt_font_italic {
+  font-style: italic;
+}
+
+#pkbjkhrvvq .gt_super {
+  font-size: 65%;
+}
+
+#pkbjkhrvvq .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#pkbjkhrvvq .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#pkbjkhrvvq .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#pkbjkhrvvq .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#pkbjkhrvvq .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#pkbjkhrvvq .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#pkbjkhrvvq .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#pkbjkhrvvq .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#pkbjkhrvvq div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>

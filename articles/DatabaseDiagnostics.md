@@ -56,6 +56,11 @@ perform the following analyses:
   This will allow us to see if there are individuals with multiple,
   non-overlapping, observation periods and how long each observation
   period lasts on average.
+- **Person table:** Summarises the person table by using
+  [summarisePerson()](https://ohdsi.github.io/OmopSketch/reference/summarisePerson.html).
+  This provides demographic information including sex, race, ethnicity,
+  year/month/day of birth distributions, and location/provider/care site
+  information.
 - **Clinical Records**: The diagnostics will detect which domains
   appears to the codelist associated to your cohort (i.e., Drug), and
   use
@@ -88,6 +93,16 @@ tableObservationPeriod(db_diagnostics)
 [TABLE]
 
 Summary of observation_period table
+
+### Person Table
+
+``` r
+tablePerson(db_diagnostics)
+```
+
+[TABLE]
+
+Summary of person table
 
 ### Clinical Records
 
