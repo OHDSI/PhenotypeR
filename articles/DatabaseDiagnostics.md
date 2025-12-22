@@ -112,4 +112,4 @@ tableClinicalRecords(db_diagnostics)
 
 [TABLE]
 
-Summary of condition_occurrence table
+Summary of condition_era, condition_occurrence tables
