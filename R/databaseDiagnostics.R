@@ -89,8 +89,11 @@ databaseDiagnostics <- function(cohort){
             stringr::str_split(pattern = ";") |>
             purrr::flatten_chr() |>
             sort()
+          workingOmopTables <- intersect(workingOmopTables, names(cdm))
+          if(length(workingOmopTables) >= 1) {
           results[["omop_tabs"]] <- OmopSketch::summariseClinicalRecords(cdm,
                                                                          omopTableName = workingOmopTables)
+          }
         }
       }
     }
