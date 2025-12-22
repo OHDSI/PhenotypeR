@@ -417,6 +417,45 @@ server <- function(input, output, session) {
     }
   )
 
+  # summarise_person -----
+  filterPerson <- eventReactive(input$updatePerson, ({
+    if (is.null(dataFiltered$summarise_person)) {
+      validate("No person summary in results")
+    }
+
+    result <- dataFiltered$summarise_person |>
+      dplyr::filter(cdm_name %in% shared_cdm_names())
+    attr(result, "settings")  <- attr(result, "settings") |>
+      dplyr::select(!c("diagnostic", "phenotyper_version"))
+    validateFilteredResult(result)
+
+    return(result)
+  }))
+
+  ## Table summarise_person -----
+  createTablePerson <- shiny::reactive({
+    filterPerson() |>
+      OmopSketch::tablePerson() %>%
+      tab_header(
+        title = "Summary of person table",
+        subtitle = "The person table contains core information on patients captured in the OMOP CDM dataset."
+      ) %>%
+      tab_options(
+        heading.align = "left"
+      )
+  })
+  output$summarise_person_gt <- gt::render_gt({
+    createTablePerson()
+  })
+  output$summarise_person_gt_download <- shiny::downloadHandler(
+    filename = "summarise_person_gt.docx",
+    content = function(file) {
+      obj <- createTablePerson()
+      gt::gtsave(data = obj, filename = file)
+    }
+  )
+
+
   # summarise_observation_period -----
   filterObservationPeriod <- eventReactive(input$updateObservationPeriod, ({
     if (is.null(dataFiltered$summarise_observation_period)) {
@@ -460,16 +499,16 @@ server <- function(input, output, session) {
     if (is.null(dataFiltered$summarise_clinical_records)) {
       validate("No clinical records summary in results")
     }
-    
+
     result <- dataFiltered$summarise_clinical_records |>
       dplyr::filter(cdm_name %in% shared_cdm_names())
     attr(result, "settings")  <- attr(result, "settings") |>
       dplyr::select(!c("diagnostic", "phenotyper_version"))
     validateFilteredResult(result)
-    
+
     return(result)
   }))
-  
+
   ## Table summarise_clinical_records -----
   createClinicalRecordsTable <- shiny::reactive({
     filterClinicalRecords() |>
