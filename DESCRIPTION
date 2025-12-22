@@ -82,4 +82,5 @@ Imports:
 URL: https://ohdsi.github.io/PhenotypeR/
 VignetteBuilder: knitr
 Remotes:  
-    OHDSI/CohortConstructor
+    OHDSI/CohortConstructor,
+    OHDSI/OmopSketch
