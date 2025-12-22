@@ -62,6 +62,7 @@ Database diagnostics builds on [OmopSketch](https://ohdsi.github.io/OmopSketch/i
 -   **Snapshot:** Summarises the meta data of a CDM object by using [summariseOmopSnapshot()](https://ohdsi.github.io/OmopSketch/reference/summariseOmopSnapshot.html)
 -   **Observation periods:** Summarises the observation period table by using
 [summariseObservationPeriod()](https://ohdsi.github.io/OmopSketch/reference/summariseObservationPeriod.html). This will allow us to see if there are individuals with multiple, non-overlapping, observation periods and how long each observation period lasts on average.
+-   **Person table:** Summarises the person table by using [summarisePerson()](https://ohdsi.github.io/OmopSketch/reference/summarisePerson.html). This provides demographic information including sex, race, ethnicity, year/month/day of birth distributions, and location/provider/care site information.
 -   **Clinical Records**: The diagnostics will detect which domains appears to the codelist associated to your cohort (i.e., Drug), and use [summariseClinicalRecords()](https://ohdsi.github.io/OmopSketch/reference/summariseClinicalRecords.html) to summarise the clinical table associated (i.e., "drug_exposure").
 
 The output is a summarised result object.
@@ -78,6 +79,12 @@ tableOmopSnapshot(db_diagnostics)
 
 ```{r}
 tableObservationPeriod(db_diagnostics)
+```
+
+### Person Table
+
+```{r}
+tablePerson(db_diagnostics)
 ```
 
 ### Clinical Records
