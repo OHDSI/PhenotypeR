@@ -1569,7 +1569,7 @@ server <- function(input, output, session) {
     lsc <- lsc |>
       dplyr::mutate(across(c(target_cohort, comparator_cohort), ~ as.numeric(.x)/100)) |>
       dplyr::mutate(smd = (!!sym(target_cohort) - !!sym(comparator_cohort))/sqrt((!!sym(target_cohort)*(1-!!sym(target_cohort)) + !!sym(comparator_cohort)*(1-!!sym(comparator_cohort)))/2)) |>
-      dplyr::mutate(smd = if_else(is.na(smd), 0, round(smd, 2))) |>
+      dplyr::mutate(smd = if_else(is.na(smd), 0, round(smd, 3))) |>
       dplyr::arrange(desc(smd))  |>
       mutate(concept = paste0(variable_name, " (",concept_id, ")"))
 
