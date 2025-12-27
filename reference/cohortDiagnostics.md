@@ -107,8 +107,8 @@ result <- cohortDiagnostics(cdm$warfarin)
 #> • age: density
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side
-#> → Start summary of data, at 2025-12-27 18:47:45.293596
-#> ✔ Summary finished, at 2025-12-27 18:47:45.465677
+#> → Start summary of data, at 2025-12-27 19:05:18.810013
+#> ✔ Summary finished, at 2025-12-27 19:05:18.959847
 #> → Run large scale characteristics
 #> ℹ Summarising large scale characteristics 
 #>  - getting characteristics from table condition_occurrence (1 of 8)
@@ -176,7 +176,7 @@ result <- cohortDiagnostics(cdm$warfarin)
 #>  - getting characteristics from table drug_era (8 of 8) for time window 31 and …
 #>  - getting characteristics from table drug_era (8 of 8) for time window 366 and…
 #> Formatting result
-#> 814 estimates dropped as frequency less than 1%
+#> 830 estimates dropped as frequency less than 1%
 #> ✔ Summarising large scale characteristics
 #> `cohort_sample` and `matched_sample` casted to character.
 # }
