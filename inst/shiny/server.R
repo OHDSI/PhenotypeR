@@ -456,6 +456,36 @@ server <- function(input, output, session) {
   )
 
 
+  ## Plot date of birth ----
+  filterPersonDob <- eventReactive(input$updatePerson, ({
+    if (is.null(dataFiltered$summarise_dob_density)) {
+      validate("No date of birth summary in results")
+    }
+
+    result <- dataFiltered$summarise_dob_density |>
+      dplyr::filter(cdm_name %in% shared_cdm_names())
+    validateFilteredResult(result)
+
+    return(result)
+  }))
+
+  output$dobPlot <- renderPlot({
+    filterPersonDob() |>
+      visOmopResults::scatterPlot(
+        x = "density_x",
+        y = "density_y",
+        colour = "cdm_name",
+        line = TRUE,
+        point = FALSE,
+        ribbon = FALSE,
+        ymin = NULL,
+        ymax = NULL) +
+      ggplot2::xlab("Date of Birth") +
+      ggplot2::ylab("Density") +
+      ggplot2::scale_y_continuous(labels = scales::label_number()) +
+      visOmopResults::themeVisOmop()
+  })
+
   # summarise_observation_period -----
   filterObservationPeriod <- eventReactive(input$updateObservationPeriod, ({
     if (is.null(dataFiltered$summarise_observation_period)) {
@@ -494,6 +524,47 @@ server <- function(input, output, session) {
     }
   )
 
+  ## Plot obs start end ----
+  filterObs <- eventReactive(input$updateObservationPeriod, ({
+    if (is.null(dataFiltered$summarise_obs_density)) {
+      validate("No date of observation period distributions in results")
+    }
+
+    result <- dataFiltered$summarise_obs_density |>
+      dplyr::filter(cdm_name %in% shared_cdm_names())
+    validateFilteredResult(result)
+
+    return(result)
+  }))
+
+  output$obsPlot <- renderPlot({
+
+    filterObs() |>
+      dplyr::mutate(variable_name =
+                      dplyr::if_else(variable_name == "observation_period_start_date",
+                                     "observation period start date",
+                                     "observation period end date")) |>
+      dplyr::mutate(variable_name = factor(variable_name,
+                                           levels = c("observation period start date",
+                                                      "observation period end date"))) |>
+      visOmopResults::scatterPlot(
+        x = "density_x",
+        y = "density_y",
+        group = "variable_name",
+        facet = "variable_name",
+        line = TRUE,
+        point = FALSE,
+        ribbon = FALSE,
+        ymin = NULL,
+        ymax = NULL) +
+      ggplot2::xlab("Date of Birth") +
+      ggplot2::ylab("Density") +
+      ggplot2::scale_y_continuous(labels = scales::label_number()) +
+      ggplot2::facet_wrap(vars(variable_name),
+                          ncol = 1)
+
+  })
+
   # summarise_clinical_records ----
   filterClinicalRecords <- eventReactive(input$updateClinicalRecords, ({
     if (is.null(dataFiltered$summarise_clinical_records)) {
@@ -531,6 +602,36 @@ server <- function(input, output, session) {
       gt::gtsave(data = obj, filename = file)
     }
   )
+
+  ## Plot clinical record trends -----
+  filterClinicalRecordTrends <- eventReactive(input$updateClinicalRecords, ({
+    if (is.null(dataFiltered$summarise_trend)) {
+      validate("No clinical records summary in results")
+    }
+
+    result <- dataFiltered$summarise_trend |>
+      dplyr::filter(cdm_name %in% shared_cdm_names())
+    validateFilteredResult(result)
+
+    return(result)
+  }))
+
+  output$clinicalTrends <- renderPlot({
+
+  plot <- filterClinicalRecordTrends() |>
+      OmopSketch::plotTrend(style = "default",
+                          colour = input$clinical_records_plot_colour,
+                          facet = input$clinical_records_plot_facet)
+
+  if(!is.null(input$clinical_records_plot_facet) &&
+     isTRUE(input$clinical_records_plot_facet_free)){
+    plot <- plot +
+      facet_wrap(facets = input$clinical_records_plot_facet,
+                 scales = "free_y")
+  }
+
+  plot
+  })
 
   # achilles_code_use -----
   filterAchillesCodeUse <- eventReactive(input$updateAchillesCodeUse, ({
