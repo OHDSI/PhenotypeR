@@ -90,6 +90,7 @@ ui <- fluidPage(
             )
           )),
         icon = shiny::icon("eye"),
+        bslib::navset_card_tab(
         bslib::nav_panel(
           title = "Table person",
           bslib::card(
@@ -100,7 +101,12 @@ ui <- fluidPage(
             ),
             gt::gt_output("summarise_person_gt") |> withSpinner()
           )
+        ),
+        bslib::nav_panel(
+          title = "Date of birth",
+          plotOutput("dobPlot")
         )
+      )
       ),
 
       ## observation periods -----
@@ -137,6 +143,7 @@ ui <- fluidPage(
             )
           )),
         icon = shiny::icon("eye"),
+        bslib::navset_card_tab(
         bslib::nav_panel(
           title = "Table observation period",
           bslib::card(
@@ -147,7 +154,12 @@ ui <- fluidPage(
             ),
             gt::gt_output("summarise_observation_period_gt") |> withSpinner()
           )
+        ),
+        bslib::nav_panel(
+          title = "Observation periods",
+          plotOutput("obsPlot")
         )
+      )
       ),
       ## clinical_records_start ----
       bslib::nav_panel(
@@ -183,6 +195,7 @@ ui <- fluidPage(
             )
           )),
         icon = shiny::icon("circle-user"),
+        bslib::navset_card_tab(
         bslib::nav_panel(
           title = "Table Clinical Records",
           bslib::card(
@@ -193,6 +206,42 @@ ui <- fluidPage(
             ),
             gt::gt_output("summarise_clinical_records_gt") |> withSpinner()
           )
+        ),
+      bslib::nav_panel(
+        title = "Trends",
+        bslib::layout_sidebar(
+          sidebar = bslib::sidebar(width = 400, open = "closed",
+                                   shinyWidgets::pickerInput(
+                                     inputId = "clinical_records_plot_facet",
+                                     label = "Facet",
+                                     selected = "cdm_name",
+                                     multiple = TRUE,
+                                     choices = c("cdm_name",
+                                                 "omop_table"),
+                                     options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                   ),
+                                   shiny::checkboxInput(
+                                     inputId = "clinical_records_plot_facet_free",
+                                     label = "Free scales",
+                                     value = c(FALSE)
+                                   ),
+                                   shinyWidgets::pickerInput(
+                                     inputId = "clinical_records_plot_colour",
+                                     label = "Colour",
+                                     selected = "omop_table",
+                                     multiple = TRUE,
+                                     choices = c("cdm_name",
+                                                 "omop_table"),
+                                     options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                   ),
+                                   position = "right"
+                                   ),
+        bslib::card(
+          full_screen = TRUE,
+        plotOutput("clinicalTrends")
+      )
+        )
+      )
         )
       )
       ## clinical_records_end ----

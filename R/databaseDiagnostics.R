@@ -47,13 +47,39 @@ databaseDiagnostics <- function(cohort){
   results <- list()
   results[["snap"]] <- OmopSketch::summariseOmopSnapshot(cdm)
 
-  # Observation period
-  cli::cli_bullets(c(">" = "Summarising Observation Period"))
-  results[["obs_period"]] <- OmopSketch::summariseObservationPeriod(cdm$observation_period)
-
   # Person table
   cli::cli_bullets(c(">" = "Summarising Person Table"))
   results[["person"]] <- OmopSketch::summarisePerson(cdm)
+  results[["dob_density"]] <- cdm$person |>
+    PatientProfiles::addDemographics(age = FALSE,
+                                     sex = TRUE,
+                                     dateOfBirth = TRUE,
+                                     priorObservation = FALSE,
+                                     futureObservation = FALSE) |>
+    PatientProfiles::summariseResult(
+      counts = FALSE,
+      variables = "date_of_birth",
+      estimates = "density")
+  results[["dob_density"]] <- results[["dob_density"]] |>
+    omopgenerics::newSummarisedResult(
+      settings = attr(results[["dob_density"]],
+                      "settings") |>
+        dplyr::mutate(result_type = "summarise_dob_density"))
+
+  # Observation period
+  cli::cli_bullets(c(">" = "Summarising Observation Period"))
+  results[["obs_period"]] <- OmopSketch::summariseObservationPeriod(cdm$observation_period)
+  results[["obs_density"]] <- cdm$observation_period |>
+    PatientProfiles::summariseResult(
+      counts = FALSE,
+      variables = c("observation_period_start_date",
+                    "observation_period_end_date"),
+      estimates = "density")
+  results[["obs_density"]] <- results[["obs_density"]] |>
+    omopgenerics::newSummarisedResult(
+      settings = attr(results[["obs_density"]],
+                      "settings") |>
+        dplyr::mutate(result_type = "summarise_obs_density"))
 
   # Summarising omop tables - Empty cohort codelist
   cli::cli_bullets(c(">" = "Summarising OMOP tables"))
@@ -98,6 +124,11 @@ databaseDiagnostics <- function(cohort){
           if(length(workingOmopTables) >= 1) {
           results[["omop_tabs"]] <- OmopSketch::summariseClinicalRecords(cdm,
                                                                          omopTableName = workingOmopTables)
+
+          results[["omop_tab_trends"]] <- OmopSketch::summariseTrend(cdm = cdm,
+                                            event = workingOmopTables,
+                                            output = "record",
+                                            interval = "years")
           }
         }
       }
