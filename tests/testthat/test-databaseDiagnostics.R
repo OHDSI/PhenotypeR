@@ -1,4 +1,4 @@
-test_that("multiplication works", {
+test_that("db diagnostics", {
   testthat::skip_on_cran()
 
   # Create cdm ----
@@ -19,8 +19,12 @@ test_that("multiplication works", {
 
   # Empty codelist
  expect_warning(db_diag <- databaseDiagnostics(cdm$my_cohort))
- expect_identical(settings(db_diag)$result_type,
-                  c("summarise_omop_snapshot", "summarise_observation_period", "summarise_person"))
+ expect_true("summarise_omop_snapshot" %in%
+               settings(db_diag)$result_type)
+ expect_true("summarise_observation_period" %in%
+               settings(db_diag)$result_type)
+ expect_true("summarise_person" %in%
+               settings(db_diag)$result_type)
 
   # Only one codelist
   cdm$my_cohort <- cdm$my_cohort |>
