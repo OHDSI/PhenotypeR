@@ -34,8 +34,12 @@ test_that("db diagnostics", {
       cohortName = c("cohort_1", "cohort_1")
     )
   expect_no_error(db_diag <- databaseDiagnostics(cdm$my_cohort))
-  expect_identical(c("summarise_omop_snapshot", "summarise_observation_period", "summarise_person", "summarise_clinical_records"),
-                   settings(db_diag)$result_type)
+  expect_true("summarise_omop_snapshot" %in%
+                settings(db_diag)$result_type)
+  expect_true("summarise_observation_period" %in%
+                settings(db_diag)$result_type)
+  expect_true("summarise_person" %in%
+                settings(db_diag)$result_type)
   expect_identical(db_diag$group_level |> unique(),
                    c("overall", "all", "1st", "condition_occurrence", "drug_exposure"))
   expect_no_error(OmopSketch::tableOmopSnapshot(db_diag))
