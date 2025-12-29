@@ -31,6 +31,7 @@ library(plotly)
 library(tidyr)
 library(reactable)
 library(stringr)
+library(qs)
 
 source(here::here("scripts", "functions.R"))
 
@@ -56,7 +57,7 @@ if(!file.exists(here::here("data", "appData.RData"))){
 }
 
 cli::cli_inform("Loading data")
-load(here::here("data", "appData.RData"))
+qs::qload(here::here("data", "appData.qs"))
 cli::cli_inform("Data loaded")
 
 plotComparedLsc <- function(lsc, cohorts, imputeMissings, colour = NULL, facet = NULL){
