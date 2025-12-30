@@ -96,10 +96,10 @@ cdm$warfarin <- conceptCohort(cdm,
 
 result <- phenotypeDiagnostics(cdm$warfarin)
 #> ℹ Creating log file:
-#>   /tmp/RtmpRtMVhn/phenotypeDiagnostics_log_2025_12_27_20_27_021f077a71b8d1.txt.
-#> [2025-12-27 20:27:02] - Log file created
-#> [2025-12-27 20:27:02] - Started phenotypeDiagnostics
-#> [2025-12-27 20:27:02] - Running database diagnostics
+#>   /tmp/RtmpAw7Fh4/phenotypeDiagnostics_log_2025_12_30_09_11_051eef19cae309.txt.
+#> [2025-12-30 09:11:05] - Log file created
+#> [2025-12-30 09:11:05] - Started phenotypeDiagnostics
+#> [2025-12-30 09:11:05] - Running database diagnostics
 #> • Starting Database Diagnostics
 #> → Getting CDM Snapshot
 #> → Summarising Person Table
@@ -107,8 +107,8 @@ result <- phenotypeDiagnostics(cdm$warfarin)
 #> • date_of_birth: density
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side
-#> → Start summary of data, at 2025-12-27 20:27:07.315193
-#> ✔ Summary finished, at 2025-12-27 20:27:07.405238
+#> → Start summary of data, at 2025-12-30 09:11:10.305312
+#> ✔ Summary finished, at 2025-12-30 09:11:10.387582
 #> → Summarising Observation Period
 #> ℹ retrieving cdm object from cdm_table.
 #> Warning: ! There are 2649 individuals not included in the person table.
@@ -117,8 +117,8 @@ result <- phenotypeDiagnostics(cdm$warfarin)
 #> • observation_period_end_date: density
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side
-#> → Start summary of data, at 2025-12-27 20:27:11.011719
-#> ✔ Summary finished, at 2025-12-27 20:27:11.10762
+#> → Start summary of data, at 2025-12-30 09:11:13.839303
+#> ✔ Summary finished, at 2025-12-30 09:11:13.927074
 #> → Summarising OMOP tables
 #> ℹ Adding variables of interest to drug_era.
 #> ℹ Summarising records per person in drug_era.
@@ -141,13 +141,13 @@ result <- phenotypeDiagnostics(cdm$warfarin)
 #> ℹ Summarising concept types in drug_exposure.
 #> ℹ Summarising concept class in drug_exposure.
 #> ℹ Summarising missing data in drug_exposure.
-#> [2025-12-27 20:27:19] - Running codelist diagnostics
+#> [2025-12-30 09:11:22] - Running codelist diagnostics
 #> • Getting codelists from cohorts
 #> • Getting index event breakdown
 #> Getting counts of warfarin codes for cohort warfarin
 #> Warning: The CDM reference containing the cohort must also contain achilles tables.
 #> Returning only index event breakdown.
-#> [2025-12-27 20:27:21] - Running cohort diagnostics
+#> [2025-12-30 09:11:24] - Running cohort diagnostics
 #> • Starting Cohort Diagnostics
 #> → Getting cohort attrition
 #> → Getting cohort count
@@ -187,8 +187,8 @@ result <- phenotypeDiagnostics(cdm$warfarin)
 #> • age: density
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side
-#> → Start summary of data, at 2025-12-27 20:27:39.85501
-#> ✔ Summary finished, at 2025-12-27 20:27:40.00764
+#> → Start summary of data, at 2025-12-30 09:11:43.371552
+#> ✔ Summary finished, at 2025-12-30 09:11:43.518164
 #> → Run large scale characteristics
 #> ℹ Summarising large scale characteristics 
 #>  - getting characteristics from table condition_occurrence (1 of 8)
@@ -256,10 +256,10 @@ result <- phenotypeDiagnostics(cdm$warfarin)
 #>  - getting characteristics from table drug_era (8 of 8) for time window 31 and …
 #>  - getting characteristics from table drug_era (8 of 8) for time window 366 and…
 #> Formatting result
-#> 952 estimates dropped as frequency less than 1%
+#> 948 estimates dropped as frequency less than 1%
 #> ✔ Summarising large scale characteristics
 #> `cohort_sample` and `matched_sample` casted to character.
-#> [2025-12-27 20:28:16] - Running population diagnostics
+#> [2025-12-30 09:12:20] - Running population diagnostics
 #> • Creating denominator for incidence and prevalence
 #> • Sampling person table to 1e+06
 #> ℹ Creating denominator cohorts
@@ -287,7 +287,7 @@ result <- phenotypeDiagnostics(cdm$warfarin)
 #> `populationDateStart` and `populationDateEnd` eliminated from settings as all
 #> elements are NA.
 #> 
-#> [2025-12-27 20:28:40] - Exporting log file
+#> [2025-12-30 09:12:43] - Exporting log file
 #> 
 # }
 ```
