@@ -61,7 +61,8 @@ Suggests:
     visOmopResults (>= 1.0.0),
     rsconnect,
     cpp11,
-    progress
+    progress,
+    qs2
 Config/testthat/edition: 3
 RoxygenNote: 7.3.3
 Imports: 
