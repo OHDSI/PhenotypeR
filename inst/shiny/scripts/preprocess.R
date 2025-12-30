@@ -16,7 +16,7 @@ library(shinycssloaders)
 library(stringr)
 library(CohortSurvival)
 library(tidyr)
-library(qs)
+library(qs2)
 
 source(here::here("scripts", "functions.R"))
 
@@ -226,7 +226,7 @@ phenotyper_version <- omopgenerics::settings(result) |>
   dplyr::pull("phenotyper_version") |>
   unique()
 cli::cli_inform("Saving data for shiny")
-qs::qsavem(dataFiltered,
+qs2::qs_savem(dataFiltered,
      selected,
      choices,
      min_incidence_start,

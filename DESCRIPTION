@@ -62,7 +62,7 @@ Suggests:
     rsconnect,
     cpp11,
     progress,
-    qs
+    qs2
 Config/testthat/edition: 3
 RoxygenNote: 7.3.3
 Imports: 
