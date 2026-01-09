@@ -69,7 +69,6 @@ codelistDiagnostics <- function(cohort){
   if (!is.null(getOption("omopgenerics.logFile"))) {
     omopgenerics::logMessage("Getting codelists from cohorts")
   }
-  cli::cli_bullets(c("*" = "Getting codelists from cohorts"))
 
   # get all cohort codelists
   all_codelists <- purrr::map(cohortIds, \(x) {
@@ -97,7 +96,7 @@ codelistDiagnostics <- function(cohort){
   if (!is.null(getOption("omopgenerics.logFile"))) {
     omopgenerics::logMessage("Getting index event breakdown")
   }
-  cli::cli_bullets(c("*" = "Getting index event breakdown"))
+
   for (i in seq_along(cohortIds)){
     cohortId <- cohortIds[i]
     if (cohortId %in% ids) {
@@ -133,7 +132,6 @@ codelistDiagnostics <- function(cohort){
     if (!is.null(getOption("omopgenerics.logFile"))) {
       omopgenerics::logMessage("Getting diagnostics for measurement concepts")
     }
-    cli::cli_bullets(c("*" = "Getting diagnostics for measurement concepts"))
     measurementCohortsIds <- unique(measurements$cohort_definition_id)
     for (id in measurementCohortsIds) {
       measurementCohort <- cdm[[cohortTable]] |>
@@ -162,7 +160,6 @@ codelistDiagnostics <- function(cohort){
     if (!is.null(getOption("omopgenerics.logFile"))) {
       omopgenerics::logMessage("Getting code counts in database based on achilles")
     }
-    cli::cli_bullets(c("*" = "Getting code counts in database based on achilles"))
     results[[paste0("achilles_code_use")]] <- CodelistGenerator::summariseAchillesCodeUse(x = all_codelists, cdm = cdm)
 
     # cli::cli_bullets(c("*" = "Getting unmapped concepts"))
@@ -174,7 +171,7 @@ codelistDiagnostics <- function(cohort){
     if (!is.null(getOption("omopgenerics.logFile"))) {
       omopgenerics::logMessage("Getting orphan concepts")
     }
-    cli::cli_bullets(c("*" = "Getting orphan concepts"))
+    
     results[[paste0("orphan_codes", i)]] <- CodelistGenerator::summariseOrphanCodes(
       x = all_codelists,
       cdm = cdm

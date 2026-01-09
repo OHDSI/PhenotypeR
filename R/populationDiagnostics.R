@@ -46,7 +46,6 @@ populationDiagnostics <- function(cohort,
   if (!is.null(getOption("omopgenerics.logFile"))) {
     omopgenerics::logMessage("Creating denominator for incidence and prevalence")
   }
-  cli::cli_bullets(c("*" = "{.strong Creating denominator for incidence and prevalence}"))
   denominatorTable <- omopgenerics::uniqueTableName()
 
   # add population sampling
@@ -54,7 +53,6 @@ populationDiagnostics <- function(cohort,
     if (!is.null(getOption("omopgenerics.logFile"))) {
       omopgenerics::logMessage(paste("Sampling person table to", populationSample))
     }
-    cli::cli_bullets(c("*" = "{.strong Sampling person table to {populationSample}}"))
     if(is.na(populationDateRange[[1]]) && is.na(populationDateRange[[2]])){
       cdm$person <- cdm$person |>
         dplyr::slice_sample(n = populationSample)
@@ -113,7 +111,6 @@ populationDiagnostics <- function(cohort,
   if (!is.null(getOption("omopgenerics.logFile"))) {
     omopgenerics::logMessage("Estimating incidence")
   }
-  cli::cli_bullets(c("*" = "{.strong Estimating incidence}"))
   results[["incidence"]] <- IncidencePrevalence::estimateIncidence(
     cdm = cdm,
     denominatorTable = denominatorTable,
@@ -126,7 +123,6 @@ populationDiagnostics <- function(cohort,
   if (!is.null(getOption("omopgenerics.logFile"))) {
     omopgenerics::logMessage("Estimating prevalence")
   }
-  cli::cli_bullets(c("*" = "{.strong Estimating prevalence}"))
   results[["prevalence"]] <- IncidencePrevalence::estimatePeriodPrevalence(
     cdm = cdm,
     denominatorTable = denominatorTable,
