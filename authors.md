@@ -21,14 +21,14 @@
 ## Citation
 
 Burn E, Catala M, Chen X, Alcalde-Herraiz M, Mercade-Besora N,
-Prats-Uribe A (2025). *PhenotypeR: Assess Study Cohorts Using a Common
+Prats-Uribe A (2026). *PhenotypeR: Assess Study Cohorts Using a Common
 Data Model*. R package version 0.2.0.900,
 <https://ohdsi.github.io/PhenotypeR/>.
 
     @Manual{,
       title = {PhenotypeR: Assess Study Cohorts Using a Common Data Model},
       author = {Edward Burn and Marti Catala and Xihang Chen and Marta Alcalde-Herraiz and Nuria Mercade-Besora and Albert Prats-Uribe},
-      year = {2025},
+      year = {2026},
       note = {R package version 0.2.0.900},
       url = {https://ohdsi.github.io/PhenotypeR/},
     }

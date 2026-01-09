@@ -68,14 +68,10 @@ cdm$warfarin <- conceptCohort(cdm,
 #> ✔ Cohort warfarin created.
 
 result <- cohortDiagnostics(cdm$warfarin)
-#> • Starting Cohort Diagnostics
-#> → Getting cohort attrition
-#> → Getting cohort count
 #> ℹ summarising data
 #> ℹ summarising cohort warfarin
 #> ✔ summariseCharacteristics finished!
 #> → Skipping cohort sampling as all cohorts have less than 20000 individuals.
-#> → Creating matching cohorts
 #> → Sampling cohort `tmp_004_sampled`
 #> Returning entry cohort as the size of the cohorts to be sampled is equal or
 #> smaller than `n`.
@@ -92,7 +88,6 @@ result <- cohortDiagnostics(cdm$warfarin)
 #> Binding cohorts
 #> ✔ Done
 #> → Getting cohorts and indexes
-#> → Summarising cohort characteristics
 #> ℹ adding demographics columns
 #> ℹ adding tableIntersectCount 1/1
 #> window names casted to snake_case:
@@ -102,14 +97,12 @@ result <- cohortDiagnostics(cdm$warfarin)
 #> ℹ summarising cohort warfarin_sampled
 #> ℹ summarising cohort warfarin_matched
 #> ✔ summariseCharacteristics finished!
-#> → Calculating age density
 #> ℹ The following estimates will be computed:
 #> • age: density
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side
-#> → Start summary of data, at 2025-12-30 09:10:04.168844
-#> ✔ Summary finished, at 2025-12-30 09:10:04.316354
-#> → Run large scale characteristics
+#> → Start summary of data, at 2026-01-09 15:09:57.33536
+#> ✔ Summary finished, at 2026-01-09 15:09:57.611692
 #> ℹ Summarising large scale characteristics 
 #>  - getting characteristics from table condition_occurrence (1 of 8)
 #>  - getting characteristics from table condition_occurrence (1 of 8) for time wi…
@@ -176,7 +169,7 @@ result <- cohortDiagnostics(cdm$warfarin)
 #>  - getting characteristics from table drug_era (8 of 8) for time window 31 and …
 #>  - getting characteristics from table drug_era (8 of 8) for time window 366 and…
 #> Formatting result
-#> 986 estimates dropped as frequency less than 1%
+#> 876 estimates dropped as frequency less than 1%
 #> ✔ Summarising large scale characteristics
 #> `cohort_sample` and `matched_sample` casted to character.
 # }

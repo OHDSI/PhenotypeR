@@ -50,8 +50,6 @@ cdm$warfarin <- conceptCohort(cdm,
 #> ℹ Merging overlapping records.
 #> ✔ Cohort warfarin created.
 result <- codelistDiagnostics(cdm$warfarin)
-#> • Getting codelists from cohorts
-#> • Getting index event breakdown
 #> Getting counts of warfarin codes for cohort warfarin
 #> Warning: The CDM reference containing the cohort must also contain achilles tables.
 #> Returning only index event breakdown.
