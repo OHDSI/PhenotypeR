@@ -31,7 +31,9 @@
 #' }
 databaseDiagnostics <- function(cohort){
 
-  cli::cli_bullets(c("*" = "Starting Database Diagnostics"))
+  if (!is.null(getOption("omopgenerics.logFile"))) {
+    omopgenerics::logMessage("Starting Database Diagnostics")
+  }
   # Initial checks
   omopgenerics::validateCohortArgument(cohort)
 
@@ -43,12 +45,16 @@ databaseDiagnostics <- function(cohort){
     dplyr::pull()
 
   # Snapshot
-  cli::cli_bullets(c(">" = "Getting CDM Snapshot"))
+  if (!is.null(getOption("omopgenerics.logFile"))) {
+    omopgenerics::logMessage("Getting CDM Snapshot")
+  }
   results <- list()
   results[["snap"]] <- OmopSketch::summariseOmopSnapshot(cdm)
 
   # Person table
-  cli::cli_bullets(c(">" = "Summarising Person Table"))
+  if (!is.null(getOption("omopgenerics.logFile"))) {
+    omopgenerics::logMessage("Summarising Person Table")
+  }
   results[["person"]] <- OmopSketch::summarisePerson(cdm)
   results[["dob_density"]] <- cdm$person |>
     PatientProfiles::addDemographics(age = FALSE,
@@ -67,7 +73,9 @@ databaseDiagnostics <- function(cohort){
         dplyr::mutate(result_type = "summarise_dob_density"))
 
   # Observation period
-  cli::cli_bullets(c(">" = "Summarising Observation Period"))
+  if (!is.null(getOption("omopgenerics.logFile"))) {
+    omopgenerics::logMessage("Summarising Observation Period")
+  }
   results[["obs_period"]] <- OmopSketch::summariseObservationPeriod(cdm$observation_period)
   results[["obs_density"]] <- cdm$observation_period |>
     PatientProfiles::summariseResult(
@@ -82,7 +90,9 @@ databaseDiagnostics <- function(cohort){
         dplyr::mutate(result_type = "summarise_obs_density"))
 
   # Summarising omop tables - Empty cohort codelist
-  cli::cli_bullets(c(">" = "Summarising OMOP tables"))
+  if (!is.null(getOption("omopgenerics.logFile"))) {
+    omopgenerics::logMessage("Summarising OMOP tables")
+  }
   emptyCodelist <- checkEmptyCodelists(cdm = cdm, cohortName = cohortName)
 
   if(isFALSE(emptyCodelist)){

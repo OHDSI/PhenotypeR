@@ -34,18 +34,25 @@ populationDiagnostics <- function(cohort,
                                   populationSample = 1000000,
                                   populationDateRange = as.Date(c(NA, NA))) {
 
+  if (!is.null(getOption("omopgenerics.logFile"))) {
+    omopgenerics::logMessage("Starting Population Diagnostics")
+  }
   cohort <- omopgenerics::validateCohortArgument(cohort = cohort)
   checksPopulationDiagnostics(populationSample, populationDateRange)
 
   cdm <- omopgenerics::cdmReference(cohort)
   cohortName <- omopgenerics::tableName(cohort)
 
-  cli::cli_bullets(c("*" = "{.strong Creating denominator for incidence and prevalence}"))
+  if (!is.null(getOption("omopgenerics.logFile"))) {
+    omopgenerics::logMessage("Creating denominator for incidence and prevalence")
+  }
   denominatorTable <- omopgenerics::uniqueTableName()
 
   # add population sampling
   if(!is.null(populationSample)){
-    cli::cli_bullets(c("*" = "{.strong Sampling person table to {populationSample}}"))
+    if (!is.null(getOption("omopgenerics.logFile"))) {
+      omopgenerics::logMessage(paste("Sampling person table to", populationSample))
+    }
     if(is.na(populationDateRange[[1]]) && is.na(populationDateRange[[2]])){
       cdm$person <- cdm$person |>
         dplyr::slice_sample(n = populationSample)
@@ -101,7 +108,9 @@ populationDiagnostics <- function(cohort,
 
   results <- list()
 
-  cli::cli_bullets(c("*" = "{.strong Estimating incidence}"))
+  if (!is.null(getOption("omopgenerics.logFile"))) {
+    omopgenerics::logMessage("Estimating incidence")
+  }
   results[["incidence"]] <- IncidencePrevalence::estimateIncidence(
     cdm = cdm,
     denominatorTable = denominatorTable,
@@ -111,7 +120,9 @@ populationDiagnostics <- function(cohort,
     outcomeWashout = Inf,
     completeDatabaseIntervals = FALSE)
 
-  cli::cli_bullets(c("*" = "{.strong Estimating prevalence}"))
+  if (!is.null(getOption("omopgenerics.logFile"))) {
+    omopgenerics::logMessage("Estimating prevalence")
+  }
   results[["prevalence"]] <- IncidencePrevalence::estimatePeriodPrevalence(
     cdm = cdm,
     denominatorTable = denominatorTable,
