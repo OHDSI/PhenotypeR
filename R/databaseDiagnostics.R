@@ -184,8 +184,8 @@ getTableFromDomain <- function(domains) {
                                     "device")) |>
         dplyr::mutate("table" =
                         dplyr::case_when(
-                          stringr::str_detect(domain_id,"condition") ~ "condition_occurrence;condition_era",
-                          stringr::str_detect(domain_id,"drug") ~ "drug_exposure;drug_era",
+                          stringr::str_detect(domain_id,"condition") ~ "condition_occurrence",
+                          stringr::str_detect(domain_id,"drug") ~ "drug_exposure",
                           stringr::str_detect(domain_id,"observation") ~ "observation",
                           stringr::str_detect(domain_id,"measurement") ~ "measurement",
                           stringr::str_detect(domain_id,"visit") ~ "visit_occurrence;visit_detail",
