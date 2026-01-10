@@ -2434,31 +2434,53 @@ ui <- fluidPage(
     ),
     # populationDiagnostics_end ----
     nav_spacer(),
+
+    # log ----
     tags$head(
-      # custom styling so the table is shown in full
       tags$style(HTML("
+    /* 1. Expand the main container */
     .log-popover-wide {
-      max-width: 95vw !important;
+      /* Uses 90% of screen width, but caps at 1200px on ultra-wide monitors */
+      width: 90vw !important;
+      max-width: 1200px !important;
     }
 
-    @media (min-width: 800px) {
-      .log-popover-wide {
-        max-width: 800px !important;
-      }
-    }
-
+    /* 2. Style the internal body */
     .log-popover-wide .popover-body {
-      padding: 10px;
+      /* Use 70% of the screen height */
+      height: 70vh;
+      max-height: 1000px;
+
+      overflow-y: auto;
       overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
+      padding: 0;
     }
-  "))
+
+    /* 3. Ensure the table fills the new width */
+    .log-popover-wide table {
+      width: 100% !important;
+      margin-bottom: 0 !important;
+    }
+
+    /* 4. Sticky header so you don't lose context */
+    .log-popover-wide table thead {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background-color: #ffffff;
+      border-bottom: 2px solid #dee2e6;
+    }
+"))
     ),
     bslib::nav_item(
       bslib::popover(
         icon("clipboard-list"),
         gt::gt_output("summarise_log_file_gt"),
-        options = list(customClass = "log-popover-wide")
+        placement = "bottom",
+        options = list(
+          customClass = "log-popover-wide",
+          container = "body"
+        )
       )
     ),
     bslib::nav_item(
