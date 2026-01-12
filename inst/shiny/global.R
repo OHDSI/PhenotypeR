@@ -1,13 +1,12 @@
 # ensure minimum versions
 rlang::check_installed("omopgenerics", version = "1.2.0")
 rlang::check_installed("visOmopResults", version = "1.0.0")
-rlang::check_installed("CodelistGenerator", version = "4.0.0")
-rlang::check_installed("CohortCharacteristics", version = "1.0.0")
+rlang::check_installed("CodelistGenerator", version = "4.0.1")
+rlang::check_installed("CohortCharacteristics", version = "1.1.0")
 rlang::check_installed("IncidencePrevalence", version = "1.2.0")
 rlang::check_installed("OmopSketch", version = "1.0.0")
 rlang::check_installed("CohortSurvival", version = "1.0.2")
 rlang::check_installed("shiny", version = "1.11.1")
-rlang::check_installed("reactablefmtr")
 
 library(bslib)
 library(omopgenerics)
@@ -32,6 +31,8 @@ library(tidyr)
 library(reactable)
 library(stringr)
 library(qs2)
+library(lubridate)
+library(reactablefmtr)
 
 source(here::here("scripts", "functions.R"))
 

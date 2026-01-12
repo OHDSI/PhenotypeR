@@ -1,7 +1,7 @@
 Package: PhenotypeR
 Type: Package
 Title: Assess Study Cohorts Using a Common Data Model
-Version: 0.2.0.900
+Version: 0.3.0
 Authors@R: c(
     person("Edward", "Burn", , "edward.burn@ndorms.ox.ac.uk", 
     role = c("aut", "cre"), comment = c(ORCID = "0000-0002-9286-1128")),
@@ -62,7 +62,8 @@ Suggests:
     rsconnect,
     cpp11,
     progress,
-    qs2
+    qs2,
+    lubridate
 Config/testthat/edition: 3
 RoxygenNote: 7.3.3
 Imports: 
