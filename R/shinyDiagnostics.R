@@ -199,7 +199,7 @@ checkWhichDiagnostics <- function(result){
     }
   }
   if(!"cohortDiagnostics" %in% to_remove){
-    if(!"survival_probability" %in% (omopgenerics::settings(result) |> dplyr::pull("result_type") |> unique())){
+    if(!"survival_estimates" %in% (omopgenerics::settings(result) |> dplyr::pull("result_type") |> unique())){
       to_remove <- append(to_remove, "cohort_survival")
     }
   }
