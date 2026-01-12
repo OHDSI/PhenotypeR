@@ -552,6 +552,7 @@ server <- function(input, output, session) {
         y = "density_y",
         group = "variable_name",
         facet = "variable_name",
+        colour = "cdm_name",
         line = TRUE,
         point = FALSE,
         ribbon = FALSE,
