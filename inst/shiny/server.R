@@ -2368,6 +2368,7 @@ server <- function(input, output, session) {
     }
   )
 
+  # log file -----
   output$summarise_log_file_gt <- gt::render_gt({
     dataFiltered$summarise_log_file |>
       omopgenerics::tidy() |>
@@ -2375,14 +2376,27 @@ server <- function(input, output, session) {
       dplyr::arrange("cdm_name", "log_id")  |>
       dplyr::select(cdm_name, variable_name,
                     elapsed_time) |>
-      dplyr::mutate(elapsed_time = sprintf("%d hours, %d minutes, %d seconds",
-                                           lubridate::hour(elapsed_time),
-                                           lubridate::minute(elapsed_time),
-                                           lubridate::second(elapsed_time))) |>
+      dplyr::mutate(elapsed_time =
+                      dplyr::if_else(!is.na(elapsed_time),
+                                     sprintf("%d hours, %d minutes, %d seconds",
+                                             lubridate::hour(elapsed_time),
+                                             lubridate::minute(elapsed_time),
+                                             lubridate::second(elapsed_time)),
+                                     NA_character_)) |>
+      dplyr::mutate(elapsed_time = stringr::str_replace(
+        elapsed_time, "0 hours, 0 minutes, ", "")) |>
+      dplyr::mutate(elapsed_time = stringr::str_replace(
+        elapsed_time, "0 hours, ", "")) |>
+      dplyr::mutate(elapsed_time = stringr::str_replace(
+        elapsed_time, "1 hours", "1 hour")) |>
+      dplyr::mutate(elapsed_time = stringr::str_replace(
+        elapsed_time, "1 minutes", "1 minute")) |>
+      dplyr::mutate(elapsed_time = stringr::str_replace(
+        elapsed_time, "1 seconds", "1 second")) |>
       dplyr::rename("task" = "variable_name",
                     estimate_value = "elapsed_time") |>
       dplyr::mutate(estimate_type = "character",
-                    estimate_name = "Time taken (seconds)") |>
+                    estimate_name = "Time taken") |>
       visOmopResults::visTable(
         header = c("cdm_name", "estimate_name"),
         rename = c("Database name" = "cdm_name"),
