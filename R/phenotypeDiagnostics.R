@@ -49,7 +49,7 @@ phenotypeDiagnostics <- function(cohort,
   # Setup omopgenerics logging
   log_file <- tempfile(pattern = "phenotypeDiagnostics_log_{date}_{time}", fileext = ".txt")
   omopgenerics::createLogFile(logFile = log_file)
-  omopgenerics::logMessage("Started phenotypeDiagnostics")
+  omopgenerics::logMessage("Phenotype diagnostics - input validation")
 
   omopgenerics::assertChoice(diagnostics,
                              c("databaseDiagnostics", "codelistDiagnostics",
@@ -64,7 +64,6 @@ phenotypeDiagnostics <- function(cohort,
   cdm <- omopgenerics::cdmReference(cohort)
   results <- list()
   if ("databaseDiagnostics" %in% diagnostics) {
-    omopgenerics::logMessage("Running database diagnostics")
     results[["db_diag"]] <- databaseDiagnostics(cohort)
     if(!is.null(incrementalResultPath)){
       if (dir.exists(incrementalResultPath)) {
@@ -76,7 +75,6 @@ phenotypeDiagnostics <- function(cohort,
   }
 
   if ("codelistDiagnostics" %in% diagnostics) {
-    omopgenerics::logMessage("Running codelist diagnostics")
     results[["code_diag"]] <- codelistDiagnostics(cohort)
     if(!is.null(incrementalResultPath)){
       if (dir.exists(incrementalResultPath)) {
@@ -88,7 +86,6 @@ phenotypeDiagnostics <- function(cohort,
 }
 
   if ("cohortDiagnostics" %in% diagnostics) {
-    omopgenerics::logMessage("Running cohort diagnostics")
     results[["cohort_diag"]] <- cohortDiagnostics(cohort,
                                                   survival = survival,
                                                   cohortSample  = cohortSample,
@@ -102,7 +99,6 @@ phenotypeDiagnostics <- function(cohort,
     }
   }
   if ("populationDiagnostics" %in% diagnostics) {
-    omopgenerics::logMessage("Running population diagnostics")
     results[["pop_diag"]] <- populationDiagnostics(cohort,
                                                    populationSample = populationSample,
                                                    populationDateRange = populationDateRange)
@@ -115,7 +111,7 @@ phenotypeDiagnostics <- function(cohort,
     }
   }
 
-  cli::cli("Exporting log summarised result")
+  omopgenerics::logMessage("Phenotype diagnostics - exporting results")
   results[["log"]] <- omopgenerics::summariseLogFile(
     cdmName = omopgenerics::cdmName(cdm)
   )
@@ -126,7 +122,6 @@ phenotypeDiagnostics <- function(cohort,
   results[["log"]] <- results[["log"]] |>
     omopgenerics::newSummarisedResult(settings = newSettings)
 
-  cli::cli("Combining results")
   results <- results |>
     vctrs::list_drop_empty() |>
     omopgenerics::bind()
