@@ -225,6 +225,10 @@ phenotyper_version <- omopgenerics::settings(result) |>
   dplyr::filter(!is.na(phenotyper_version)) |>
   dplyr::pull("phenotyper_version") |>
   unique()
+if(length(phenotyper_version)>1){
+cli::cli_warn("Multiple PhenotypeR versions detected in results")
+phenotyper_version <- paste0(phenotyper_version, collapse = "; ")
+}
 cli::cli_inform("Saving data for shiny")
 qs2::qs_savem(dataFiltered,
      selected,

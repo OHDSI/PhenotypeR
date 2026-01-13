@@ -2005,7 +2005,7 @@ server <- function(input, output, session) {
     req(shared_cdm_names())
     req(shared_cohort_names())
     req(inputs_initialized())
-    if (is.null(dataFiltered$survival_probability)) {
+    if (is.null(dataFiltered$survival_estimates)) {
       validate("No survival in results")
     }
 
@@ -2016,16 +2016,14 @@ server <- function(input, output, session) {
       cohorts <- shared_cohort_names()
     }
     result <- omopgenerics::bind(
-      dataFiltered$survival_attrition,
-      dataFiltered$survival_events,
-      dataFiltered$survival_probability,
-      dataFiltered$survival_summary) |>
+      dataFiltered[str_detect(names(dataFiltered), "survival_")]) |>
       dplyr::filter(.data$cdm_name %in% shared_cdm_names()) |>
       visOmopResults::filterGroup(.data$target_cohort %in% cohorts)
 
     validateFilteredResult(result)
     return(result)
   }))
+
 
   getTimeScale <- eventReactive(input$updateCohortSurvival, ({
     timeScale <- input$survival_probability_time_scale
