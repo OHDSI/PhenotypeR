@@ -4,12 +4,17 @@
 \alias{codelistDiagnostics}
 \title{Run codelist-level diagnostics}
 \usage{
-codelistDiagnostics(cohort)
+codelistDiagnostics(cohort, measurementSample = 20000)
 }
 \arguments{
 \item{cohort}{A cohort table in a cdm reference. The cohort_codelist
 attribute must be populated. The cdm reference must contain achilles
 tables as these will be used for deriving concept counts.}
+
+\item{measurementSample}{The number of people to take a random sample for
+measurement diagnostics. If `measurementSample = NULL`, no sampling will be
+performed. If `measurementSample = 0` measurement diagnostics will not be
+run.}
 }
 \value{
 A summarised result

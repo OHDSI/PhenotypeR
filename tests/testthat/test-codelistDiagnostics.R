@@ -101,7 +101,8 @@ test_that("measurementDiagnostics working", {
   cdm$measurement_cohort <- CohortConstructor::conceptCohort(cdm,
                                                              codes,
                                                              "measurement_cohort")
-  res <- PhenotypeR::codelistDiagnostics(cdm$measurement_cohort)
+  res <- PhenotypeR::codelistDiagnostics(cdm$measurement_cohort,
+                                         measurementSample = NULL)
 
   expect_equal(
     settings(res)$result_type,
@@ -116,6 +117,21 @@ test_that("measurementDiagnostics working", {
                      unique(),
                    "codelistDiagnostics")
 
+
+ # sampling
+  res_sampled <- PhenotypeR::codelistDiagnostics(cdm$measurement_cohort,
+                                         measurementSample = 5)
+
+  expect_true(res_sampled |>
+    omopgenerics::filterSettings(result_type == "measurement_summary") |>
+    dplyr::filter(variable_name == "number subjects") |>
+    dplyr::pull("estimate_value") |>
+    as.integer() <= 5)
+
+  # no measurement diagnostics
+  res_no_meas <- PhenotypeR::codelistDiagnostics(cdm$measurement_cohort,
+                                                 measurementSample = 0)
+  expect_false("measurement_summary" %in% omopgenerics::settings(res_no_meas))
 
   multiple_codes <- CodelistGenerator::stratifyByConcept(codes, cdm)
   cdm$measurement_2 <- CohortConstructor::conceptCohort(cdm,

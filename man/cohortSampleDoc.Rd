@@ -4,7 +4,7 @@
 \alias{cohortSampleDoc}
 \title{Helper for consistent documentation of `cohortSample`.}
 \arguments{
-\item{cohortSample}{The number of people to take a random sample for cohortDiagnostics. If `cohortSample = NULL`, no sampling will be performed,}
+\item{cohortSample}{The number of people to take a random sample for cohortDiagnostics. If `cohortSample = NULL`, no sampling will be performed.}
 }
 \description{
 Helper for consistent documentation of `cohortSample`.

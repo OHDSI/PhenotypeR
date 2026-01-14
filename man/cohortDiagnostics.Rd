@@ -16,7 +16,7 @@ cohortDiagnostics(
 
 \item{survival}{Boolean variable. Whether to conduct survival analysis (TRUE) or not (FALSE).}
 
-\item{cohortSample}{The number of people to take a random sample for cohortDiagnostics. If `cohortSample = NULL`, no sampling will be performed,}
+\item{cohortSample}{The number of people to take a random sample for cohortDiagnostics. If `cohortSample = NULL`, no sampling will be performed.}
 
 \item{matchedSample}{The number of people to take a random sample for
 matching. If `matchedSample = NULL`, no sampling will be performed. If `matchedSample = 0`, no
