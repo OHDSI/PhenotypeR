@@ -13,6 +13,7 @@
 #' @param diagnostics Vector indicating which diagnostics to perform. Options
 #' include: `databaseDiagnostics`, `codelistDiagnostics`, `cohortDiagnostics`,
 #' and `populationDiagnostics`.
+#' @inheritParams measurementSampleDoc
 #' @inheritParams survivalDoc
 #' @inheritParams cohortSampleDoc
 #' @inheritParams matchedDoc
@@ -38,6 +39,7 @@
 phenotypeDiagnostics <- function(cohort,
                                  diagnostics = c("databaseDiagnostics", "codelistDiagnostics",
                                                  "cohortDiagnostics", "populationDiagnostics"),
+                                 measurementSample = 20000,
                                  survival = FALSE,
                                  cohortSample = 20000,
                                  matchedSample = 1000,
@@ -75,7 +77,8 @@ phenotypeDiagnostics <- function(cohort,
   }
 
   if ("codelistDiagnostics" %in% diagnostics) {
-    results[["code_diag"]] <- codelistDiagnostics(cohort)
+    results[["code_diag"]] <- codelistDiagnostics(cohort,
+                                                  measurementSample = measurementSample)
     if(!is.null(incrementalResultPath)){
       if (dir.exists(incrementalResultPath)) {
         exportSummarisedResult(results[["code_diag"]],

@@ -12,6 +12,7 @@
 #' @param cohort A cohort table in a cdm reference. The cohort_codelist
 #' attribute must be populated. The cdm reference must contain achilles
 #' tables as these will be used for deriving concept counts.
+#' @inheritParams measurementSampleDoc
 #'
 #' @return A summarised result
 #' @export
@@ -31,7 +32,7 @@
 #'
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
-codelistDiagnostics <- function(cohort){
+codelistDiagnostics <- function(cohort, measurementSample = 20000){
 
   if (!is.null(getOption("omopgenerics.logFile"))) {
     omopgenerics::logMessage("Codelist diagnostics - input validation")
@@ -124,14 +125,20 @@ codelistDiagnostics <- function(cohort){
     ) |>
     dplyr::filter(tolower(.data$domain_id) %in% c("measurement")) |>
     dplyr::collect()
-  if (nrow(measurements) > 0) {
+
+  if (nrow(measurements) > 0 && (!0 %in% measurementSample)) {
     if (!is.null(getOption("omopgenerics.logFile"))) {
       omopgenerics::logMessage("Codelist diagnostics - measurement concepts")
     }
     measurementCohortsIds <- unique(measurements$cohort_definition_id)
+
     for (id in measurementCohortsIds) {
       measurementCohort <- cdm[[cohortTable]] |>
         CohortConstructor::subsetCohorts(cohortId = id, name = "measurement_diagnostics_temp_1234")
+     if(!is.null(measurementSample)){
+       measurementCohort <- measurementCohort |>
+         CohortConstructor::sampleCohorts(measurementSample)
+     }
       codes <- measurements |>
         dplyr::filter(.data$cohort_definition_id == id)
       codes <- base::split(codes$concept_id, codes$codelist_name)
