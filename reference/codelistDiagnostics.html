@@ -64,7 +64,7 @@ the cdm so that concept counts could be derived.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">codelistDiagnostics</span><span class="op">(</span><span class="va">cohort</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">codelistDiagnostics</span><span class="op">(</span><span class="va">cohort</span>, measurementSample <span class="op">=</span> <span class="fl">20000</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -75,6 +75,13 @@ the cdm so that concept counts could be derived.</p>
 <dd><p>A cohort table in a cdm reference. The cohort_codelist
 attribute must be populated. The cdm reference must contain achilles
 tables as these will be used for deriving concept counts.</p></dd>
+
+
+<dt id="arg-measurementsample">measurementSample<a class="anchor" aria-label="anchor" href="#arg-measurementsample"></a></dt>
+<dd><p>The number of people to take a random sample for
+measurement diagnostics. If `measurementSample = NULL`, no sampling will be
+performed. If `measurementSample = 0` measurement diagnostics will not be
+run.</p></dd>
 
 </dl></div>
     <div class="section level2">

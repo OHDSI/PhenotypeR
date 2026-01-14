@@ -11,7 +11,7 @@ present in the cdm so that concept counts could be derived.
 ## Usage
 
 ``` r
-codelistDiagnostics(cohort)
+codelistDiagnostics(cohort, measurementSample = 20000)
 ```
 
 ## Arguments
@@ -21,6 +21,13 @@ codelistDiagnostics(cohort)
   A cohort table in a cdm reference. The cohort_codelist attribute must
   be populated. The cdm reference must contain achilles tables as these
   will be used for deriving concept counts.
+
+- measurementSample:
+
+  The number of people to take a random sample for measurement
+  diagnostics. If \`measurementSample = NULL\`, no sampling will be
+  performed. If \`measurementSample = 0\` measurement diagnostics will
+  not be run.
 
 ## Value
 

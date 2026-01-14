@@ -7,4 +7,4 @@ Helper for consistent documentation of \`cohortSample\`.
 - cohortSample:
 
   The number of people to take a random sample for cohortDiagnostics. If
-  \`cohortSample = NULL\`, no sampling will be performed,
+  \`cohortSample = NULL\`, no sampling will be performed.
