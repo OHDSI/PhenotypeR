@@ -48,6 +48,10 @@ phenotypeDiagnostics <- function(cohort,
 
   cohort <- omopgenerics::validateCohortArgument(cohort = cohort)
 
+  # check if there exists a log file
+  oldLogFile <- getOption(x = "omopgenerics.logFile", default = NULL) 
+  on.exit(options("omopgenerics.logFile" = oldLogFile))
+
   # Setup omopgenerics logging
   log_file <- tempfile(pattern = "phenotypeDiagnostics_log_{date}_{time}", fileext = ".txt")
   omopgenerics::createLogFile(logFile = log_file)
@@ -134,7 +138,6 @@ phenotypeDiagnostics <- function(cohort,
   }
 
   unlink(log_file)
-  options("omopgenerics.logFile" = NULL)
 
   results
 }
