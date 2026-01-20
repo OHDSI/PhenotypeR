@@ -67,7 +67,7 @@ Suggests:
 Config/testthat/edition: 3
 RoxygenNote: 7.3.3
 Imports: 
-    CodelistGenerator (>= 4.0.1),
+    CodelistGenerator (>= 4.0.2),
     CohortCharacteristics (>= 1.1.0),
     CohortConstructor (>= 0.5.0),
     cli,
