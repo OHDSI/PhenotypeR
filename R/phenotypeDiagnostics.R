@@ -48,13 +48,16 @@ phenotypeDiagnostics <- function(cohort,
 
   cohort <- omopgenerics::validateCohortArgument(cohort = cohort)
 
-  # check if there exists a log file
+  # Check if a log file exists
   oldLogFile <- getOption(x = "omopgenerics.logFile", default = NULL) 
-  on.exit(options("omopgenerics.logFile" = oldLogFile))
-
-  # Setup omopgenerics logging
-  log_file <- tempfile(pattern = "phenotypeDiagnostics_log_{date}_{time}", fileext = ".txt")
-  omopgenerics::createLogFile(logFile = log_file)
+  
+  if (is.null(oldLogFile)) {
+    # If no log file exists, create a new temporary one
+    log_file <- tempfile(pattern = "phenotypeDiagnostics_log_{date}_{time}", fileext = ".txt")
+    omopgenerics::createLogFile(logFile = log_file)
+    on.exit(options("omopgenerics.logFile" = NULL))
+  } 
+  
   omopgenerics::logMessage("Phenotype diagnostics - input validation")
 
   omopgenerics::assertChoice(diagnostics,
@@ -136,8 +139,6 @@ phenotypeDiagnostics <- function(cohort,
   if (is.null(results)) {
     results <- omopgenerics::emptySummarisedResult()
   }
-
-  unlink(log_file)
 
   results
 }
