@@ -558,11 +558,11 @@ server <- function(input, output, session) {
         ribbon = FALSE,
         ymin = NULL,
         ymax = NULL) +
-      ggplot2::xlab("Date of Birth") +
+      ggplot2::xlab("Date") +
       ggplot2::ylab("Density") +
       ggplot2::scale_y_continuous(labels = scales::label_number()) +
       ggplot2::facet_wrap(vars(variable_name),
-                          ncol = 1)
+                          ncol = 1, scales = "free_y")
 
   })
 
