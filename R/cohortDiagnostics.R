@@ -173,13 +173,23 @@ cohortDiagnostics <- function(cohort, survival = FALSE, cohortSample = 20000, ma
   if (!is.null(getOption("omopgenerics.logFile"))) {
     omopgenerics::logMessage("Cohort diagnostics - large scale characteristics")
   }
-  results[["lsc_standard_source"]] <- CohortCharacteristics::summariseLargeScaleCharacteristics(
+  results[["lsc_standard"]] <- CohortCharacteristics::summariseLargeScaleCharacteristics(
     cohort = cdm[[tempCohortName]],
     window = lscWindows,
     eventInWindow = lscTableEvents,
     episodeInWindow = lscTableEpisodes,
     minimumFrequency = lscMminimumFrequency,
-    includeSource = c(TRUE, FALSE),
+    includeSource = FALSE,
+    excludedCodes = NULL
+  )
+
+  results[["lsc_source"]] <- CohortCharacteristics::summariseLargeScaleCharacteristics(
+    cohort = cdm[[tempCohortName]],
+    window = lscWindows,
+    eventInWindow = lscTableEvents,
+    episodeInWindow = lscTableEpisodes,
+    minimumFrequency = lscMminimumFrequency,
+    includeSource = TRUE,
     excludedCodes = NULL
   )
 
