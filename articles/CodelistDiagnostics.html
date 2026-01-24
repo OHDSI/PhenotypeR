@@ -108,11 +108,11 @@ data.</p>
 <span>  <span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Rows: ??</span></span>
 <span><span class="co">#&gt; Columns: 4</span></span>
-<span><span class="co">#&gt; Database: DuckDB 1.4.3 [unknown@Linux 6.11.0-1018-azure:R 4.5.2//tmp/RtmpXGwyuS/file2182ae84e84.duckdb]</span></span>
-<span><span class="co">#&gt; $ cohort_definition_id <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 5<span style="color: #949494;">, </span>5<span style="color: #949494;">, </span>5<span style="color: #949494;">, </span>5<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>5<span style="color: #949494;">, </span>5<span style="color: #949494;">, </span>5<span style="color: #949494;">, </span>5<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>5<span style="color: #949494;">, </span>5<span style="color: #949494;">, </span>5<span style="color: #949494;">, </span>5<span style="color: #949494;">, </span>5<span style="color: #949494;">, </span>5<span style="color: #949494;">, </span>5…</span></span>
-<span><span class="co">#&gt; $ subject_id           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 429<span style="color: #949494;">, </span>471<span style="color: #949494;">, </span>573<span style="color: #949494;">, </span>595<span style="color: #949494;">, </span>461<span style="color: #949494;">, </span>41<span style="color: #949494;">, </span>164<span style="color: #949494;">, </span>735<span style="color: #949494;">, </span>457<span style="color: #949494;">, </span>295<span style="color: #949494;">, </span>…</span></span>
-<span><span class="co">#&gt; $ cohort_start_date    <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2008-07-12<span style="color: #949494;">, </span>2008-05-29<span style="color: #949494;">, </span>2010-07-22<span style="color: #949494;">, </span>2009-12-11<span style="color: #949494;">, </span>…</span></span>
-<span><span class="co">#&gt; $ cohort_end_date      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2008-07-12<span style="color: #949494;">, </span>2008-05-29<span style="color: #949494;">, </span>2010-07-22<span style="color: #949494;">, </span>2009-12-11<span style="color: #949494;">, </span>…</span></span></code></pre></div>
+<span><span class="co">#&gt; Database: DuckDB 1.4.3 [unknown@Linux 6.11.0-1018-azure:R 4.5.2//tmp/RtmptD4TTq/file21bb5d0543a0.duckdb]</span></span>
+<span><span class="co">#&gt; $ cohort_definition_id <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 5<span style="color: #949494;">, </span>5<span style="color: #949494;">, </span>5<span style="color: #949494;">, </span>5<span style="color: #949494;">, </span>5<span style="color: #949494;">, </span>5<span style="color: #949494;">, </span>5<span style="color: #949494;">, </span>5<span style="color: #949494;">, </span>5<span style="color: #949494;">, </span>5<span style="color: #949494;">, </span>5<span style="color: #949494;">, </span>5<span style="color: #949494;">, </span>5<span style="color: #949494;">, </span>5<span style="color: #949494;">, </span>5<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>5…</span></span>
+<span><span class="co">#&gt; $ subject_id           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 441<span style="color: #949494;">, </span>635<span style="color: #949494;">, </span>768<span style="color: #949494;">, </span>862<span style="color: #949494;">, </span>14<span style="color: #949494;">, </span>486<span style="color: #949494;">, </span>72<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>353<span style="color: #949494;">, </span>519<span style="color: #949494;">, </span>22<span style="color: #949494;">,</span>…</span></span>
+<span><span class="co">#&gt; $ cohort_start_date    <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2009-11-12<span style="color: #949494;">, </span>2008-07-08<span style="color: #949494;">, </span>2009-03-18<span style="color: #949494;">, </span>2008-04-02<span style="color: #949494;">, </span>…</span></span>
+<span><span class="co">#&gt; $ cohort_end_date      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2009-11-12<span style="color: #949494;">, </span>2008-07-08<span style="color: #949494;">, </span>2009-03-18<span style="color: #949494;">, </span>2008-04-02<span style="color: #949494;">, </span>…</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="summarising-code-use">Summarising code use<a class="anchor" aria-label="anchor" href="#summarising-code-use"></a>
@@ -173,23 +173,23 @@ R packages packages.</p>
 </h3>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://darwin-eu.github.io/CodelistGenerator/reference/tableAchillesCodeUse.html" class="external-link">tableAchillesCodeUse</a></span><span class="op">(</span><span class="va">code_diag</span><span class="op">)</span></span></code></pre></div>
-<div id="cpjyehcmnp" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#cpjyehcmnp table {
+<div id="jyehcmnpla" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#jyehcmnpla table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#cpjyehcmnp thead, #cpjyehcmnp tbody, #cpjyehcmnp tfoot, #cpjyehcmnp tr, #cpjyehcmnp td, #cpjyehcmnp th {
+#jyehcmnpla thead, #jyehcmnpla tbody, #jyehcmnpla tfoot, #jyehcmnpla tr, #jyehcmnpla td, #jyehcmnpla th {
   border-style: none;
 }
 
-#cpjyehcmnp p {
+#jyehcmnpla p {
   margin: 0;
   padding: 0;
 }
 
-#cpjyehcmnp .gt_table {
+#jyehcmnpla .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -215,12 +215,12 @@ R packages packages.</p>
   border-left-color: #D9D9D9;
 }
 
-#cpjyehcmnp .gt_caption {
+#jyehcmnpla .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#cpjyehcmnp .gt_title {
+#jyehcmnpla .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -232,7 +232,7 @@ R packages packages.</p>
   border-bottom-width: 0;
 }
 
-#cpjyehcmnp .gt_subtitle {
+#jyehcmnpla .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -244,7 +244,7 @@ R packages packages.</p>
   border-top-width: 0;
 }
 
-#cpjyehcmnp .gt_heading {
+#jyehcmnpla .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -256,13 +256,13 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#cpjyehcmnp .gt_bottom_border {
+#jyehcmnpla .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#cpjyehcmnp .gt_col_headings {
+#jyehcmnpla .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -277,7 +277,7 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#cpjyehcmnp .gt_col_heading {
+#jyehcmnpla .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -297,7 +297,7 @@ R packages packages.</p>
   overflow-x: hidden;
 }
 
-#cpjyehcmnp .gt_column_spanner_outer {
+#jyehcmnpla .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -309,15 +309,15 @@ R packages packages.</p>
   padding-right: 4px;
 }
 
-#cpjyehcmnp .gt_column_spanner_outer:first-child {
+#jyehcmnpla .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#cpjyehcmnp .gt_column_spanner_outer:last-child {
+#jyehcmnpla .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#cpjyehcmnp .gt_column_spanner {
+#jyehcmnpla .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -329,11 +329,11 @@ R packages packages.</p>
   width: 100%;
 }
 
-#cpjyehcmnp .gt_spanner_row {
+#jyehcmnpla .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#cpjyehcmnp .gt_group_heading {
+#jyehcmnpla .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -359,7 +359,7 @@ R packages packages.</p>
   text-align: left;
 }
 
-#cpjyehcmnp .gt_empty_group_heading {
+#jyehcmnpla .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -374,15 +374,15 @@ R packages packages.</p>
   vertical-align: middle;
 }
 
-#cpjyehcmnp .gt_from_md > :first-child {
+#jyehcmnpla .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#cpjyehcmnp .gt_from_md > :last-child {
+#jyehcmnpla .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#cpjyehcmnp .gt_row {
+#jyehcmnpla .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -401,7 +401,7 @@ R packages packages.</p>
   overflow-x: hidden;
 }
 
-#cpjyehcmnp .gt_stub {
+#jyehcmnpla .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -414,7 +414,7 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#cpjyehcmnp .gt_stub_row_group {
+#jyehcmnpla .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -428,15 +428,15 @@ R packages packages.</p>
   vertical-align: top;
 }
 
-#cpjyehcmnp .gt_row_group_first td {
+#jyehcmnpla .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#cpjyehcmnp .gt_row_group_first th {
+#jyehcmnpla .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#cpjyehcmnp .gt_summary_row {
+#jyehcmnpla .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -446,16 +446,16 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#cpjyehcmnp .gt_first_summary_row {
+#jyehcmnpla .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#cpjyehcmnp .gt_first_summary_row.thick {
+#jyehcmnpla .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#cpjyehcmnp .gt_last_summary_row {
+#jyehcmnpla .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -465,7 +465,7 @@ R packages packages.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#cpjyehcmnp .gt_grand_summary_row {
+#jyehcmnpla .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -475,7 +475,7 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#cpjyehcmnp .gt_first_grand_summary_row {
+#jyehcmnpla .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -485,7 +485,7 @@ R packages packages.</p>
   border-top-color: #D3D3D3;
 }
 
-#cpjyehcmnp .gt_last_grand_summary_row_top {
+#jyehcmnpla .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -495,11 +495,11 @@ R packages packages.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#cpjyehcmnp .gt_striped {
+#jyehcmnpla .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#cpjyehcmnp .gt_table_body {
+#jyehcmnpla .gt_table_body {
   border-top-style: solid;
   border-top-width: 3px;
   border-top-color: #D9D9D9;
@@ -508,7 +508,7 @@ R packages packages.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#cpjyehcmnp .gt_footnotes {
+#jyehcmnpla .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -522,7 +522,7 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#cpjyehcmnp .gt_footnote {
+#jyehcmnpla .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -531,7 +531,7 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#cpjyehcmnp .gt_sourcenotes {
+#jyehcmnpla .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -545,7 +545,7 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#cpjyehcmnp .gt_sourcenote {
+#jyehcmnpla .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -553,72 +553,72 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#cpjyehcmnp .gt_left {
+#jyehcmnpla .gt_left {
   text-align: left;
 }
 
-#cpjyehcmnp .gt_center {
+#jyehcmnpla .gt_center {
   text-align: center;
 }
 
-#cpjyehcmnp .gt_right {
+#jyehcmnpla .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#cpjyehcmnp .gt_font_normal {
+#jyehcmnpla .gt_font_normal {
   font-weight: normal;
 }
 
-#cpjyehcmnp .gt_font_bold {
+#jyehcmnpla .gt_font_bold {
   font-weight: bold;
 }
 
-#cpjyehcmnp .gt_font_italic {
+#jyehcmnpla .gt_font_italic {
   font-style: italic;
 }
 
-#cpjyehcmnp .gt_super {
+#jyehcmnpla .gt_super {
   font-size: 65%;
 }
 
-#cpjyehcmnp .gt_footnote_marks {
+#jyehcmnpla .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#cpjyehcmnp .gt_asterisk {
+#jyehcmnpla .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#cpjyehcmnp .gt_indent_1 {
+#jyehcmnpla .gt_indent_1 {
   text-indent: 5px;
 }
 
-#cpjyehcmnp .gt_indent_2 {
+#jyehcmnpla .gt_indent_2 {
   text-indent: 10px;
 }
 
-#cpjyehcmnp .gt_indent_3 {
+#jyehcmnpla .gt_indent_3 {
   text-indent: 15px;
 }
 
-#cpjyehcmnp .gt_indent_4 {
+#jyehcmnpla .gt_indent_4 {
   text-indent: 20px;
 }
 
-#cpjyehcmnp .gt_indent_5 {
+#jyehcmnpla .gt_indent_5 {
   text-indent: 25px;
 }
 
-#cpjyehcmnp .katex-display {
+#jyehcmnpla .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#cpjyehcmnp div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#jyehcmnpla div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -667,9 +667,9 @@ R packages packages.</p>
 <td headers="Standard concept name" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">Sprain of ankle</td>
 <td headers="Standard concept ID" class="gt_row gt_right" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">81151</td>
 <td headers="Vocabulary ID" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">SNOMED</td>
-<td headers="Source concept name" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">Sprain of ankle, unspecified site</td>
-<td headers="Source concept ID" class="gt_row gt_right" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">44820150</td>
-<td headers="Source concept value" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">84500</td>
+<td headers="Source concept name" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">Other sprains and strains of ankle</td>
+<td headers="Source concept ID" class="gt_row gt_right" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">44829371</td>
+<td headers="Source concept value" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">84509</td>
 <td headers="[header_name]Database name
 [header_level]Eunomia Synpuf
 [header_name]Estimate name
@@ -685,9 +685,9 @@ R packages packages.</p>
 <td headers="Standard concept name" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);"></td>
 <td headers="Standard concept ID" class="gt_row gt_right" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);"></td>
 <td headers="Vocabulary ID" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);"></td>
-<td headers="Source concept name" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">Other sprains and strains of ankle</td>
-<td headers="Source concept ID" class="gt_row gt_right" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">44829371</td>
-<td headers="Source concept value" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">84509</td>
+<td headers="Source concept name" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">Sprain of ankle, unspecified site</td>
+<td headers="Source concept ID" class="gt_row gt_right" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">44820150</td>
+<td headers="Source concept value" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">84500</td>
 <td headers="[header_name]Database name
 [header_level]Eunomia Synpuf
 [header_name]Estimate name
@@ -739,24 +739,6 @@ R packages packages.</p>
 <td headers="Standard concept name" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">Laboratory test</td>
 <td headers="Standard concept ID" class="gt_row gt_right" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">4034850</td>
 <td headers="Vocabulary ID" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">SNOMED</td>
-<td headers="Source concept name" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">Laboratory examination, unspecified</td>
-<td headers="Source concept ID" class="gt_row gt_right" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">44835527</td>
-<td headers="Source concept value" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">V7260</td>
-<td headers="[header_name]Database name
-[header_level]Eunomia Synpuf
-[header_name]Estimate name
-[header_level]Record count" class="gt_row gt_right" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">101</td>
-<td headers="[header_name]Database name
-[header_level]Eunomia Synpuf
-[header_name]Estimate name
-[header_level]Person count" class="gt_row gt_right" style="text-align: right; font-family: Arial; font-size: 10; background-color: rgba(255,255,255,0); border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8;">95</td>
-</tr>
-<tr>
-<td headers="Codelist name" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; background-color: rgba(255,255,255,0); border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8;"></td>
-<td headers="Domain ID" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);"></td>
-<td headers="Standard concept name" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);"></td>
-<td headers="Standard concept ID" class="gt_row gt_right" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);"></td>
-<td headers="Vocabulary ID" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);"></td>
 <td headers="Source concept name" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">Other laboratory examination</td>
 <td headers="Source concept ID" class="gt_row gt_right" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">44835528</td>
 <td headers="Source concept value" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">V7269</td>
@@ -826,6 +808,24 @@ R packages packages.</p>
 <tr>
 <td headers="Codelist name" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; background-color: rgba(255,255,255,0); border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8;"></td>
 <td headers="Domain ID" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);"></td>
+<td headers="Standard concept name" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);"></td>
+<td headers="Standard concept ID" class="gt_row gt_right" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);"></td>
+<td headers="Vocabulary ID" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);"></td>
+<td headers="Source concept name" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">Laboratory examination, unspecified</td>
+<td headers="Source concept ID" class="gt_row gt_right" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">44835527</td>
+<td headers="Source concept value" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">V7260</td>
+<td headers="[header_name]Database name
+[header_level]Eunomia Synpuf
+[header_name]Estimate name
+[header_level]Record count" class="gt_row gt_right" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">101</td>
+<td headers="[header_name]Database name
+[header_level]Eunomia Synpuf
+[header_name]Estimate name
+[header_level]Person count" class="gt_row gt_right" style="text-align: right; font-family: Arial; font-size: 10; background-color: rgba(255,255,255,0); border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8;">95</td>
+</tr>
+<tr>
+<td headers="Codelist name" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; background-color: rgba(255,255,255,0); border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8;"></td>
+<td headers="Domain ID" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);"></td>
 <td headers="Standard concept name" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">Drug screen, qualitative; multiple drug classes by high complexity test method (e.g., immunoassay, enzyme assay), per patient encounter</td>
 <td headers="Standard concept ID" class="gt_row gt_right" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">40660437</td>
 <td headers="Vocabulary ID" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">HCPCS</td>
@@ -847,9 +847,9 @@ R packages packages.</p>
 <td headers="Standard concept name" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">Immunology laboratory test</td>
 <td headers="Standard concept ID" class="gt_row gt_right" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">4098179</td>
 <td headers="Vocabulary ID" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">SNOMED</td>
-<td headers="Source concept name" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">Antibody response examination</td>
-<td headers="Source concept ID" class="gt_row gt_right" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">44830850</td>
-<td headers="Source concept value" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">V7261</td>
+<td headers="Source concept name" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">Other and unspecified nonspecific immunological findings</td>
+<td headers="Source concept ID" class="gt_row gt_right" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">44830461</td>
+<td headers="Source concept value" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">79579</td>
 <td headers="[header_name]Database name
 [header_level]Eunomia Synpuf
 [header_name]Estimate name
@@ -865,9 +865,9 @@ R packages packages.</p>
 <td headers="Standard concept name" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);"></td>
 <td headers="Standard concept ID" class="gt_row gt_right" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);"></td>
 <td headers="Vocabulary ID" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);"></td>
-<td headers="Source concept name" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">Other and unspecified nonspecific immunological findings</td>
-<td headers="Source concept ID" class="gt_row gt_right" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">44830461</td>
-<td headers="Source concept value" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">79579</td>
+<td headers="Source concept name" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">Antibody response examination</td>
+<td headers="Source concept ID" class="gt_row gt_right" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">44830850</td>
+<td headers="Source concept value" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">V7261</td>
 <td headers="[header_name]Database name
 [header_level]Eunomia Synpuf
 [header_name]Estimate name
@@ -886,23 +886,23 @@ R packages packages.</p>
 </h3>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://darwin-eu.github.io/CodelistGenerator/reference/tableOrphanCodes.html" class="external-link">tableOrphanCodes</a></span><span class="op">(</span><span class="va">code_diag</span><span class="op">)</span></span></code></pre></div>
-<div id="lanfzyrlxf" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#lanfzyrlxf table {
+<div id="nfzyrlxfzp" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#nfzyrlxfzp table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#lanfzyrlxf thead, #lanfzyrlxf tbody, #lanfzyrlxf tfoot, #lanfzyrlxf tr, #lanfzyrlxf td, #lanfzyrlxf th {
+#nfzyrlxfzp thead, #nfzyrlxfzp tbody, #nfzyrlxfzp tfoot, #nfzyrlxfzp tr, #nfzyrlxfzp td, #nfzyrlxfzp th {
   border-style: none;
 }
 
-#lanfzyrlxf p {
+#nfzyrlxfzp p {
   margin: 0;
   padding: 0;
 }
 
-#lanfzyrlxf .gt_table {
+#nfzyrlxfzp .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -928,12 +928,12 @@ R packages packages.</p>
   border-left-color: #D9D9D9;
 }
 
-#lanfzyrlxf .gt_caption {
+#nfzyrlxfzp .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#lanfzyrlxf .gt_title {
+#nfzyrlxfzp .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -945,7 +945,7 @@ R packages packages.</p>
   border-bottom-width: 0;
 }
 
-#lanfzyrlxf .gt_subtitle {
+#nfzyrlxfzp .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -957,7 +957,7 @@ R packages packages.</p>
   border-top-width: 0;
 }
 
-#lanfzyrlxf .gt_heading {
+#nfzyrlxfzp .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -969,13 +969,13 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#lanfzyrlxf .gt_bottom_border {
+#nfzyrlxfzp .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#lanfzyrlxf .gt_col_headings {
+#nfzyrlxfzp .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -990,7 +990,7 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#lanfzyrlxf .gt_col_heading {
+#nfzyrlxfzp .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1010,7 +1010,7 @@ R packages packages.</p>
   overflow-x: hidden;
 }
 
-#lanfzyrlxf .gt_column_spanner_outer {
+#nfzyrlxfzp .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1022,15 +1022,15 @@ R packages packages.</p>
   padding-right: 4px;
 }
 
-#lanfzyrlxf .gt_column_spanner_outer:first-child {
+#nfzyrlxfzp .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#lanfzyrlxf .gt_column_spanner_outer:last-child {
+#nfzyrlxfzp .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#lanfzyrlxf .gt_column_spanner {
+#nfzyrlxfzp .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1042,11 +1042,11 @@ R packages packages.</p>
   width: 100%;
 }
 
-#lanfzyrlxf .gt_spanner_row {
+#nfzyrlxfzp .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#lanfzyrlxf .gt_group_heading {
+#nfzyrlxfzp .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1072,7 +1072,7 @@ R packages packages.</p>
   text-align: left;
 }
 
-#lanfzyrlxf .gt_empty_group_heading {
+#nfzyrlxfzp .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1087,15 +1087,15 @@ R packages packages.</p>
   vertical-align: middle;
 }
 
-#lanfzyrlxf .gt_from_md > :first-child {
+#nfzyrlxfzp .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#lanfzyrlxf .gt_from_md > :last-child {
+#nfzyrlxfzp .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#lanfzyrlxf .gt_row {
+#nfzyrlxfzp .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1114,7 +1114,7 @@ R packages packages.</p>
   overflow-x: hidden;
 }
 
-#lanfzyrlxf .gt_stub {
+#nfzyrlxfzp .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1127,7 +1127,7 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#lanfzyrlxf .gt_stub_row_group {
+#nfzyrlxfzp .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1141,15 +1141,15 @@ R packages packages.</p>
   vertical-align: top;
 }
 
-#lanfzyrlxf .gt_row_group_first td {
+#nfzyrlxfzp .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#lanfzyrlxf .gt_row_group_first th {
+#nfzyrlxfzp .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#lanfzyrlxf .gt_summary_row {
+#nfzyrlxfzp .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1159,16 +1159,16 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#lanfzyrlxf .gt_first_summary_row {
+#nfzyrlxfzp .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#lanfzyrlxf .gt_first_summary_row.thick {
+#nfzyrlxfzp .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#lanfzyrlxf .gt_last_summary_row {
+#nfzyrlxfzp .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1178,7 +1178,7 @@ R packages packages.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#lanfzyrlxf .gt_grand_summary_row {
+#nfzyrlxfzp .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1188,7 +1188,7 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#lanfzyrlxf .gt_first_grand_summary_row {
+#nfzyrlxfzp .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1198,7 +1198,7 @@ R packages packages.</p>
   border-top-color: #D3D3D3;
 }
 
-#lanfzyrlxf .gt_last_grand_summary_row_top {
+#nfzyrlxfzp .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1208,11 +1208,11 @@ R packages packages.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#lanfzyrlxf .gt_striped {
+#nfzyrlxfzp .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#lanfzyrlxf .gt_table_body {
+#nfzyrlxfzp .gt_table_body {
   border-top-style: solid;
   border-top-width: 3px;
   border-top-color: #D9D9D9;
@@ -1221,7 +1221,7 @@ R packages packages.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#lanfzyrlxf .gt_footnotes {
+#nfzyrlxfzp .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1235,7 +1235,7 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#lanfzyrlxf .gt_footnote {
+#nfzyrlxfzp .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1244,7 +1244,7 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#lanfzyrlxf .gt_sourcenotes {
+#nfzyrlxfzp .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1258,7 +1258,7 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#lanfzyrlxf .gt_sourcenote {
+#nfzyrlxfzp .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1266,72 +1266,72 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#lanfzyrlxf .gt_left {
+#nfzyrlxfzp .gt_left {
   text-align: left;
 }
 
-#lanfzyrlxf .gt_center {
+#nfzyrlxfzp .gt_center {
   text-align: center;
 }
 
-#lanfzyrlxf .gt_right {
+#nfzyrlxfzp .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#lanfzyrlxf .gt_font_normal {
+#nfzyrlxfzp .gt_font_normal {
   font-weight: normal;
 }
 
-#lanfzyrlxf .gt_font_bold {
+#nfzyrlxfzp .gt_font_bold {
   font-weight: bold;
 }
 
-#lanfzyrlxf .gt_font_italic {
+#nfzyrlxfzp .gt_font_italic {
   font-style: italic;
 }
 
-#lanfzyrlxf .gt_super {
+#nfzyrlxfzp .gt_super {
   font-size: 65%;
 }
 
-#lanfzyrlxf .gt_footnote_marks {
+#nfzyrlxfzp .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#lanfzyrlxf .gt_asterisk {
+#nfzyrlxfzp .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#lanfzyrlxf .gt_indent_1 {
+#nfzyrlxfzp .gt_indent_1 {
   text-indent: 5px;
 }
 
-#lanfzyrlxf .gt_indent_2 {
+#nfzyrlxfzp .gt_indent_2 {
   text-indent: 10px;
 }
 
-#lanfzyrlxf .gt_indent_3 {
+#nfzyrlxfzp .gt_indent_3 {
   text-indent: 15px;
 }
 
-#lanfzyrlxf .gt_indent_4 {
+#nfzyrlxfzp .gt_indent_4 {
   text-indent: 20px;
 }
 
-#lanfzyrlxf .gt_indent_5 {
+#nfzyrlxfzp .gt_indent_5 {
   text-indent: 25px;
 }
 
-#lanfzyrlxf .katex-display {
+#nfzyrlxfzp .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#lanfzyrlxf div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#nfzyrlxfzp div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1818,9 +1818,9 @@ R packages packages.</p>
 <td headers="Standard concept name" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">Closed fracture of radius AND ulna</td>
 <td headers="Standard concept ID" class="gt_row gt_right" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">435380</td>
 <td headers="Vocabulary ID" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">SNOMED</td>
-<td headers="Source concept name" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">Closed fracture of shaft of radius with ulna</td>
-<td headers="Source concept ID" class="gt_row gt_right" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">44828215</td>
-<td headers="Source concept value" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">81323</td>
+<td headers="Source concept name" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">Closed fracture of unspecified part of radius with ulna</td>
+<td headers="Source concept ID" class="gt_row gt_right" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">44832766</td>
+<td headers="Source concept value" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">81383</td>
 <td headers="Relationship" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">Descendant</td>
 <td headers="[header_name]Database name
 [header_level]Eunomia Synpuf
@@ -1837,9 +1837,9 @@ R packages packages.</p>
 <td headers="Standard concept name" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);"></td>
 <td headers="Standard concept ID" class="gt_row gt_right" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);"></td>
 <td headers="Vocabulary ID" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);"></td>
-<td headers="Source concept name" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">Closed fracture of unspecified part of radius with ulna</td>
-<td headers="Source concept ID" class="gt_row gt_right" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">44832766</td>
-<td headers="Source concept value" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">81383</td>
+<td headers="Source concept name" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">Closed fracture of shaft of radius with ulna</td>
+<td headers="Source concept ID" class="gt_row gt_right" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">44828215</td>
+<td headers="Source concept value" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">81323</td>
 <td headers="Relationship" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">Descendant</td>
 <td headers="[header_name]Database name
 [header_level]Eunomia Synpuf
@@ -2749,9 +2749,9 @@ R packages packages.</p>
 <td headers="Standard concept name" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">Hematology screening test</td>
 <td headers="Standard concept ID" class="gt_row gt_right" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">4198132</td>
 <td headers="Vocabulary ID" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">SNOMED</td>
-<td headers="Source concept name" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">Screening for other disorders of blood and blood-forming organs</td>
-<td headers="Source concept ID" class="gt_row gt_right" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">44830861</td>
-<td headers="Source concept value" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">V788</td>
+<td headers="Source concept name" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">Screening for unspecified disorder of blood and blood-forming organs</td>
+<td headers="Source concept ID" class="gt_row gt_right" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">44834355</td>
+<td headers="Source concept value" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">V789</td>
 <td headers="Relationship" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">Descendant</td>
 <td headers="[header_name]Database name
 [header_level]Eunomia Synpuf
@@ -2768,9 +2768,9 @@ R packages packages.</p>
 <td headers="Standard concept name" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);"></td>
 <td headers="Standard concept ID" class="gt_row gt_right" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);"></td>
 <td headers="Vocabulary ID" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: hidden; border-top-color: #000000; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);"></td>
-<td headers="Source concept name" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">Screening for unspecified disorder of blood and blood-forming organs</td>
-<td headers="Source concept ID" class="gt_row gt_right" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">44834355</td>
-<td headers="Source concept value" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">V789</td>
+<td headers="Source concept name" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">Screening for other disorders of blood and blood-forming organs</td>
+<td headers="Source concept ID" class="gt_row gt_right" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">44830861</td>
+<td headers="Source concept value" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">V788</td>
 <td headers="Relationship" class="gt_row gt_left" style="text-align: left; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">Descendant</td>
 <td headers="[header_name]Database name
 [header_level]Eunomia Synpuf
@@ -2904,23 +2904,23 @@ R packages packages.</p>
 </h3>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://darwin-eu.github.io/CodelistGenerator/reference/tableCohortCodeUse.html" class="external-link">tableCohortCodeUse</a></span><span class="op">(</span><span class="va">code_diag</span><span class="op">)</span></span></code></pre></div>
-<div id="zpdisgplrc" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#zpdisgplrc table {
+<div id="disgplrczt" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#disgplrczt table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#zpdisgplrc thead, #zpdisgplrc tbody, #zpdisgplrc tfoot, #zpdisgplrc tr, #zpdisgplrc td, #zpdisgplrc th {
+#disgplrczt thead, #disgplrczt tbody, #disgplrczt tfoot, #disgplrczt tr, #disgplrczt td, #disgplrczt th {
   border-style: none;
 }
 
-#zpdisgplrc p {
+#disgplrczt p {
   margin: 0;
   padding: 0;
 }
 
-#zpdisgplrc .gt_table {
+#disgplrczt .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -2946,12 +2946,12 @@ R packages packages.</p>
   border-left-color: #D9D9D9;
 }
 
-#zpdisgplrc .gt_caption {
+#disgplrczt .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#zpdisgplrc .gt_title {
+#disgplrczt .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2963,7 +2963,7 @@ R packages packages.</p>
   border-bottom-width: 0;
 }
 
-#zpdisgplrc .gt_subtitle {
+#disgplrczt .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2975,7 +2975,7 @@ R packages packages.</p>
   border-top-width: 0;
 }
 
-#zpdisgplrc .gt_heading {
+#disgplrczt .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2987,13 +2987,13 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#zpdisgplrc .gt_bottom_border {
+#disgplrczt .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#zpdisgplrc .gt_col_headings {
+#disgplrczt .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -3008,7 +3008,7 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#zpdisgplrc .gt_col_heading {
+#disgplrczt .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3028,7 +3028,7 @@ R packages packages.</p>
   overflow-x: hidden;
 }
 
-#zpdisgplrc .gt_column_spanner_outer {
+#disgplrczt .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3040,15 +3040,15 @@ R packages packages.</p>
   padding-right: 4px;
 }
 
-#zpdisgplrc .gt_column_spanner_outer:first-child {
+#disgplrczt .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#zpdisgplrc .gt_column_spanner_outer:last-child {
+#disgplrczt .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#zpdisgplrc .gt_column_spanner {
+#disgplrczt .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -3060,11 +3060,11 @@ R packages packages.</p>
   width: 100%;
 }
 
-#zpdisgplrc .gt_spanner_row {
+#disgplrczt .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#zpdisgplrc .gt_group_heading {
+#disgplrczt .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3090,7 +3090,7 @@ R packages packages.</p>
   text-align: left;
 }
 
-#zpdisgplrc .gt_empty_group_heading {
+#disgplrczt .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -3105,15 +3105,15 @@ R packages packages.</p>
   vertical-align: middle;
 }
 
-#zpdisgplrc .gt_from_md > :first-child {
+#disgplrczt .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#zpdisgplrc .gt_from_md > :last-child {
+#disgplrczt .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#zpdisgplrc .gt_row {
+#disgplrczt .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3132,7 +3132,7 @@ R packages packages.</p>
   overflow-x: hidden;
 }
 
-#zpdisgplrc .gt_stub {
+#disgplrczt .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3145,7 +3145,7 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#zpdisgplrc .gt_stub_row_group {
+#disgplrczt .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3159,15 +3159,15 @@ R packages packages.</p>
   vertical-align: top;
 }
 
-#zpdisgplrc .gt_row_group_first td {
+#disgplrczt .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#zpdisgplrc .gt_row_group_first th {
+#disgplrczt .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#zpdisgplrc .gt_summary_row {
+#disgplrczt .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3177,16 +3177,16 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#zpdisgplrc .gt_first_summary_row {
+#disgplrczt .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#zpdisgplrc .gt_first_summary_row.thick {
+#disgplrczt .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#zpdisgplrc .gt_last_summary_row {
+#disgplrczt .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3196,7 +3196,7 @@ R packages packages.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#zpdisgplrc .gt_grand_summary_row {
+#disgplrczt .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3206,7 +3206,7 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#zpdisgplrc .gt_first_grand_summary_row {
+#disgplrczt .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3216,7 +3216,7 @@ R packages packages.</p>
   border-top-color: #D3D3D3;
 }
 
-#zpdisgplrc .gt_last_grand_summary_row_top {
+#disgplrczt .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3226,11 +3226,11 @@ R packages packages.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#zpdisgplrc .gt_striped {
+#disgplrczt .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#zpdisgplrc .gt_table_body {
+#disgplrczt .gt_table_body {
   border-top-style: solid;
   border-top-width: 3px;
   border-top-color: #D9D9D9;
@@ -3239,7 +3239,7 @@ R packages packages.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#zpdisgplrc .gt_footnotes {
+#disgplrczt .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3253,7 +3253,7 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#zpdisgplrc .gt_footnote {
+#disgplrczt .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -3262,7 +3262,7 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#zpdisgplrc .gt_sourcenotes {
+#disgplrczt .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3276,7 +3276,7 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#zpdisgplrc .gt_sourcenote {
+#disgplrczt .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -3284,72 +3284,72 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#zpdisgplrc .gt_left {
+#disgplrczt .gt_left {
   text-align: left;
 }
 
-#zpdisgplrc .gt_center {
+#disgplrczt .gt_center {
   text-align: center;
 }
 
-#zpdisgplrc .gt_right {
+#disgplrczt .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#zpdisgplrc .gt_font_normal {
+#disgplrczt .gt_font_normal {
   font-weight: normal;
 }
 
-#zpdisgplrc .gt_font_bold {
+#disgplrczt .gt_font_bold {
   font-weight: bold;
 }
 
-#zpdisgplrc .gt_font_italic {
+#disgplrczt .gt_font_italic {
   font-style: italic;
 }
 
-#zpdisgplrc .gt_super {
+#disgplrczt .gt_super {
   font-size: 65%;
 }
 
-#zpdisgplrc .gt_footnote_marks {
+#disgplrczt .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#zpdisgplrc .gt_asterisk {
+#disgplrczt .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#zpdisgplrc .gt_indent_1 {
+#disgplrczt .gt_indent_1 {
   text-indent: 5px;
 }
 
-#zpdisgplrc .gt_indent_2 {
+#disgplrczt .gt_indent_2 {
   text-indent: 10px;
 }
 
-#zpdisgplrc .gt_indent_3 {
+#disgplrczt .gt_indent_3 {
   text-indent: 15px;
 }
 
-#zpdisgplrc .gt_indent_4 {
+#disgplrczt .gt_indent_4 {
   text-indent: 20px;
 }
 
-#zpdisgplrc .gt_indent_5 {
+#disgplrczt .gt_indent_5 {
   text-indent: 25px;
 }
 
-#zpdisgplrc .katex-display {
+#disgplrczt .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#zpdisgplrc div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#disgplrczt div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -3912,23 +3912,23 @@ R packages packages.</p>
 </h3>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ohdsi.github.io/MeasurementDiagnostics/reference/tableMeasurementSummary.html" class="external-link">tableMeasurementSummary</a></span><span class="op">(</span><span class="va">code_diag</span><span class="op">)</span></span></code></pre></div>
-<div id="ztvijonoom" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#ztvijonoom table {
+<div id="vijonoombz" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#vijonoombz table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#ztvijonoom thead, #ztvijonoom tbody, #ztvijonoom tfoot, #ztvijonoom tr, #ztvijonoom td, #ztvijonoom th {
+#vijonoombz thead, #vijonoombz tbody, #vijonoombz tfoot, #vijonoombz tr, #vijonoombz td, #vijonoombz th {
   border-style: none;
 }
 
-#ztvijonoom p {
+#vijonoombz p {
   margin: 0;
   padding: 0;
 }
 
-#ztvijonoom .gt_table {
+#vijonoombz .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -3954,12 +3954,12 @@ R packages packages.</p>
   border-left-color: #E1E1E1;
 }
 
-#ztvijonoom .gt_caption {
+#vijonoombz .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#ztvijonoom .gt_title {
+#vijonoombz .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -3971,7 +3971,7 @@ R packages packages.</p>
   border-bottom-width: 0;
 }
 
-#ztvijonoom .gt_subtitle {
+#vijonoombz .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -3983,7 +3983,7 @@ R packages packages.</p>
   border-top-width: 0;
 }
 
-#ztvijonoom .gt_heading {
+#vijonoombz .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -3995,13 +3995,13 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#ztvijonoom .gt_bottom_border {
+#vijonoombz .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#ztvijonoom .gt_col_headings {
+#vijonoombz .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -4016,7 +4016,7 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#ztvijonoom .gt_col_heading {
+#vijonoombz .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -4036,7 +4036,7 @@ R packages packages.</p>
   overflow-x: hidden;
 }
 
-#ztvijonoom .gt_column_spanner_outer {
+#vijonoombz .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -4048,15 +4048,15 @@ R packages packages.</p>
   padding-right: 4px;
 }
 
-#ztvijonoom .gt_column_spanner_outer:first-child {
+#vijonoombz .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ztvijonoom .gt_column_spanner_outer:last-child {
+#vijonoombz .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ztvijonoom .gt_column_spanner {
+#vijonoombz .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -4068,11 +4068,11 @@ R packages packages.</p>
   width: 100%;
 }
 
-#ztvijonoom .gt_spanner_row {
+#vijonoombz .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#ztvijonoom .gt_group_heading {
+#vijonoombz .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -4098,7 +4098,7 @@ R packages packages.</p>
   text-align: left;
 }
 
-#ztvijonoom .gt_empty_group_heading {
+#vijonoombz .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -4113,15 +4113,15 @@ R packages packages.</p>
   vertical-align: middle;
 }
 
-#ztvijonoom .gt_from_md > :first-child {
+#vijonoombz .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ztvijonoom .gt_from_md > :last-child {
+#vijonoombz .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ztvijonoom .gt_row {
+#vijonoombz .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -4140,7 +4140,7 @@ R packages packages.</p>
   overflow-x: hidden;
 }
 
-#ztvijonoom .gt_stub {
+#vijonoombz .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -4153,7 +4153,7 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#ztvijonoom .gt_stub_row_group {
+#vijonoombz .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -4167,15 +4167,15 @@ R packages packages.</p>
   vertical-align: top;
 }
 
-#ztvijonoom .gt_row_group_first td {
+#vijonoombz .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#ztvijonoom .gt_row_group_first th {
+#vijonoombz .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#ztvijonoom .gt_summary_row {
+#vijonoombz .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -4185,16 +4185,16 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#ztvijonoom .gt_first_summary_row {
+#vijonoombz .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#ztvijonoom .gt_first_summary_row.thick {
+#vijonoombz .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#ztvijonoom .gt_last_summary_row {
+#vijonoombz .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -4204,7 +4204,7 @@ R packages packages.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#ztvijonoom .gt_grand_summary_row {
+#vijonoombz .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -4214,7 +4214,7 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#ztvijonoom .gt_first_grand_summary_row {
+#vijonoombz .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -4224,7 +4224,7 @@ R packages packages.</p>
   border-top-color: #D3D3D3;
 }
 
-#ztvijonoom .gt_last_grand_summary_row_top {
+#vijonoombz .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -4234,11 +4234,11 @@ R packages packages.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#ztvijonoom .gt_striped {
+#vijonoombz .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#ztvijonoom .gt_table_body {
+#vijonoombz .gt_table_body {
   border-top-style: solid;
   border-top-width: 3px;
   border-top-color: #E1E1E1;
@@ -4247,7 +4247,7 @@ R packages packages.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#ztvijonoom .gt_footnotes {
+#vijonoombz .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -4261,7 +4261,7 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#ztvijonoom .gt_footnote {
+#vijonoombz .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -4270,7 +4270,7 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#ztvijonoom .gt_sourcenotes {
+#vijonoombz .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -4284,7 +4284,7 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#ztvijonoom .gt_sourcenote {
+#vijonoombz .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -4292,72 +4292,72 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#ztvijonoom .gt_left {
+#vijonoombz .gt_left {
   text-align: left;
 }
 
-#ztvijonoom .gt_center {
+#vijonoombz .gt_center {
   text-align: center;
 }
 
-#ztvijonoom .gt_right {
+#vijonoombz .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ztvijonoom .gt_font_normal {
+#vijonoombz .gt_font_normal {
   font-weight: normal;
 }
 
-#ztvijonoom .gt_font_bold {
+#vijonoombz .gt_font_bold {
   font-weight: bold;
 }
 
-#ztvijonoom .gt_font_italic {
+#vijonoombz .gt_font_italic {
   font-style: italic;
 }
 
-#ztvijonoom .gt_super {
+#vijonoombz .gt_super {
   font-size: 65%;
 }
 
-#ztvijonoom .gt_footnote_marks {
+#vijonoombz .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#ztvijonoom .gt_asterisk {
+#vijonoombz .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#ztvijonoom .gt_indent_1 {
+#vijonoombz .gt_indent_1 {
   text-indent: 5px;
 }
 
-#ztvijonoom .gt_indent_2 {
+#vijonoombz .gt_indent_2 {
   text-indent: 10px;
 }
 
-#ztvijonoom .gt_indent_3 {
+#vijonoombz .gt_indent_3 {
   text-indent: 15px;
 }
 
-#ztvijonoom .gt_indent_4 {
+#vijonoombz .gt_indent_4 {
   text-indent: 20px;
 }
 
-#ztvijonoom .gt_indent_5 {
+#vijonoombz .gt_indent_5 {
   text-indent: 25px;
 }
 
-#ztvijonoom .katex-display {
+#vijonoombz .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#ztvijonoom div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#vijonoombz div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -4427,23 +4427,23 @@ R packages packages.</p>
 </h3>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ohdsi.github.io/MeasurementDiagnostics/reference/tableMeasurementValueAsConcept.html" class="external-link">tableMeasurementValueAsConcept</a></span><span class="op">(</span><span class="va">code_diag</span><span class="op">)</span></span></code></pre></div>
-<div id="zikuzoetrb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#zikuzoetrb table {
+<div id="uzoetrbdlb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#uzoetrbdlb table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#zikuzoetrb thead, #zikuzoetrb tbody, #zikuzoetrb tfoot, #zikuzoetrb tr, #zikuzoetrb td, #zikuzoetrb th {
+#uzoetrbdlb thead, #uzoetrbdlb tbody, #uzoetrbdlb tfoot, #uzoetrbdlb tr, #uzoetrbdlb td, #uzoetrbdlb th {
   border-style: none;
 }
 
-#zikuzoetrb p {
+#uzoetrbdlb p {
   margin: 0;
   padding: 0;
 }
 
-#zikuzoetrb .gt_table {
+#uzoetrbdlb .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -4469,12 +4469,12 @@ R packages packages.</p>
   border-left-color: #E1E1E1;
 }
 
-#zikuzoetrb .gt_caption {
+#uzoetrbdlb .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#zikuzoetrb .gt_title {
+#uzoetrbdlb .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -4486,7 +4486,7 @@ R packages packages.</p>
   border-bottom-width: 0;
 }
 
-#zikuzoetrb .gt_subtitle {
+#uzoetrbdlb .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -4498,7 +4498,7 @@ R packages packages.</p>
   border-top-width: 0;
 }
 
-#zikuzoetrb .gt_heading {
+#uzoetrbdlb .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -4510,13 +4510,13 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#zikuzoetrb .gt_bottom_border {
+#uzoetrbdlb .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#zikuzoetrb .gt_col_headings {
+#uzoetrbdlb .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -4531,7 +4531,7 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#zikuzoetrb .gt_col_heading {
+#uzoetrbdlb .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -4551,7 +4551,7 @@ R packages packages.</p>
   overflow-x: hidden;
 }
 
-#zikuzoetrb .gt_column_spanner_outer {
+#uzoetrbdlb .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -4563,15 +4563,15 @@ R packages packages.</p>
   padding-right: 4px;
 }
 
-#zikuzoetrb .gt_column_spanner_outer:first-child {
+#uzoetrbdlb .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#zikuzoetrb .gt_column_spanner_outer:last-child {
+#uzoetrbdlb .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#zikuzoetrb .gt_column_spanner {
+#uzoetrbdlb .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -4583,11 +4583,11 @@ R packages packages.</p>
   width: 100%;
 }
 
-#zikuzoetrb .gt_spanner_row {
+#uzoetrbdlb .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#zikuzoetrb .gt_group_heading {
+#uzoetrbdlb .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -4613,7 +4613,7 @@ R packages packages.</p>
   text-align: left;
 }
 
-#zikuzoetrb .gt_empty_group_heading {
+#uzoetrbdlb .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -4628,15 +4628,15 @@ R packages packages.</p>
   vertical-align: middle;
 }
 
-#zikuzoetrb .gt_from_md > :first-child {
+#uzoetrbdlb .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#zikuzoetrb .gt_from_md > :last-child {
+#uzoetrbdlb .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#zikuzoetrb .gt_row {
+#uzoetrbdlb .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -4655,7 +4655,7 @@ R packages packages.</p>
   overflow-x: hidden;
 }
 
-#zikuzoetrb .gt_stub {
+#uzoetrbdlb .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -4668,7 +4668,7 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#zikuzoetrb .gt_stub_row_group {
+#uzoetrbdlb .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -4682,15 +4682,15 @@ R packages packages.</p>
   vertical-align: top;
 }
 
-#zikuzoetrb .gt_row_group_first td {
+#uzoetrbdlb .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#zikuzoetrb .gt_row_group_first th {
+#uzoetrbdlb .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#zikuzoetrb .gt_summary_row {
+#uzoetrbdlb .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -4700,16 +4700,16 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#zikuzoetrb .gt_first_summary_row {
+#uzoetrbdlb .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#zikuzoetrb .gt_first_summary_row.thick {
+#uzoetrbdlb .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#zikuzoetrb .gt_last_summary_row {
+#uzoetrbdlb .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -4719,7 +4719,7 @@ R packages packages.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#zikuzoetrb .gt_grand_summary_row {
+#uzoetrbdlb .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -4729,7 +4729,7 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#zikuzoetrb .gt_first_grand_summary_row {
+#uzoetrbdlb .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -4739,7 +4739,7 @@ R packages packages.</p>
   border-top-color: #D3D3D3;
 }
 
-#zikuzoetrb .gt_last_grand_summary_row_top {
+#uzoetrbdlb .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -4749,11 +4749,11 @@ R packages packages.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#zikuzoetrb .gt_striped {
+#uzoetrbdlb .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#zikuzoetrb .gt_table_body {
+#uzoetrbdlb .gt_table_body {
   border-top-style: solid;
   border-top-width: 3px;
   border-top-color: #E1E1E1;
@@ -4762,7 +4762,7 @@ R packages packages.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#zikuzoetrb .gt_footnotes {
+#uzoetrbdlb .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -4776,7 +4776,7 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#zikuzoetrb .gt_footnote {
+#uzoetrbdlb .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -4785,7 +4785,7 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#zikuzoetrb .gt_sourcenotes {
+#uzoetrbdlb .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -4799,7 +4799,7 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#zikuzoetrb .gt_sourcenote {
+#uzoetrbdlb .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -4807,72 +4807,72 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#zikuzoetrb .gt_left {
+#uzoetrbdlb .gt_left {
   text-align: left;
 }
 
-#zikuzoetrb .gt_center {
+#uzoetrbdlb .gt_center {
   text-align: center;
 }
 
-#zikuzoetrb .gt_right {
+#uzoetrbdlb .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#zikuzoetrb .gt_font_normal {
+#uzoetrbdlb .gt_font_normal {
   font-weight: normal;
 }
 
-#zikuzoetrb .gt_font_bold {
+#uzoetrbdlb .gt_font_bold {
   font-weight: bold;
 }
 
-#zikuzoetrb .gt_font_italic {
+#uzoetrbdlb .gt_font_italic {
   font-style: italic;
 }
 
-#zikuzoetrb .gt_super {
+#uzoetrbdlb .gt_super {
   font-size: 65%;
 }
 
-#zikuzoetrb .gt_footnote_marks {
+#uzoetrbdlb .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#zikuzoetrb .gt_asterisk {
+#uzoetrbdlb .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#zikuzoetrb .gt_indent_1 {
+#uzoetrbdlb .gt_indent_1 {
   text-indent: 5px;
 }
 
-#zikuzoetrb .gt_indent_2 {
+#uzoetrbdlb .gt_indent_2 {
   text-indent: 10px;
 }
 
-#zikuzoetrb .gt_indent_3 {
+#uzoetrbdlb .gt_indent_3 {
   text-indent: 15px;
 }
 
-#zikuzoetrb .gt_indent_4 {
+#uzoetrbdlb .gt_indent_4 {
   text-indent: 20px;
 }
 
-#zikuzoetrb .gt_indent_5 {
+#uzoetrbdlb .gt_indent_5 {
   text-indent: 25px;
 }
 
-#zikuzoetrb .katex-display {
+#uzoetrbdlb .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#zikuzoetrb div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#uzoetrbdlb div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -5049,23 +5049,23 @@ R packages packages.</p>
 </h3>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ohdsi.github.io/MeasurementDiagnostics/reference/tableMeasurementValueAsNumber.html" class="external-link">tableMeasurementValueAsNumber</a></span><span class="op">(</span><span class="va">code_diag</span><span class="op">)</span></span></code></pre></div>
-<div id="dlbujtpxrq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#dlbujtpxrq table {
+<div id="ujtpxrqsxv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#ujtpxrqsxv table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#dlbujtpxrq thead, #dlbujtpxrq tbody, #dlbujtpxrq tfoot, #dlbujtpxrq tr, #dlbujtpxrq td, #dlbujtpxrq th {
+#ujtpxrqsxv thead, #ujtpxrqsxv tbody, #ujtpxrqsxv tfoot, #ujtpxrqsxv tr, #ujtpxrqsxv td, #ujtpxrqsxv th {
   border-style: none;
 }
 
-#dlbujtpxrq p {
+#ujtpxrqsxv p {
   margin: 0;
   padding: 0;
 }
 
-#dlbujtpxrq .gt_table {
+#ujtpxrqsxv .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -5091,12 +5091,12 @@ R packages packages.</p>
   border-left-color: #E1E1E1;
 }
 
-#dlbujtpxrq .gt_caption {
+#ujtpxrqsxv .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#dlbujtpxrq .gt_title {
+#ujtpxrqsxv .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -5108,7 +5108,7 @@ R packages packages.</p>
   border-bottom-width: 0;
 }
 
-#dlbujtpxrq .gt_subtitle {
+#ujtpxrqsxv .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -5120,7 +5120,7 @@ R packages packages.</p>
   border-top-width: 0;
 }
 
-#dlbujtpxrq .gt_heading {
+#ujtpxrqsxv .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -5132,13 +5132,13 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#dlbujtpxrq .gt_bottom_border {
+#ujtpxrqsxv .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#dlbujtpxrq .gt_col_headings {
+#ujtpxrqsxv .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -5153,7 +5153,7 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#dlbujtpxrq .gt_col_heading {
+#ujtpxrqsxv .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -5173,7 +5173,7 @@ R packages packages.</p>
   overflow-x: hidden;
 }
 
-#dlbujtpxrq .gt_column_spanner_outer {
+#ujtpxrqsxv .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -5185,15 +5185,15 @@ R packages packages.</p>
   padding-right: 4px;
 }
 
-#dlbujtpxrq .gt_column_spanner_outer:first-child {
+#ujtpxrqsxv .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#dlbujtpxrq .gt_column_spanner_outer:last-child {
+#ujtpxrqsxv .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#dlbujtpxrq .gt_column_spanner {
+#ujtpxrqsxv .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -5205,11 +5205,11 @@ R packages packages.</p>
   width: 100%;
 }
 
-#dlbujtpxrq .gt_spanner_row {
+#ujtpxrqsxv .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#dlbujtpxrq .gt_group_heading {
+#ujtpxrqsxv .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -5235,7 +5235,7 @@ R packages packages.</p>
   text-align: left;
 }
 
-#dlbujtpxrq .gt_empty_group_heading {
+#ujtpxrqsxv .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -5250,15 +5250,15 @@ R packages packages.</p>
   vertical-align: middle;
 }
 
-#dlbujtpxrq .gt_from_md > :first-child {
+#ujtpxrqsxv .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#dlbujtpxrq .gt_from_md > :last-child {
+#ujtpxrqsxv .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#dlbujtpxrq .gt_row {
+#ujtpxrqsxv .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -5277,7 +5277,7 @@ R packages packages.</p>
   overflow-x: hidden;
 }
 
-#dlbujtpxrq .gt_stub {
+#ujtpxrqsxv .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -5290,7 +5290,7 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#dlbujtpxrq .gt_stub_row_group {
+#ujtpxrqsxv .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -5304,15 +5304,15 @@ R packages packages.</p>
   vertical-align: top;
 }
 
-#dlbujtpxrq .gt_row_group_first td {
+#ujtpxrqsxv .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#dlbujtpxrq .gt_row_group_first th {
+#ujtpxrqsxv .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#dlbujtpxrq .gt_summary_row {
+#ujtpxrqsxv .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -5322,16 +5322,16 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#dlbujtpxrq .gt_first_summary_row {
+#ujtpxrqsxv .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#dlbujtpxrq .gt_first_summary_row.thick {
+#ujtpxrqsxv .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#dlbujtpxrq .gt_last_summary_row {
+#ujtpxrqsxv .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -5341,7 +5341,7 @@ R packages packages.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#dlbujtpxrq .gt_grand_summary_row {
+#ujtpxrqsxv .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -5351,7 +5351,7 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#dlbujtpxrq .gt_first_grand_summary_row {
+#ujtpxrqsxv .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -5361,7 +5361,7 @@ R packages packages.</p>
   border-top-color: #D3D3D3;
 }
 
-#dlbujtpxrq .gt_last_grand_summary_row_top {
+#ujtpxrqsxv .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -5371,11 +5371,11 @@ R packages packages.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#dlbujtpxrq .gt_striped {
+#ujtpxrqsxv .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#dlbujtpxrq .gt_table_body {
+#ujtpxrqsxv .gt_table_body {
   border-top-style: solid;
   border-top-width: 3px;
   border-top-color: #E1E1E1;
@@ -5384,7 +5384,7 @@ R packages packages.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#dlbujtpxrq .gt_footnotes {
+#ujtpxrqsxv .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -5398,7 +5398,7 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#dlbujtpxrq .gt_footnote {
+#ujtpxrqsxv .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -5407,7 +5407,7 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#dlbujtpxrq .gt_sourcenotes {
+#ujtpxrqsxv .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -5421,7 +5421,7 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#dlbujtpxrq .gt_sourcenote {
+#ujtpxrqsxv .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -5429,72 +5429,72 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#dlbujtpxrq .gt_left {
+#ujtpxrqsxv .gt_left {
   text-align: left;
 }
 
-#dlbujtpxrq .gt_center {
+#ujtpxrqsxv .gt_center {
   text-align: center;
 }
 
-#dlbujtpxrq .gt_right {
+#ujtpxrqsxv .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#dlbujtpxrq .gt_font_normal {
+#ujtpxrqsxv .gt_font_normal {
   font-weight: normal;
 }
 
-#dlbujtpxrq .gt_font_bold {
+#ujtpxrqsxv .gt_font_bold {
   font-weight: bold;
 }
 
-#dlbujtpxrq .gt_font_italic {
+#ujtpxrqsxv .gt_font_italic {
   font-style: italic;
 }
 
-#dlbujtpxrq .gt_super {
+#ujtpxrqsxv .gt_super {
   font-size: 65%;
 }
 
-#dlbujtpxrq .gt_footnote_marks {
+#ujtpxrqsxv .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#dlbujtpxrq .gt_asterisk {
+#ujtpxrqsxv .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#dlbujtpxrq .gt_indent_1 {
+#ujtpxrqsxv .gt_indent_1 {
   text-indent: 5px;
 }
 
-#dlbujtpxrq .gt_indent_2 {
+#ujtpxrqsxv .gt_indent_2 {
   text-indent: 10px;
 }
 
-#dlbujtpxrq .gt_indent_3 {
+#ujtpxrqsxv .gt_indent_3 {
   text-indent: 15px;
 }
 
-#dlbujtpxrq .gt_indent_4 {
+#ujtpxrqsxv .gt_indent_4 {
   text-indent: 20px;
 }
 
-#dlbujtpxrq .gt_indent_5 {
+#ujtpxrqsxv .gt_indent_5 {
   text-indent: 25px;
 }
 
-#dlbujtpxrq .katex-display {
+#ujtpxrqsxv .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#dlbujtpxrq div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#ujtpxrqsxv div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
