@@ -571,9 +571,9 @@ server <- function(input, output, session) {
     if (is.null(dataFiltered$summarise_clinical_records)) {
       validate("No clinical records summary in results")
     }
-
     result <- dataFiltered$summarise_clinical_records |>
-      dplyr::filter(cdm_name %in% shared_cdm_names())
+      dplyr::filter(cdm_name %in% shared_cdm_names(),
+                    group_level %in% input$summarise_clinical_records_omop_table)
     attr(result, "settings")  <- attr(result, "settings") |>
       dplyr::select(!c("diagnostic", "phenotyper_version"))
     validateFilteredResult(result)
@@ -611,7 +611,8 @@ server <- function(input, output, session) {
     }
 
     result <- dataFiltered$summarise_trend |>
-      dplyr::filter(cdm_name %in% shared_cdm_names())
+      dplyr::filter(cdm_name %in% shared_cdm_names(),
+                    group_level %in% input$summarise_clinical_records_omop_table)
     validateFilteredResult(result)
 
     return(result)

@@ -51,6 +51,14 @@ values <- getValues(result, resultList)
 
 if(length(dataFiltered) > 0){
   diagnostics <- omopgenerics::settings(result) |> dplyr::pull("diagnostic") |> unique()
+  values$shared_cdm_names <- rbind(dataFiltered$summarise_omop_snapshot,
+                                   dataFiltered$cohort_code_use,
+                                   dataFiltered$summarise_cohort_count,
+                                   dataFiltered$incidence) |>
+    dplyr::select("cdm_name") |>
+    dplyr::distinct() |>
+    dplyr::pull("cdm_name") |>
+    sort()
   if((length(diagnostics) > 1 || diagnostics != "databaseDiagnostics")) {
     # Common variables
     if(length(diagnostics) == 1 && diagnostics == "populationDiagnostics"){
@@ -69,11 +77,6 @@ if(length(dataFiltered) > 0){
         dplyr::pull("cohort_name") |>
         sort()
     }
-    values$shared_cdm_names <- rbind(dataFiltered$summarise_omop_snapshot, dataFiltered$cohort_code_use, dataFiltered$summarise_cohort_count, dataFiltered$incidence) |>
-      dplyr::select("cdm_name") |>
-      dplyr::distinct() |>
-      dplyr::pull("cdm_name") |>
-      sort()
   }
 }else{
   diagnostics <- ""
