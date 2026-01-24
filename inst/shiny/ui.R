@@ -195,6 +195,22 @@ ui <- fluidPage(
             )
           )),
         icon = shiny::icon("circle-user"),
+        bslib::layout_sidebar(
+          sidebar = bslib::sidebar(width = 400, open = "closed",
+                                   bslib::accordion(
+                                     bslib::accordion_panel(
+                                       title = "Settings",
+                                       shinyWidgets::pickerInput(
+                                         inputId = "summarise_clinical_records_omop_table",
+                                         label = "Table",
+                                         choices = NULL,
+                                         selected = NULL,
+                                         multiple = TRUE,
+                                         options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                       ),
+                                     )
+                                   )
+          ),
         bslib::navset_card_tab(
         bslib::nav_panel(
           title = "Table Clinical Records",
@@ -244,6 +260,7 @@ ui <- fluidPage(
       )
         )
       )
+    )
       ## clinical_records_end ----
     ),
     # databaseDiagnostics_end ----
