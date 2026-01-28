@@ -507,7 +507,7 @@ summariseCheckSig <- function(table, strata, set) {
     strata = strata,
     includeOverallStrata = TRUE,
     variables = "sig",
-    estimates = c("count", "percentage") # to add https://github.com/darwin-eu-dev/PatientProfiles/issues/822
+    estimates = c("count", "percentage", "count_person")
   ) |>
     suppressMessages() |>
     omopgenerics::newSummarisedResult(
@@ -523,7 +523,7 @@ summariseCheckExposureDuration <- function(table, strata, set) {
       strata = strata,
       includeOverallStrata = TRUE,
       variables = "exposure_duration",
-      estimates = c("min", "q05", "q10", "q25", "median", "q75", "q90", "q95", "max") # https://github.com/darwin-eu-dev/PatientProfiles/issues/822
+      estimates = c("min", "q05", "q10", "q25", "median", "q75", "q90", "q95", "max", "percentage_positive", "percentage_0", "percentage_negative")
     ) |>
     suppressMessages() |>
     omopgenerics::newSummarisedResult(
@@ -552,7 +552,7 @@ summariseCheckType <- function(table, strata, set) {
       strata = strata,
       includeOverallStrata = TRUE,
       variables = "drug_type",
-      estimates = c("count", "percentage") # to add https://github.com/darwin-eu-dev/PatientProfiles/issues/822
+      estimates = c("count", "percentage", "count_person")
     ) |>
     suppressMessages() |>
     dplyr::mutate(cdm_name = omopgenerics::cdmName(table)) |>
@@ -581,7 +581,7 @@ summariseCheckRoute <- function(table, strata, set) {
       strata = strata,
       includeOverallStrata = TRUE,
       variables = "route",
-      estimates = c("count", "percentage") # to add https://github.com/darwin-eu-dev/PatientProfiles/issues/822
+      estimates = c("count", "percentage", "count_person")
     ) |>
     suppressMessages() |>
     dplyr::mutate(cdm_name = omopgenerics::cdmName(table)) |>
@@ -602,7 +602,7 @@ summariseCheckDaysSupply <- function(table, strata, set) {
       includeOverallStrata = TRUE,
       variables = list("days_supply", "days_supply_equal_exposure_duration"),
       estimates = list(
-        c("min", "q05", "q10", "q25", "median", "q75", "q90", "q95", "max"), # https://github.com/darwin-eu-dev/PatientProfiles/issues/822
+        c("min", "q05", "q10", "q25", "median", "q75", "q90", "q95", "max", "percentage_positive", "percentage_0", "percentage_negative"),
         c("count", "percentage")
       )
     ) |>
@@ -657,7 +657,7 @@ summariseCheckDose <- function(table, strata, set, ingredient) {
     dplyr::filter(.data$concept_id == .env$ingredient) |>
     dplyr::pull("concept_name")
   result <- table |>
-    DrugUtilisation:::.addDailyDose(ingredientConceptId = ingredient, name = nm) |>
+    DrugUtilisation::addDailyDose(ingredientConceptId = ingredient, name = nm) |>
     PatientProfiles::summariseResult(
       group = list("codelist_name"),
       includeOverallGroup = FALSE,
