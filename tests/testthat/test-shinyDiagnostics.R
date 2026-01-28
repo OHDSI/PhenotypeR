@@ -39,13 +39,6 @@ test_that("basic working example with one cohort", {
                                                      dplyr::mutate("phenotyper_version" = "0"))
 
   expect_warning(shinyDiagnostics(my_results1, tempdir(), open = FALSE))
-
-  my_results1 <- omopgenerics::newSummarisedResult(my_result_cohort_diag,
-                                                   settings = my_result_cohort_diag |>
-                                                     omopgenerics::settings() |>
-                                                     dplyr::mutate("phenotyper_version" = c(rep(c("1","2"),24),"1")))
-
-  expect_warning(shinyDiagnostics(my_results1, tempdir(), open = FALSE))
 })
 
 test_that("only one diagnostic", {
@@ -57,12 +50,11 @@ test_that("only one diagnostic", {
                                   cdmName = "Eunomia Synpuf",
                                   cdmSchema   = "main",
                                   writeSchema = "main")
-  cdm <- CodelistGenerator::buildAchillesTables(cdm)
 
   cdm$new_cohort <- CohortConstructor::conceptCohort(cdm, conceptSet = list("concept" = 40481087L), name = "new_cohort")
 
   # examples with single diagnostics ----
-  result <- databaseDiagnostics(cdm)
+  result <- databaseDiagnostics(cdm$new_cohort)
   expect_no_error(shinyDiagnostics(result, directory = tempdir()))
 
   result <- codelistDiagnostics(cdm$new_cohort)

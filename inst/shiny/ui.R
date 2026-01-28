@@ -56,6 +56,59 @@ ui <- fluidPage(
           gt::gt_output("summarise_omop_snapshot_gt") |> withSpinner()
         )
       ),
+      ## person -----
+      bslib::nav_panel(
+        title = "Person",
+        bslib::accordion(
+          bslib::accordion_panel(
+            title = "Shared inputs",
+            tags$div(
+              style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
+              tags$label("Select Database(s):"),
+              tags$div(
+                style = "width: 225px;",
+                tags$div(
+                  style = "margin-top: 15px;",
+                  shinyWidgets::pickerInput(
+                    inputId = "summarise_person_cdm_name",
+                    label = NULL,
+                    selected = selected$shared_cdm_name,
+                    choices = choices$shared_cdm_name,
+                    multiple = TRUE,
+                    options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                                   `deselect-all-text` = "None", `select-all-text` = "All"),
+                    width = "100%"
+                  )
+                )
+              ),
+              tags$div(
+                style = "width: 225px;",
+                actionBttn("updatePerson", "Update",
+                           style = "simple"),
+                width = "100%"
+              )
+            )
+          )),
+        icon = shiny::icon("eye"),
+        bslib::navset_card_tab(
+        bslib::nav_panel(
+          title = "Table person",
+          bslib::card(
+            full_screen = TRUE,
+            bslib::card_header(
+              shiny::downloadButton(outputId = "summarise_person_gt_download", label = ""),
+              class = "text-end"
+            ),
+            gt::gt_output("summarise_person_gt") |> withSpinner()
+          )
+        ),
+        bslib::nav_panel(
+          title = "Date of birth",
+          plotOutput("dobPlot")
+        )
+      )
+      ),
+
       ## observation periods -----
       bslib::nav_panel(
         title = "Observation periods",
@@ -90,6 +143,7 @@ ui <- fluidPage(
             )
           )),
         icon = shiny::icon("eye"),
+        bslib::navset_card_tab(
         bslib::nav_panel(
           title = "Table observation period",
           bslib::card(
@@ -100,8 +154,114 @@ ui <- fluidPage(
             ),
             gt::gt_output("summarise_observation_period_gt") |> withSpinner()
           )
+        ),
+        bslib::nav_panel(
+          title = "Observation periods",
+          plotOutput("obsPlot")
         )
       )
+      ),
+      ## clinical_records_start ----
+      bslib::nav_panel(
+        title = "Clinical Records",
+        bslib::accordion(
+          bslib::accordion_panel(
+            title = "Shared inputs",
+            tags$div(
+              style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
+              tags$label("Select Database(s):"),
+              tags$div(
+                style = "width: 225px;",
+                tags$div(
+                  style = "margin-top: 15px;",
+                  shinyWidgets::pickerInput(
+                    inputId = "summarise_clinical_records_cdm_name",
+                    label = NULL,
+                    selected = selected$shared_cdm_name,
+                    choices = choices$shared_cdm_name,
+                    multiple = TRUE,
+                    options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                                   `deselect-all-text` = "None", `select-all-text` = "All"),
+                    width = "100%"
+                  )
+                )
+              ),
+              tags$div(
+                style = "width: 225px;",
+                actionBttn("updateClinicalRecords", "Update",
+                           style = "simple"),
+                width = "100%"
+              )
+            )
+          )),
+        icon = shiny::icon("circle-user"),
+        bslib::layout_sidebar(
+          sidebar = bslib::sidebar(width = 400, open = "closed",
+                                   bslib::accordion(
+                                     bslib::accordion_panel(
+                                       title = "Settings",
+                                       shinyWidgets::pickerInput(
+                                         inputId = "summarise_clinical_records_omop_table",
+                                         label = "Table",
+                                         choices = NULL,
+                                         selected = NULL,
+                                         multiple = TRUE,
+                                         options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                       ),
+                                     )
+                                   )
+          ),
+        bslib::navset_card_tab(
+        bslib::nav_panel(
+          title = "Table Clinical Records",
+          bslib::card(
+            full_screen = TRUE,
+            bslib::card_header(
+              shiny::downloadButton(outputId = "summarise_clinical_records_gt_download", label = ""),
+              class = "text-end"
+            ),
+            gt::gt_output("summarise_clinical_records_gt") |> withSpinner()
+          )
+        ),
+      bslib::nav_panel(
+        title = "Trends",
+        bslib::layout_sidebar(
+          sidebar = bslib::sidebar(width = 400, open = "closed",
+                                   shinyWidgets::pickerInput(
+                                     inputId = "clinical_records_plot_facet",
+                                     label = "Facet",
+                                     selected = "cdm_name",
+                                     multiple = TRUE,
+                                     choices = c("cdm_name",
+                                                 "omop_table"),
+                                     options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                   ),
+                                   shiny::checkboxInput(
+                                     inputId = "clinical_records_plot_facet_free",
+                                     label = "Free scales",
+                                     value = c(FALSE)
+                                   ),
+                                   shinyWidgets::pickerInput(
+                                     inputId = "clinical_records_plot_colour",
+                                     label = "Colour",
+                                     selected = "omop_table",
+                                     multiple = TRUE,
+                                     choices = c("cdm_name",
+                                                 "omop_table"),
+                                     options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                   ),
+                                   position = "right"
+                                   ),
+        bslib::card(
+          full_screen = TRUE,
+        plotOutput("clinicalTrends")
+      )
+        )
+      )
+        )
+      )
+    )
+      ## clinical_records_end ----
     ),
     # databaseDiagnostics_end ----
     # codelistDiagnostics_start -----
@@ -177,29 +337,7 @@ ui <- fluidPage(
                                                       value = TRUE,
                                                       label = "Interactive",
                                                       status = "primary"),
-                                       sortable::bucket_list(
-                                         header = NULL,
-                                         sortable::add_rank_list(
-                                           text = "none",
-                                           labels = c("codelist_name"),
-                                           input_id = "achilles_code_use_none"
-                                         ),
-                                         sortable::add_rank_list(
-                                           text = "header",
-                                           labels = c("cdm_name", "estimate_name"),
-                                           input_id = "achilles_code_use_header"
-                                         ),
-                                         sortable::add_rank_list(
-                                           text = "groupColumn",
-                                           labels = character(),
-                                           input_id = "achilles_code_use_groupColumn"
-                                         ),
-                                         sortable::add_rank_list(
-                                           text = "hide",
-                                           labels = character(),
-                                           input_id = "achilles_code_use_hide"
-                                         )
-                                       )
+                                       uiOutput("achilles_sortable")
                                      )
                                    )
           ),
@@ -361,29 +499,8 @@ ui <- fluidPage(
                                                       value = TRUE,
                                                       label = "Interactive",
                                                       status = "primary"),
-                                       sortable::bucket_list(
-                                         header = NULL,
-                                         sortable::add_rank_list(
-                                           text = "none",
-                                           labels = c("variable_name", "cohort_name", "variable_level"),
-                                           input_id = "orphan_codes_gt_none"
-                                         ),
-                                         sortable::add_rank_list(
-                                           text = "header",
-                                           labels = c("cdm_name", "estimate_name"),
-                                           input_id = "orphan_codes_gt_header"
-                                         ),
-                                         sortable::add_rank_list(
-                                           text = "groupColumn",
-                                           labels = character(),
-                                           input_id = "orphan_codes_gt_groupColumn"
-                                         ),
-                                         sortable::add_rank_list(
-                                           text = "hide",
-                                           labels = character(),
-                                           input_id = "orphan_codes_gt_hide"
-                                         )
-                                       )
+                                       uiOutput("orphan_sortable")
+
                                      )
                                    )
           ),
@@ -483,30 +600,7 @@ ui <- fluidPage(
                                                       value = TRUE,
                                                       label = "Interactive",
                                                       status = "primary"),
-                                       sortable::bucket_list(
-                                         header = NULL,
-                                         sortable::add_rank_list(
-                                           text = "none",
-                                           labels = c("cohort_name", "codelist_name", "source_concept_name", "source_concept_id", "variable_name", "variable_level"),
-                                           input_id = "cohort_code_use_gt_none"
-                                         ),
-                                         sortable::add_rank_list(
-                                           text = "header",
-                                           labels = c("cdm_name", "estimate_name"),
-                                           input_id = "cohort_code_use_gt_header"
-                                         ),
-                                         sortable::add_rank_list(
-                                           text = "groupColumn",
-                                           labels =  character(),
-                                           input_id = "cohort_code_use_gt_groupColumn"
-                                         ),
-                                         sortable::add_rank_list(
-                                           text = "hide",
-                                           labels = c("diagnostic", "phenotyper_version",
-                                                      "domain_id", "timing"),
-                                           input_id = "cohort_code_use_gt_hide"
-                                         )
-                                       )
+                                       uiOutput("cohort_code_use_sortable")
                                      )
                                    )
           ),
@@ -538,7 +632,7 @@ ui <- fluidPage(
                 tags$div(
                   style = "margin-top: 15px;",
                   shinyWidgets::pickerInput(
-                    inputId = "measurement_timings_cdm_name",
+                    inputId = "measurement_summary_cdm_name",
                     label = NULL,
                     selected = selected$shared_cdm_name,
                     choices = choices$shared_cdm_name,
@@ -555,7 +649,7 @@ ui <- fluidPage(
                 tags$div(
                   style = "margin-top: 15px;",
                   shinyWidgets::pickerInput(
-                    inputId = "measurement_timings_cohort_name",
+                    inputId = "measurement_summary_cohort_name",
                     label = NULL,
                     selected = selected$shared_cohort_name,
                     choices = choices$shared_cohort_name,
@@ -576,6 +670,104 @@ ui <- fluidPage(
           )),
         icon = shiny::icon("weight-scale"),
         bslib::navset_card_tab(
+        bslib::nav_panel(
+          title = "Table Summary",
+          bslib::card(
+            full_screen = TRUE,
+            bslib::card_header(
+              shiny::downloadButton(outputId = "measurement_summary_gt_download", label = ""),
+              class = "text-end"
+            ),
+            bslib::layout_sidebar(
+              sidebar = bslib::sidebar(width = 400, open = "closed",
+                                       uiOutput("measurement_summary_sortable"),
+                                       position = "right"
+              ),
+              gt::gt_output("measurement_summary_tbl") |> withSpinner()
+            )
+          )
+        ),
+        bslib::nav_panel(
+          title = "Plot summary",
+          bslib::card(
+            full_screen = TRUE,
+            bslib::card_header(
+              bslib::popover(
+                shiny::icon("download"),
+                shiny::numericInput(
+                  inputId = "plot_measurement_summary_download_width",
+                  label = "Width",
+                  value = 15
+                ),
+                shiny::numericInput(
+                  inputId = "plot_measurement_summary_download_height",
+                  label = "Height",
+                  value = 10
+                ),
+                shinyWidgets::pickerInput(
+                  inputId = "plot_measurement_summary_download_units",
+                  label = "Units",
+                  selected = "cm",
+                  choices = c("px", "cm", "inch"),
+                  multiple = FALSE
+                ),
+                shiny::numericInput(
+                  inputId = "plot_measurement_summary_download_dpi",
+                  label = "dpi",
+                  value = 300
+                ),
+                shiny::downloadButton(outputId = "plot_measurement_summary_download", label = "Download")
+              ),
+              class = "text-end"
+            ),
+            bslib::layout_sidebar(
+              sidebar = bslib::sidebar(width = 400, open = "closed",
+                                       shinyWidgets::pickerInput(
+                                         inputId = "measurement_summary_y",
+                                         label = "Vertical axis",
+                                         selected = c("time"),
+                                         multiple = FALSE,
+                                         choices = c("time", "measurements_per_subject"),
+                                         options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                       ),
+                                       shinyWidgets::pickerInput(
+                                         inputId = "measurement_summary_time_scale",
+                                         label = "Time scale",
+                                         selected = c("days"),
+                                         multiple = FALSE,
+                                         choices = c("days", "years"),
+                                         options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                       ),
+                                       shinyWidgets::pickerInput(
+                                         inputId = "measurement_summary_plottype",
+                                         label = "Plot type",
+                                         selected = "boxplot",
+                                         multiple = FALSE,
+                                         choices = c("boxplot", "densityplot"),
+                                         options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                       ),
+                                       shinyWidgets::pickerInput(
+                                         inputId = "measurement_summary_colour",
+                                         label = "Colour",
+                                         selected = c("codelist_name"),
+                                         multiple = TRUE,
+                                         choices = c("cdm_name", "codelist_name", "cohort_name"),
+                                         options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                       ),
+                                       shinyWidgets::pickerInput(
+                                         inputId = "measurement_summary_facet",
+                                         label = "Facet",
+                                         selected = c("cdm_name"),
+                                         multiple = TRUE,
+                                         choices = c("cdm_name", "codelist_name", "cohort_name"),
+                                         options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                       ),
+                                       position = "right"
+              ),
+              shiny::plotOutput("plot_measurement_summary")
+            )
+          )
+        ),
           bslib::nav_panel(
             title = "Table Values (Concepts)",
             bslib::card(
@@ -586,29 +778,7 @@ ui <- fluidPage(
               ),
               bslib::layout_sidebar(
                 sidebar = bslib::sidebar(width = 400, open = "closed",
-                                         sortable::bucket_list(
-                                           header = "Table formatting",
-                                           sortable::add_rank_list(
-                                             text = "none",
-                                             labels = c("cohort_name", "variable_level",  "estimate_name"),
-                                             input_id = "measurement_value_as_concept_gt_none"
-                                           ),
-                                           sortable::add_rank_list(
-                                             text = "header",
-                                             labels = c("cdm_name"),
-                                             input_id = "measurement_value_as_concepts_gt_header"
-                                           ),
-                                           sortable::add_rank_list(
-                                             text = "groupColumn",
-                                             labels =  c("codelist_name"),
-                                             input_id = "measurement_value_as_concept_gt_groupColumn"
-                                           ),
-                                           sortable::add_rank_list(
-                                             text = "hide",
-                                             labels =  c("variable_name"),
-                                             input_id = "measurement_value_as_concept_gt_hide"
-                                           )
-                                         ),
+                                         uiOutput("measurement_value_as_concept_sortable"),
                                          position = "right"
                 ),
                 gt::gt_output("measurement_value_as_concept_tbl") |> withSpinner()
@@ -693,37 +863,15 @@ ui <- fluidPage(
             bslib::card(
               full_screen = TRUE,
               bslib::card_header(
-                shiny::downloadButton(outputId = "measurement_value_as_numeric_gt_download", label = ""),
+                shiny::downloadButton(outputId = "measurement_value_as_number_gt_download", label = ""),
                 class = "text-end"
               ),
               bslib::layout_sidebar(
                 sidebar = bslib::sidebar(width = 400, open = "closed",
-                                         sortable::bucket_list(
-                                           header = "Table formatting",
-                                           sortable::add_rank_list(
-                                             text = "none",
-                                             labels = c("cohort_name", "estimate_name"),
-                                             input_id = "measurement_value_as_numeric_gt_none"
-                                           ),
-                                           sortable::add_rank_list(
-                                             text = "header",
-                                             labels = c("cdm_name"),
-                                             input_id = "measurement_value_as_numeric_gt_header"
-                                           ),
-                                           sortable::add_rank_list(
-                                             text = "groupColumn",
-                                             labels =  c("codelist_name"),
-                                             input_id = "measurement_value_as_numeric_gt_groupColumn"
-                                           ),
-                                           sortable::add_rank_list(
-                                             text = "hide",
-                                             labels =  c("variable_name", "variable_level"),
-                                             input_id = "measurement_value_as_numeric_gt_hide"
-                                           )
-                                         ),
+                                         uiOutput("measurement_value_as_number_sortable"),
                                          position = "right"
                 ),
-                gt::gt_output("measurement_value_as_numeric_tbl") |> withSpinner()
+                gt::gt_output("measurement_value_as_number_tbl") |> withSpinner()
               )
             )
           ),
@@ -735,35 +883,35 @@ ui <- fluidPage(
                 bslib::popover(
                   shiny::icon("download"),
                   shiny::numericInput(
-                    inputId = "plot_measurement_value_as_numeric_download_width",
+                    inputId = "plot_measurement_value_as_number_download_width",
                     label = "Width",
                     value = 15
                   ),
                   shiny::numericInput(
-                    inputId = "plot_measurement_value_as_numeric_download_height",
+                    inputId = "plot_measurement_value_as_number_download_height",
                     label = "Height",
                     value = 10
                   ),
                   shinyWidgets::pickerInput(
-                    inputId = "plot_measurement_value_as_numeric_download_units",
+                    inputId = "plot_measurement_value_as_number_download_units",
                     label = "Units",
                     selected = "cm",
                     choices = c("px", "cm", "inch"),
                     multiple = FALSE
                   ),
                   shiny::numericInput(
-                    inputId = "plot_measurement_value_as_numeric_download_dpi",
+                    inputId = "plot_measurement_value_as_number_download_dpi",
                     label = "dpi",
                     value = 300
                   ),
-                  shiny::downloadButton(outputId = "plot_measurement_value_as_numeric_download", label = "Download")
+                  shiny::downloadButton(outputId = "plot_measurement_value_as_number_download", label = "Download")
                 ),
                 class = "text-end"
               ),
               bslib::layout_sidebar(
                 sidebar = bslib::sidebar(width = 400, open = "closed",
                                          shinyWidgets::pickerInput(
-                                           inputId = "measurement_value_as_numeric_x",
+                                           inputId = "measurement_value_as_number_x",
                                            label = "Horizontal axis",
                                            selected = c("unit_concept_name"),
                                            multiple = FALSE,
@@ -771,7 +919,7 @@ ui <- fluidPage(
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                          ),
                                          shinyWidgets::pickerInput(
-                                           inputId = "measurement_value_as_numeric_plottype",
+                                           inputId = "measurement_value_as_number_plottype",
                                            label = "Plot type",
                                            selected = "boxplot",
                                            multiple = FALSE,
@@ -779,7 +927,7 @@ ui <- fluidPage(
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                          ),
                                          shinyWidgets::pickerInput(
-                                           inputId = "measurement_value_as_numeric_colour",
+                                           inputId = "measurement_value_as_number_colour",
                                            label = "Colour",
                                            selected = c("cdm_name"),
                                            multiple = TRUE,
@@ -787,7 +935,7 @@ ui <- fluidPage(
                                            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                          ),
                                          shinyWidgets::pickerInput(
-                                           inputId = "measurement_value_as_numeric_facet",
+                                           inputId = "measurement_value_as_number_facet",
                                            label = "Facet",
                                            selected = c("codelist_name", "concept_name"),
                                            multiple = TRUE,
@@ -796,127 +944,7 @@ ui <- fluidPage(
                                          ),
                                          position = "right"
                 ),
-                shiny::plotOutput("plot_measurement_value_as_numeric")
-              )
-            )
-          ),
-          bslib::nav_panel(
-            title = "Table Timings",
-            bslib::card(
-              full_screen = TRUE,
-              bslib::card_header(
-                shiny::downloadButton(outputId = "measurement_timings_gt_download", label = ""),
-                class = "text-end"
-              ),
-              bslib::layout_sidebar(
-                sidebar = bslib::sidebar(width = 400, open = "closed",
-                                         sortable::bucket_list(
-                                           header = "Table formatting",
-                                           sortable::add_rank_list(
-                                             text = "none",
-                                             labels = c("cohort_name", "variable_name", "estimate_name"),
-                                             input_id = "measurement_timings_gt_none"
-                                           ),
-                                           sortable::add_rank_list(
-                                             text = "header",
-                                             labels = c("cdm_name"),
-                                             input_id = "measurement_timings_gt_header"
-                                           ),
-                                           sortable::add_rank_list(
-                                             text = "groupColumn",
-                                             labels =  c("codelist_name"),
-                                             input_id = "measurement_timings_gt_groupColumn"
-                                           ),
-                                           sortable::add_rank_list(
-                                             text = "hide",
-                                             labels =  c("variable_level"),
-                                             input_id = "measurement_timings_gt_hide"
-                                           )
-                                         ),
-                                         position = "right"
-                ),
-                gt::gt_output("measurement_timings_tbl") |> withSpinner()
-              )
-            )
-          ),
-          bslib::nav_panel(
-            title = "Plot timings",
-            bslib::card(
-              full_screen = TRUE,
-              bslib::card_header(
-                bslib::popover(
-                  shiny::icon("download"),
-                  shiny::numericInput(
-                    inputId = "plot_measurement_timings_download_width",
-                    label = "Width",
-                    value = 15
-                  ),
-                  shiny::numericInput(
-                    inputId = "plot_measurement_timings_download_height",
-                    label = "Height",
-                    value = 10
-                  ),
-                  shinyWidgets::pickerInput(
-                    inputId = "plot_measurement_timings_download_units",
-                    label = "Units",
-                    selected = "cm",
-                    choices = c("px", "cm", "inch"),
-                    multiple = FALSE
-                  ),
-                  shiny::numericInput(
-                    inputId = "plot_measurement_timings_download_dpi",
-                    label = "dpi",
-                    value = 300
-                  ),
-                  shiny::downloadButton(outputId = "plot_measurement_timings_download", label = "Download")
-                ),
-                class = "text-end"
-              ),
-              bslib::layout_sidebar(
-                sidebar = bslib::sidebar(width = 400, open = "closed",
-                                         shinyWidgets::pickerInput(
-                                           inputId = "measurement_timings_y",
-                                           label = "Vertical axis",
-                                           selected = c("time"),
-                                           multiple = FALSE,
-                                           choices = c("time", "measurements_per_subject"),
-                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                                         ),
-                                         shinyWidgets::pickerInput(
-                                           inputId = "measurement_timings_time_scale",
-                                           label = "Time scale",
-                                           selected = c("days"),
-                                           multiple = FALSE,
-                                           choices = c("days", "years"),
-                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                                         ),
-                                         shinyWidgets::pickerInput(
-                                           inputId = "measurement_timings_plottype",
-                                           label = "Plot type",
-                                           selected = "boxplot",
-                                           multiple = FALSE,
-                                           choices = c("boxplot", "densityplot"),
-                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                                         ),
-                                         shinyWidgets::pickerInput(
-                                           inputId = "measurement_timings_colour",
-                                           label = "Colour",
-                                           selected = c("codelist_name"),
-                                           multiple = TRUE,
-                                           choices = c("cdm_name", "codelist_name", "cohort_name"),
-                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                                         ),
-                                         shinyWidgets::pickerInput(
-                                           inputId = "measurement_timings_facet",
-                                           label = "Facet",
-                                           selected = c("cdm_name"),
-                                           multiple = TRUE,
-                                           choices = c("cdm_name", "codelist_name", "cohort_name"),
-                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                                         ),
-                                         position = "right"
-                ),
-                shiny::plotOutput("plot_measurement_timings")
+                shiny::plotOutput("plot_measurement_value_as_number")
               )
             )
           )
@@ -1139,29 +1167,7 @@ ui <- fluidPage(
                 ),
                 bslib::layout_sidebar(
                   sidebar = bslib::sidebar(width = 400, open = "closed",
-                                           sortable::bucket_list(
-                                             header = "Table formatting",
-                                             sortable::add_rank_list(
-                                               text = "none",
-                                               labels = c("variable_name", "variable_level", "estimate_name"),
-                                               input_id = "summarise_characteristics_gt_none"
-                                             ),
-                                             sortable::add_rank_list(
-                                               text = "header",
-                                               labels = c("cdm_name", "cohort_name"),
-                                               input_id = "summarise_characteristics_gt_header"
-                                             ),
-                                             sortable::add_rank_list(
-                                               text = "groupColumn",
-                                               labels = NULL,
-                                               input_id = "summarise_characteristics_gt_groupColumn"
-                                             ),
-                                             sortable::add_rank_list(
-                                               text = "hide",
-                                               labels = c("diagnostic", "phenotyper_version", "matchedSample"),
-                                               input_id = "summarise_characteristics_gt_hide"
-                                             )
-                                           ),
+                                           uiOutput("summarise_characteristics_sortable"),
                                            position = "right"
                   ),
                   htmltools::tags$p(style = "font-size: 0.75em;", msgCohortSample),
@@ -1662,29 +1668,7 @@ ui <- fluidPage(
                                              label = "uniqueCombinations",
                                              value = c(TRUE)
                                            ),
-                                           sortable::bucket_list(
-                                             header = "Table formatting",
-                                             sortable::add_rank_list(
-                                               text = "none",
-                                               labels = c("cohort_name_reference", "cohort_name_comparator", "estimate_name"),
-                                               input_id = "summarise_cohort_overlap_gt_none"
-                                             ),
-                                             sortable::add_rank_list(
-                                               text = "header",
-                                               labels = "variable_name",
-                                               input_id = "summarise_cohort_overlap_gt_header"
-                                             ),
-                                             sortable::add_rank_list(
-                                               text = "groupColumn",
-                                               labels = "cdm_name",
-                                               input_id = "summarise_cohort_overlap_gt_groupColumn"
-                                             ),
-                                             sortable::add_rank_list(
-                                               text = "hide",
-                                               labels = c("variable_level", "diagnostic", "phenotyper_version", "matchedSample"),
-                                               input_id = "summarise_cohort_overlap_gt_hide"
-                                             )
-                                           ),
+                                           uiOutput("summarise_cohort_overlap_sortable"),
                                            position = "right"
                   ),
                   gt::gt_output("summarise_cohort_overlap_gt") |> withSpinner()
@@ -1784,29 +1768,7 @@ ui <- fluidPage(
                                              label = "uniqueCombinations",
                                              value = c(TRUE)
                                            ),
-                                           sortable::bucket_list(
-                                             header = "Table formatting",
-                                             sortable::add_rank_list(
-                                               text = "none",
-                                               labels = c("cohort_name_reference", "cohort_name_comparator", "estimate_name"),
-                                               input_id = "summarise_cohort_timing_gt_none"
-                                             ),
-                                             sortable::add_rank_list(
-                                               text = "header",
-                                               labels = "variable_name",
-                                               input_id = "summarise_cohort_timing_gt_header"
-                                             ),
-                                             sortable::add_rank_list(
-                                               text = "groupColumn",
-                                               labels = "cdm_name",
-                                               input_id = "summarise_cohort_timing_gt_groupColumn"
-                                             ),
-                                             sortable::add_rank_list(
-                                               text = "hide",
-                                               labels = "variable_level",
-                                               input_id = "summarise_cohort_timing_gt_hide"
-                                             )
-                                           ),
+                                           uiOutput("summarise_cohort_timing_sortable"),
                                            position = "right"
                   ),
                   gt::gt_output("summarise_cohort_timing_gt") |> withSpinner()
@@ -1879,7 +1841,7 @@ ui <- fluidPage(
                                            ),
                                            position = "right"
                   ),
-                  plotly::plotlyOutput("summarise_cohort_timing_plot")
+                  uiOutput("summarise_cohort_timing_plot")
                 )
               )
             )
@@ -1976,29 +1938,7 @@ ui <- fluidPage(
                 ),
                 bslib::layout_sidebar(
                   sidebar = bslib::sidebar(width = 400, open = "closed",
-                                           sortable::bucket_list(
-                                             header = "Table formatting",
-                                             sortable::add_rank_list(
-                                               text = "none",
-                                               labels = c("cdm_name", "target_cohort"),
-                                               input_id = "survival_table_none"
-                                             ),
-                                             sortable::add_rank_list(
-                                               text = "header",
-                                               labels = "estimate_name",
-                                               input_id = "survival_table_header"
-                                             ),
-                                             sortable::add_rank_list(
-                                               text = "groupColumn",
-                                               labels = character(),
-                                               input_id = "survival_table_groupColumn"
-                                             ),
-                                             sortable::add_rank_list(
-                                               text = "hide",
-                                               labels = character(),
-                                               input_id = "survival_table_hide"
-                                             )
-                                           ),
+                                           uiOutput("summarise_cohort_survival_sortable"),
                                            position = "right"
                   ),
                   htmltools::tags$p(style = "font-size: 0.75em;", msgCohortSample),
@@ -2511,6 +2451,55 @@ ui <- fluidPage(
     ),
     # populationDiagnostics_end ----
     nav_spacer(),
+
+    # log ----
+    tags$head(
+      tags$style(HTML("
+    /* 1. Expand the main container */
+    .log-popover-wide {
+      /* Uses 90% of screen width, but caps at 1200px on ultra-wide monitors */
+      width: 90vw !important;
+      max-width: 1200px !important;
+    }
+
+    /* 2. Style the internal body */
+    .log-popover-wide .popover-body {
+      /* Use 70% of the screen height */
+      height: 70vh;
+      max-height: 1000px;
+
+      overflow-y: auto;
+      overflow-x: auto;
+      padding: 0;
+    }
+
+    /* 3. Ensure the table fills the new width */
+    .log-popover-wide table {
+      width: 100% !important;
+      margin-bottom: 0 !important;
+    }
+
+    /* 4. Sticky header so you don't lose context */
+    .log-popover-wide table thead {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background-color: #ffffff;
+      border-bottom: 2px solid #dee2e6;
+    }
+"))
+    ),
+    bslib::nav_item(
+      bslib::popover(
+        icon("clipboard-list"),
+        gt::gt_output("summarise_log_file_gt"),
+        placement = "bottom",
+        options = list(
+          customClass = "log-popover-wide",
+          container = "body"
+        )
+      )
+    ),
     bslib::nav_item(
       bslib::popover(
         shiny::icon("circle-info"),

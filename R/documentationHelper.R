@@ -24,9 +24,20 @@ NULL
 #' @keywords internal
 NULL
 
+#' Helper for consistent documentation of `measurementSample`.
+#'
+#' @param measurementSample The number of people to take a random sample for
+#' measurement diagnostics. If `measurementSample = NULL`, no sampling will be
+#' performed. If `measurementSample = 0` measurement diagnostics will not be
+#' run.
+#'
+#' @name measurementSampleDoc
+#' @keywords internal
+NULL
+
 #' Helper for consistent documentation of `cohortSample`.
 #'
-#' @param cohortSample The number of people to take a random sample for cohortDiagnostics. If `cohortSample = NULL`, no sampling will be performed,
+#' @param cohortSample The number of people to take a random sample for cohortDiagnostics. If `cohortSample = NULL`, no sampling will be performed.
 #'
 #' @name cohortSampleDoc
 #' @keywords internal

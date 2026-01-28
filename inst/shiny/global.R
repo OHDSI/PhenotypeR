@@ -1,13 +1,12 @@
 # ensure minimum versions
 rlang::check_installed("omopgenerics", version = "1.2.0")
 rlang::check_installed("visOmopResults", version = "1.0.0")
-rlang::check_installed("CodelistGenerator", version = "3.4.0")
-rlang::check_installed("CohortCharacteristics", version = "1.0.0")
+rlang::check_installed("CodelistGenerator", version = "4.0.1")
+rlang::check_installed("CohortCharacteristics", version = "1.1.0")
 rlang::check_installed("IncidencePrevalence", version = "1.2.0")
 rlang::check_installed("OmopSketch", version = "1.0.0")
-rlang::check_installed("CohortSurvival", version = "1.0.2")
+rlang::check_installed("CohortSurvival", version = "1.1.0")
 rlang::check_installed("shiny", version = "1.11.1")
-rlang::check_installed("reactablefmtr")
 
 library(bslib)
 library(omopgenerics)
@@ -31,6 +30,9 @@ library(plotly)
 library(tidyr)
 library(reactable)
 library(stringr)
+library(qs2)
+library(lubridate)
+library(reactablefmtr)
 
 source(here::here("scripts", "functions.R"))
 
@@ -56,7 +58,7 @@ if(!file.exists(here::here("data", "appData.RData"))){
 }
 
 cli::cli_inform("Loading data")
-load(here::here("data", "appData.RData"))
+qs2::qs_readm(here::here("data", "appData.qs"))
 cli::cli_inform("Data loaded")
 
 plotComparedLsc <- function(lsc, cohorts, imputeMissings, colour = NULL, facet = NULL){
@@ -222,7 +224,7 @@ plotAgeDensity <- function(summarise_table, summarise_characteristics, show_inte
   return(plot)
 }
 
-getColsForTbl <- function(tbl, sortNALast = TRUE, names = c("Standard concept ID")){
+getColsForTbl <- function(tbl, sortNALast = TRUE, names = c("Standard concept ID", "Source Concept ID")){
 
   cols <- list()
   for(i in seq_along(names(tbl))){

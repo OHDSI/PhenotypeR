@@ -55,6 +55,3 @@ reference:
 - subtitle: Codelist diagnostics helper
 - contents:
   - addCodelistAttribute
-- subtitle: Mock data
-- contents:
-  - mockPhenotypeR

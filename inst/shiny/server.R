@@ -34,6 +34,281 @@ server <- function(input, output, session) {
     inputs_initialized(TRUE)
   })
 
+
+  # sortable ui elements -----
+  # have these in server to avoid race condition (if in UI)
+  output$achilles_sortable <- renderUI({
+    sortable::bucket_list(
+      header = NULL,
+      sortable::add_rank_list(
+        text = "none",
+        labels = c("codelist_name"),
+        input_id = "achilles_code_use_none"
+      ),
+      sortable::add_rank_list(
+        text = "header",
+        labels = c("cdm_name", "estimate_name"),
+        input_id = "achilles_code_use_header"
+      ),
+      sortable::add_rank_list(
+        text = "groupColumn",
+        labels = character(),
+        input_id = "achilles_code_use_groupColumn"
+      ),
+      sortable::add_rank_list(
+        text = "hide",
+        labels = character(),
+        input_id = "achilles_code_use_hide"
+      )
+    )
+  })
+  outputOptions(output, "achilles_sortable", suspendWhenHidden = FALSE)
+
+  output$orphan_sortable <- renderUI({
+    sortable::bucket_list(
+      header = NULL,
+      sortable::add_rank_list(
+        text = "none",
+        labels = c("variable_name", "cohort_name", "variable_level"),
+        input_id = "orphan_codes_gt_none"
+      ),
+      sortable::add_rank_list(
+        text = "header",
+        labels = c("cdm_name", "estimate_name"),
+        input_id = "orphan_codes_gt_header"
+      ),
+      sortable::add_rank_list(
+        text = "groupColumn",
+        labels = character(),
+        input_id = "orphan_codes_gt_groupColumn"
+      ),
+      sortable::add_rank_list(
+        text = "hide",
+        labels = character(),
+        input_id = "orphan_codes_gt_hide"
+      )
+    )
+  })
+  outputOptions(output, "orphan_sortable", suspendWhenHidden = FALSE)
+
+  output$cohort_code_use_sortable <- renderUI({
+    sortable::bucket_list(
+      header = NULL,
+      sortable::add_rank_list(
+        text = "none",
+        labels = c("cohort_name", "codelist_name", "source_concept_name", "source_concept_id", "variable_name", "variable_level"),
+        input_id = "cohort_code_use_gt_none"
+      ),
+      sortable::add_rank_list(
+        text = "header",
+        labels = c("cdm_name", "estimate_name"),
+        input_id = "cohort_code_use_gt_header"
+      ),
+      sortable::add_rank_list(
+        text = "groupColumn",
+        labels =  character(),
+        input_id = "cohort_code_use_gt_groupColumn"
+      ),
+      sortable::add_rank_list(
+        text = "hide",
+        labels = c("diagnostic", "phenotyper_version",
+                   "domain_id", "timing"),
+        input_id = "cohort_code_use_gt_hide"
+      )
+    )
+  })
+  outputOptions(output, "cohort_code_use_sortable", suspendWhenHidden = FALSE)
+
+  output$measurement_value_as_concept_sortable <- renderUI({
+    sortable::bucket_list(
+      header = "Table formatting",
+      sortable::add_rank_list(
+        text = "none",
+        labels = c("variable_level",  "estimate_name"),
+        input_id = "measurement_value_as_concept_gt_none"
+      ),
+      sortable::add_rank_list(
+        text = "header",
+        labels = c("cdm_name"),
+        input_id = "measurement_value_as_concepts_gt_header"
+      ),
+      sortable::add_rank_list(
+        text = "groupColumn",
+        labels =  c("cohort_name", "codelist_name"),
+        input_id = "measurement_value_as_concept_gt_groupColumn"
+      ),
+      sortable::add_rank_list(
+        text = "hide",
+        labels =  c("variable_name"),
+        input_id = "measurement_value_as_concept_gt_hide"
+      )
+    )
+  })
+  outputOptions(output, "measurement_value_as_concept_sortable", suspendWhenHidden = FALSE)
+
+  output$measurement_value_as_number_sortable <- renderUI({
+    sortable::bucket_list(
+      header = "Table formatting",
+      sortable::add_rank_list(
+        text = "none",
+        labels = c("estimate_name"),
+        input_id = "measurement_value_as_number_gt_none"
+      ),
+      sortable::add_rank_list(
+        text = "header",
+        labels = c("cdm_name"),
+        input_id = "measurement_value_as_number_gt_header"
+      ),
+      sortable::add_rank_list(
+        text = "groupColumn",
+        labels =  c("cohort_name", "codelist_name"),
+        input_id = "measurement_value_as_number_gt_groupColumn"
+      ),
+      sortable::add_rank_list(
+        text = "hide",
+        labels =  c("variable_name", "variable_level"),
+        input_id = "measurement_value_as_number_gt_hide"
+      )
+    )
+  })
+  outputOptions(output, "measurement_value_as_number_sortable", suspendWhenHidden = FALSE)
+
+  output$measurement_summary_sortable <- renderUI({
+    sortable::bucket_list(
+      header = "Table formatting",
+      sortable::add_rank_list(
+        text = "none",
+        labels = c("variable_name", "estimate_name"),
+        input_id = "measurement_summary_gt_none"
+      ),
+      sortable::add_rank_list(
+        text = "header",
+        labels = c("cdm_name"),
+        input_id = "measurement_summary_gt_header"
+      ),
+      sortable::add_rank_list(
+        text = "groupColumn",
+        labels =  c("cohort_name", "codelist_name"),
+        input_id = "measurement_summary_gt_groupColumn"
+      ),
+      sortable::add_rank_list(
+        text = "hide",
+        labels =  c("variable_level"),
+        input_id = "measurement_summary_gt_hide"
+      )
+    )
+  })
+  outputOptions(output, "measurement_summary_sortable", suspendWhenHidden = FALSE)
+
+  output$summarise_characteristics_sortable <- renderUI({
+    sortable::bucket_list(
+      header = "Table formatting",
+      sortable::add_rank_list(
+        text = "none",
+        labels = c("variable_name", "variable_level", "estimate_name"),
+        input_id = "summarise_characteristics_gt_none"
+      ),
+      sortable::add_rank_list(
+        text = "header",
+        labels = c("cdm_name", "cohort_name"),
+        input_id = "summarise_characteristics_gt_header"
+      ),
+      sortable::add_rank_list(
+        text = "groupColumn",
+        labels = NULL,
+        input_id = "summarise_characteristics_gt_groupColumn"
+      ),
+      sortable::add_rank_list(
+        text = "hide",
+        labels = c("diagnostic", "phenotyper_version", "matchedSample"),
+        input_id = "summarise_characteristics_gt_hide"
+      )
+    )
+  })
+  outputOptions(output, "summarise_characteristics_sortable", suspendWhenHidden = FALSE)
+
+  output$summarise_cohort_overlap_sortable <- renderUI({
+    sortable::bucket_list(
+      header = "Table formatting",
+      sortable::add_rank_list(
+        text = "none",
+        labels = c("cohort_name_reference", "cohort_name_comparator", "estimate_name"),
+        input_id = "summarise_cohort_overlap_gt_none"
+      ),
+      sortable::add_rank_list(
+        text = "header",
+        labels = "variable_name",
+        input_id = "summarise_cohort_overlap_gt_header"
+      ),
+      sortable::add_rank_list(
+        text = "groupColumn",
+        labels = "cdm_name",
+        input_id = "summarise_cohort_overlap_gt_groupColumn"
+      ),
+      sortable::add_rank_list(
+        text = "hide",
+        labels = c("variable_level", "diagnostic", "phenotyper_version", "matchedSample"),
+        input_id = "summarise_cohort_overlap_gt_hide"
+      )
+    )
+  })
+  outputOptions(output, "summarise_cohort_overlap_sortable", suspendWhenHidden = FALSE)
+
+  output$summarise_cohort_timing_sortable <- renderUI({
+    sortable::bucket_list(
+      header = "Table formatting",
+      sortable::add_rank_list(
+        text = "none",
+        labels = c("cohort_name_reference", "cohort_name_comparator", "estimate_name"),
+        input_id = "summarise_cohort_timing_gt_none"
+      ),
+      sortable::add_rank_list(
+        text = "header",
+        labels = "variable_name",
+        input_id = "summarise_cohort_timing_gt_header"
+      ),
+      sortable::add_rank_list(
+        text = "groupColumn",
+        labels = "cdm_name",
+        input_id = "summarise_cohort_timing_gt_groupColumn"
+      ),
+      sortable::add_rank_list(
+        text = "hide",
+        labels = "variable_level",
+        input_id = "summarise_cohort_timing_gt_hide"
+      )
+    )
+  })
+  outputOptions(output, "summarise_cohort_timing_sortable", suspendWhenHidden = FALSE)
+
+  output$summarise_cohort_survival_sortable<- renderUI({
+    sortable::bucket_list(
+      header = "Table formatting",
+      sortable::add_rank_list(
+        text = "none",
+        labels = c("cdm_name", "target_cohort"),
+        input_id = "survival_table_none"
+      ),
+      sortable::add_rank_list(
+        text = "header",
+        labels = "estimate_name",
+        input_id = "survival_table_header"
+      ),
+      sortable::add_rank_list(
+        text = "groupColumn",
+        labels = character(),
+        input_id = "survival_table_groupColumn"
+      ),
+      sortable::add_rank_list(
+        text = "hide",
+        labels = character(),
+        input_id = "survival_table_hide"
+      )
+    )
+  })
+  outputOptions(output, "summarise_cohort_survival_sortable", suspendWhenHidden = FALSE)
+
+
   # Define shared cdm_names values ----
   shiny::observe({
     cdm_values <- names(choices)[grepl("cdm_name", names(choices)) & names(choices) != "shared_cdm_names"]
@@ -84,7 +359,7 @@ server <- function(input, output, session) {
           updatePickerInput(session, inputId_local, selected = shared_cohort_names())
         })
       })}
-    })
+  })
 
   # download raw data -----
   output$download_raw <- shiny::downloadHandler(
@@ -142,6 +417,75 @@ server <- function(input, output, session) {
     }
   )
 
+  # summarise_person -----
+  filterPerson <- eventReactive(input$updatePerson, ({
+    if (is.null(dataFiltered$summarise_person)) {
+      validate("No person summary in results")
+    }
+
+    result <- dataFiltered$summarise_person |>
+      dplyr::filter(cdm_name %in% shared_cdm_names())
+    attr(result, "settings")  <- attr(result, "settings") |>
+      dplyr::select(!c("diagnostic", "phenotyper_version"))
+    validateFilteredResult(result)
+
+    return(result)
+  }))
+
+  ## Table summarise_person -----
+  createTablePerson <- shiny::reactive({
+    filterPerson() |>
+      OmopSketch::tablePerson() %>%
+      tab_header(
+        title = "Summary of person table",
+        subtitle = "The person table contains core information on patients captured in the OMOP CDM dataset."
+      ) %>%
+      tab_options(
+        heading.align = "left"
+      )
+  })
+  output$summarise_person_gt <- gt::render_gt({
+    createTablePerson()
+  })
+  output$summarise_person_gt_download <- shiny::downloadHandler(
+    filename = "summarise_person_gt.docx",
+    content = function(file) {
+      obj <- createTablePerson()
+      gt::gtsave(data = obj, filename = file)
+    }
+  )
+
+
+  ## Plot date of birth ----
+  filterPersonDob <- eventReactive(input$updatePerson, ({
+    if (is.null(dataFiltered$summarise_dob_density)) {
+      validate("No date of birth summary in results")
+    }
+
+    result <- dataFiltered$summarise_dob_density |>
+      dplyr::filter(cdm_name %in% shared_cdm_names())
+    validateFilteredResult(result)
+
+    return(result)
+  }))
+
+  output$dobPlot <- renderPlot({
+    filterPersonDob() |>
+      visOmopResults::scatterPlot(
+        x = "density_x",
+        y = "density_y",
+        colour = "cdm_name",
+        line = TRUE,
+        point = FALSE,
+        ribbon = FALSE,
+        ymin = NULL,
+        ymax = NULL) +
+      ggplot2::xlab("Date of Birth") +
+      ggplot2::ylab("Density") +
+      ggplot2::scale_y_continuous(labels = scales::label_number()) +
+      visOmopResults::themeVisOmop()
+  })
+
   # summarise_observation_period -----
   filterObservationPeriod <- eventReactive(input$updateObservationPeriod, ({
     if (is.null(dataFiltered$summarise_observation_period)) {
@@ -180,6 +524,116 @@ server <- function(input, output, session) {
     }
   )
 
+  ## Plot obs start end ----
+  filterObs <- eventReactive(input$updateObservationPeriod, ({
+    if (is.null(dataFiltered$summarise_obs_density)) {
+      validate("No date of observation period distributions in results")
+    }
+
+    result <- dataFiltered$summarise_obs_density |>
+      dplyr::filter(cdm_name %in% shared_cdm_names())
+    validateFilteredResult(result)
+
+    return(result)
+  }))
+
+  output$obsPlot <- renderPlot({
+
+    filterObs() |>
+      dplyr::mutate(variable_name =
+                      dplyr::if_else(variable_name == "observation_period_start_date",
+                                     "observation period start date",
+                                     "observation period end date")) |>
+      dplyr::mutate(variable_name = factor(variable_name,
+                                           levels = c("observation period start date",
+                                                      "observation period end date"))) |>
+      visOmopResults::scatterPlot(
+        x = "density_x",
+        y = "density_y",
+        group = "variable_name",
+        facet = "variable_name",
+        colour = "cdm_name",
+        line = TRUE,
+        point = FALSE,
+        ribbon = FALSE,
+        ymin = NULL,
+        ymax = NULL) +
+      ggplot2::xlab("Date") +
+      ggplot2::ylab("Density") +
+      ggplot2::scale_y_continuous(labels = scales::label_number()) +
+      ggplot2::facet_wrap(vars(variable_name),
+                          ncol = 1, scales = "free_y")
+
+  })
+
+  # summarise_clinical_records ----
+  filterClinicalRecords <- eventReactive(input$updateClinicalRecords, ({
+    if (is.null(dataFiltered$summarise_clinical_records)) {
+      validate("No clinical records summary in results")
+    }
+    result <- dataFiltered$summarise_clinical_records |>
+      dplyr::filter(cdm_name %in% shared_cdm_names(),
+                    group_level %in% input$summarise_clinical_records_omop_table)
+    attr(result, "settings")  <- attr(result, "settings") |>
+      dplyr::select(!c("diagnostic", "phenotyper_version"))
+    validateFilteredResult(result)
+
+    return(result)
+  }))
+
+  ## Table summarise_clinical_records -----
+  createClinicalRecordsTable <- shiny::reactive({
+    filterClinicalRecords() |>
+      OmopSketch::tableClinicalRecords() %>%
+      tab_header(
+        title = "Summary of Clinical Records",
+        subtitle = "Summary of the clinical tables that contain the codes from the cohort codelist."
+      ) %>%
+      tab_options(
+        heading.align = "left"
+      )
+  })
+  output$summarise_clinical_records_gt <- gt::render_gt({
+    createClinicalRecordsTable()
+  })
+  output$summarise_clinical_records_gt_download <- shiny::downloadHandler(
+    filename = "summarise_clinical_records_gt.docx",
+    content = function(file) {
+      obj <- createClinicalRecordsTable()
+      gt::gtsave(data = obj, filename = file)
+    }
+  )
+
+  ## Plot clinical record trends -----
+  filterClinicalRecordTrends <- eventReactive(input$updateClinicalRecords, ({
+    if (is.null(dataFiltered$summarise_trend)) {
+      validate("No clinical records summary in results")
+    }
+
+    result <- dataFiltered$summarise_trend |>
+      dplyr::filter(cdm_name %in% shared_cdm_names(),
+                    group_level %in% input$summarise_clinical_records_omop_table)
+    validateFilteredResult(result)
+
+    return(result)
+  }))
+
+  output$clinicalTrends <- renderPlot({
+
+  plot <- filterClinicalRecordTrends() |>
+      OmopSketch::plotTrend(style = "default",
+                          colour = input$clinical_records_plot_colour,
+                          facet = input$clinical_records_plot_facet)
+
+  if(!is.null(input$clinical_records_plot_facet) &&
+     isTRUE(input$clinical_records_plot_facet_free)){
+    plot <- plot +
+      facet_wrap(facets = input$clinical_records_plot_facet,
+                 scales = "free_y")
+  }
+
+  plot
+  })
 
   # achilles_code_use -----
   filterAchillesCodeUse <- eventReactive(input$updateAchillesCodeUse, ({
@@ -243,7 +697,6 @@ server <- function(input, output, session) {
 
   output$achilles_code_use_tbl <- shiny::renderUI({
 
-
     if(isFALSE(input$achilles_interactive)){
       tbl <- createAchillesCodeUseGT()
       return(tbl)
@@ -255,7 +708,7 @@ server <- function(input, output, session) {
       # column ordering by codelist and first column with a count
       order <- list("Codelist name"  = "asc",
                     "count" = "desc")
-      names(order)[2] <- names(tbl)[7]
+      names(order)[2] <- names(tbl)[9]
 
       # suppressed to NA
       tbl <- tbl |>
@@ -267,6 +720,7 @@ server <- function(input, output, session) {
 
       tbl <- reactable::reactable(tbl,
                                   defaultSorted = order,
+                                  groupBy = c("Codelist name"),
                                   columns = getColsForTbl(tbl),
                                   filterable = TRUE,
                                   searchable = TRUE,
@@ -377,7 +831,7 @@ server <- function(input, output, session) {
       # column ordering by codelist and first column with a count
       order <- list("Codelist name"  = "asc",
                     "count" = "desc")
-      names(order)[2] <- names(tbl)[7]
+      names(order)[2] <- names(tbl)[11]
 
       # suppressed to NA
       tbl <- tbl |>
@@ -388,6 +842,7 @@ server <- function(input, output, session) {
                                     ~ suppressWarnings(as.numeric(.))))
 
       tbl <- reactable(tbl,
+                       groupBy = c("Codelist name"),
                        columns = getColsForTbl(tbl),
                        defaultSorted = order,
                        filterable = TRUE,
@@ -424,39 +879,6 @@ server <- function(input, output, session) {
       }
     }
   )
-
-  # unmapped codes -----
-  # createOutputUnmapped <- shiny::reactive({
-  #   if (is.null(dataFiltered$unmapped_codes)) {
-  #     validate("No unmapped codes in results")
-  #   }
-  #
-  #   CodelistGenerator::tableUnmappedCodes(
-  #     dataFiltered$unmapped_codes |>
-  #       dplyr::filter(cdm_name %in% shared_cdm_names(),
-  #                     group_level %in% input$unmapped_codelist_name),
-  #     header = input$unmapped_header,
-  #     groupColumn = input$unmapped_groupColumn,
-  #     hide = input$unmapped_hide
-  #   ) %>%
-  #     tab_header(
-  #       title = "Summary of unmapped codes",
-  #       subtitle = "These codes are recorded as source concepts that are mapped to 0"
-  #     ) %>%
-  #     tab_options(
-  #       heading.align = "left"
-  #     )
-  # })
-  # output$unmapped_formatted <- gt::render_gt({
-  #   createOutputUnmapped()
-  # })
-  # output$unmapped_formatted_download <- shiny::downloadHandler(
-  #   filename = "output_gt_orphan.docx",
-  #   content = function(file) {
-  #     obj <- createOutputUnmapped()
-  #     gt::gtsave(data = obj, filename = file)
-  #   }
-  # )
 
   # cohort_code_use -----
   filterCohortCodeUse <- eventReactive(input$updateCohortCodeUse, ({
@@ -536,16 +958,24 @@ server <- function(input, output, session) {
         dplyr::mutate(dplyr::across(c(ends_with("count")),
                                     ~ suppressWarnings(as.numeric(.))))
 
+      tbl <- tbl |>
+        dplyr::mutate("Cohort name - Codelist name" =
+                        paste0(.data[["Cohort name"]], " - ", .data[["Codelist name"]])) |>
+        dplyr::select(-c("Cohort name", "Codelist name")) |>
+        dplyr::relocate("Cohort name - Codelist name")
+
+
       # column ordering by codelist and first column with a count
-      order <- list("Cohort name"  = "asc",
+      order <- list("Cohort name - Codelist name"  = "asc",
                     "count" = "desc")
-      names(order)[2] <- names(tbl)[9]
+      names(order)[2] <- names(tbl)[11]
 
       # suppressed to NA
       tbl <- tbl |>
         purrr::map_df(~ ifelse(grepl("^<", .), NA, .))
 
       tbl <- reactable(tbl,
+                       groupBy = c("Cohort name - Codelist name"),
                        columns = getColsForTbl(tbl,
                                                sortNALast = FALSE,
                                                names = c("Standard concept ID", "Source concept ID")),
@@ -587,14 +1017,14 @@ server <- function(input, output, session) {
   )
 
   # summarise measurement diagnostics -----
-  filterMeasurementTimings <- eventReactive(input$updateMeasurementCodeUse, ({
+  filterMeasurementSummary <- eventReactive(input$updateMeasurementCodeUse, ({
     req(shared_cdm_names())
     req(shared_cohort_names())
-    if (is.null(dataFiltered$measurement_timings)) {
-      validate("No measurement timings in results")
+    if (is.null(dataFiltered$measurement_summary)) {
+      validate("No measurement summary in results")
     }
 
-    result <- dataFiltered$measurement_timings |>
+    result <- dataFiltered$measurement_summary |>
       dplyr::filter(.data$cdm_name %in% shared_cdm_names()) |>
       visOmopResults::filterGroup(.data$cohort_name %in% shared_cohort_names())
 
@@ -602,17 +1032,17 @@ server <- function(input, output, session) {
 
     return(result)
   }))
-  ## Table measurement_timings -----
-  createMeasurementTimingsGT <- shiny::reactive({
-    tbl <- MeasurementDiagnostics::tableMeasurementTimings(
-      filterMeasurementTimings(),
-      header = input$measurement_timings_gt_header,
-      groupColumn = input$measurement_timings_gt_groupColumn,
-      hide = input$measurement_timings_gt_hide
+  ## Table measurement_summary -----
+  createMeasurementSummaryGT <- shiny::reactive({
+    tbl <- MeasurementDiagnostics::tableMeasurementSummary(
+      filterMeasurementSummary(),
+      header = input$measurement_summary_gt_header,
+      groupColumn = input$measurement_summary_gt_groupColumn,
+      hide = input$measurement_summary_gt_hide
     ) %>%
       tab_header(
-        title = "Summary of measurement timings",
-        subtitle = "Only codes from measurements are shown. Timing between individuals measurements."
+        title = "Summary of measurements",
+        subtitle = "Only codes from measurements/observations are shown. Time between measurements and number of measurements per subject."
       ) %>%
       tab_options(
         heading.align = "left"
@@ -621,44 +1051,44 @@ server <- function(input, output, session) {
     return(tbl)
   })
 
-  output$measurement_timings_tbl <- shiny::renderUI({
-    createMeasurementTimingsGT()
+  output$measurement_summary_tbl <- shiny::renderUI({
+    createMeasurementSummaryGT()
   })
 
-  output$measurement_timings_gt_download <- shiny::downloadHandler(
-    filename = "summarise_measurement_timings_gt.docx",
+  output$measurement_summary_gt_download <- shiny::downloadHandler(
+    filename = "summarise_measurement_summary_gt.docx",
     content = function(file){
-      gt::gtsave(data = createMeasurementTimingsGT(), filename = file)
+      gt::gtsave(data = createMeasurementSummaryGT(), filename = file)
     }
   )
-  ## Plot measurement_timings ----
-  getPlotMeasurementTimings <- shiny::reactive({
-    result <- filterMeasurementTimings()
+  ## Plot measurement_summary ----
+  getPlotMeasurementSummary <- shiny::reactive({
+    result <- filterMeasurementSummary()
 
-    MeasurementDiagnostics::plotMeasurementTimings(
+    MeasurementDiagnostics::plotMeasurementSummary(
       result,
-      y = input$measurement_timings_y,
-      plotType = input$measurement_timings_plottype,
-      timeScale = input$measurement_timings_time_scale,
-      facet = input$measurement_timings_facet,
-      colour = input$measurement_timings_colour)
+      y = input$measurement_summary_y,
+      plotType = input$measurement_summary_plottype,
+      timeScale = input$measurement_summary_time_scale,
+      facet = input$measurement_summary_facet,
+      colour = input$measurement_summary_colour)
   })
 
-  output$plot_measurement_timings <- shiny::renderPlot({
-    getPlotMeasurementTimings()
+  output$plot_measurement_summary <- shiny::renderPlot({
+    getPlotMeasurementSummary()
   })
 
-  output$plot_measurement_timings_download <- shiny::downloadHandler(
-    filename = "output_ggplot2_measurement_timings.png",
+  output$plot_measurement_summary_download <- shiny::downloadHandler(
+    filename = "output_ggplot2_measurement_summary.png",
     content = function(file) {
-      obj <- getPlotMeasurementTimings()
+      obj <- getPlotMeasurementSummary()
       ggplot2::ggsave(
         filename = file,
         plot = obj,
-        width = as.numeric(input$plot_measurement_timings_download_width),
-        height = as.numeric(input$plot_measurement_timings_download_height),
-        units = input$plot_measurement_timings_download_units,
-        dpi = as.numeric(input$plot_measurement_timings_download_dpi)
+        width = as.numeric(input$plot_measurement_summary_download_width),
+        height = as.numeric(input$plot_measurement_summary_download_height),
+        units = input$plot_measurement_summary_download_units,
+        dpi = as.numeric(input$plot_measurement_summary_download_dpi)
       )
     }
   )
@@ -741,14 +1171,14 @@ server <- function(input, output, session) {
     }
   )
 
-  # summarise measurement value as numeric
-  filterMeasurementValueAsNumeric <- eventReactive(input$updateMeasurementCodeUse, ({
+  # summarise measurement value as number
+  filterMeasurementValueAsNumber <- eventReactive(input$updateMeasurementCodeUse, ({
 
-    if (is.null(dataFiltered$measurement_value_as_numeric)) {
-      validate("No measurement value as numeric in results")
+    if (is.null(dataFiltered$measurement_value_as_number)) {
+      validate("No measurement value as number in results")
     }
 
-    result <- dataFiltered$measurement_value_as_numeric |>
+    result <- dataFiltered$measurement_value_as_number |>
       dplyr::filter(.data$cdm_name %in% shared_cdm_names()) |>
       visOmopResults::filterGroup(.data$cohort_name %in% shared_cohort_names())
 
@@ -757,17 +1187,17 @@ server <- function(input, output, session) {
     return(result)
   }))
 
-  ## Table measurement_value_as_numeric -----
-  createMeasurementValueAsNumericGT <- shiny::reactive({
-    tbl <- MeasurementDiagnostics::tableMeasurementValueAsNumeric(
-      filterMeasurementValueAsNumeric(),
-      header = input$measurement_value_as_numeric_gt_header,
-      groupColumn = input$measurement_value_as_numeric_gt_groupColumn,
-      hide = input$measurement_value_as_numeric_gt_hide
+  ## Table measurement_value_as_number -----
+  createMeasurementValueAsNumberGT <- shiny::reactive({
+    tbl <- MeasurementDiagnostics::tableMeasurementValueAsNumber(
+      filterMeasurementValueAsNumber(),
+      header = input$measurement_value_as_number_gt_header,
+      groupColumn = input$measurement_value_as_number_gt_groupColumn,
+      hide = input$measurement_value_as_number_gt_hide
     ) %>%
       tab_header(
         title = "Summary of measurement values (numeric)",
-        subtitle = "Only codes from measurements that are numeric are shown."
+        subtitle = "Only codes from measurements which results are numeric are shown."
       ) %>%
       tab_options(
         heading.align = "left"
@@ -776,44 +1206,44 @@ server <- function(input, output, session) {
     return(tbl)
   })
 
-  output$measurement_value_as_numeric_tbl <- shiny::renderUI({
-    createMeasurementValueAsNumericGT()
+  output$measurement_value_as_number_tbl <- shiny::renderUI({
+    createMeasurementValueAsNumberGT()
   })
 
-  output$measurement_value_as_numeric_gt_download <- shiny::downloadHandler(
-    filename = "summarise_measurement_value_as_numeric_gt.docx",
+  output$measurement_value_as_number_gt_download <- shiny::downloadHandler(
+    filename = "summarise_measurement_value_as_number_gt.docx",
     content = function(file){
-      gt::gtsave(data = createMeasurementValueAsNumericGT(), filename = file)
+      gt::gtsave(data = createMeasurementValueAsNumberGT(), filename = file)
     }
   )
-  ## Plot measurement_value_as_numeric ----
-  getPlotMeasurementValueAsNumeric <- shiny::reactive({
-    result <- filterMeasurementValueAsNumeric()
+  ## Plot measurement_value_as_number ----
+  getPlotMeasurementValueAsNumber <- shiny::reactive({
+    result <- filterMeasurementValueAsNumber()
 
-    MeasurementDiagnostics::plotMeasurementValueAsNumeric(
+    MeasurementDiagnostics::plotMeasurementValueAsNumber(
       result,
-      x = input$measurement_value_as_numeric_x,
-      plotType = input$measurement_value_as_numeric_plottype,
-      facet = input$measurement_value_as_numeric_facet,
-      colour = input$measurement_value_as_numeric_colour
+      x = input$measurement_value_as_number_x,
+      plotType = input$measurement_value_as_number_plottype,
+      facet = input$measurement_value_as_number_facet,
+      colour = input$measurement_value_as_number_colour
     )
   })
 
-  output$plot_measurement_value_as_numeric <- shiny::renderPlot({
-    getPlotMeasurementValueAsNumeric()
+  output$plot_measurement_value_as_number <- shiny::renderPlot({
+    getPlotMeasurementValueAsNumber()
   })
 
-  output$plot_measurement_value_as_numeric_download <- shiny::downloadHandler(
-    filename = "output_ggplot2_measurement_value_as_numeric.png",
+  output$plot_measurement_value_as_number_download <- shiny::downloadHandler(
+    filename = "output_ggplot2_measurement_value_as_number.png",
     content = function(file) {
-      obj <- getPlotMeasurementValueAsNumeric()
+      obj <- getPlotMeasurementValueAsNumber()
       ggplot2::ggsave(
         filename = file,
         plot = obj,
-        width = as.numeric(input$plot_measurement_value_as_numeric_download_width),
-        height = as.numeric(input$plot_measurement_value_as_numeric_download_height),
-        units = input$plot_measurement_value_as_numeric_download_units,
-        dpi = as.numeric(input$plot_measurement_value_as_numeric_download_dpi)
+        width = as.numeric(input$plot_measurement_value_as_number_download_width),
+        height = as.numeric(input$plot_measurement_value_as_number_download_height),
+        units = input$plot_measurement_value_as_number_download_units,
+        dpi = as.numeric(input$plot_measurement_value_as_number_download_dpi)
       )
     }
   )
@@ -1281,7 +1711,7 @@ server <- function(input, output, session) {
     lsc <- lsc |>
       dplyr::mutate(across(c(target_cohort, comparator_cohort), ~ as.numeric(.x)/100)) |>
       dplyr::mutate(smd = (!!sym(target_cohort) - !!sym(comparator_cohort))/sqrt((!!sym(target_cohort)*(1-!!sym(target_cohort)) + !!sym(comparator_cohort)*(1-!!sym(comparator_cohort)))/2)) |>
-      dplyr::mutate(smd = if_else(is.na(smd), 0, round(smd, 2))) |>
+      dplyr::mutate(smd = if_else(is.na(smd), 0, round(smd, 3))) |>
       dplyr::arrange(desc(smd))  |>
       mutate(concept = paste0(variable_name, " (",concept_id, ")"))
 
@@ -1554,8 +1984,8 @@ server <- function(input, output, session) {
       colour = input$summarise_cohort_timing_plot_colour
     )
   })
-  output$summarise_cohort_timing_plot <- plotly::renderPlotly({
-    createPlotCohortTiming()
+  output$summarise_cohort_timing_plot <- shiny::renderUI({
+    renderPlot(createPlotCohortTiming())
   })
   output$summarise_cohort_timing_plot_download <- shiny::downloadHandler(
     filename = "summarise_cohort_timing_plot.png",
@@ -1576,7 +2006,7 @@ server <- function(input, output, session) {
     req(shared_cdm_names())
     req(shared_cohort_names())
     req(inputs_initialized())
-    if (is.null(dataFiltered$survival_probability)) {
+    if (is.null(dataFiltered$survival_estimates)) {
       validate("No survival in results")
     }
 
@@ -1587,16 +2017,14 @@ server <- function(input, output, session) {
       cohorts <- shared_cohort_names()
     }
     result <- omopgenerics::bind(
-      dataFiltered$survival_attrition,
-      dataFiltered$survival_events,
-      dataFiltered$survival_probability,
-      dataFiltered$survival_summary) |>
+      dataFiltered[str_detect(names(dataFiltered), "survival_")]) |>
       dplyr::filter(.data$cdm_name %in% shared_cdm_names()) |>
       visOmopResults::filterGroup(.data$target_cohort %in% cohorts)
 
     validateFilteredResult(result)
     return(result)
   }))
+
 
   getTimeScale <- eventReactive(input$updateCohortSurvival, ({
     timeScale <- input$survival_probability_time_scale
@@ -1939,6 +2367,42 @@ server <- function(input, output, session) {
       )
     }
   )
+
+  # log file -----
+  output$summarise_log_file_gt <- gt::render_gt({
+    dataFiltered$summarise_log_file |>
+      omopgenerics::tidy() |>
+      dplyr::mutate(log_id = as.integer(log_id)) |>
+      dplyr::arrange("cdm_name", "log_id")  |>
+      dplyr::select(cdm_name, variable_name,
+                    elapsed_time) |>
+      dplyr::mutate(elapsed_time =
+                      dplyr::if_else(!is.na(elapsed_time),
+                                     sprintf("%d hours, %d minutes, %d seconds",
+                                             lubridate::hour(elapsed_time),
+                                             lubridate::minute(elapsed_time),
+                                             lubridate::second(elapsed_time)),
+                                     NA_character_)) |>
+      dplyr::mutate(elapsed_time = stringr::str_replace(
+        elapsed_time, "0 hours, 0 minutes, ", "")) |>
+      dplyr::mutate(elapsed_time = stringr::str_replace(
+        elapsed_time, "0 hours, ", "")) |>
+      dplyr::mutate(elapsed_time = stringr::str_replace(
+        elapsed_time, "1 hours", "1 hour")) |>
+      dplyr::mutate(elapsed_time = stringr::str_replace(
+        elapsed_time, "1 minutes", "1 minute")) |>
+      dplyr::mutate(elapsed_time = stringr::str_replace(
+        elapsed_time, "1 seconds", "1 second")) |>
+      dplyr::rename("task" = "variable_name",
+                    estimate_value = "elapsed_time") |>
+      dplyr::mutate(estimate_type = "character",
+                    estimate_name = "Time taken") |>
+      visOmopResults::visTable(
+        header = c("cdm_name", "estimate_name"),
+        rename = c("Database name" = "cdm_name"),
+        hide = "estimate_type") |>
+      gt::tab_options(container.width = "100%")
+  })
 
   # expectations ----
   createExpectationsOutput <- function(trigger_input, output_id) {

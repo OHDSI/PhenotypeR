@@ -81,18 +81,35 @@ test_that("duplicated codelists", {
 })
 
 test_that("measurementDiagnostics working", {
-  cdm <- MeasurementDiagnostics::mockMeasurementDiagnostics()
-  cdm$my_cohort <- cdm$my_cohort |>
-    PhenotypeR::addCodelistAttribute(
-      codelist = list(b = 3001467L),
-      cohortName = c("cohort_1")
-    )
-  res <- PhenotypeR::codelistDiagnostics(cdm$my_cohort)
+  cdm_local <- omock::mockCdmReference() |>
+    omock::mockPerson(nPerson = 100) |>
+    omock::mockObservationPeriod() |>
+    omock::mockConditionOccurrence() |>
+    omock::mockDrugExposure() |>
+    omock::mockMeasurement() |>
+    omock::mockCohort(name = "my_cohort_1")
+
+  db <- DBI::dbConnect(duckdb::duckdb())
+  cdm <- CDMConnector::copyCdmTo(con = db, cdm = cdm_local,
+                                 schema ="main", overwrite = TRUE)
+  attr(cdm, "write_schema") <- "results"
+
+  codes <- list(all_measurements = cdm$measurement |>
+    dplyr::pull("measurement_concept_id") |>
+    unique()) |>
+    omopgenerics::newCodelist()
+  cdm$measurement_cohort <- CohortConstructor::conceptCohort(cdm,
+                                                             codes,
+                                                             "measurement_cohort")
+  res <- PhenotypeR::codelistDiagnostics(cdm$measurement_cohort,
+                                         measurementSample = NULL)
+
   expect_equal(
     settings(res)$result_type,
-    c("cohort_code_use", "measurement_timings", "measurement_value_as_numeric", "measurement_value_as_concept")
+    c("cohort_code_use", "measurement_summary", "measurement_value_as_number", "measurement_value_as_concept")
   )
-  expect_equal(res |> omopgenerics::splitGroup() |> dplyr::pull("cohort_name") |> unique(), "cohort_1")
+  expect_equal(res |> omopgenerics::splitGroup() |> dplyr::pull("cohort_name") |> unique(),
+               "all_measurements")
 
   expect_identical(res |>
                      omopgenerics::settings() |>
@@ -100,16 +117,37 @@ test_that("measurementDiagnostics working", {
                      unique(),
                    "codelistDiagnostics")
 
-  cdm$my_cohort <- cdm$my_cohort |>
-    PhenotypeR::addCodelistAttribute(
-      codelist = list(b = 3001467L),
-      cohortName = c("cohort_2")
-    )
-  res <- PhenotypeR::codelistDiagnostics(cdm$my_cohort)
+
+ # sampling
+  res_sampled <- PhenotypeR::codelistDiagnostics(cdm$measurement_cohort,
+                                         measurementSample = 5)
+
+  expect_true(res_sampled |>
+    omopgenerics::filterSettings(result_type == "measurement_summary") |>
+    dplyr::filter(variable_name == "number subjects") |>
+    dplyr::pull("estimate_value") |>
+    as.integer() <= 5)
+
+  # no measurement diagnostics
+  res_no_meas <- PhenotypeR::codelistDiagnostics(cdm$measurement_cohort,
+                                                 measurementSample = 0)
+  expect_false("measurement_summary" %in% omopgenerics::settings(res_no_meas))
+
+  multiple_codes <- CodelistGenerator::stratifyByConcept(codes, cdm)
+  cdm$measurement_2 <- CohortConstructor::conceptCohort(cdm,
+                                                        multiple_codes,
+                                                        "measurement_2")
+
+    res <- PhenotypeR::codelistDiagnostics(cdm$measurement_2)
   expect_equal(
     settings(res)$result_type,
-    c("cohort_code_use", "measurement_timings", "measurement_value_as_numeric", "measurement_value_as_concept")
+    c("cohort_code_use", "measurement_summary", "measurement_value_as_number", "measurement_value_as_concept")
   )
-  expect_equal(res |> omopgenerics::splitGroup() |> dplyr::pull("cohort_name") |> unique(), paste0("cohort_", 1:2))
+  expect_equal(res |>
+                 omopgenerics::splitGroup() |>
+                 dplyr::pull("cohort_name") |>
+                 unique() |>
+                 sort(),
+               names(multiple_codes) |> sort())
 })
 

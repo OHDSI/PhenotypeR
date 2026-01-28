@@ -73,7 +73,7 @@ result <- phenotypeDiagnostics(
   diagnostics = c("databaseDiagnostics", "codelistDiagnostics", 
                   "cohortDiagnostics", "populationDiagnostics"),
   cohortSample = 20000,
-  matchedSample = 1000
+  matchedSample = 1000,
   populationSample = 1e+06,
   populationDateRange = as.Date(c(NA, NA))
   )
@@ -90,17 +90,17 @@ Notice that we have three additional arguments:
 ## Save the results
 To save the results, we can use [exportSummarisedResult](https://darwin-eu.github.io/omopgenerics/reference/exportSummarisedResult.html) function from [omopgenerics](https://darwin-eu.github.io/omopgenerics/index.html) R Package:
 ```{r, eval=FALSE}
-exportSummarisedResult(result, directory = here::here(), minCellCount = 5)
+exportSummarisedResult(result, path = here::here(), minCellCount = 5)
 ```
 
 ## Visualisation of the results
 Once we get our **Phenotype diagnostics** result, we can use `shinyDiagnostics` to easily create a shiny app and visualise our results:
 
 ```{r, eval=FALSE}
-result <- shinyDiagnostics(result,
-                           directory = tempdir(),
-                           minCellCount = 5, 
-                           open = TRUE)
+shinyDiagnostics(result,
+                 directory = tempdir(),
+                 minCellCount = 5, 
+                 open = TRUE)
 ```
 Notice that we have specified the minimum number of counts (`minCellCount`) for suppression to be shown in the shiny app, and also that we want the shiny to be launched in a new R session (`open`). You can see the shiny app generated for this example in [here](https://dpa-pde-oxford.shinyapps.io/PhenotypeRShiny/).See [Shiny diagnostics vignette](https://ohdsi.github.io/PhenotypeR/articles/a02_ShinyDiagnostics.html) for a full explanation of the shiny app.
 

@@ -15,20 +15,18 @@
 #'
 #' @examples
 #' \donttest{
+#' library(omock)
+#' library(CohortConstructor)
 #' library(PhenotypeR)
-#' library(dplyr)
 #'
-#' cdm <- mockPhenotypeR()
+#' cdm <- mockCdmFromDataset(source = "duckdb")
+#' cdm$warfarin <- conceptCohort(cdm,
+#'                               conceptSet =  list(warfarin = c(1310149L,
+#'                                                               40163554L)),
+#'                               name = "warfarin")
 #'
-#' dateStart <- cdm$my_cohort |>
-#'   summarise(start = min(cohort_start_date, na.rm = TRUE)) |>
-#'   pull("start")
-#' dateEnd   <- cdm$my_cohort |>
-#'   summarise(start = max(cohort_start_date, na.rm = TRUE)) |>
-#'   pull("start")
-#'
-#' result <- cdm$my_cohort |>
-#'   populationDiagnostics(populationDateRange = c(dateStart, dateEnd))
+#' result <- cdm$warfarin |>
+#'   populationDiagnostics()
 #'
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
@@ -36,18 +34,25 @@ populationDiagnostics <- function(cohort,
                                   populationSample = 1000000,
                                   populationDateRange = as.Date(c(NA, NA))) {
 
+  if (!is.null(getOption("omopgenerics.logFile"))) {
+    omopgenerics::logMessage("Population diagnosics - input validation")
+  }
   cohort <- omopgenerics::validateCohortArgument(cohort = cohort)
   checksPopulationDiagnostics(populationSample, populationDateRange)
 
   cdm <- omopgenerics::cdmReference(cohort)
   cohortName <- omopgenerics::tableName(cohort)
 
-  cli::cli_bullets(c("*" = "{.strong Creating denominator for incidence and prevalence}"))
+  if (!is.null(getOption("omopgenerics.logFile"))) {
+    omopgenerics::logMessage("Population diagnosics - denominator cohort")
+  }
   denominatorTable <- omopgenerics::uniqueTableName()
 
   # add population sampling
   if(!is.null(populationSample)){
-    cli::cli_bullets(c("*" = "{.strong Sampling person table to {populationSample}}"))
+    if (!is.null(getOption("omopgenerics.logFile"))) {
+      omopgenerics::logMessage(paste0("Population diagnosics - sampling person table to", populationSample))
+    }
     if(is.na(populationDateRange[[1]]) && is.na(populationDateRange[[2]])){
       cdm$person <- cdm$person |>
         dplyr::slice_sample(n = populationSample)
@@ -103,7 +108,9 @@ populationDiagnostics <- function(cohort,
 
   results <- list()
 
-  cli::cli_bullets(c("*" = "{.strong Estimating incidence}"))
+  if (!is.null(getOption("omopgenerics.logFile"))) {
+    omopgenerics::logMessage("Population diagnosics - incidence")
+  }
   results[["incidence"]] <- IncidencePrevalence::estimateIncidence(
     cdm = cdm,
     denominatorTable = denominatorTable,
@@ -113,7 +120,9 @@ populationDiagnostics <- function(cohort,
     outcomeWashout = Inf,
     completeDatabaseIntervals = FALSE)
 
-  cli::cli_bullets(c("*" = "{.strong Estimating prevalence}"))
+  if (!is.null(getOption("omopgenerics.logFile"))) {
+    omopgenerics::logMessage("Population diagnosics - prevalence")
+  }
   results[["prevalence"]] <- IncidencePrevalence::estimatePeriodPrevalence(
     cdm = cdm,
     denominatorTable = denominatorTable,

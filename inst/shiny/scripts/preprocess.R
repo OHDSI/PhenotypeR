@@ -16,6 +16,7 @@ library(shinycssloaders)
 library(stringr)
 library(CohortSurvival)
 library(tidyr)
+library(qs2)
 
 source(here::here("scripts", "functions.R"))
 
@@ -50,6 +51,14 @@ values <- getValues(result, resultList)
 
 if(length(dataFiltered) > 0){
   diagnostics <- omopgenerics::settings(result) |> dplyr::pull("diagnostic") |> unique()
+  values$shared_cdm_names <- rbind(dataFiltered$summarise_omop_snapshot,
+                                   dataFiltered$cohort_code_use,
+                                   dataFiltered$summarise_cohort_count,
+                                   dataFiltered$incidence) |>
+    dplyr::select("cdm_name") |>
+    dplyr::distinct() |>
+    dplyr::pull("cdm_name") |>
+    sort()
   if((length(diagnostics) > 1 || diagnostics != "databaseDiagnostics")) {
     # Common variables
     if(length(diagnostics) == 1 && diagnostics == "populationDiagnostics"){
@@ -68,11 +77,6 @@ if(length(dataFiltered) > 0){
         dplyr::pull("cohort_name") |>
         sort()
     }
-    values$shared_cdm_names <- rbind(dataFiltered$summarise_omop_snapshot, dataFiltered$cohort_code_use, dataFiltered$summarise_cohort_count, dataFiltered$incidence) |>
-      dplyr::select("cdm_name") |>
-      dplyr::distinct() |>
-      dplyr::pull("cdm_name") |>
-      sort()
   }
 }else{
   diagnostics <- ""
@@ -116,7 +120,7 @@ if("cohortDiagnostics" %in% diagnostics){
   values <- append(values, values_subset)
 
   values$summarise_large_scale_characteristics_variable_level <-c("-inf to -366", "-365 to -31", "-30 to -1", "0 to 0", "1 to 30", "31 to 365", "366 to inf")
-  
+
   if("summarise_cohort_overlap" %in% names(dataFiltered)){
     values$summarise_cohort_overlap_cohort_comparator <- values$summarise_cohort_overlap_cohort_name_comparator
     values <- values[!stringr::str_detect(names(values), "summarise_cohort_overlap_cohort_name_comparator")]
@@ -220,10 +224,16 @@ if("diagnostic" %in% colnames(expectations)){
   expectations <- expectations |>
     dplyr::mutate("diagnostic" = paste(all_diag, collapse = ", "))
 }
-
-phenotyper_version <- omopgenerics::settings(result) |> dplyr::pull("phenotyper_version") |> unique()
+phenotyper_version <- omopgenerics::settings(result) |>
+  dplyr::filter(!is.na(phenotyper_version)) |>
+  dplyr::pull("phenotyper_version") |>
+  unique()
+if(length(phenotyper_version)>1){
+cli::cli_warn("Multiple PhenotypeR versions detected in results")
+phenotyper_version <- paste0(phenotyper_version, collapse = "; ")
+}
 cli::cli_inform("Saving data for shiny")
-save(dataFiltered,
+qs2::qs_savem(dataFiltered,
      selected,
      choices,
      min_incidence_start,
@@ -233,7 +243,7 @@ save(dataFiltered,
      msgPopulationDiag,
      phenotyper_version,
      expectations,
-     file = here::here("data", "appData.RData"))
+     file = here::here("data", "appData.qs"))
 
 rm(result, data, expectations, dataFiltered, choices, selected, values, values_subset)
 

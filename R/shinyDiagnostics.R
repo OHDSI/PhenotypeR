@@ -185,16 +185,21 @@ checkWhichDiagnostics <- function(result){
   diagnostics  <- c("databaseDiagnostics", "codelistDiagnostics", "cohortDiagnostics", "populationDiagnostics")
 
   to_remove <- diagnostics[!diagnostics %in% diag_present]
+  if(!"databaseDiagnostics" %in% to_remove){
+    if(!"summarise_clinical_records" %in% (omopgenerics::settings(result) |> dplyr::pull("result_type") |> unique())){
+      to_remove <- append(to_remove, "clinical_records")
+    }
+  }
   if(!"codelistDiagnostics" %in% to_remove){
     if(!"achilles_code_use" %in% (omopgenerics::settings(result) |> dplyr::pull("result_type") |> unique())){
       to_remove <- append(to_remove, "achilles_results")
     }
-    if(!"measurement_timings" %in% (omopgenerics::settings(result) |> dplyr::pull("result_type") |> unique())){
+    if(!"measurement_summary" %in% (omopgenerics::settings(result) |> dplyr::pull("result_type") |> unique())){
       to_remove <- append(to_remove, "measurement_diagnostics")
     }
   }
   if(!"cohortDiagnostics" %in% to_remove){
-    if(!"survival_probability" %in% (omopgenerics::settings(result) |> dplyr::pull("result_type") |> unique())){
+    if(!"survival_estimates" %in% (omopgenerics::settings(result) |> dplyr::pull("result_type") |> unique())){
       to_remove <- append(to_remove, "cohort_survival")
     }
   }
@@ -210,6 +215,7 @@ removeLines <- function(ui, result, diagnostic){
       ui <- ui[-seq(start,end,1)]
 
       msg <- switch(x,
+             "clinical_records" = "No summary of the clinical records containing the codes from the concept list. Removing tab from the shiny app.",
              "measurement_diagnostics" = "No measurements present in the concept list. Removing tab from the shiny app.",
              "cohort_survival" = "No survival analysis present in cohortDiagnostics. Removing tab from the shiny app.",
              "achilles_results" = "No achilles code use or orphan codes results in codelistDiagnostics. Removing tabs from the shiny app.",
