@@ -139,7 +139,7 @@ fetchExpectations <- function(chat, name, others){
  chat_output <- chat$chat_structured(
     ellmer::interpolate(prompt),
     type = type_my_df,
-    echo = "none")   %>%
+    echo = "none")   |>
     dplyr::mutate(median_age = paste0(.data$median_age_estimate_low,
                                       " to ",
                                       .data$median_age_estimate_high,
@@ -183,7 +183,7 @@ rename_map <- c(
   "Cohort timing" = "timing"
 )
 rename_map <- rename_map[rename_map %in% names(chat_output)]
-chat_output <- chat_output %>%
+chat_output <- chat_output |>
   dplyr::rename(!!!rlang::set_names(rename_map, names(rename_map)))
 
 chat_output <- chat_output |>
@@ -197,7 +197,7 @@ chat_output <- chat_output |>
                                  "Frequently seen comorbidities",
                                  "Frequently seen signs and symptoms",
                                  "Frequently seen medications")),
-                        names_to = "estimate") %>%
+                        names_to = "estimate") |>
     dplyr::mutate(name = name) |>
     dplyr::relocate("name")
 

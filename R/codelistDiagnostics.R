@@ -158,6 +158,42 @@ codelistDiagnostics <- function(cohort, measurementSample = 20000){
     omopgenerics::dropSourceTable(cdm = cdm, name = dplyr::starts_with("measurement_diagnostics_temp_1234"))
   }
 
+  # If any drug codes: do drug exposure diagnostics
+  drugs <- cdm$concept |>
+    dplyr::select(dplyr::all_of(c("concept_id", "domain_id"))) |>
+    dplyr::inner_join(
+      attr(cdm[[cohortTable]], "cohort_codelist") |>
+        dplyr::distinct(.data$cohort_definition_id, .data$codelist_name, .data$concept_id),
+      by = "concept_id"
+    ) |>
+    dplyr::filter(tolower(.data$domain_id) %in% c("drug")) |>
+    dplyr::collect()
+  if (FALSE & nrow(drugs) > 0) {
+    cli::cli_bullets(c("*" = "Getting diagnostics for drug concepts"))
+    drugCohortsIds <- unique(drugs$cohort_definition_id)
+    for (id in drugCohortsIds) {
+      nm <- omopgenerics::uniqueTableName()
+      drugCohort <- cdm[[cohortTable]] |>
+        CohortConstructor::subsetCohorts(cohortId = id, name = nm)
+      codes <- drugs |>
+        dplyr::filter(.data$cohort_definition_id == id) |>
+        omopgenerics::newCodelist()
+      ingredients <- findIngredients(codes = codes, cdm = cdm)
+      results[[paste0("drug_diagnostics_", id)]] <- summariseDrugExposureDiagnostics(
+        cdm = cdm,
+        # cohort = drugCohort,
+        conceptSet = codes,
+        ingredient = ingredients,
+        byConcept = TRUE,
+        # byYear = FALSE,
+        # bySex = FALSE,
+        # ageGroup = NULL,
+        dateRange = as.Date(c(NA, NA))
+      )
+      omopgenerics::dropSourceTable(cdm = cdm, name = nm)
+    }
+  }
+
   # all other analyses require achilles, so return if not available
   if("achilles_results" %in% names(cdm)){
     if (!is.null(getOption("omopgenerics.logFile"))) {

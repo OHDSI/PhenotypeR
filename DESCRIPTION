@@ -5,7 +5,7 @@ Version: 0.3.1
 Authors@R: c(
     person("Edward", "Burn", , "edward.burn@ndorms.ox.ac.uk", 
     role = c("aut", "cre"), comment = c(ORCID = "0000-0002-9286-1128")),
-    person("Marti", "Catala", , "marti.catalasabate@ndorms.ox.ac.uk", 
+    person("Martí", "Català", , "marti.catalasabate@ndorms.ox.ac.uk", 
     role = c("aut"), comment = c(ORCID = "0000-0003-3308-9905")),
     person("Xihang", "Chen", , "xihang.chen@ndorms.ox.ac.uk", 
     role = c("aut"), comment = c(ORCID = "0009-0001-8112-8959")),
@@ -34,7 +34,6 @@ Suggests:
     knitr,
     glue,
     RPostgres,
-    PatientProfiles (>= 1.4.4),
     ggplot2,
     ggpubr,
     stringr,
@@ -67,19 +66,21 @@ Suggests:
 Config/testthat/edition: 3
 RoxygenNote: 7.3.3
 Imports: 
+    cli,
+    clock,
     CodelistGenerator (>= 4.0.2),
     CohortCharacteristics (>= 1.1.0),
     CohortConstructor (>= 0.5.0),
-    cli,
     dplyr,
+    DrugUtilisation (>= 1.1.0),
     IncidencePrevalence (>= 1.2.0),
+    MeasurementDiagnostics (>= 0.2.0),
     omopgenerics (>= 1.2.0),
     OmopSketch (>= 1.0.0),
-    magrittr,
+    PatientProfiles (>= 1.4.5),
     purrr,
+    readr,
     rlang,
-    vctrs,
-    MeasurementDiagnostics (>= 0.2.0),
-    readr
+    vctrs
 URL: https://ohdsi.github.io/PhenotypeR/
 VignetteBuilder: knitr
