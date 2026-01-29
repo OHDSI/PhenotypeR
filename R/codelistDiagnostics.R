@@ -184,11 +184,10 @@ codelistDiagnostics <- function(cohort, measurementSample = 20000){
         # cohort = drugCohort,
         conceptSet = codes,
         ingredient = ingredients,
-        codes = codes,
         byConcept = TRUE,
         # byYear = FALSE,
         # bySex = FALSE,
-        ageGroup = NULL,
+        # ageGroup = NULL,
         dateRange = as.Date(c(NA, NA))
       )
       omopgenerics::dropSourceTable(cdm = cdm, name = nm)

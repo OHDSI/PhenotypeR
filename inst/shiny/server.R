@@ -398,11 +398,11 @@ server <- function(input, output, session) {
   ## Table summarise_omop_snapshot ----
   createTableOmopSnapshot <- shiny::reactive({
     filterOmopSnapshot() |>
-      OmopSketch::tableOmopSnapshot() %>%
+      OmopSketch::tableOmopSnapshot() |>
       tab_header(
         title = "Database metadata",
         subtitle = "Overview of data source"
-      ) %>%
+      ) |>
       tab_options(
         heading.align = "left"
       )
@@ -435,11 +435,11 @@ server <- function(input, output, session) {
   ## Table summarise_person -----
   createTablePerson <- shiny::reactive({
     filterPerson() |>
-      OmopSketch::tablePerson() %>%
+      OmopSketch::tablePerson() |>
       tab_header(
         title = "Summary of person table",
         subtitle = "The person table contains core information on patients captured in the OMOP CDM dataset."
-      ) %>%
+      ) |>
       tab_options(
         heading.align = "left"
       )
@@ -504,11 +504,11 @@ server <- function(input, output, session) {
   ## Table summarise_observation_period -----
   createTableObservationPeriod <- shiny::reactive({
     filterObservationPeriod() |>
-      OmopSketch::tableObservationPeriod() %>%
+      OmopSketch::tableObservationPeriod() |>
       tab_header(
         title = "Summary of observation periods",
         subtitle = "Observation periods are used to define time under observation for individuals in the data source."
-      ) %>%
+      ) |>
       tab_options(
         heading.align = "left"
       )
@@ -584,11 +584,11 @@ server <- function(input, output, session) {
   ## Table summarise_clinical_records -----
   createClinicalRecordsTable <- shiny::reactive({
     filterClinicalRecords() |>
-      OmopSketch::tableClinicalRecords() %>%
+      OmopSketch::tableClinicalRecords() |>
       tab_header(
         title = "Summary of Clinical Records",
         subtitle = "Summary of the clinical tables that contain the codes from the cohort codelist."
-      ) %>%
+      ) |>
       tab_options(
         heading.align = "left"
       )
@@ -792,11 +792,11 @@ server <- function(input, output, session) {
       groupColumn = input$orphan_codes_gt_groupColumn,
       hide = input$orphan_codes_gt_hide
     )
-    tbl %>%
+    tbl |>
       tab_header(
         title = "Summary of orphan codes",
         subtitle = "Orphan codes refer to concepts present in the database that are not in a codelist but are related to included codes."
-      ) %>%
+      ) |>
       tab_options(
         heading.align = "left"
       )
@@ -918,11 +918,11 @@ server <- function(input, output, session) {
       header = input$cohort_code_use_gt_header,
       groupColumn = input$cohort_code_use_gt_groupColumn,
       hide = input$cohort_code_use_gt_hide
-    ) %>%
+    ) |>
       tab_header(
         title = "Summary of cohort code use",
         subtitle = "Codes from codelist observed on day of cohort entry. Note more than one code could be seen for a person on this day (both of which would have led to inclusion)."
-      ) %>%
+      ) |>
       tab_options(
         heading.align = "left"
       )
@@ -1039,11 +1039,11 @@ server <- function(input, output, session) {
       header = input$measurement_summary_gt_header,
       groupColumn = input$measurement_summary_gt_groupColumn,
       hide = input$measurement_summary_gt_hide
-    ) %>%
+    ) |>
       tab_header(
         title = "Summary of measurements",
         subtitle = "Only codes from measurements/observations are shown. Time between measurements and number of measurements per subject."
-      ) %>%
+      ) |>
       tab_options(
         heading.align = "left"
       )
@@ -1116,11 +1116,11 @@ server <- function(input, output, session) {
       header = input$measurement_value_as_concept_gt_header,
       groupColumn = input$measurement_value_as_concept_gt_groupColumn,
       hide = input$measurement_value_as_concept_gt_hide
-    ) %>%
+    ) |>
       tab_header(
         title = "Summary of measurement values (concepts)",
         subtitle = "Only codes from measurements that are concepts are shown."
-      ) %>%
+      ) |>
       tab_options(
         heading.align = "left"
       )
@@ -1194,11 +1194,11 @@ server <- function(input, output, session) {
       header = input$measurement_value_as_number_gt_header,
       groupColumn = input$measurement_value_as_number_gt_groupColumn,
       hide = input$measurement_value_as_number_gt_hide
-    ) %>%
+    ) |>
       tab_header(
         title = "Summary of measurement values (numeric)",
         subtitle = "Only codes from measurements which results are numeric are shown."
-      ) %>%
+      ) |>
       tab_options(
         heading.align = "left"
       )
@@ -1282,11 +1282,11 @@ server <- function(input, output, session) {
     CohortCharacteristics::tableCohortCount(res,
                                             hide = c("variable_level",
                                                      "estimate_name",
-                                                     settingsColumns(res))) %>%
+                                                     settingsColumns(res))) |>
       tab_header(
         title = "Cohort count",
         subtitle = "Number of records and subjects in the study cohorts."
-      ) %>%
+      ) |>
       tab_options(
         heading.align = "left"
       )
@@ -1415,11 +1415,11 @@ server <- function(input, output, session) {
         hide = c(input$summarise_characteristics_gt_hide,
                  "table_name", "value", "window", "table",
                  "diagnostic", "cohort_sample", "matched_sample", "phenotyper_version")
-      ) %>%
+      ) |>
       tab_header(
         title = "Patient characteristics",
         subtitle = "Summary of patient characteristics relative to cohort entry. Please be aware that statistics are calculated by record, not by subject."
-      ) %>%
+      ) |>
       tab_options(
         heading.align = "left"
       )
@@ -1874,11 +1874,11 @@ server <- function(input, output, session) {
       hide = c(input$summarise_cohort_overlap_gt_hide,
                "overlap_by",
                "diagnostic", "matchedSample", "phenotyper_version")
-    ) %>%
+    ) |>
       tab_header(
         title = "Cohort overlap",
         subtitle = "Overlap is where the same individual is in both cohorts. Note their cohort entries do not necessarily overlap."
-      ) %>%
+      ) |>
       tab_options(
         heading.align = "left"
       )
@@ -1953,11 +1953,11 @@ server <- function(input, output, session) {
       result,
       timeScale = input$summarise_cohort_timing_gt_time_scale,
       uniqueCombinations = input$summarise_cohort_timing_gt_uniqueCombinations,
-    ) %>%
+    ) |>
       tab_header(
         title = "Cohort timing",
         subtitle = "Cohort timing refers to the time between an individual entering one cohort and another cohort."
-      ) %>%
+      ) |>
       tab_options(
         heading.align = "left"
       )
@@ -2136,11 +2136,11 @@ server <- function(input, output, session) {
                          "denominator_sex",
                          "denominator_days_prior_observation",
                          "outcome_cohort_name")
-    ) %>%
+    ) |>
       tab_header(
         title = "Incidence estimates",
         subtitle = "Incidence rates estimated for outcomes of interest"
-      ) %>%
+      ) |>
       tab_options(
         heading.align = "left"
       )
@@ -2270,11 +2270,11 @@ server <- function(input, output, session) {
                          "denominator_sex",
                          "denominator_days_prior_observation",
                          "outcome_cohort_name")
-    ) %>%
+    ) |>
       tab_header(
         title = "Prevalence estimates",
         subtitle = "Prevalence rates estimated for outcomes of interest"
-      ) %>%
+      ) |>
       tab_options(
         heading.align = "left"
       )
