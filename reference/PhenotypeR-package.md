@@ -18,7 +18,7 @@ Useful links:
 
 Authors:
 
-- Marti Catala <marti.catalasabate@ndorms.ox.ac.uk>
+- Martí Català <marti.catalasabate@ndorms.ox.ac.uk>
   ([ORCID](https://orcid.org/0000-0003-3308-9905))
 
 - Xihang Chen <xihang.chen@ndorms.ox.ac.uk>
