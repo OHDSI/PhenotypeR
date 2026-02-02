@@ -62,7 +62,8 @@ Suggests:
     cpp11,
     progress,
     qs2,
-    lubridate
+    lubridate,
+    systemfonts
 Config/testthat/edition: 3
 RoxygenNote: 7.3.3
 Imports: 
