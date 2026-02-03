@@ -168,6 +168,10 @@ cohortDiagnostics <- function(cohort, survival = FALSE, cohortSample = 20000, ma
   lscTableEpisodes<- c("drug_exposure", "drug_era")
   lscTableEpisodes<-intersect(lscTableEpisodes, names(cdm))
 
+  # skip lsc for any empty tables
+  lscTableEvents <- lscTableEvents[sapply(lscTableEvents, function(tbl) hasRows(cdm[[tbl]]))]
+  lscTableEpisodes <- lscTableEpisodes[sapply(lscTableEpisodes, function(tbl) hasRows(cdm[[tbl]]))]
+
   lscMminimumFrequency <- 0.01
 
   if (!is.null(getOption("omopgenerics.logFile"))) {
