@@ -84,4 +84,5 @@ Imports:
     rlang,
     vctrs
 URL: https://ohdsi.github.io/PhenotypeR/
+BugReports: https://github.com/OHDSI/PhenotypeR/issues
 VignetteBuilder: knitr
