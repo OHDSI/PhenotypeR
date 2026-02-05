@@ -42,7 +42,7 @@ library(CohortConstructor)
 library(PhenotypeR)
 
 cdm <- mockCdmFromDataset(source = "duckdb")
-#> ℹ Reading GiBleed tables.
+#> ℹ Loading bundled GiBleed tables from package data.
 #> ℹ Adding drug_strength table.
 #> ℹ Creating local <cdm_reference> object.
 #> ℹ Inserting <cdm_reference> into duckdb.
