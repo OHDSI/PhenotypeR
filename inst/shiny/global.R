@@ -46,13 +46,13 @@ preprocess_again <- function(){
   cli::cli_alert_success("Data processed")
 }
 
-if(file.exists(here::here("data", "appData.RData")) &&
+if(file.exists(here::here("data", "appData.qs")) &&
    rlang::is_interactive()){
   preprocess_again()
 }
 
 # if data does not exist (or we are not in interactive)
-if(!file.exists(here::here("data", "appData.RData"))){
+if(!file.exists(here::here("data", "appData.qs"))){
   cli::cli_inform("Preprocessing data from data/raw")
   source(here::here("scripts", "preprocess.R"))
   cli::cli_alert_success("Data processed")
