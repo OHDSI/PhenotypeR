@@ -1,4 +1,102 @@
 
+summariseDrugUse <- function(cdm,
+                             codes,
+                             byConcept = TRUE,
+                             byYear = FALSE,
+                             bySex = FALSE,
+                             ageGroup = NULL,
+                             dateRange = as.Date(c(NA, NA)),
+                             personSample = 20000,
+                             checks = c("missing", "exposure Duration", "type", "route", "dose", "quantity", "daysBetween")) {
+  # validate personSample
+  cdm <- omopgenerics::validateCdmArgument(cdm = cdm)
+  omopgenerics::assertNumeric(personSample, integerish = TRUE, min = 1, null = TRUE, length = 1)
+  if (!is.null(personSample)) {
+    nm <- omopgenerics::uniqueTableName()
+    cohort <- CohortConstructor::demographicsCohort(cdm = cdm, name = nm) |>
+      CohortConstructor::sampleCohorts(n = personSample)
+    on.exit(omopgenerics::dropSourceTable(cdm = cdm, name = nm))
+  } else {
+    cohort <- NULL
+  }
+
+  summariseDrugUseInternal(
+    codes = codes,
+    cohort = cohort,
+    timing = "any",
+    byConcept = byConcept,
+    byYear = byYear,
+    bySex = bySex,
+    ageGroup = ageGroup,
+    dateRange = dateRange,
+    checks = checks
+  )
+}
+
+summariseCohortDrugUse <- function(cohort,
+                                   codes = NULL,
+                                   timing = "during",
+                                   byConcept = TRUE,
+                                   byYear = FALSE,
+                                   bySex = FALSE,
+                                   ageGroup = NULL,
+                                   dateRange = as.Date(c(NA, NA)),
+                                   checks = c("missing", "exposure Duration", "type", "route", "dose", "quantity", "daysBetween")) {
+  summariseDrugUseInternal(
+    codes = codes,
+    cohort = cohort,
+    timing = timing,
+    byConcept = byConcept,
+    byYear = byYear,
+    bySex = bySex,
+    ageGroup = ageGroup,
+    dateRange = dateRange,
+    checks = checks
+  )
+}
+
+summariseDrugUseInternal <- function(cdm,
+                                     codes,
+                                     subsetTable,
+                                     timing,
+                                     byConcept,
+                                     byYear,
+                                     bySex,
+                                     ageGroup,
+                                     dateRange,
+                                     checks,
+                                     call = parent.frame()) {
+  # initial checks
+  if (is.null(codes)) {
+    codesTable <- attr(cohort, "cohort_codelist")
+    codes <- omopgenerics::newCodelist(codesTable)
+  } else {
+    codesTable <- NULL
+    codes <- omopgenerics::validateConceptSetArgument(conceptSet = codes, call = call)
+  }
+  cohort <- omopgenerics::validateCohortArgument(cohort = cohort, call = call)
+  cohortName <- omopgenerics::tableName(table = cohort)
+  cdm <- omopgenerics::cdmReference(table = cohort)
+  omopgenerics::assertChoice(timing, choices = c("any", "during", "cohort_start_date"), call = call)
+  omopgenerics::assertLogical(byConcept, length = 1, call = call)
+  omopgenerics::assertLogical(byYear, length = 1, call = call)
+  omopgenerics::assertLogical(bySex, length = 1, call = call)
+  ageGroup <- omopgenerics::validateAgeGroupArgument(ageGroup = ageGroup, call = call)
+  if (is.null(dateRange)) {
+    dateRange <- as.Date(c(NA, NA))
+  } else {
+    dateRange <- as.Date(dateRange)
+  }
+  omopgenerics::assertDate(dateRange, length = 2, na = TRUE, call = call)
+  omopgenerics::assertChoice(checks, choices = c("missing", "exposure Duration", "type", "route", "dose", "quantity", "daysBetween"), call = call)
+
+  # prepare subset
+
+
+
+}
+subsetDrugRecords <- function(cdm, cohort, )
+
 #' Summarise diagnostics of the drug exposure table for a given concept set
 #' and/or ingredient
 #'
