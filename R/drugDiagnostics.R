@@ -13,16 +13,17 @@ summariseDrugUse <- function(cdm,
   omopgenerics::assertNumeric(personSample, integerish = TRUE, min = 1, null = TRUE, length = 1)
   if (!is.null(personSample)) {
     nm <- omopgenerics::uniqueTableName()
-    cohort <- CohortConstructor::demographicsCohort(cdm = cdm, name = nm) |>
+    cdm[[nm]] <- CohortConstructor::demographicsCohort(cdm = cdm, name = nm) |>
       CohortConstructor::sampleCohorts(n = personSample)
     on.exit(omopgenerics::dropSourceTable(cdm = cdm, name = nm))
   } else {
-    cohort <- NULL
+    nm <- NULL
   }
 
   summariseDrugUseInternal(
+    cdm = cdm,
     codes = codes,
-    cohort = cohort,
+    subsetTable = nm,
     timing = "any",
     byConcept = byConcept,
     byYear = byYear,
@@ -43,8 +44,9 @@ summariseCohortDrugUse <- function(cohort,
                                    dateRange = as.Date(c(NA, NA)),
                                    checks = c("missing", "exposure Duration", "type", "route", "dose", "quantity", "daysBetween")) {
   summariseDrugUseInternal(
+    cdm = omopgenerics::cdmReference(cohort),
     codes = codes,
-    cohort = cohort,
+    subsetTable = omopgenerics::tableName(cohort),
     timing = timing,
     byConcept = byConcept,
     byYear = byYear,
@@ -67,6 +69,12 @@ summariseDrugUseInternal <- function(cdm,
                                      checks,
                                      call = parent.frame()) {
   # initial checks
+  omopgenerics::validateCdmArgument(cdm = cdm, call = call)
+  if (is.null(subsetTable)) {
+    cohort <- NULL
+  } else {
+    cohort <- cdm[[subsetTable]]
+  }
   if (is.null(codes)) {
     codesTable <- attr(cohort, "cohort_codelist")
     codes <- omopgenerics::newCodelist(codesTable)
@@ -74,8 +82,6 @@ summariseDrugUseInternal <- function(cdm,
     codesTable <- NULL
     codes <- omopgenerics::validateConceptSetArgument(conceptSet = codes, call = call)
   }
-  cohort <- omopgenerics::validateCohortArgument(cohort = cohort, call = call)
-  cohortName <- omopgenerics::tableName(table = cohort)
   cdm <- omopgenerics::cdmReference(table = cohort)
   omopgenerics::assertChoice(timing, choices = c("any", "during", "cohort_start_date"), call = call)
   omopgenerics::assertLogical(byConcept, length = 1, call = call)
