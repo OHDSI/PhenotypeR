@@ -168,7 +168,7 @@ codelistDiagnostics <- function(cohort, measurementSample = 20000){
     ) |>
     dplyr::filter(tolower(.data$domain_id) %in% c("drug")) |>
     dplyr::collect()
-  if (FALSE & nrow(drugs) > 0) {
+  if (nrow(drugs) > 0) {
     cli::cli_bullets(c("*" = "Getting diagnostics for drug concepts"))
     drugCohortsIds <- unique(drugs$cohort_definition_id)
     for (id in drugCohortsIds) {
@@ -178,17 +178,24 @@ codelistDiagnostics <- function(cohort, measurementSample = 20000){
       codes <- drugs |>
         dplyr::filter(.data$cohort_definition_id == id) |>
         omopgenerics::newCodelist()
-      ingredients <- findIngredients(codes = codes, cdm = cdm)
+      ingredient <- findIngredient(codes = codes, cdm = cdm)$ingredient_concept_id
+      if (length(ingredient) == 0) {
+        ingredient <- NULL
+        checks <- c("missing", "exposureDuration", "quantity", "type", "route")
+      } else {
+        checks <- c("missing", "exposureDuration", "quantity", "type", "route", "quantity", "dose")
+      }
       results[[paste0("drug_diagnostics_", id)]] <- summariseDrugExposureDiagnostics(
         cdm = cdm,
         # cohort = drugCohort,
         conceptSet = codes,
-        ingredient = ingredients,
+        ingredient = ingredient,
         byConcept = TRUE,
         # byYear = FALSE,
         # bySex = FALSE,
         # ageGroup = NULL,
-        dateRange = as.Date(c(NA, NA))
+        dateRange = as.Date(c(NA, NA)),
+        checks = c("missing", "exposureDuration", "quantity", "type", "route")
       )
       omopgenerics::dropSourceTable(cdm = cdm, name = nm)
     }

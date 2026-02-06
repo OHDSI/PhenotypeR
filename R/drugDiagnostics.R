@@ -816,11 +816,14 @@ getAllCheckOptions <- function() {
            "diagnosticsSummary"))
 }
 
-findIngredients <- function(codes, cdm) {
+findIngredient <- function(codes, cdm) {
   threshold <- min(1, as.numeric(getOption("PhenotypeR_ingredient_threshold", "0.8")))
 
   if (length(codes) == 0) {
-    return(omopgenerics::emptyCodelist())
+    return(dplyr::tibble(
+      codelist_name = character(),
+      ingredient_concept_id = integer()
+    ))
   }
 
   conceptsTib <- dplyr::as_tibble(codes)
@@ -844,20 +847,13 @@ findIngredients <- function(codes, cdm) {
     dplyr::summarise(n = as.numeric(dplyr::n()), .groups = "drop") |>
     dplyr::collect()
 
-  ingredients <- conceptsTib |>
+  omopgenerics::dropSourceTable(cdm = cdm, name = nm)
+
+  conceptsTib |>
     dplyr::group_by(.data$codelist_name) |>
     dplyr::summarise(den = as.numeric(dplyr::n())) |>
     dplyr::inner_join(x, by = "codelist_name") |>
     dplyr::mutate(freq = .data$n / .data$den) |>
-    dplyr::filter(.data$freq >= .env$threshold)
-
-  names(codes) |>
-    rlang::set_names() |>
-    purrr::map(\(x) {
-      ingredients |>
-        dplyr::filter(.data$codelist_name == .env$x) |>
-        dplyr::pull("ancestor_concept_id") |>
-        as.integer()
-    }) |>
-    omopgenerics::newCodelist()
+    dplyr::filter(.data$freq >= .env$threshold) |>
+    dplyr::select("codelist_name", "ingredient_concept_id" = "ancestor_concept_id")
 }
