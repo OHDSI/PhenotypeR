@@ -7,7 +7,7 @@ summariseDrugUse <- function(cdm,
                              ageGroup = NULL,
                              dateRange = as.Date(c(NA, NA)),
                              personSample = 20000,
-                             checks = c("missing", "exposure Duration", "type", "route", "dose", "quantity", "daysBetween")) {
+                             checks = c("missing", "exposureDuration", "type", "route", "dose", "quantity", "daysBetween")) {
   # validate personSample
   cdm <- omopgenerics::validateCdmArgument(cdm = cdm)
   omopgenerics::assertNumeric(personSample, integerish = TRUE, min = 1, null = TRUE, length = 1)
@@ -42,7 +42,10 @@ summariseCohortDrugUse <- function(cohort,
                                    bySex = FALSE,
                                    ageGroup = NULL,
                                    dateRange = as.Date(c(NA, NA)),
-                                   checks = c("missing", "exposure Duration", "type", "route", "dose", "quantity", "daysBetween")) {
+                                   checks = c("missing", "exposureDuration", "type", "route", "dose", "quantity", "daysBetween")) {
+  if (is.null(codes)) {
+    codes <- omopgenerics::newCodelist(attr(cohort, "cohort_codelist"))
+  }
   summariseDrugUseInternal(
     cdm = omopgenerics::cdmReference(cohort),
     codes = codes,
@@ -60,6 +63,7 @@ summariseCohortDrugUse <- function(cohort,
 summariseDrugUseInternal <- function(cdm,
                                      codes,
                                      subsetTable,
+                                     subsetName,
                                      timing,
                                      byConcept,
                                      byYear,
@@ -75,13 +79,7 @@ summariseDrugUseInternal <- function(cdm,
   } else {
     cohort <- cdm[[subsetTable]]
   }
-  if (is.null(codes)) {
-    codesTable <- attr(cohort, "cohort_codelist")
-    codes <- omopgenerics::newCodelist(codesTable)
-  } else {
-    codesTable <- NULL
-    codes <- omopgenerics::validateConceptSetArgument(conceptSet = codes, call = call)
-  }
+  codes <- omopgenerics::validateConceptSetArgument(conceptSet = codes, call = call)
   cdm <- omopgenerics::cdmReference(table = cohort)
   omopgenerics::assertChoice(timing, choices = c("any", "during", "cohort_start_date"), call = call)
   omopgenerics::assertLogical(byConcept, length = 1, call = call)
@@ -89,19 +87,111 @@ summariseDrugUseInternal <- function(cdm,
   omopgenerics::assertLogical(bySex, length = 1, call = call)
   ageGroup <- omopgenerics::validateAgeGroupArgument(ageGroup = ageGroup, call = call)
   if (is.null(dateRange)) {
-    dateRange <- as.Date(c(NA, NA))
-  } else {
-    dateRange <- as.Date(dateRange)
+    dateRange <- c(NA, NA)
   }
+  dateRange <- as.Date(dateRange)
   omopgenerics::assertDate(dateRange, length = 2, na = TRUE, call = call)
-  omopgenerics::assertChoice(checks, choices = c("missing", "exposure Duration", "type", "route", "dose", "quantity", "daysBetween"), call = call)
+  omopgenerics::assertChoice(checks, choices = c("missing", "exposureDuration", "type", "route", "dose", "quantity", "daysBetween"), call = call)
 
   # prepare subset
+  nm <- omopgenerics::uniqueTableName()
+  drugRecords <- subsetDrugRecords(
+    cdm = cdm,
+    subsetTable = subsetTable,
+    timing = timing,
+    dateRange = dateRange,
+    name = nm
+  )
 
+  # add stratifications
+  drugRecords <- addStratifications(drugRecords, byConcept, byYear, bySex, ageGroup)
+  group <- list(c("codelist_name", c("concept_name", "source_concept_name")[byConcept]))
+  strata <- c("year"[byYear], "sex"[bySex], names(ageGroup)) |>
+    as.list()
+
+  result <- list()
+
+  # missing
+  if ("missing" %in% checks) {
+    result$missing <- summariseMissing(drugRecords, group, strata) |>
+      drugResultSettings(subset = subsetName, check = "missing")
+  }
+
+  # variables of interest
+
+  #  exposureDuration
+
+  # type
+
+  # route
+
+  # quantity
+
+  # dose
+
+  # daysBetween
 
 
 }
-subsetDrugRecords <- function(cdm, cohort, )
+subsetDrugRecords <- function(cdm, subsetTable, timing, dateRange, name) {
+
+}
+addStratifications <- function(drugRecords, byConcept, byYear, bySex, ageGroup, name) {
+  cdm <- omopgenerics::cdmReference(drugRecords)
+  if (byConcept) {
+    compute <- TRUE
+    drugRecords <- drugRecords |>
+      dplyr::left_join(
+        cdm$concept |>
+          dplyr::select("drug_concept_id" = "concept_id", "concept_name"),
+        by = "drug_concept_id"
+      ) |>
+      dplyr::left_join(
+        cdm$concept |>
+          dplyr::select(
+            "drug_source_concept_id" = "concept_id",
+            "source_concept_name" = "concept_name"
+          ),
+        by = "drug_source_concept_id"
+      )
+  }
+
+  drugRecords |>
+    PatientProfiles::addDemographicsQuery(
+      indexDate = "drug_exposure_start_date",
+      age = FALSE,
+      ageGroup = ageGroup,
+      sex = bySex,
+    )
+}
+drugResultSettings <- function(result, subset, check) {
+  resId <- unique(result$result_id)
+  result |>
+    omopgenerics::newSummarisedResult(
+      settings = dplyr::tibble(
+        result_id = resId,
+        result_type = "summarise_drug_use",
+        package_name = "PhenotypeR",
+        package_version = as.character(packageVersion("PhenotypeR")),
+        subset = subset,
+        check = check
+      )
+    )
+}
+summariseMissing <- function(drugRecords, group, strata) {
+  cols <- omopgenerics::omopColumns("drug_exposure") |>
+    purrr::keep(\(x) x %in% colnames(drugRecords))
+  result <- PatientProfiles::summariseResult(
+    table = drugRecords,
+    includeOverallGroup = FALSE,
+    group = group,
+    includeOverallStrata = TRUE,
+    strata = strata,
+    variables = list(cols),
+    estimates = list(c("count_missing", "percentage_missing")),
+    counts = FALSE
+  )
+}
 
 #' Summarise diagnostics of the drug exposure table for a given concept set
 #' and/or ingredient
