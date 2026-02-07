@@ -178,24 +178,16 @@ codelistDiagnostics <- function(cohort, measurementSample = 20000){
       codes <- drugs |>
         dplyr::filter(.data$cohort_definition_id == id) |>
         omopgenerics::newCodelist()
-      ingredient <- findIngredient(codes = codes, cdm = cdm)$ingredient_concept_id
-      if (length(ingredient) == 0) {
-        ingredient <- NULL
-        checks <- c("missing", "exposureDuration", "quantity", "type", "route")
-      } else {
-        checks <- c("missing", "exposureDuration", "quantity", "type", "route", "quantity", "dose")
-      }
-      results[[paste0("drug_diagnostics_", id)]] <- summariseDrugExposureDiagnostics(
-        cdm = cdm,
-        # cohort = drugCohort,
-        conceptSet = codes,
-        ingredient = ingredient,
+      results[[paste0("drug_diagnostics_", id)]] <- summariseCohortDrugUse(
+        cohort = drugCohort,
+        codes = codes,
+        timing = "during",
         byConcept = TRUE,
-        # byYear = FALSE,
-        # bySex = FALSE,
-        # ageGroup = NULL,
+        byYear = FALSE,
+        bySex = FALSE,
+        ageGroup = NULL,
         dateRange = as.Date(c(NA, NA)),
-        checks = c("missing", "exposureDuration", "quantity", "type", "route")
+        checks = c("missing", "exposureDuration", "quantity", "type", "route", "quantity", "dose")
       )
       omopgenerics::dropSourceTable(cdm = cdm, name = nm)
     }
