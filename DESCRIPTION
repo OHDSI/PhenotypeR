@@ -1,7 +1,7 @@
 Package: PhenotypeR
 Type: Package
 Title: Assess Study Cohorts Using a Common Data Model
-Version: 0.3.1
+Version: 0.3.2
 Authors@R: c(
     person("Edward", "Burn", , "edward.burn@ndorms.ox.ac.uk", 
     role = c("aut", "cre"), comment = c(ORCID = "0000-0002-9286-1128")),
@@ -57,7 +57,7 @@ Suggests:
     CohortSurvival (>= 1.1.0),
     ellmer,
     htmltools,
-    visOmopResults (>= 1.0.0),
+    visOmopResults (>= 1.4.2),
     rsconnect,
     cpp11,
     progress,
@@ -77,7 +77,7 @@ Imports:
     IncidencePrevalence (>= 1.2.0),
     MeasurementDiagnostics (>= 0.2.0),
     omopgenerics (>= 1.2.0),
-    OmopSketch (>= 1.0.0),
+    OmopSketch (>= 1.0.1),
     PatientProfiles (>= 1.4.5),
     purrr,
     readr,
