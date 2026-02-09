@@ -75,7 +75,7 @@ Imports:
     dplyr,
     DrugUtilisation (>= 1.1.0),
     IncidencePrevalence (>= 1.2.0),
-    MeasurementDiagnostics (>= 0.2.0),
+    MeasurementDiagnostics (>= 0.3.0),
     omopgenerics (>= 1.2.0),
     OmopSketch (>= 1.0.1),
     PatientProfiles (>= 1.4.5),
