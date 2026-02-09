@@ -102,9 +102,10 @@ summariseDrugUseInternal <- function(cdm,
     dateRange = dateRange,
     name = nm
   )
+  on.exit(omopgenerics::dropSourceTable(cdm = cdm, name = nm))
 
   # add stratifications
-  drugRecords <- addStratifications(drugRecords, byConcept, byYear, bySex, ageGroup)
+  drugRecords <- addStratifications(drugRecords, byConcept, byYear, bySex, ageGroup, name = nm)
   group <- list(c("codelist_name", c("concept_name", "source_concept_name")[byConcept]))
   strata <- c("year"[byYear], "sex"[bySex], names(ageGroup)) |>
     as.list()
