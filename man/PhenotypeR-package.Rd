@@ -14,6 +14,7 @@ Phenotype study cohorts in data mapped to the Observational Medical Outcomes Par
 Useful links:
 \itemize{
   \item \url{https://ohdsi.github.io/PhenotypeR/}
+  \item Report bugs at \url{https://github.com/OHDSI/PhenotypeR/issues}
 }
 
 }
