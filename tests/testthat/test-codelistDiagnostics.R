@@ -151,3 +151,43 @@ test_that("measurementDiagnostics working", {
                names(multiple_codes) |> sort())
 })
 
+test_that("drugDiagnostics working", {
+  cdm_local <- omock::mockCdmReference() |>
+    omock::mockPerson(nPerson = 100) |>
+    omock::mockObservationPeriod() |>
+    omock::mockConditionOccurrence() |>
+    omock::mockDrugExposure() |>
+    omock::mockMeasurement() |>
+    omock::mockCohort(name = "my_cohort_1")
+
+  con <- DBI::dbConnect(duckdb::duckdb())
+  cdm <- omopgenerics::insertCdmTo(
+    cdm = cdm_local,
+    to = CDMConnector::dbSource(con = con, writeSchema = "main")
+  )
+
+  codes <- list(all_drugs = unique(cdm_local$drug_exposure$drug_concept_id)) |>
+    omopgenerics::newCodelist()
+  cdm$drug_cohort <- CohortConstructor::conceptCohort(cdm, codes, "drug_cohort")
+
+  expect_no_error(res <- PhenotypeR::codelistDiagnostics(cdm$drug_cohort))
+
+  expect_true(all(
+    settings(res)$result_type %in% c("cohort_code_use", "summarise_drug_use")
+  ))
+
+
+  expect_identical(
+    res |>
+      omopgenerics::settings() |>
+      dplyr::pull("diagnostic") |>
+      unique(),
+    "codelistDiagnostics"
+  )
+
+  # check ingredient work (dose checks)
+
+
+  # no drug diagnostics
+
+})

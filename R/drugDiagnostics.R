@@ -115,31 +115,31 @@ summariseDrugUseInternal <- function(cdm,
   # missing
   if ("missing" %in% checks) {
     result$missing <- summariseMissing(drugRecords, group, strata) |>
-      drugResultSettings(subset = subsetName, check = "missing")
+      drugResultSettings(subset = subsetName, check = "missing", timing = timing)
   }
 
   #  exposureDuration
   if ("exposureDuration" %in% checks) {
     result$exposureDuration <- summariseExposureDuration(drugRecords, group, strata) |>
-      drugResultSettings(subset = subsetName, check = "exposureDuration")
+      drugResultSettings(subset = subsetName, check = "exposureDuration", timing = timing)
   }
 
   # type
   if ("type" %in% checks) {
     result$type <- summariseType(drugRecords, group, strata) |>
-      drugResultSettings(subset = subsetName, check = "type")
+      drugResultSettings(subset = subsetName, check = "type", timing = timing)
   }
 
   # route
   if ("route" %in% checks) {
     result$route <- summariseRoute(drugRecords, group, strata) |>
-      drugResultSettings(subset = subsetName, check = "route")
+      drugResultSettings(subset = subsetName, check = "route", timing = timing)
   }
 
   # quantity
   if ("quantity" %in% checks) {
     result$quantity <- summariseQuantity(drugRecords, group, strata) |>
-      drugResultSettings(subset = subsetName, check = "quantity")
+      drugResultSettings(subset = subsetName, check = "quantity", timing = timing)
   }
 
   # dose
@@ -148,14 +148,14 @@ summariseDrugUseInternal <- function(cdm,
       reportIngredient()
     if (nrow(ingredient) > 0) {
       result$dose <- summariseDose(drugRecords, group, strata, ingredient) |>
-        drugResultSettings(subset = subsetName, check = "dose")
+        drugResultSettings(subset = subsetName, check = "dose", timing = timing)
     }
   }
 
   # daysBetween
   if ("daysBetween" %in% checks) {
     result$daysBetween <- summariseDaysBetween(drugRecords, group, strata) |>
-      drugResultSettings(subset = subsetName, check = "daysBetween")
+      drugResultSettings(subset = subsetName, check = "daysBetween", timing = timing)
   }
 
   omopgenerics::bind(result)
@@ -277,7 +277,7 @@ addStratifications <- function(drugRecords, byConcept, byYear, bySex, ageGroup, 
 
   return(drugRecords)
 }
-drugResultSettings <- function(result, subset, check) {
+drugResultSettings <- function(result, subset, check, timing) {
   resId <- unique(result$result_id)
   result |>
     omopgenerics::newSummarisedResult(
@@ -286,8 +286,9 @@ drugResultSettings <- function(result, subset, check) {
         result_type = "summarise_drug_use",
         package_name = "PhenotypeR",
         package_version = as.character(packageVersion("PhenotypeR")),
+        check = check,
         subset = subset,
-        check = check
+        timing = timing
       )
     )
 }
