@@ -161,7 +161,6 @@ cohortDiagnostics <- function(cohort, survival = FALSE, cohortSample = 20000, ma
                     # "visit_detail",  # not currently supported by CohortCharacteristics
                     "measurement",
                     "procedure_occurrence",
-                    "device_exposure",
                     "observation")
   lscTableEvents<-intersect(lscTableEvents, names(cdm))
 
