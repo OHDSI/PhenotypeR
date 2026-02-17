@@ -98,7 +98,7 @@ shinyDiagnostics <- function(result,
                                        path = file.path(to, "data", "raw"))
 
   # remove tabs
-  if(isTRUE(removeTabs)){
+  if(isTRUE(removeEmptyTabs)){
     ui <- readLines(con = file.path(to,"ui.R"))
     diag_to_remove <- checkWhichDiagnostics(result)
     ui <- removeLines(ui, result, diag_to_remove)
