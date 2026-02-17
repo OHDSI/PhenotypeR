@@ -285,7 +285,7 @@ drugResultSettings <- function(result, subset, check, timing) {
         result_id = resId,
         result_type = "summarise_drug_use",
         package_name = "PhenotypeR",
-        package_version = as.character(packageVersion("PhenotypeR")),
+        package_version = as.character(utils::packageVersion("PhenotypeR")),
         check = check,
         subset = subset,
         timing = timing
