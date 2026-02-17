@@ -402,7 +402,7 @@ summariseDose <- function(drugRecords, group, strata, ingredient) {
     result[[i]] <- drugRecords |>
       dplyr::select(
         "drug_concept_id", "drug_exposure_start_date", "drug_exposure_end_date",
-        "quantity", dplyr::all_of(unique(unlist(strata, group)))
+        "quantity", dplyr::all_of(unique(unlist(c(strata, group))))
       ) |>
       DrugUtilisation::addDailyDose(ingredientConceptId = id, name = nm) |>
       PatientProfiles::summariseResult(
@@ -433,7 +433,7 @@ summariseDaysBetween <- function(drugRecords, group, strata) {
   result <- drugRecords |>
     dplyr::select(
       "person_id", "drug_concept_id", "drug_exposure_start_date",
-      dplyr::all_of(unique(unlist(strata, group)))
+      dplyr::all_of(unique(unlist(c(strata, group))))
     ) |>
     dplyr::group_by(.data$person_id, .data$drug_concept_id) |>
     dplyr::mutate(days_to_next_record = as.integer(clock::date_count_between(
@@ -510,7 +510,7 @@ reportIngredient <- function(conceptTib) {
   if (nrow(conceptTib) == 0) {
     cli::cli_inform(c("!" = "No common ingredient found.", mes))
   } else {
-    x <- paste0("codelist_name: ", conceptTib$codelist_name, "; ingredient:", conceptTib$ingredient_name)
+    x <- paste0("codelist_name: `", conceptTib$codelist_name, "`; ingredient: `", conceptTib$ingredient_name, "`")
     cli::cli_inform(c("v" = "Dose calculated for the following codelists and ingredients:", x,  mes))
   }
   return(conceptTib)
