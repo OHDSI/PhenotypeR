@@ -2,6 +2,7 @@ test_that("getting cohort expectations from ellmer", {
 
   skip_on_cran()
   skip_on_ci()
+  skip_if_not_installed("ellmer")
 
   chat <- ellmer::chat("google_gemini")
 
@@ -25,6 +26,7 @@ test_that("getting cohort expectations from ellmer - using results object", {
 
   skip_on_cran()
   skip_on_ci()
+  skip_if_not_installed("ellmer")
 
   chat <- ellmer::chat("google_gemini")
 
