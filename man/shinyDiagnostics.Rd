@@ -10,7 +10,7 @@ shinyDiagnostics(
   minCellCount = 5,
   open = rlang::is_interactive(),
   expectations = NULL,
-  removeTabs = TRUE
+  removeEmptyTabs = TRUE
 )
 }
 \arguments{
@@ -25,7 +25,7 @@ FALSE, the shiny app will be created but not launched.}
 
 \item{expectations}{Data frame or tibble with cohort expectations. It must contain the following columns: cohort_name, estimate, value, and source.}
 
-\item{removeTabs}{Whether to remove tabs of those diagnostics that have not been performed (TRUE) or not (FALSE)}
+\item{removeEmptyTabs}{Whether to remove tabs of those diagnostics that have not been performed or that were insufficient counts to produce a result (TRUE) or not (FALSE)}
 }
 \value{
 A shiny app

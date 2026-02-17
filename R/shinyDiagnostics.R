@@ -17,7 +17,7 @@
 #' @param open If TRUE, the shiny app will be launched in a new session. If
 #' FALSE, the shiny app will be created but not launched.
 #' @inheritParams expectationsDoc
-#' @param removeTabs Whether to remove tabs of those diagnostics that have not been performed (TRUE) or not (FALSE)
+#' @param removeEmptyTabs Whether to remove tabs of those diagnostics that have not been performed or that were insufficient counts to produce a result (TRUE) or not (FALSE)
 #'
 #' @return A shiny app
 #' @export
@@ -52,7 +52,7 @@ shinyDiagnostics <- function(result,
                              minCellCount = 5,
                              open = rlang::is_interactive(),
                              expectations = NULL,
-                             removeTabs = TRUE){
+                             removeEmptyTabs = TRUE){
   folderName <- "PhenotypeRShiny"
   omopgenerics::assertTable(expectations,
                             columns = c("cohort_name", "estimate", "value", "source"),
