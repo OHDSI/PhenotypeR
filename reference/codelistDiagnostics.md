@@ -58,6 +58,10 @@ cdm$warfarin <- conceptCohort(cdm,
 #> ✔ Cohort warfarin created.
 result <- codelistDiagnostics(cdm$warfarin)
 #> Getting counts of warfarin codes for cohort warfarin
+#> • Getting diagnostics for drug concepts
+#> ✔ Dose calculated for the following codelists and ingredients:
+#> codelist_name: `warfarin`; ingredient: `Warfarin`
+#> ℹ Change ingredient threshold with options(PhenotypeR_ingredient_threshold).
 #> Warning: The CDM reference containing the cohort must also contain achilles tables.
 #> Returning only index event breakdown.
 

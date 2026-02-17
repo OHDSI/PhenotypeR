@@ -11,6 +11,8 @@ Useful links:
 
 - <https://ohdsi.github.io/PhenotypeR/>
 
+- Report bugs at <https://github.com/OHDSI/PhenotypeR/issues>
+
 ## Author
 
 **Maintainer**: Edward Burn <edward.burn@ndorms.ox.ac.uk>
