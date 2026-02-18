@@ -228,10 +228,48 @@ phenotyper_version <- omopgenerics::settings(result) |>
   dplyr::filter(!is.na(phenotyper_version)) |>
   dplyr::pull("phenotyper_version") |>
   unique()
+
 if(length(phenotyper_version)>1){
 cli::cli_warn("Multiple PhenotypeR versions detected in results")
 phenotyper_version <- paste0(phenotyper_version, collapse = "; ")
 }
+
+# Load clinical description ----
+docs <- purrr::imap(
+  rlang::set_names(values$shared_cohort_names),
+  \(x, name) {
+    path <- file.path("data", "raw", "clinical_description", paste0(name, ".docx"))
+    if (!file.exists(path)) return(NULL)
+    path
+  })
+
+clinical_descriptions <- list()
+for(i in seq_along(docs)){
+  name <- names(docs)[[i]]
+
+  if(length(docs[[i]]) == 0){
+    clinical_descriptions[[name]] <- NULL
+  }else{
+    path_docx <- here::here(docs[[i]])
+    text <- parse_docx_runs(path_docx)
+    
+    clinical_descriptions[[name]] <- tibble::tibble(
+      "phenotype" = find_info_in_the_line(text, "Phenotype name:"),
+      "author" = find_info_in_the_line(text, "author:"),
+      "date" = find_info_in_the_line(text, "Date:"),
+      "key_sources" = find_info_in_the_paragraph(text, start = "Information source", end = "Introduction", addStyle = FALSE, removeFirstTitle = TRUE),
+      "background" = list("item" = find_info_in_the_paragraph(text, start = "Introduction", end = "Phenotyping plan", addStyle = TRUE, removeFirstTitle = TRUE)),
+      "phenotyping_plan" = list("item" = find_info_in_the_paragraph(text, start = "Phenotyping plan", end = NULL, addStyle = TRUE, removeFirstTitle = FALSE))
+    )
+  }
+}
+
+clinical_descriptions <- purrr::compact(clinical_descriptions)
+selected$summarise_clinical_description_cohort_name <- selected$shared_cohort_name
+choices$summarise_clinical_description_cohort_name <- choices$shared_cohort_names
+
+selected$shared_cohort_names <- selected$shared_cohort_names[[1]]
+
 cli::cli_inform("Saving data for shiny")
 qs2::qs_savem(dataFiltered,
      selected,
@@ -243,6 +281,7 @@ qs2::qs_savem(dataFiltered,
      msgPopulationDiag,
      phenotyper_version,
      expectations,
+     clinical_descriptions,
      file = here::here("data", "appData.qs"))
 
 rm(result, data, expectations, dataFiltered, choices, selected, values, values_subset)

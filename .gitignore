@@ -12,3 +12,8 @@ inst/shiny/data/appData.RData
 R/extra.R
 CRAN-SUBMISSION
 expectations.csv
+.DS_Store
+inst/shiny/data/appData.qs
+inst/shiny/data/raw/clinical_description/acetaminophen.docx
+inst/shiny/data/raw/clinical_description/acetaminophen.docx
+.RData

@@ -64,6 +64,7 @@ Suggests:
     qs2,
     lubridate,
     systemfonts
+    officer
 Config/testthat/edition: 3
 RoxygenNote: 7.3.3
 Imports: 
