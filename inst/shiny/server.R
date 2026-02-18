@@ -200,6 +200,34 @@ server <- function(input, output, session) {
   })
   outputOptions(output, "measurement_summary_sortable", suspendWhenHidden = FALSE)
 
+  output$drug_diagnostics_sortable <- renderUI({
+    sortable::bucket_list(
+      header = "Table formatting",
+      sortable::add_rank_list(
+        text = "none",
+        labels = c("variable_name", "estimate_name"),
+        input_id = "measurement_summary_gt_none"
+      ),
+      sortable::add_rank_list(
+        text = "header",
+        labels = c("cdm_name"),
+        input_id = "measurement_summary_gt_header"
+      ),
+      sortable::add_rank_list(
+        text = "groupColumn",
+        labels =  c("cohort_name", "codelist_name"),
+        input_id = "measurement_summary_gt_groupColumn"
+      ),
+      sortable::add_rank_list(
+        text = "hide",
+        labels =  c("variable_level"),
+        input_id = "measurement_summary_gt_hide"
+      )
+    )
+  })
+  outputOptions(output, "drug_diagnostics_sortable", suspendWhenHidden = FALSE)
+  
+  
   output$summarise_characteristics_sortable <- renderUI({
     sortable::bucket_list(
       header = "Table formatting",
@@ -1248,6 +1276,60 @@ server <- function(input, output, session) {
     }
   )
 
+
+  # summarise drug diagnostics -----
+  filterDrugDiagnostics<- eventReactive(input$updateDrugDiagnostics, ({
+    req(shared_cdm_names())
+    req(shared_cohort_names())
+    if (is.null(dataFiltered$summarise_drug_use)) {
+      validate("No drug diagnostics in results")
+    }
+    result <- dataFiltered$summarise_drug_use |>
+      dplyr::filter(.data$cdm_name %in% shared_cdm_names()) |>
+      visOmopResults::filterGroup(.data$cohort_name %in%
+                                    shared_cohort_names())
+
+    validateFilteredResult(result)
+
+    return(result)
+  }))
+
+  ## Table drug diagnostics -----
+  createDrugDiagnosticsGT <- shiny::reactive({
+
+    res <- filterDrugDiagnostics()
+
+    tbl <- res |>
+      dplyr::arrange(group_name) |>
+      visOmopResults::visOmopTable(header = c("cdm_name"),
+                                   groupColumn = c("cohort_name", "codelist_name"),
+                                   estimateName = c(N = "<count>",
+                                                    `Median [Q01, Q05, Q25 to Q75, Q95, Q99]` = "<median> [<q01>, <q05>, <q25> to <q75>, <q95>, <q99>]",
+                                                    Range = "<min> to <max>",
+                                                    `Percentage missing` = "<percentage_missing> %"),
+                                   hide = c("variable_level",
+                                            "ingredient_concept_id",
+                                            "ingredient_name")) |>
+      tab_header(
+        title = "Drug exposure diagnostics"
+      ) |>
+      tab_options(
+        heading.align = "left"
+      )
+
+    return(tbl)
+  })
+
+  output$drug_diagnostics_tbl <- shiny::renderUI({
+    createDrugDiagnosticsGT()
+  })
+
+  output$drug_diagnostics_gt_download <- shiny::downloadHandler(
+    filename = "summarise_drug_diagnostics_gt.docx",
+    content = function(file){
+      gt::gtsave(data = createDrugDiagnosticsGT(), filename = file)
+    }
+  )
 
   # summarise_cohort_count -----
   filterCohortCount <- eventReactive(input$updateCohortCount, ({

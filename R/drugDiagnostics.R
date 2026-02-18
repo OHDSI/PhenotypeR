@@ -170,6 +170,7 @@ if(isFALSE(byConcept)){
                                         simplify = FALSE))
   colnames(combinations) <- cols
   combinations$codelist_name <- TRUE
+  combinations$cohort_name <- TRUE
   combinations <- combinations |>
     dplyr::select(c("codelist_name",
                     "drug_type",
@@ -184,9 +185,11 @@ if(isFALSE(byConcept)){
                                         simplify = FALSE))
   colnames(combinations) <- cols
   combinations$source_concept_name <- combinations$concept_name
+  combinations$cohort_name <- TRUE
   combinations$codelist_name <- TRUE
   combinations <- combinations |>
-    dplyr::select(c("codelist_name",
+    dplyr::select(c("cohort_name",
+                    "codelist_name",
                     "concept_name",
                     "source_concept_name",
                     "drug_type",
@@ -215,7 +218,9 @@ subsetDrugRecords <- function(cdm, codes, cohort, timing, dateRange, name) {
       drugRecords <- drugRecords |>
         dplyr::inner_join(
           cohort |>
-            dplyr::select("person_id" = "subject_id") |>
+            PatientProfiles::addCohortName() |>
+            dplyr::select("person_id" = "subject_id",
+                          "cohort_name") |>
             dplyr::distinct(),
           by = "person_id"
         )
@@ -223,10 +228,12 @@ subsetDrugRecords <- function(cdm, codes, cohort, timing, dateRange, name) {
       drugRecords <- drugRecords |>
         dplyr::inner_join(
           cohort |>
+            PatientProfiles::addCohortName() |>
             dplyr::select(
               "person_id" = "subject_id",
               "cohort_start_date",
-              "cohort_end_date"
+              "cohort_end_date",
+              "cohort_name"
             ),
           by = "person_id"
         ) |>
@@ -239,9 +246,11 @@ subsetDrugRecords <- function(cdm, codes, cohort, timing, dateRange, name) {
       drugRecords <- drugRecords |>
         dplyr::inner_join(
           cohort |>
+            PatientProfiles::addCohortName() |>
             dplyr::select(
               "person_id" = "subject_id",
-              "drug_exposure_start_date" = "cohort_start_date"
+              "drug_exposure_start_date" = "cohort_start_date",
+              "cohort_name"
             ) |>
             dplyr::distinct(),
           by = c("person_id", "drug_exposure_start_date")
