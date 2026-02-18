@@ -18,7 +18,8 @@ NULL
 
 #' Helper for consistent documentation of `survival`.
 #'
-#' @param survival Boolean variable. Whether to conduct survival analysis (TRUE) or not (FALSE).
+#' @param survival TRUE or FALSE. Whether to conduct survival analysis (TRUE)
+#' or not (FALSE).
 #'
 #' @name survivalDoc
 #' @keywords internal
@@ -32,6 +33,17 @@ NULL
 #' run.
 #'
 #' @name measurementSampleDoc
+#' @keywords internal
+NULL
+
+#' Helper for consistent documentation of `drugExposureSample`.
+#'
+#' @param drugExposureSample The number of people to take a random sample for
+#' drug diagnostics. If `drugExposureSample = NULL`, no sampling will be
+#' performed. If `drugExposureSample = 0` drug diagnostics will not be
+#' run.
+#'
+#' @name drugExposureSampleDoc
 #' @keywords internal
 NULL
 
