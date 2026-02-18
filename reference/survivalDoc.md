@@ -6,5 +6,5 @@ Helper for consistent documentation of \`survival\`.
 
 - survival:
 
-  Boolean variable. Whether to conduct survival analysis (TRUE) or not
+  TRUE or FALSE. Whether to conduct survival analysis (TRUE) or not
   (FALSE).

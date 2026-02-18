@@ -11,7 +11,11 @@ present in the cdm so that concept counts could be derived.
 ## Usage
 
 ``` r
-codelistDiagnostics(cohort, measurementSample = 20000)
+codelistDiagnostics(
+  cohort,
+  measurementSample = 20000,
+  drugExposureSample = 20000
+)
 ```
 
 ## Arguments
@@ -28,6 +32,12 @@ codelistDiagnostics(cohort, measurementSample = 20000)
   diagnostics. If \`measurementSample = NULL\`, no sampling will be
   performed. If \`measurementSample = 0\` measurement diagnostics will
   not be run.
+
+- drugExposureSample:
+
+  The number of people to take a random sample for drug diagnostics. If
+  \`drugExposureSample = NULL\`, no sampling will be performed. If
+  \`drugExposureSample = 0\` drug diagnostics will not be run.
 
 ## Value
 
@@ -59,9 +69,12 @@ cdm$warfarin <- conceptCohort(cdm,
 result <- codelistDiagnostics(cdm$warfarin)
 #> Getting counts of warfarin codes for cohort warfarin
 #> • Getting diagnostics for drug concepts
+#> Returning entry cohort as the size of the cohorts to be sampled is equal or
+#> smaller than `n`.
 #> ✔ Dose calculated for the following codelists and ingredients:
 #> codelist_name: `warfarin`; ingredient: `Warfarin`
 #> ℹ Change ingredient threshold with options(PhenotypeR_ingredient_threshold).
+#> ! 112 duplicated rows eliminated.
 #> Warning: The CDM reference containing the cohort must also contain achilles tables.
 #> Returning only index event breakdown.
 

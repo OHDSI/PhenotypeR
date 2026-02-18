@@ -64,7 +64,11 @@ the cdm so that concept counts could be derived.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">codelistDiagnostics</span><span class="op">(</span><span class="va">cohort</span>, measurementSample <span class="op">=</span> <span class="fl">20000</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">codelistDiagnostics</span><span class="op">(</span></span>
+<span>  <span class="va">cohort</span>,</span>
+<span>  measurementSample <span class="op">=</span> <span class="fl">20000</span>,</span>
+<span>  drugExposureSample <span class="op">=</span> <span class="fl">20000</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -81,6 +85,13 @@ tables as these will be used for deriving concept counts.</p></dd>
 <dd><p>The number of people to take a random sample for
 measurement diagnostics. If `measurementSample = NULL`, no sampling will be
 performed. If `measurementSample = 0` measurement diagnostics will not be
+run.</p></dd>
+
+
+<dt id="arg-drugexposuresample">drugExposureSample<a class="anchor" aria-label="anchor" href="#arg-drugexposuresample"></a></dt>
+<dd><p>The number of people to take a random sample for
+drug diagnostics. If `drugExposureSample = NULL`, no sampling will be
+performed. If `drugExposureSample = 0` drug diagnostics will not be
 run.</p></dd>
 
 </dl></div>
@@ -114,9 +125,12 @@ run.</p></dd>
 <span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">codelistDiagnostics</span><span class="op">(</span><span class="va">cdm</span><span class="op">$</span><span class="va">warfarin</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Getting counts of warfarin codes for cohort warfarin</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Getting diagnostics for drug concepts</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Returning entry cohort as the size of the cohorts to be sampled is equal or</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> smaller than `n`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Dose calculated for the following codelists and ingredients:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> codelist_name: `warfarin`; ingredient: `Warfarin`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Change ingredient threshold with options(PhenotypeR_ingredient_threshold).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> 112 duplicated rows eliminated.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The CDM reference containing the cohort must also contain achilles tables.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> Returning only index event breakdown.</span>
 <span class="r-in"><span></span></span>
