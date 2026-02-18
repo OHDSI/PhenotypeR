@@ -9,6 +9,7 @@ phenotypeDiagnostics(
   diagnostics = c("databaseDiagnostics", "codelistDiagnostics", "cohortDiagnostics",
     "populationDiagnostics"),
   measurementSample = 20000,
+  drugExposureSample = 20000,
   survival = FALSE,
   cohortSample = 20000,
   matchedSample = 1000,
@@ -28,7 +29,13 @@ measurement diagnostics. If `measurementSample = NULL`, no sampling will be
 performed. If `measurementSample = 0` measurement diagnostics will not be
 run.}
 
-\item{survival}{Boolean variable. Whether to conduct survival analysis (TRUE) or not (FALSE).}
+\item{drugExposureSample}{The number of people to take a random sample for
+drug diagnostics. If `drugExposureSample = NULL`, no sampling will be
+performed. If `drugExposureSample = 0` drug diagnostics will not be
+run.}
+
+\item{survival}{TRUE or FALSE. Whether to conduct survival analysis (TRUE)
+or not (FALSE).}
 
 \item{cohortSample}{The number of people to take a random sample for cohortDiagnostics. If `cohortSample = NULL`, no sampling will be performed.}
 

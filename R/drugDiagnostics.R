@@ -7,7 +7,10 @@ summariseDrugUse <- function(cdm,
                              ageGroup = NULL,
                              dateRange = as.Date(c(NA, NA)),
                              personSample = 20000,
-                             checks = c("missing", "exposureDuration", "type", "route", "dose", "quantity", "daysBetween")) {
+                             checks = c("exposureDuration",
+                                        "dose",
+                                        "quantity",
+                                        "daysBetween")) {
   # validate personSample
   cdm <- omopgenerics::validateCdmArgument(cdm = cdm)
   omopgenerics::assertNumeric(personSample, integerish = TRUE, min = 1, null = TRUE, length = 1)
@@ -45,7 +48,10 @@ summariseCohortDrugUse <- function(cohort,
                                    bySex = FALSE,
                                    ageGroup = NULL,
                                    dateRange = as.Date(c(NA, NA)),
-                                   checks = c("missing", "exposureDuration", "type", "route", "dose", "quantity", "daysBetween")) {
+                                   checks = c("exposureDuration",
+                                              "dose",
+                                              "quantity",
+                                              "daysBetween")) {
   if (is.null(codes)) {
     codes <- omopgenerics::newCodelist(attr(cohort, "cohort_codelist"))
   }
@@ -105,60 +111,93 @@ summariseDrugUseInternal <- function(cdm,
   on.exit(omopgenerics::dropSourceTable(cdm = cdm, name = nm))
 
   # add stratifications
-  drugRecords <- addStratifications(drugRecords, byConcept, byYear, bySex, ageGroup, name = nm)
-  group <- list(c("codelist_name", c("concept_name", "source_concept_name")[byConcept]))
+  drugRecords <- addStratifications(drugRecords = drugRecords,
+                                    byConcept = byConcept,
+                                    byYear = byYear,
+                                    bySex = bySex,
+                                    ageGroup = ageGroup,
+                                    type = TRUE,
+                                    route = TRUE,
+                                    name = nm)
+
+  group <- getDrugGroups(byConcept = byConcept)
   strata <- c("year"[byYear], "sex"[bySex], names(ageGroup)) |>
     as.list()
 
   result <- list(empty = omopgenerics::emptySummarisedResult())
-
-  # missing
-  if ("missing" %in% checks) {
-    result$missing <- summariseMissing(drugRecords, group, strata) |>
-      drugResultSettings(subset = subsetName, check = "missing", timing = timing)
+  for(i in seq_along(group)){
+  result[[paste0("counts_", i)]] <- summariseCounts(drugRecords, group, strata) |>
+    drugResultSettings(subset = subsetName, check = "counts", timing = timing)
   }
-
-  #  exposureDuration
   if ("exposureDuration" %in% checks) {
-    result$exposureDuration <- summariseExposureDuration(drugRecords, group, strata) |>
-      drugResultSettings(subset = subsetName, check = "exposureDuration", timing = timing)
+   for(i in seq_along(group)){
+     result[[paste0("exposureDuration_", i)]] <- summariseExposureDuration(drugRecords, group[[i]], strata) |>
+       drugResultSettings(subset = subsetName, check = "exposureDuration", timing = timing)
+   }
   }
-
-  # type
-  if ("type" %in% checks) {
-    result$type <- summariseType(drugRecords, group, strata) |>
-      drugResultSettings(subset = subsetName, check = "type", timing = timing)
-  }
-
-  # route
-  if ("route" %in% checks) {
-    result$route <- summariseRoute(drugRecords, group, strata) |>
-      drugResultSettings(subset = subsetName, check = "route", timing = timing)
-  }
-
-  # quantity
   if ("quantity" %in% checks) {
-    result$quantity <- summariseQuantity(drugRecords, group, strata) |>
+    for(i in seq_along(group)){
+      result[[paste0("quantity", i)]] <- summariseQuantity(drugRecords, group[[i]], strata) |>
       drugResultSettings(subset = subsetName, check = "quantity", timing = timing)
+    }
   }
-
-  # dose
   if ("dose" %in% checks) {
     ingredient <- findIngredient(codes = codes, cdm = cdm) |>
       reportIngredient()
     if (nrow(ingredient) > 0) {
-      result$dose <- summariseDose(drugRecords, group, strata, ingredient) |>
+      for(i in seq_along(group)){
+        result[[paste0("dose", i)]] <- summariseDose(drugRecords, group[[i]], strata, ingredient) |>
         drugResultSettings(subset = subsetName, check = "dose", timing = timing)
+      }
     }
   }
-
-  # daysBetween
   if ("daysBetween" %in% checks) {
-    result$daysBetween <- summariseDaysBetween(drugRecords, group, strata) |>
-      drugResultSettings(subset = subsetName, check = "daysBetween", timing = timing)
-  }
+    for(i in seq_along(group)){
+      result[[paste0("daysBetween_", i)]] <- summariseDaysBetween(drugRecords, group[[i]], strata) |>
+        drugResultSettings(subset = subsetName, check = "daysBetween", timing = timing)
+    }
+    }
 
   omopgenerics::bind(result)
+}
+
+getDrugGroups <- function(byConcept){
+
+if(isFALSE(byConcept)){
+  cols <- c("drug_type", "route")
+  combinations <- expand.grid(replicate(length(cols),
+                                        c(TRUE, FALSE),
+                                        simplify = FALSE))
+  colnames(combinations) <- cols
+  combinations$codelist_name <- TRUE
+  combinations <- combinations |>
+    dplyr::select(c("codelist_name",
+                    "drug_type",
+                    "route"))
+  group <- apply(combinations, 1, function(row) {
+    names(row)[as.logical(row)]
+  })
+} else {
+  cols <- c("concept_name",  "drug_type", "route")
+  combinations <- expand.grid(replicate(length(cols),
+                                        c(TRUE, FALSE),
+                                        simplify = FALSE))
+  colnames(combinations) <- cols
+  combinations$source_concept_name <- combinations$concept_name
+  combinations$codelist_name <- TRUE
+  combinations <- combinations |>
+    dplyr::select(c("codelist_name",
+                    "concept_name",
+                    "source_concept_name",
+                    "drug_type",
+                    "route")) |>
+    dplyr::arrange(.data$concept_name, .data$drug_type, .data$route)
+
+  group <- apply(combinations, 1, function(row) {
+    names(row)[as.logical(row)]
+  })
+}
+  group
 }
 subsetDrugRecords <- function(cdm, codes, cohort, timing, dateRange, name) {
 
@@ -233,9 +272,24 @@ subsetDrugRecords <- function(cdm, codes, cohort, timing, dateRange, name) {
   drugRecords |>
     dplyr::compute(name = name)
 }
-addStratifications <- function(drugRecords, byConcept, byYear, bySex, ageGroup, name) {
+addStratifications <- function(drugRecords, byConcept, byYear, bySex, ageGroup, type, route, name) {
   cdm <- omopgenerics::cdmReference(drugRecords)
   compute <- FALSE
+
+  if (bySex | length(ageGroup) > 0) {
+    compute <- TRUE
+    drugRecords <- drugRecords |>
+      PatientProfiles::addDemographics(
+        indexDate = "drug_exposure_start_date",
+        age = FALSE,
+        ageGroup = ageGroup,
+        sex = bySex,
+        futureObservation = FALSE,
+        priorObservation = FALSE,
+        dateOfBirth = FALSE,
+        name = name
+      )
+  }
 
   if (byConcept) {
     compute <- TRUE
@@ -256,18 +310,30 @@ addStratifications <- function(drugRecords, byConcept, byYear, bySex, ageGroup, 
       dplyr::mutate(year = clock::get_year(.data$drug_exposure_start_date))
   }
 
-  if (bySex | length(ageGroup) > 0) {
+  if (type) {
     compute <- TRUE
     drugRecords <- drugRecords |>
-      PatientProfiles::addDemographicsQuery(
-        indexDate = "drug_exposure_start_date",
-        age = FALSE,
-        ageGroup = ageGroup,
-        sex = bySex,
-        futureObservation = FALSE,
-        priorObservation = FALSE,
-        dateOfBirth = FALSE
-      )
+      PatientProfiles::addConceptName(
+        column = "drug_type_concept_id",
+        nameStyle = "drug_type"
+      ) |>
+      dplyr::mutate(drug_type = paste0(
+        dplyr::coalesce(.data$drug_type, "unknown"), " (",
+        .data$drug_type_concept_id, ")"
+      ))
+  }
+
+  if (route) {
+    compute <- TRUE
+    drugRecords <- drugRecords |>
+    PatientProfiles::addConceptName(
+      column = "route_concept_id",
+      nameStyle = "route"
+    ) |>
+    dplyr::mutate(route = paste0(
+      dplyr::coalesce(.data$route, "unknown"), " (",
+      .data$route_concept_id, ")"
+    ))
   }
 
   if (compute) {
@@ -292,7 +358,7 @@ drugResultSettings <- function(result, subset, check, timing) {
       )
     )
 }
-summariseMissing <- function(drugRecords, group, strata) {
+summariseCounts <- function(drugRecords, group, strata) {
   cols <- omopgenerics::omopColumns("drug_exposure") |>
     purrr::keep(\(x) x %in% colnames(drugRecords))
   PatientProfiles::summariseResult(
@@ -301,9 +367,8 @@ summariseMissing <- function(drugRecords, group, strata) {
     group = group,
     includeOverallStrata = TRUE,
     strata = strata,
-    variables = list(cols),
-    estimates = list(c("count_missing", "percentage_missing")),
-    counts = FALSE
+    variables = character(),
+    counts = TRUE
   ) |>
     suppressMessages()
 }
@@ -321,72 +386,26 @@ summariseExposureDuration <- function(drugRecords, group, strata) {
       strata = strata,
       variables = list("exposure_duration"),
       estimates = list(c(
-        "min", "q05", "q10", "q25", "median", "q75", "q90", "q95", "max",
-        "percentage_positive", "percentage_0", "percentage_negative",
+        "min", "q01", "q05", "q25", "median", "q75", "q95", "q99", "max",
         "percentage_missing"
       )),
       counts = FALSE
     ) |>
-    suppressMessages()
-}
-summariseType <- function(drugRecords, group, strata) {
-  drugRecords |>
-    PatientProfiles::addConceptName(
-      column = "drug_type_concept_id",
-      nameStyle = "drug_type"
-    ) |>
-    dplyr::mutate(drug_type = paste0(
-      dplyr::coalesce(.data$drug_type, "unknown"), " (",
-      .data$drug_type_concept_id, ")"
-    )) |>
-    PatientProfiles::summariseResult(
-      group = group,
-      includeOverallGroup = FALSE,
-      strata = strata,
-      includeOverallStrata = TRUE,
-      variables = "drug_type",
-      estimates = c("count", "percentage", "count_person")
-    ) |>
-    suppressMessages()
-}
-summariseRoute <- function(drugRecords, group, strata) {
-  drugRecords |>
-    PatientProfiles::addConceptName(
-      column = "route_concept_id",
-      nameStyle = "route"
-    ) |>
-    dplyr::mutate(route = paste0(
-      dplyr::coalesce(.data$route, "unknown"), " (",
-      .data$route_concept_id, ")"
-    )) |>
-    PatientProfiles::summariseResult(
-      group = group,
-      includeOverallGroup = FALSE,
-      strata = strata,
-      includeOverallStrata = TRUE,
-      variables = "route",
-      estimates = c("count", "percentage", "count_person")
-    ) |>
+    dplyr::filter(!.data$variable_name  %in% c("number records", "number subjects")) |>
     suppressMessages()
 }
 summariseQuantity <- function(drugRecords, group, strata) {
   drugRecords |>
-    PatientProfiles::addConceptName(
-      column = "route_concept_id",
-      nameStyle = "route"
-    ) |>
-    dplyr::mutate(route = paste0(
-      dplyr::coalesce(.data$route, "unknown"), " (",
-      .data$route_concept_id, ")"
-    )) |>
     PatientProfiles::summariseResult(
       group = group,
       includeOverallGroup = FALSE,
       strata = strata,
       includeOverallStrata = TRUE,
       variables = "quantity",
-      estimates = c("min", "q05", "q10", "q25", "median", "q75", "q90", "q95", "max")
+      estimates = c("min", "q01", "q05", "q25", "median", "q75", "q95", "q99", "max",
+                    "percentage_missing")
     ) |>
+    dplyr::filter(!.data$variable_name %in% c("number records", "number subjects")) |>
     suppressMessages()
 }
 summariseDose <- function(drugRecords, group, strata, ingredient) {
@@ -411,8 +430,10 @@ summariseDose <- function(drugRecords, group, strata, ingredient) {
         strata = strata,
         includeOverallStrata = TRUE,
         variables = "daily_dose",
-        estimates = c("min", "q05", "q10", "q25", "median", "q75", "q90", "q95", "max", "count_missing", "percentage_missing")
+        estimates = c("min", "q01", "q05", "q25", "median", "q75", "q95", "q99", "max",
+                      "percentage_missing")
       ) |>
+      dplyr::filter(!.data$variable_name  %in% c("number records", "number subjects")) |>
       suppressMessages() |>
       omopgenerics::splitAdditional() |>
       dplyr::mutate(
@@ -436,6 +457,7 @@ summariseDaysBetween <- function(drugRecords, group, strata) {
       dplyr::all_of(unique(unlist(c(strata, group))))
     ) |>
     dplyr::group_by(.data$person_id, .data$drug_concept_id) |>
+    dplyr::arrange(.data$drug_exposure_start_date) |>
     dplyr::mutate(days_to_next_record = as.integer(clock::date_count_between(
       start = .data$drug_exposure_start_date,
       end = dplyr::lead(.data$drug_exposure_start_date),
@@ -448,11 +470,13 @@ summariseDaysBetween <- function(drugRecords, group, strata) {
       strata = strata,
       includeOverallStrata = TRUE,
       variables = "days_to_next_record",
-      estimates = c("min", "q05", "q10", "q25", "median", "q75", "q90", "q95", "max")
+      estimates = c("min", "q01", "q05", "q25", "median", "q75", "q95", "q99", "max",
+                    "percentage_missing")
     ) |>
+    dplyr::filter(!.data$variable_name %in% c("number records", "number subjects")) |>
     suppressMessages()
 
-  omopgenerics::dropSourceTable(cdm = cdm, name = nm)
+    omopgenerics::dropSourceTable(cdm = cdm, name = nm)
 
   return(result)
 }

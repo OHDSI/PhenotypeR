@@ -184,9 +184,21 @@ test_that("drugDiagnostics working", {
     "codelistDiagnostics"
   )
 
+  # no drug diagnostics
+  expect_no_error(res <- PhenotypeR::codelistDiagnostics(cdm$drug_cohort,
+                                                         drugExposureSample = 0))
+  expect_false(any(
+    settings(res)$result_type %in% c("summarise_drug_use")
+  ))
+
+  # sampling
+  expect_no_error(res <- PhenotypeR::codelistDiagnostics(cdm$drug_cohort,
+                                                         drugExposureSample = 2))
+  # add test for sampling, but needs better test data (with associated ingredient)
+
+
   # check ingredient work (dose checks)
 
 
-  # no drug diagnostics
 
 })

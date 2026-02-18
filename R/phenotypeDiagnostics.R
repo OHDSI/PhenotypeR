@@ -14,6 +14,7 @@
 #' include: `databaseDiagnostics`, `codelistDiagnostics`, `cohortDiagnostics`,
 #' and `populationDiagnostics`.
 #' @inheritParams measurementSampleDoc
+#' @inheritParams drugExposureSampleDoc
 #' @inheritParams survivalDoc
 #' @inheritParams cohortSampleDoc
 #' @inheritParams matchedDoc
@@ -40,6 +41,7 @@ phenotypeDiagnostics <- function(cohort,
                                  diagnostics = c("databaseDiagnostics", "codelistDiagnostics",
                                                  "cohortDiagnostics", "populationDiagnostics"),
                                  measurementSample = 20000,
+                                 drugExposureSample = 20000,
                                  survival = FALSE,
                                  cohortSample = 20000,
                                  matchedSample = 1000,
@@ -49,15 +51,15 @@ phenotypeDiagnostics <- function(cohort,
   cohort <- omopgenerics::validateCohortArgument(cohort = cohort)
 
   # Check if a log file exists
-  oldLogFile <- getOption(x = "omopgenerics.logFile", default = NULL) 
-  
+  oldLogFile <- getOption(x = "omopgenerics.logFile", default = NULL)
+
   if (is.null(oldLogFile)) {
     # If no log file exists, create a new temporary one
     log_file <- tempfile(pattern = "phenotypeDiagnostics_log_{date}_{time}", fileext = ".txt")
     omopgenerics::createLogFile(logFile = log_file)
     on.exit(options("omopgenerics.logFile" = NULL))
-  } 
-  
+  }
+
   omopgenerics::logMessage("Phenotype diagnostics - input validation")
 
   omopgenerics::assertChoice(diagnostics,
@@ -85,7 +87,8 @@ phenotypeDiagnostics <- function(cohort,
 
   if ("codelistDiagnostics" %in% diagnostics) {
     results[["code_diag"]] <- codelistDiagnostics(cohort,
-                                                  measurementSample = measurementSample)
+                                                  measurementSample = measurementSample,
+                                                  drugExposureSample = drugExposureSample)
     if(!is.null(incrementalResultPath)){
       if (dir.exists(incrementalResultPath)) {
         exportSummarisedResult(results[["code_diag"]],
