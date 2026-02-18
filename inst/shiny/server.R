@@ -34,7 +34,6 @@ server <- function(input, output, session) {
     inputs_initialized(TRUE)
   })
 
-
   # sortable ui elements -----
   # have these in server to avoid race condition (if in UI)
   output$achilles_sortable <- renderUI({
@@ -380,6 +379,89 @@ server <- function(input, output, session) {
     }
   )
 
+  # clinical description ----
+  clinical_description <- eventReactive(input$updateClinicalDescription, {
+    req(shared_cohort_names())
+    req(inputs_initialized())
+    
+    # require exactly one selection
+    if(length(shared_cohort_names()) > 1){ 
+      info <- "Please select only one cohort"
+    }else{
+      info <- clinical_descriptions[[shared_cohort_names()]]
+    }
+    return(info)   
+  })
+  
+  output$clinical_text <- renderUI({
+    info <- clinical_description()
+    
+    # 1. Validation checks
+    if (is.null(info) || length(info) == 0) {
+      return(tags$p("No clinical description for this cohort."))
+    }
+    
+    if (length(info) == 1) {
+      return(tags$p(info))
+    }
+    
+    # 2. Metadata Handling
+    author      <- if (!is.null(info$author) && info$author != "") info$author else "Unknown author"
+    date        <- if (!is.null(info$date)   && info$date != "")   info$date   else "Unknown date"
+    key_sources <- if (!is.null(info$key_sources) && info$key_sources != "") info$key_sources else "Unknown key sources"
+    
+    # 3. Data Transformation
+    # Use a separate object to avoid overwriting metadata
+    info_for_tbl <- info |>
+      dplyr::select(-dplyr::any_of(c("phenotype", "author", "date", "key_sources")))
+    
+    tbl <- tidyr::pivot_longer(
+      info_for_tbl,
+      cols      = dplyr::everything(),
+      names_to  = "title", 
+      values_to = "content"
+    )
+    
+    # 4. The Table
+    tagList(
+      reactable(
+        tbl,
+        columns = list(
+          title = colDef(
+            name = "",
+            # This bolds the title column itself
+            cell = function(value) tags$strong(value),
+            style = list(cursor = "pointer")
+          ),
+          content = colDef(show = FALSE)
+        ),
+        # Use the direct details function approach
+        details = function(index) {
+          # Ensure we pull a character string, even if the data is a tibble/list
+          text_content <- as.character(tbl$content[index])
+          
+          # Check for empty content
+          if (is.na(text_content) || text_content == "") {
+            return(div(style = "padding: 12px; color: #999;", "No content available."))
+          }
+          
+          tags$div(
+            style = "padding: 15px; border-left: 4px solid #007bff; background: #fcfcfc;",
+            shiny::HTML(text_content)
+          )
+        },
+        bordered  = TRUE,
+        highlight = TRUE,
+        compact   = TRUE
+      ),
+      tags$div(style = "margin-top: 10px;"),
+      tags$div(style = "color:#6c757d; font-size: 0.9em;", 
+               paste0("Author: ", author, " (Date: ", date, ")")),
+      tags$div(style = "color:#6c757d; font-size: 0.9em;", 
+               paste0("Key sources: ", key_sources))
+    )
+  })
+  
   # summarise_omop_snapshot -----
   filterOmopSnapshot <- eventReactive(input$updateSnapshot, ({
     if (is.null(dataFiltered$summarise_omop_snapshot)) {
