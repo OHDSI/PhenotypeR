@@ -119,12 +119,11 @@ test_that("measurementDiagnostics working", {
 
 
  # sampling
-  res_sampled <- PhenotypeR::codelistDiagnostics(cdm$measurement_cohort,
-                                         measurementSample = 5)
+  res_sampled <- PhenotypeR::codelistDiagnostics(cdm$measurement_cohort, measurementSample = 5)
 
   expect_true(res_sampled |>
     omopgenerics::filterSettings(result_type == "measurement_summary") |>
-    dplyr::filter(variable_name == "number subjects") |>
+    dplyr::filter(variable_name == "number_subjects", .data$estimate_name == "count") |>
     dplyr::pull("estimate_value") |>
     as.integer() <= 5)
 
