@@ -199,7 +199,9 @@ codelistDiagnostics <- function(cohort,
         bySex = FALSE,
         ageGroup = NULL,
         dateRange = as.Date(c(NA, NA)),
-        checks = c("missing", "exposureDuration", "quantity", "type", "route", "quantity", "dose")
+        checks = c("exposureDuration", "quantity", "type",
+                   "route", "quantity", "dose",
+                   "daysBetween")
       )
       omopgenerics::dropSourceTable(cdm = cdm, name = nm)
     }
