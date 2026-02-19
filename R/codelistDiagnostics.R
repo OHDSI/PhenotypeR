@@ -177,7 +177,9 @@ codelistDiagnostics <- function(cohort,
     dplyr::filter(tolower(.data$domain_id) %in% c("drug")) |>
     dplyr::collect()
   if (nrow(drugs) > 0) {
-    cli::cli_bullets(c("*" = "Getting diagnostics for drug concepts"))
+    if (!is.null(getOption("omopgenerics.logFile"))) {
+      omopgenerics::logMessage("Codelist diagnostics - drug diagnostics")
+    }
     drugCohortsIds <- unique(drugs$cohort_definition_id)
     for (id in drugCohortsIds) {
       nm <- omopgenerics::uniqueTableName()
