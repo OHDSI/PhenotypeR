@@ -68,7 +68,6 @@ cdm$warfarin <- conceptCohort(cdm,
 #> ✔ Cohort warfarin created.
 result <- codelistDiagnostics(cdm$warfarin)
 #> Getting counts of warfarin codes for cohort warfarin
-#> • Getting diagnostics for drug concepts
 #> Returning entry cohort as the size of the cohorts to be sampled is equal or
 #> smaller than `n`.
 #> ✔ Dose calculated for the following codelists and ingredients:
