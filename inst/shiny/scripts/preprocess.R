@@ -258,7 +258,7 @@ for(i in seq_along(docs)){
       "author" = find_info_in_the_line(text, "author:"),
       "date" = find_info_in_the_line(text, "Date:"),
       "key_sources" = find_info_in_the_paragraph(text, start = "Information source", end = "Introduction", addStyle = FALSE, removeFirstTitle = TRUE),
-      "background" = list("item" = find_info_in_the_paragraph(text, start = "Introduction", end = "Phenotyping plan", addStyle = TRUE, removeFirstTitle = TRUE)),
+      "background" = list("item" = find_info_in_the_paragraph(text, start = "Introduction", end = "Phenotyping plan", addStyle = TRUE, removeFirstTitle = FALSE)),
       "phenotyping_plan" = list("item" = find_info_in_the_paragraph(text, start = "Phenotyping plan", end = NULL, addStyle = TRUE, removeFirstTitle = FALSE))
     )
   }

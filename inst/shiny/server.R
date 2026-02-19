@@ -5,7 +5,7 @@ server <- function(input, output, session) {
 
   # Shared variables
   inputs_initialized <- reactiveVal(FALSE)
-  shared_cdm_names     <- reactiveVal(NULL)
+  shared_cdm_names   <- reactiveVal(NULL)
   shared_cohort_names  <- reactiveVal(NULL)
 
   # fill selectise variables ----
@@ -407,6 +407,7 @@ server <- function(input, output, session) {
     author      <- if (!is.null(info$author) && info$author != "") info$author else "Unknown author"
     date        <- if (!is.null(info$date)   && info$date != "")   info$date   else "Unknown date"
     key_sources <- if (!is.null(info$key_sources) && info$key_sources != "") info$key_sources else "Unknown key sources"
+    metadata_text <- paste0("Author: ", author, " (Date: ", date, ")<br>Sources: ", key_sources)
     
     info <- info |>
       dplyr::select(-dplyr::any_of(c("phenotype", "author", "date", "key_sources"))) 
@@ -415,9 +416,15 @@ server <- function(input, output, session) {
     info <- paste0("<lbr>", info, "</br>")
     text <- c("<ul>", info, "</ul>")
 
-    tags$div(
-      style = "padding: 15px; border-left: 4px solid #750075; background: #E9E9E9; font-weight: normal;",
-      shiny::HTML(text)
+    tagList(
+      tags$div(
+        style = "padding: 15px; border-left: 4px solid #750075; color = grey; background: #E9E9E9; font-style: italic;",
+        shiny::HTML(metadata_text)
+      ),
+      tags$div(
+        style = "padding: 15px; border-left: 4px solid #750075; background: #E9E9E9; font-weight: normal;",
+        shiny::HTML(text)
+      )
     )
   })
   

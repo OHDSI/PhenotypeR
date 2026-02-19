@@ -8,10 +8,10 @@ ui <- fluidPage(
     bslib::nav_panel(title = "Background",
                      icon = shiny::icon("disease"),
                      shiny::includeMarkdown(path = "background.md")),
+    # clinicalDescriptions_start -----
     bslib::nav_menu(
       title = "Phenotypes",
       icon = shiny::icon("list"),
-      ##clinical_descriptions ----
       bslib::nav_panel(
         title = "Clinical descriptions",
         bslib::accordion(
@@ -72,6 +72,8 @@ ui <- fluidPage(
         )
       )
     ),
+    # clinicalDescriptions_end -----
+    
     # databaseDiagnostics_start -----
     bslib::nav_menu(
       title = "Database diagnostics",
@@ -255,164 +257,71 @@ ui <- fluidPage(
                            style = "simple"),
                 width = "100%"
               )
-            )),
-          icon = shiny::icon("circle-user"),
-          bslib::layout_sidebar(
-            sidebar = bslib::sidebar(width = 400, open = "closed",
-                                     bslib::accordion(
-                                       bslib::accordion_panel(
-                                         title = "Settings",
-                                         shinyWidgets::pickerInput(
-                                           inputId = "summarise_clinical_records_omop_table",
-                                           label = "Table",
-                                           choices = NULL,
-                                           selected = NULL,
-                                           multiple = TRUE,
-                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                                         ),
-                                       )
-                                     )
-            ),
-            bslib::navset_card_tab(
-              bslib::nav_panel(
-                title = "Table Clinical Records",
-                bslib::card(
-                  full_screen = TRUE,
-                  bslib::card_header(
-                    shiny::downloadButton(outputId = "summarise_clinical_records_gt_download", label = ""),
-                    class = "text-end"
-                  ),
-                  gt::gt_output("summarise_clinical_records_gt") |> withSpinner()
-                )
-              ),
-              bslib::nav_panel(
-                title = "Trends",
-                bslib::layout_sidebar(
-                  sidebar = bslib::sidebar(width = 400, open = "closed",
-                                           shinyWidgets::pickerInput(
-                                             inputId = "clinical_records_plot_facet",
-                                             label = "Facet",
-                                             selected = "cdm_name",
-                                             multiple = TRUE,
-                                             choices = c("cdm_name",
-                                                         "omop_table"),
-                                             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                                           ),
-                                           shiny::checkboxInput(
-                                             inputId = "clinical_records_plot_facet_free",
-                                             label = "Free scales",
-                                             value = c(FALSE)
-                                           ),
-                                           shinyWidgets::pickerInput(
-                                             inputId = "clinical_records_plot_colour",
-                                             label = "Colour",
-                                             selected = "omop_table",
-                                             multiple = TRUE,
-                                             choices = c("cdm_name",
-                                                         "omop_table"),
-                                             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                                           ),
-                                           position = "right"
-                  ),
-                  bslib::card(
-                    full_screen = TRUE,
-                    plotOutput("clinicalTrends")
-                  )
-                )
-              )
             )
-          )
-        )
-        ## clinical_records_end ----
-      ),
-      # databaseDiagnostics_end ----
-      # codelistDiagnostics_start -----
-      bslib::nav_menu(
-        title = "Codelist diagnostics",
-        icon = shiny::icon("list"),
-        ## achilles_results_start
-        ## achilles code use -----
-        bslib::nav_panel(
-          title = "Achilles code use",
-          bslib::accordion(
-            bslib::accordion_panel(
-              title = "Shared inputs",
-              tags$div(
-                style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
-                tags$label("Select Database(s):"),
-                tags$div(
-                  style = "width: 225px;",
-                  tags$div(
-                    style = "margin-top: 15px;",
-                    shinyWidgets::pickerInput(
-                      inputId = "achilles_code_use_cdm_name",
-                      label = NULL,
-                      selected = selected$shared_cdm_name,
-                      choices = choices$shared_cdm_name,
-                      multiple = TRUE,
-                      options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                                     `deselect-all-text` = "None", `select-all-text` = "All"),
-                      width = "100%"
-                    )
-                  )
-                ),
-                tags$div(
-                  style = "width: 225px;",
-                  actionBttn("updateAchillesCodeUse", "Update",
-                             style = "simple"),
-                  width = "100%"
-                )
-              )
-            )),
-          icon = shiny::icon("database"),
-          bslib::layout_sidebar(
-            sidebar = bslib::sidebar(width = 400, open = "closed",
-                                     bslib::accordion(
-                                       bslib::accordion_panel(
-                                         title = "Settings",
-                                         shinyWidgets::pickerInput(
-                                           inputId = "achilles_code_use_codelist_name",
-                                           label = "Codelist name",
-                                           choices = NULL,
-                                           selected = NULL,
-                                           multiple = TRUE,
-                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                                         ),
-                                         div(style="display: flex; justify-content: space-between;",
-                                             div(style="flex: 1;", prettyCheckbox(inputId = "achilles_person_count",
-                                                                                  label = "Person count",
-                                                                                  value = TRUE,
-                                                                                  status = "primary",
-                                                                                  shape = "curve",
-                                                                                  outline = TRUE)),
-                                             div(style="flex: 1;", prettyCheckbox(inputId = "achilles_record_count",
-                                                                                  label = "Record count",
-                                                                                  value = TRUE,
-                                                                                  status = "primary",
-                                                                                  shape = "curve",
-                                                                                  outline = TRUE))
-                                         )
-                                       ),
-                                       shiny::checkboxInput(
-                                         inputId = "clinical_records_plot_facet_free",
-                                         label = "Free scales",
-                                         value = c(FALSE)
-                                       ),
+          )),
+        icon = shiny::icon("circle-user"),
+        bslib::layout_sidebar(
+          sidebar = bslib::sidebar(width = 400, open = "closed",
+                                   bslib::accordion(
+                                     bslib::accordion_panel(
+                                       title = "Settings",
                                        shinyWidgets::pickerInput(
-                                         inputId = "clinical_records_plot_colour",
-                                         label = "Colour",
-                                         selected = "omop_table",
+                                         inputId = "summarise_clinical_records_omop_table",
+                                         label = "Table",
+                                         choices = NULL,
+                                         selected = NULL,
                                          multiple = TRUE,
-                                         choices = c("cdm_name",
-                                                     "omop_table"),
                                          options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
                                        ),
-                                       position = "right"
-                                     ),
-                                     bslib::card(
-                                       full_screen = TRUE,
-                                       plotOutput("clinicalTrends")
                                      )
+                                   )
+          ),
+          bslib::navset_card_tab(
+            bslib::nav_panel(
+              title = "Table Clinical Records",
+              bslib::card(
+                full_screen = TRUE,
+                bslib::card_header(
+                  shiny::downloadButton(outputId = "summarise_clinical_records_gt_download", label = ""),
+                  class = "text-end"
+                ),
+                gt::gt_output("summarise_clinical_records_gt") |> withSpinner()
+              )
+            ),
+            bslib::nav_panel(
+              title = "Trends",
+              bslib::layout_sidebar(
+                sidebar = bslib::sidebar(width = 400, open = "closed",
+                                         shinyWidgets::pickerInput(
+                                           inputId = "clinical_records_plot_facet",
+                                           label = "Facet",
+                                           selected = "cdm_name",
+                                           multiple = TRUE,
+                                           choices = c("cdm_name",
+                                                       "omop_table"),
+                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                         ),
+                                         shiny::checkboxInput(
+                                           inputId = "clinical_records_plot_facet_free",
+                                           label = "Free scales",
+                                           value = c(FALSE)
+                                         ),
+                                         shinyWidgets::pickerInput(
+                                           inputId = "clinical_records_plot_colour",
+                                           label = "Colour",
+                                           selected = "omop_table",
+                                           multiple = TRUE,
+                                           choices = c("cdm_name",
+                                                       "omop_table"),
+                                           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                         ),
+                                         position = "right"
+                ),
+                bslib::card(
+                  full_screen = TRUE,
+                  plotOutput("clinicalTrends")
+                )
+              )
             )
           )
         )
@@ -1105,8 +1014,80 @@ ui <- fluidPage(
             )
           )
         )
+      ), ## measurement_diagnostics_end
+      ## drug_diagnostics_start
+      ## Drug diagnostics -----
+      bslib::nav_panel(
+        title = "Drug diagnostics",        
+        bslib::accordion(
+          bslib::accordion_panel(
+            title = "Shared inputs",
+            tags$div(
+              style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
+              tags$label("Select Database(s):"),
+              tags$div(
+                style = "width: 225px;",
+                tags$div(
+                  style = "margin-top: 15px;",
+                  shinyWidgets::pickerInput(
+                    inputId = "drug_diagnostics_cdm_name",
+                    label = NULL,
+                    selected = selected$shared_cdm_name,
+                    choices = choices$shared_cdm_name,
+                    multiple = TRUE,
+                    options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                                   `deselect-all-text` = "None", `select-all-text` = "All"),
+                    width = "100%"
+                  )
+                )
+              ),
+              tags$label("Select Cohort(s):"),
+              tags$div(
+                style = "width: 225px;",
+                tags$div(
+                  style = "margin-top: 15px;",
+                  shinyWidgets::pickerInput(
+                    inputId = "drug_diagnostics_cohort_name",
+                    label = NULL,
+                    selected = selected$shared_cohort_name,
+                    choices = choices$shared_cohort_name,
+                    multiple = TRUE,
+                    options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                                   `deselect-all-text` = "None", `select-all-text` = "All"),
+                    width = "100%"
+                  )
+                )
+              ),
+              tags$div(
+                style = "width: 225px;",
+                actionBttn("updateDrugDiagnostics", "Update",
+                           style = "simple"),
+                width = "100%"
+              )
+            )
+          )),
+        icon = shiny::icon("pills"),
+        bslib::navset_card_tab(
+          bslib::nav_panel(
+            title = "Drug diagnostics",
+            bslib::card(
+              full_screen = TRUE,
+              bslib::card_header(
+                shiny::downloadButton(outputId = "drug_diagnostics_gt_download", label = ""),
+                class = "text-end"
+              ),
+              bslib::layout_sidebar(
+                sidebar = bslib::sidebar(width = 400, open = "closed",
+                                         uiOutput("drug_diagnostics_sortable"),
+                                         position = "right"
+                ),
+                gt::gt_output("drug_diagnostics_tbl") |> withSpinner()
+              )
+            )
+          )
+        )
       )
-      ## measurement_diagnostics_end
+      ## drug_diagnostics_end
     ),
     # codelistDiagnostics_end ----
     # cohortDiagnostics_start -----
