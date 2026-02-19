@@ -200,6 +200,9 @@ checkWhichDiagnostics <- function(result){
     if(!"measurement_summary" %in% (omopgenerics::settings(result) |> dplyr::pull("result_type") |> unique())){
       to_remove <- append(to_remove, "measurement_diagnostics")
     }
+    if(!"drug_diagnostics" %in% (omopgenerics::settings(result) |> dplyr::pull("result_type") |> unique())){
+      to_remove <- append(to_remove, "drug_diagnostics")
+    }
   }
   if(!"cohortDiagnostics" %in% to_remove){
     if(!"survival_estimates" %in% (omopgenerics::settings(result) |> dplyr::pull("result_type") |> unique())){
