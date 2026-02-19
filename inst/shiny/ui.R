@@ -949,7 +949,8 @@ ui <- fluidPage(
             )
           )
         )
-      ),
+      ), ## measurement_diagnostics_end
+      ## drug_diagnostics_start
       ## Drug diagnostics -----
       bslib::nav_panel(
         title = "Drug diagnostics",        
@@ -1021,6 +1022,7 @@ ui <- fluidPage(
           )
         )
       )
+      ## drug_diagnostics_end
     ),
     # codelistDiagnostics_end ----
     # cohortDiagnostics_start -----

@@ -205,23 +205,25 @@ server <- function(input, output, session) {
       header = "Table formatting",
       sortable::add_rank_list(
         text = "none",
-        labels = c("variable_name", "estimate_name"),
-        input_id = "measurement_summary_gt_none"
+        labels = c("ingredient_name","variable_name", "estimate_name",
+                   "route", "drug_type"),
+        input_id = "drug_diagnostics_gt_none"
       ),
       sortable::add_rank_list(
         text = "header",
         labels = c("cdm_name"),
-        input_id = "measurement_summary_gt_header"
+        input_id = "drug_diagnostics_gt_header"
       ),
       sortable::add_rank_list(
         text = "groupColumn",
         labels =  c("cohort_name", "codelist_name"),
-        input_id = "measurement_summary_gt_groupColumn"
+        input_id = "drug_diagnostics_gt_groupColumn"
       ),
       sortable::add_rank_list(
         text = "hide",
-        labels =  c("variable_level"),
-        input_id = "measurement_summary_gt_hide"
+        labels =  c("variable_level",
+                    "ingredient_concept_id"),
+        input_id = "drug_diagnostics_gt_hide"
       )
     )
   })
@@ -1298,18 +1300,15 @@ server <- function(input, output, session) {
   createDrugDiagnosticsGT <- shiny::reactive({
 
     res <- filterDrugDiagnostics()
-
     tbl <- res |>
       dplyr::arrange(group_name) |>
-      visOmopResults::visOmopTable(header = c("cdm_name"),
-                                   groupColumn = c("cohort_name", "codelist_name"),
+      visOmopResults::visOmopTable(header = input$drug_diagnostics_gt_header,
+                                   groupColumn = input$drug_diagnostics_gt_groupColumn,
                                    estimateName = c(N = "<count>",
                                                     `Median [Q01, Q05, Q25 to Q75, Q95, Q99]` = "<median> [<q01>, <q05>, <q25> to <q75>, <q95>, <q99>]",
                                                     Range = "<min> to <max>",
                                                     `Percentage missing` = "<percentage_missing> %"),
-                                   hide = c("variable_level",
-                                            "ingredient_concept_id",
-                                            "ingredient_name")) |>
+                                   hide = input$drug_diagnostics_gt_hide ) |>
       tab_header(
         title = "Drug exposure diagnostics"
       ) |>
