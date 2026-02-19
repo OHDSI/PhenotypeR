@@ -162,7 +162,7 @@ find_info_in_the_paragraph <- function(doc_text, start, end, addStyle, removeFir
   return(doc_text)
 }
 
-# Function to parse runs and formatting from a .docx
+
 parse_docx_runs <- function(path_docx) {
   
   unzip(path_docx, files = "word/document.xml", exdir = "data/raw/clinical_description")
@@ -175,13 +175,11 @@ parse_docx_runs <- function(path_docx) {
   paragraphs <- xml2::xml_find_all(doc, ".//w:p", ns = ns)
   
   rows <- purrr::imap_dfr(paragraphs, function(pnode, p_index) {
-    # paragraph style (if present)
     pstyle_node <- xml2::xml_find_first(pnode, ".//w:pPr/w:pStyle", ns = ns)
     style_name <- if (!is.na(pstyle_node)) xml2::xml_attr(pstyle_node, "w:val") else NA_character_
     
     runs <- xml2::xml_find_all(pnode, ".//w:r", ns = ns)
     if (length(runs) == 0) {
-      # sometimes text sits in w:fldSimple or other constructs; try extracting any w:t under paragraph
       text_nodes <- xml2::xml_find_all(pnode, ".//w:t", ns = ns)
       text_combined <- paste0(xml2::xml_text(text_nodes), collapse = "")
       dplyr::tibble(
@@ -195,12 +193,9 @@ parse_docx_runs <- function(path_docx) {
       )
     } else {
       purrr::imap_dfr(runs, function(rnode, r_index) {
-        # collect text inside this run (multiple w:t nodes possible)
         tnodes <- xml2::xml_find_all(rnode, ".//w:t", ns = ns)
         text_run <- if (length(tnodes) == 0) "" else paste0(xml2::xml_text(tnodes), collapse = "")
         
-        # formatting: presence of <w:b>, <w:i>, <w:u> inside rPr indicates formatting
-        # Note: this doesn't inspect w:val attribute; it's a practical approach that works for typical docs
         has_b <- length(xml2::xml_find_all(rnode, ".//w:rPr/w:b", ns = ns)) > 0
         has_i <- length(xml2::xml_find_all(rnode, ".//w:rPr/w:i", ns = ns)) > 0
         has_u <- length(xml2::xml_find_all(rnode, ".//w:rPr/w:u", ns = ns)) > 0
@@ -221,6 +216,6 @@ parse_docx_runs <- function(path_docx) {
   rows <- rows |>
     dplyr::arrange(paragraph_index, run_index)
   
-  file.remove(file.path("data/raw/clinical_description", "word", "document.xml"))
+  unlink(file.path("data/raw/clinical_description", "word"))
   return(rows)
 }

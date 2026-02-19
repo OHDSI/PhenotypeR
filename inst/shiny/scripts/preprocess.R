@@ -238,7 +238,7 @@ phenotyper_version <- paste0(phenotyper_version, collapse = "; ")
 docs <- purrr::imap(
   rlang::set_names(values$shared_cohort_names),
   \(x, name) {
-    path <- file.path("data", "raw", "clinical_description", paste0(name, ".docx"))
+    path <- file.path("data", "raw", "clinical_descriptions", paste0(name, ".docx"))
     if (!file.exists(path)) return(NULL)
     path
   })
