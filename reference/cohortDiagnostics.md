@@ -72,7 +72,7 @@ result <- cohortDiagnostics(cdm$warfarin)
 #> ℹ summarising cohort warfarin
 #> ✔ summariseCharacteristics finished!
 #> → Skipping cohort sampling as all cohorts have less than 20000 individuals.
-#> → Sampling cohort `tmp_020_sampled`
+#> → Sampling cohort `tmp_006_sampled`
 #> Returning entry cohort as the size of the cohorts to be sampled is equal or
 #> smaller than `n`.
 #> • Generating an age and sex matched cohort for warfarin
@@ -101,8 +101,8 @@ result <- cohortDiagnostics(cdm$warfarin)
 #> • age: density
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side
-#> → Start summary of data, at 2026-02-19 09:36:55.41304
-#> ✔ Summary finished, at 2026-02-19 09:36:55.537451
+#> → Start summary of data, at 2026-02-20 09:33:47.042028
+#> ✔ Summary finished, at 2026-02-20 09:33:47.170374
 #> ℹ Summarising large scale characteristics 
 #>  - getting characteristics from table condition_occurrence (1 of 7)
 #>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
@@ -161,7 +161,7 @@ result <- cohortDiagnostics(cdm$warfarin)
 #>  - getting characteristics from table drug_era (7 of 7) for time window 31 and …
 #>  - getting characteristics from table drug_era (7 of 7) for time window 366 and…
 #> Formatting result
-#> 526 estimates dropped as frequency less than 1%
+#> 420 estimates dropped as frequency less than 1%
 #> ✔ Summarising large scale characteristics
 #> ℹ Summarising large scale characteristics 
 #>  - getting characteristics from table condition_occurrence (1 of 7)
@@ -221,7 +221,7 @@ result <- cohortDiagnostics(cdm$warfarin)
 #>  - getting characteristics from table drug_era (7 of 7) for time window 31 and …
 #>  - getting characteristics from table drug_era (7 of 7) for time window 366 and…
 #> Formatting result
-#> 526 estimates dropped as frequency less than 1%
+#> 420 estimates dropped as frequency less than 1%
 #> ✔ Summarising large scale characteristics
 #> `cohort_sample` and `matched_sample` casted to character.
 # }

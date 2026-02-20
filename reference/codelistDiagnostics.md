@@ -70,10 +70,24 @@ result <- codelistDiagnostics(cdm$warfarin)
 #> Getting counts of warfarin codes for cohort warfarin
 #> Returning entry cohort as the size of the cohorts to be sampled is equal or
 #> smaller than `n`.
+#> ℹ The following estimates will be calculated:
+#> • exposure_duration: min, q01, q05, q25, median, q75, q95, q99, max,
+#>   percentage_missing
+#> • quantity: min, q01, q05, q25, median, q75, q95, q99, max, percentage_missing
+#> ! Table is collected to memory as not all requested estimates are supported on
+#>   the database side
+#> → Start summary of data, at 2026-02-20 09:33:10.334757
+#> ✔ Summary finished, at 2026-02-20 09:33:11.27374
+#> ℹ The following estimates will be calculated:
+#> • days_to_next_record: min, q01, q05, q25, median, q75, q95, q99, max,
+#>   percentage_missing
+#> ! Table is collected to memory as not all requested estimates are supported on
+#>   the database side
+#> → Start summary of data, at 2026-02-20 09:33:12.010394
+#> ✔ Summary finished, at 2026-02-20 09:33:12.20014
 #> ✔ Dose calculated for the following codelists and ingredients:
 #> codelist_name: `warfarin`; ingredient: `Warfarin`
 #> ℹ Change ingredient threshold with options(PhenotypeR_ingredient_threshold).
-#> ! 112 duplicated rows eliminated.
 #> Warning: The CDM reference containing the cohort must also contain achilles tables.
 #> Returning only index event breakdown.
 
