@@ -205,8 +205,7 @@ server <- function(input, output, session) {
       header = "Table formatting",
       sortable::add_rank_list(
         text = "none",
-        labels = c("ingredient_name","variable_name", "estimate_name",
-                   "route", "drug_type"),
+        labels = c("ingredient_name","variable_name", "estimate_name"),
         input_id = "drug_diagnostics_gt_none"
       ),
       sortable::add_rank_list(
@@ -221,7 +220,8 @@ server <- function(input, output, session) {
       ),
       sortable::add_rank_list(
         text = "hide",
-        labels =  c("variable_level",
+        labels =  c("route", "drug_type",
+                    "variable_level",
                     "ingredient_concept_id"),
         input_id = "drug_diagnostics_gt_hide"
       )
@@ -1286,10 +1286,27 @@ server <- function(input, output, session) {
     if (is.null(dataFiltered$summarise_drug_use)) {
       validate("No drug diagnostics in results")
     }
+
     result <- dataFiltered$summarise_drug_use |>
-      dplyr::filter(.data$cdm_name %in% shared_cdm_names()) |>
+      dplyr::filter(.data$cdm_name %in% shared_cdm_names()) |> 
       visOmopResults::filterGroup(.data$cohort_name %in%
-                                    shared_cohort_names())
+                                    shared_cohort_names()) |>
+      omopgenerics::filterGroup(.data$codelist_name %in% 
+                                  input$summarise_drug_use_codelist_name) |>
+      omopgenerics::filterGroup(.data$route %in% 
+                                  input$summarise_drug_use_route) |>
+      omopgenerics::filterGroup(.data$drug_type %in% 
+                                  input$summarise_drug_use_drug_type)
+
+    if(isFALSE(input$drug_use_overall)){
+      result <- result |> 
+        dplyr::filter(str_detect(group_name, "concept_name"))
+    }
+    
+    if(isFALSE(input$drug_use_by_concept)){
+      result <- result |> 
+        dplyr::filter(str_detect(group_name, "concept_name", negate = TRUE))
+    }
 
     validateFilteredResult(result)
 
@@ -1318,9 +1335,66 @@ server <- function(input, output, session) {
 
     return(tbl)
   })
+  
+  createDrugDiagnosticsInteractive <- shiny::reactive({
+    
+    res <- filterDrugDiagnostics()
+    tbl <- res |>
+      dplyr::arrange(group_name, group_level) |>
+      visOmopResults::visOmopTable(header = input$drug_diagnostics_gt_header,
+                                   groupColumn = input$drug_diagnostics_gt_groupColumn,
+                                   estimateName = c(N = "<count>",
+                                                    `Median [Q01, Q05, Q25 to Q75, Q95, Q99]` = "<median> [<q01>, <q05>, <q25> to <q75>, <q95>, <q99>]",
+                                                    Range = "<min> to <max>",
+                                                    `Percentage missing` = "<percentage_missing> %"),
+                                   hide = input$drug_diagnostics_gt_hide,
+                                   type = "tibble") 
+    names(tbl) <-stringr::str_remove_all(names(tbl),
+                                         "\\[header_name\\]CDM name\\n\\[header_level\\]")
+    names(tbl) <- stringr::str_remove_all(names(tbl),
+                                          "Estimate name\n\\[header_level\\]")
+    names(tbl) <- stringr::str_replace_all(names(tbl),
+                                           "\n\\[header_name\\]",
+                                           ": ")
+    
+    return(tbl)
+  })
 
   output$drug_diagnostics_tbl <- shiny::renderUI({
-    createDrugDiagnosticsGT()
+    if(isFALSE(input$drug_diagnostics_interactive)){
+      tbl <- createDrugDiagnosticsGT()
+      return(tbl)
+    } else {
+      tbl <- createDrugDiagnosticsInteractive() 
+      
+      tbl <- tbl |>
+        dplyr::mutate("Cohort name - Codelist name" =
+                        paste0(.data[["Cohort name"]], " - ", .data[["Codelist name"]])) |>
+        dplyr::select(-c("Cohort name", "Codelist name")) |>
+        dplyr::relocate("Cohort name - Codelist name")
+      
+      
+      # column ordering by codelist and first column with a count
+      order <- list("Cohort name - Codelist name"  = "asc")
+      
+      tbl <- reactable(tbl,
+                       groupBy = c("Cohort name - Codelist name"),
+                       columns = getColsForTbl(tbl,
+                                               sortNALast = FALSE,
+                                               names = c("Standard concept ID", "Source concept ID")),
+                       defaultSorted = order,
+                       filterable = TRUE,
+                       searchable = TRUE,
+                       defaultPageSize = 25,
+                       highlight = TRUE,
+                       striped = TRUE,
+                       compact = TRUE,
+                       showSortable = TRUE) |>
+        reactablefmtr::add_title("Drug diagnostics",
+                                 font_size = 25,
+                                 font_weight = "normal") 
+    }
+    tbl
   })
 
   output$drug_diagnostics_gt_download <- shiny::downloadHandler(
