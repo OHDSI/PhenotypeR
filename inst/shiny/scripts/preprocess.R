@@ -108,6 +108,9 @@ if("codelistDiagnostics" %in% diagnostics){
   values$achilles_code_use_codelist_name <- values$achilles_code_use_codelist_name |> sort()
   values$orphan_code_use_codelist_name   <- values$orphan_code_use_codelist_name |> sort()
 }
+
+
+
 if("cohortDiagnostics" %in% diagnostics){
   # Add compare large scale characteristics
   values_subset <- values[stringr::str_detect(names(values), "large_scale")]
@@ -139,6 +142,19 @@ selected <- choices
 
 msgMatchedSample <- ""
 msgCohortSample  <- ""
+
+if("summarise_drug_use" %in% names(dataFiltered)){
+  choices$summarise_drug_use_drug_type <- choices$summarise_drug_use_drug_type[order(
+    choices$summarise_drug_use_drug_type != "overall", 
+    choices$summarise_drug_use_drug_type)]
+  choices$summarise_drug_use_route <- choices$summarise_drug_use_route[order(
+    choices$summarise_drug_use_route != "overall", 
+    choices$summarise_drug_use_route)]
+  
+  selected$summarise_drug_use_drug_type <- "overall" 
+  selected$summarise_drug_use_route <- "overall" 
+}
+
 if("cohortDiagnostics" %in% diagnostics){
   selected$summarise_large_scale_characteristics_variable_level <- "-inf to -366"
   selected$compare_large_scale_characteristics_variable_level <- "-inf to -366"
