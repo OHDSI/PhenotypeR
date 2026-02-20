@@ -1301,7 +1301,7 @@ server <- function(input, output, session) {
 
     res <- filterDrugDiagnostics()
     tbl <- res |>
-      dplyr::arrange(group_name) |>
+      dplyr::arrange(group_name, group_level) |>
       visOmopResults::visOmopTable(header = input$drug_diagnostics_gt_header,
                                    groupColumn = input$drug_diagnostics_gt_groupColumn,
                                    estimateName = c(N = "<count>",

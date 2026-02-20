@@ -111,13 +111,14 @@ summariseDrugUseInternal <- function(cdm,
   on.exit(omopgenerics::dropSourceTable(cdm = cdm, name = nm))
 
   # add stratifications
-  drugRecords <- addStratifications(drugRecords = drugRecords,
+  drugRecords <- addVariables(drugRecords = drugRecords,
                                     byConcept = byConcept,
                                     byYear = byYear,
                                     bySex = bySex,
                                     ageGroup = ageGroup,
                                     type = TRUE,
                                     route = TRUE,
+                                    exposureDuration = TRUE,
                                     name = nm)
 
   group <- getDrugGroups(byConcept = byConcept)
@@ -125,38 +126,60 @@ summariseDrugUseInternal <- function(cdm,
     as.list()
 
   result <- list(empty = omopgenerics::emptySummarisedResult())
-  for(i in seq_along(group)){
-  result[[paste0("counts_", i)]] <- summariseCounts(drugRecords, group, strata) |>
-    drugResultSettings(subset = subsetName, check = "counts", timing = timing)
-  }
-  if ("exposureDuration" %in% checks) {
-   for(i in seq_along(group)){
-     result[[paste0("exposureDuration_", i)]] <- summariseExposureDuration(drugRecords, group[[i]], strata) |>
-       drugResultSettings(subset = subsetName, check = "exposureDuration", timing = timing)
-   }
-  }
-  if ("quantity" %in% checks) {
-    for(i in seq_along(group)){
-      result[[paste0("quantity", i)]] <- summariseQuantity(drugRecords, group[[i]], strata) |>
-      drugResultSettings(subset = subsetName, check = "quantity", timing = timing)
-    }
-  }
+
+  # get counts, exposure duration, and quantity together
+  result[[paste0("drugTable_")]] <- PatientProfiles::summariseResult(
+    table = drugRecords,
+    includeOverallGroup = FALSE,
+    group = group,
+    includeOverallStrata = TRUE,
+    strata = strata,
+    variables = c("exposure_duration",
+                  "quantity"),
+    estimates = c(
+      "min", "q01", "q05", "q25", "median", "q75", "q95", "q99", "max",
+      "percentage_missing"
+    ),
+    counts = TRUE
+  ) |>
+    drugResultSettings(subset = subsetName, check = "drug_diagnostics", timing = timing)
+
+  # for days between we just do this at the codelist level
+  nmDB <- omopgenerics::uniqueTableName()
+  result[["daysBetween"]]  <- drugRecords |>
+    dplyr::select(
+      "person_id", "drug_exposure_start_date",
+      "codelist_name", "cohort_name") |>
+    dplyr::group_by(.data$person_id) |>
+    dplyr::arrange(.data$drug_exposure_start_date) |>
+    dplyr::mutate(days_to_next_record = as.integer(clock::date_count_between(
+      start = .data$drug_exposure_start_date,
+      end = dplyr::lead(.data$drug_exposure_start_date),
+      precision = "day"
+    ))) |>
+    dplyr::compute(name = nmDB,
+                   logPrefix = "PhenotypeR_summariseDaysBetween_addDaysBetween") |>
+    PatientProfiles::summariseResult(
+      counts = FALSE,
+      group = c("cohort_name", "codelist_name"),
+      includeOverallGroup = FALSE,
+      strata = strata,
+      includeOverallStrata = TRUE,
+      variables = "days_to_next_record",
+      estimates = c("min", "q01", "q05", "q25", "median", "q75", "q95", "q99", "max",
+                    "percentage_missing")
+    ) |>
+    drugResultSettings(subset = subsetName, check = "drug_diagnostics", timing = timing)
+  omopgenerics::dropSourceTable(cdm = cdm, name = nmDB)
+
   if ("dose" %in% checks) {
     ingredient <- findIngredient(codes = codes, cdm = cdm) |>
       reportIngredient()
     if (nrow(ingredient) > 0) {
-      for(i in seq_along(group)){
-        result[[paste0("dose", i)]] <- summariseDose(drugRecords, group[[i]], strata, ingredient) |>
-        drugResultSettings(subset = subsetName, check = "dose", timing = timing)
-      }
+        result[[paste0("dose")]] <- summariseDose(drugRecords, group, strata, ingredient) |>
+        drugResultSettings(subset = subsetName, check = "drug_diagnostics", timing = timing)
     }
   }
-  if ("daysBetween" %in% checks) {
-    for(i in seq_along(group)){
-      result[[paste0("daysBetween_", i)]] <- summariseDaysBetween(drugRecords, group[[i]], strata) |>
-        drugResultSettings(subset = subsetName, check = "daysBetween", timing = timing)
-    }
-    }
 
   omopgenerics::bind(result)
 }
@@ -185,6 +208,7 @@ if(isFALSE(byConcept)){
                                         simplify = FALSE))
   colnames(combinations) <- cols
   combinations$source_concept_name <- combinations$concept_name
+  combinations$source_value <- combinations$concept_name
   combinations$cohort_name <- TRUE
   combinations$codelist_name <- TRUE
   combinations <- combinations |>
@@ -192,13 +216,16 @@ if(isFALSE(byConcept)){
                     "codelist_name",
                     "concept_name",
                     "source_concept_name",
+                    "source_value",
                     "drug_type",
-                    "route")) |>
+                    "route"
+                    )) |>
     dplyr::arrange(.data$concept_name, .data$drug_type, .data$route)
 
   group <- apply(combinations, 1, function(row) {
     names(row)[as.logical(row)]
   })
+
 }
   group
 }
@@ -211,6 +238,16 @@ subsetDrugRecords <- function(cdm, codes, cohort, timing, dateRange, name) {
   on.exit(omopgenerics::dropSourceTable(cdm = cdm, name = nm))
   # TODO add index
   drugRecords <- cdm$drug_exposure |>
+    dplyr::select("drug_exposure_id",
+                  "person_id",
+                  "drug_concept_id",
+                  "drug_exposure_start_date",
+                  "drug_exposure_end_date",
+                  "drug_type_concept_id",
+                  "quantity",
+                  "route_concept_id",
+                  "drug_source_concept_id",
+                  "drug_source_value") |>
     dplyr::inner_join(cdm[[nm]], by = "drug_concept_id")
 
   if (!is.null(cohort)) {
@@ -281,10 +318,9 @@ subsetDrugRecords <- function(cdm, codes, cohort, timing, dateRange, name) {
   drugRecords |>
     dplyr::compute(name = name)
 }
-addStratifications <- function(drugRecords, byConcept, byYear, bySex, ageGroup, type, route, name) {
+addVariables <- function(drugRecords, byConcept, byYear, bySex, ageGroup, type, route, exposureDuration, name) {
   cdm <- omopgenerics::cdmReference(drugRecords)
   compute <- FALSE
-
   if (bySex | length(ageGroup) > 0) {
     compute <- TRUE
     drugRecords <- drugRecords |>
@@ -310,7 +346,8 @@ addStratifications <- function(drugRecords, byConcept, byYear, bySex, ageGroup, 
       PatientProfiles::addConceptName(
         column = "drug_source_concept_id",
         nameStyle = "source_concept_name"
-      )
+      ) |>
+      dplyr::rename("source_value" = "drug_source_value")
   }
 
   if (byYear) {
@@ -345,6 +382,16 @@ addStratifications <- function(drugRecords, byConcept, byYear, bySex, ageGroup, 
     ))
   }
 
+  if(exposureDuration){
+    drugRecords <- drugRecords |>
+      dplyr::mutate(exposure_duration = as.integer(clock::date_count_between(
+        start = .data$drug_exposure_start_date,
+        end = .data$drug_exposure_end_date,
+        precision = "day"
+      )) + 1L) |>
+      dplyr::compute(name = name)
+  }
+
   if (compute) {
     drugRecords <- drugRecords |>
       dplyr::compute(name = name)
@@ -352,6 +399,8 @@ addStratifications <- function(drugRecords, byConcept, byYear, bySex, ageGroup, 
 
   return(drugRecords)
 }
+
+
 drugResultSettings <- function(result, subset, check, timing) {
   resId <- unique(result$result_id)
   result |>
@@ -366,56 +415,6 @@ drugResultSettings <- function(result, subset, check, timing) {
         timing = timing
       )
     )
-}
-summariseCounts <- function(drugRecords, group, strata) {
-  cols <- omopgenerics::omopColumns("drug_exposure") |>
-    purrr::keep(\(x) x %in% colnames(drugRecords))
-  PatientProfiles::summariseResult(
-    table = drugRecords,
-    includeOverallGroup = FALSE,
-    group = group,
-    includeOverallStrata = TRUE,
-    strata = strata,
-    variables = character(),
-    counts = TRUE
-  ) |>
-    suppressMessages()
-}
-summariseExposureDuration <- function(drugRecords, group, strata) {
-  drugRecords |>
-    dplyr::mutate(exposure_duration = as.integer(clock::date_count_between(
-      start = .data$drug_exposure_start_date,
-      end = .data$drug_exposure_end_date,
-      precision = "day"
-    )) + 1L) |>
-    PatientProfiles::summariseResult(
-      includeOverallGroup = FALSE,
-      group = group,
-      includeOverallStrata = TRUE,
-      strata = strata,
-      variables = list("exposure_duration"),
-      estimates = list(c(
-        "min", "q01", "q05", "q25", "median", "q75", "q95", "q99", "max",
-        "percentage_missing"
-      )),
-      counts = FALSE
-    ) |>
-    dplyr::filter(!.data$variable_name  %in% c("number records", "number subjects")) |>
-    suppressMessages()
-}
-summariseQuantity <- function(drugRecords, group, strata) {
-  drugRecords |>
-    PatientProfiles::summariseResult(
-      group = group,
-      includeOverallGroup = FALSE,
-      strata = strata,
-      includeOverallStrata = TRUE,
-      variables = "quantity",
-      estimates = c("min", "q01", "q05", "q25", "median", "q75", "q95", "q99", "max",
-                    "percentage_missing")
-    ) |>
-    dplyr::filter(!.data$variable_name %in% c("number records", "number subjects")) |>
-    suppressMessages()
 }
 summariseDose <- function(drugRecords, group, strata, ingredient) {
   cdm <- omopgenerics::cdmReference(table = drugRecords)
@@ -455,39 +454,6 @@ summariseDose <- function(drugRecords, group, strata, ingredient) {
   }
 
   return(omopgenerics::bind(result))
-}
-summariseDaysBetween <- function(drugRecords, group, strata) {
-  cdm <- omopgenerics::cdmReference(drugRecords)
-  nm <- omopgenerics::uniqueTableName()
-
-  result <- drugRecords |>
-    dplyr::select(
-      "person_id", "drug_concept_id", "drug_exposure_start_date",
-      dplyr::all_of(unique(unlist(c(strata, group))))
-    ) |>
-    dplyr::group_by(.data$person_id, .data$drug_concept_id) |>
-    dplyr::arrange(.data$drug_exposure_start_date) |>
-    dplyr::mutate(days_to_next_record = as.integer(clock::date_count_between(
-      start = .data$drug_exposure_start_date,
-      end = dplyr::lead(.data$drug_exposure_start_date),
-      precision = "day"
-    ))) |>
-    dplyr::compute(name = nm) |>
-    PatientProfiles::summariseResult(
-      group = group,
-      includeOverallGroup = FALSE,
-      strata = strata,
-      includeOverallStrata = TRUE,
-      variables = "days_to_next_record",
-      estimates = c("min", "q01", "q05", "q25", "median", "q75", "q95", "q99", "max",
-                    "percentage_missing")
-    ) |>
-    dplyr::filter(!.data$variable_name %in% c("number records", "number subjects")) |>
-    suppressMessages()
-
-    omopgenerics::dropSourceTable(cdm = cdm, name = nm)
-
-  return(result)
 }
 findIngredient <- function(codes, cdm) {
   threshold <- min(1, as.numeric(getOption("PhenotypeR_ingredient_threshold", "0.8")))
