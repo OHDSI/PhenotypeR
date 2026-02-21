@@ -953,7 +953,7 @@ ui <- fluidPage(
       ## drug_diagnostics_start
       ## Drug diagnostics -----
       bslib::nav_panel(
-        title = "Drug diagnostics",        
+        title = "Drug diagnostics",
         bslib::accordion(
           bslib::accordion_panel(
             title = "Shared inputs",
@@ -1049,7 +1049,7 @@ ui <- fluidPage(
                                      bslib::accordion_panel(
                                        title = "Table formatting",
                                        materialSwitch(inputId = "drug_diagnostics_interactive",
-                                                      value = TRUE,
+                                                      value = FALSE,
                                                       label = "Interactive",
                                                       status = "primary"),
                                        uiOutput("drug_diagnostics_sortable")

@@ -31,9 +31,6 @@
 #' }
 databaseDiagnostics <- function(cohort){
 
-  if (!is.null(getOption("omopgenerics.logFile"))) {
-    omopgenerics::logMessage("Database diagnostics - input validation")
-  }
   # Initial checks
   omopgenerics::validateCohortArgument(cohort)
 

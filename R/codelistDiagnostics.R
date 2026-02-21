@@ -37,9 +37,6 @@ codelistDiagnostics <- function(cohort,
                                 measurementSample = 20000,
                                 drugExposureSample = 20000){
 
-  if (!is.null(getOption("omopgenerics.logFile"))) {
-    omopgenerics::logMessage("Codelist diagnostics - input validation")
-  }
   cohort <- omopgenerics::validateCohortArgument(cohort = cohort)
   cdm <- omopgenerics::cdmReference(cohort)
   cohortTable <- omopgenerics::tableName(cohort)
@@ -100,27 +97,11 @@ codelistDiagnostics <- function(cohort,
   if (!is.null(getOption("omopgenerics.logFile"))) {
     omopgenerics::logMessage("Codelist diagnostics - index event breakdown")
   }
-
-  for (i in seq_along(cohortIds)){
-    cohortId <- cohortIds[i]
-    if (cohortId %in% ids) {
-      cli::cli_warn(message = c("!" = paste0("cohort_definition_id ", cohortId, " is empty. Skipping code use for this cohort.")))
-      results[[paste0("index_event_", i)]] <- omopgenerics::emptySummarisedResult()
-    } else {
-      codes <- omopgenerics::cohortCodelist(cohortTable = cdm[[cohortTable]], cohortId = cohortId)
-      if (length(codes) > 0) {
-        results[[paste0("index_event_", i)]] <- CodelistGenerator::summariseCohortCodeUse(
-          x = codes,
-          cdm = cdm,
-          cohortTable = cohortTable,
-          cohortId = cohortId,
-          timing = "entry",
-          countBy = c("record", "person"),
-          byConcept = TRUE
-        )
-      }
-    }
-  }
+  results[["index_event_"]] <- CodelistGenerator::summariseCohortCodeUse(
+    cdm = cdm,
+    cohortTable = cohortTable,
+    timing = "entry",
+    countBy = c("record", "person"))
 
   # If any measurement/observation codes: do measurement diagnostics
   measurements <- cdm$concept |>
@@ -221,7 +202,7 @@ codelistDiagnostics <- function(cohort,
       omopgenerics::logMessage("Codelist diagnostics - orphan concepts")
     }
 
-    results[[paste0("orphan_codes", i)]] <- CodelistGenerator::summariseOrphanCodes(
+    results[["orphan_codes"]] <- CodelistGenerator::summariseOrphanCodes(
       x = all_codelists,
       cdm = cdm
     )
