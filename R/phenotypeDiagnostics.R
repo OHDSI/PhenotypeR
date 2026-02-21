@@ -59,9 +59,6 @@ phenotypeDiagnostics <- function(cohort,
     omopgenerics::createLogFile(logFile = log_file)
     on.exit(options("omopgenerics.logFile" = NULL))
   }
-
-  omopgenerics::logMessage("Phenotype diagnostics - input validation")
-
   omopgenerics::assertChoice(diagnostics,
                              c("databaseDiagnostics", "codelistDiagnostics",
                                "cohortDiagnostics", "populationDiagnostics"),

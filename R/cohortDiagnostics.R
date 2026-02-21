@@ -33,10 +33,6 @@
 #' }
 cohortDiagnostics <- function(cohort, survival = FALSE, cohortSample = 20000, matchedSample = 1000){
 
-  if (!is.null(getOption("omopgenerics.logFile"))) {
-    omopgenerics::logMessage("Cohort diagnostics - input validation")
-  }
-
   # Initial checks ----
   omopgenerics::validateCohortArgument(cohort)
   checksCohortDiagnostics(survival, cohortSample, matchedSample)

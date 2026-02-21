@@ -34,9 +34,6 @@ populationDiagnostics <- function(cohort,
                                   populationSample = 1000000,
                                   populationDateRange = as.Date(c(NA, NA))) {
 
-  if (!is.null(getOption("omopgenerics.logFile"))) {
-    omopgenerics::logMessage("Population diagnosics - input validation")
-  }
   cohort <- omopgenerics::validateCohortArgument(cohort = cohort)
   checksPopulationDiagnostics(populationSample, populationDateRange)
 
