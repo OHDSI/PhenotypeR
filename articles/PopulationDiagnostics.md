@@ -83,7 +83,7 @@ plotIncidence(results,
               facet = c("denominator_sex", "denominator_days_prior_observation"))
 ```
 
-![](PopulationDiagnostics_files/figure-html/unnamed-chunk-5-1.png)
+![](PopulationDiagnostics_files/figure-html/unnamed-chunk-6-1.png)
 
 ### Prevalence
 
@@ -108,4 +108,4 @@ plotPrevalence(results,
                facet = c("denominator_sex", "denominator_days_prior_observation"))
 ```
 
-![](PopulationDiagnostics_files/figure-html/unnamed-chunk-7-1.png)
+![](PopulationDiagnostics_files/figure-html/unnamed-chunk-8-1.png)

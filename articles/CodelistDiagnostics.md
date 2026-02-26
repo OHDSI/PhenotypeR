@@ -39,11 +39,11 @@ cdm$injuries |>
   glimpse()
 #> Rows: ??
 #> Columns: 4
-#> Database: DuckDB 1.4.4 [unknown@Linux 6.11.0-1018-azure:R 4.5.2//tmp/RtmppiOReE/file21b829f15d01.duckdb]
-#> $ cohort_definition_id <int> 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5…
-#> $ subject_id           <int> 197, 955, 412, 853, 811, 29, 361, 426, 428, 793, …
-#> $ cohort_start_date    <date> 2008-02-22, 2010-02-05, 2009-02-14, 2008-08-18, …
-#> $ cohort_end_date      <date> 2008-02-22, 2010-02-05, 2009-02-14, 2008-08-18, …
+#> Database: DuckDB 1.4.4 [unknown@Linux 6.14.0-1017-azure:R 4.5.2//tmp/RtmpROrux3/file1fe2670f6e8c.duckdb]
+#> $ cohort_definition_id <int> 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 2, 5, 5, 5, 5…
+#> $ subject_id           <int> 328, 175, 937, 995, 436, 578, 381, 569, 56, 295, …
+#> $ cohort_start_date    <date> 2008-11-04, 2009-04-03, 2009-12-12, 2008-01-26, …
+#> $ cohort_end_date      <date> 2008-11-04, 2009-04-03, 2009-12-12, 2008-01-26, …
 ```
 
 ## Summarising code use
@@ -149,7 +149,7 @@ tableMeasurementSummary(code_diag)
 plotMeasurementSummary(code_diag)
 ```
 
-![](CodelistDiagnostics_files/figure-html/unnamed-chunk-9-1.png)
+![](CodelistDiagnostics_files/figure-html/unnamed-chunk-10-1.png)
 
 ### Measurement value as concept
 
@@ -176,7 +176,7 @@ tableMeasurementValueAsConcept(code_diag)
 plotMeasurementValueAsConcept(code_diag)
 ```
 
-![](CodelistDiagnostics_files/figure-html/unnamed-chunk-11-1.png)
+![](CodelistDiagnostics_files/figure-html/unnamed-chunk-12-1.png)
 
 ### Measurement value as numeric
 
@@ -258,4 +258,4 @@ tableMeasurementValueAsNumber(code_diag)
 plotMeasurementValueAsNumber(code_diag)
 ```
 
-![](CodelistDiagnostics_files/figure-html/unnamed-chunk-13-1.png)
+![](CodelistDiagnostics_files/figure-html/unnamed-chunk-14-1.png)
