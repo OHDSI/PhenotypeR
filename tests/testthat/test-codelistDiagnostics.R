@@ -81,6 +81,7 @@ test_that("duplicated codelists", {
 })
 
 test_that("measurementDiagnostics working", {
+  skip_on_cran()
   cdm_local <- omock::mockCdmReference() |>
     omock::mockPerson(nPerson = 100) |>
     omock::mockObservationPeriod() |>
@@ -151,6 +152,7 @@ test_that("measurementDiagnostics working", {
 })
 
 test_that("drugDiagnostics working", {
+  skip_on_cran()
   cdm_local <- omock::mockCdmReference() |>
     omock::mockPerson(nPerson = 100) |>
     omock::mockObservationPeriod() |>
