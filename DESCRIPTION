@@ -1,7 +1,7 @@
 Package: PhenotypeR
 Type: Package
 Title: Assess Study Cohorts Using a Common Data Model
-Version: 0.3.3
+Version: 0.3.3.900
 Authors@R: c(
     person("Edward", "Burn", , "edward.burn@ndorms.ox.ac.uk", 
     role = c("aut", "cre"), comment = c(ORCID = "0000-0002-9286-1128")),
@@ -35,7 +35,6 @@ Suggests:
     glue,
     RPostgres,
     ggplot2,
-    ggpubr,
     stringr,
     shiny (>= 1.11.1),
     DiagrammeR,
