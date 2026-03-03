@@ -365,7 +365,7 @@ addVariables <- function(drugRecords, byConcept, byYear, bySex, ageGroup, type, 
       ) |>
       dplyr::mutate(drug_type = paste0(
         dplyr::coalesce(.data$drug_type, "unknown"), " (",
-        .data$drug_type_concept_id, ")"
+        as.character(.data$drug_type_concept_id), ")"
       ))
   }
 
@@ -378,7 +378,7 @@ addVariables <- function(drugRecords, byConcept, byYear, bySex, ageGroup, type, 
     ) |>
     dplyr::mutate(route = paste0(
       dplyr::coalesce(.data$route, "unknown"), " (",
-      .data$route_concept_id, ")"
+      as.character(.data$route_concept_id), ")"
     ))
   }
 
