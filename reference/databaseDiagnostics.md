@@ -12,7 +12,7 @@ statistics.
 ## Usage
 
 ``` r
-databaseDiagnostics(cohort)
+databaseDiagnostics(cohort, clinicalTableSample = NULL)
 ```
 
 ## Arguments
@@ -20,6 +20,13 @@ databaseDiagnostics(cohort)
 - cohort:
 
   Cohort table in a cdm reference
+
+- clinicalTableSample:
+
+  The number of records to take a random sample for database
+  diagnostics. If \`clinicalTableSample = NULL\`, no sampling will be
+  performed. If \`clinicalTableSample = 0\` clinical table summaries
+  will not be run.
 
 ## Value
 
