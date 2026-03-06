@@ -13,6 +13,7 @@
 #' @param diagnostics Vector indicating which diagnostics to perform. Options
 #' include: `databaseDiagnostics`, `codelistDiagnostics`, `cohortDiagnostics`,
 #' and `populationDiagnostics`.
+#' @inheritParams clinicalTableSample
 #' @inheritParams measurementSampleDoc
 #' @inheritParams drugExposureSampleDoc
 #' @inheritParams survivalDoc
@@ -40,6 +41,7 @@
 phenotypeDiagnostics <- function(cohort,
                                  diagnostics = c("databaseDiagnostics", "codelistDiagnostics",
                                                  "cohortDiagnostics", "populationDiagnostics"),
+                                 clinicalTableSample = NULL,
                                  measurementSample = 20000,
                                  drugExposureSample = 20000,
                                  survival = FALSE,
@@ -72,7 +74,8 @@ phenotypeDiagnostics <- function(cohort,
   cdm <- omopgenerics::cdmReference(cohort)
   results <- list()
   if ("databaseDiagnostics" %in% diagnostics) {
-    results[["db_diag"]] <- databaseDiagnostics(cohort)
+    results[["db_diag"]] <- databaseDiagnostics(cohort,
+                                                clinicalTableSample = clinicalTableSample)
     if(!is.null(incrementalResultPath)){
       if (dir.exists(incrementalResultPath)) {
       exportSummarisedResult(results[["db_diag"]] ,

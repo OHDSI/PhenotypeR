@@ -8,6 +8,7 @@ phenotypeDiagnostics(
   cohort,
   diagnostics = c("databaseDiagnostics", "codelistDiagnostics", "cohortDiagnostics",
     "populationDiagnostics"),
+  clinicalTableSample = NULL,
   measurementSample = 20000,
   drugExposureSample = 20000,
   survival = FALSE,
@@ -23,6 +24,11 @@ phenotypeDiagnostics(
 \item{diagnostics}{Vector indicating which diagnostics to perform. Options
 include: `databaseDiagnostics`, `codelistDiagnostics`, `cohortDiagnostics`,
 and `populationDiagnostics`.}
+
+\item{clinicalTableSample}{The number of records to take a random sample for
+database diagnostics. If `clinicalTableSample = NULL`, no sampling will be
+performed. If `clinicalTableSample = 0` clinical table summaries will not be
+run.}
 
 \item{measurementSample}{The number of people to take a random sample for
 measurement diagnostics. If `measurementSample = NULL`, no sampling will be

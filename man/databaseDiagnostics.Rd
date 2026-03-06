@@ -4,10 +4,15 @@
 \alias{databaseDiagnostics}
 \title{Database diagnostics}
 \usage{
-databaseDiagnostics(cohort)
+databaseDiagnostics(cohort, clinicalTableSample = NULL)
 }
 \arguments{
 \item{cohort}{Cohort table in a cdm reference}
+
+\item{clinicalTableSample}{The number of records to take a random sample for
+database diagnostics. If `clinicalTableSample = NULL`, no sampling will be
+performed. If `clinicalTableSample = 0` clinical table summaries will not be
+run.}
 }
 \value{
 A summarised result

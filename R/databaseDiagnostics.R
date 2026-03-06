@@ -9,6 +9,7 @@
 #' * Summarise the person table including demographics (sex, race, ethnicity, year of birth) and related statistics.
 #'
 #' @inheritParams cohortDoc
+#' @inheritParams clinicalTableSample
 #'
 #' @return A summarised result
 #' @export
@@ -29,10 +30,16 @@
 #
 # CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
-databaseDiagnostics <- function(cohort){
+databaseDiagnostics <- function(cohort,
+                                clinicalTableSample = NULL){
 
   # Initial checks
   omopgenerics::validateCohortArgument(cohort)
+  omopgenerics::assertNumeric(clinicalTableSample, integerish = TRUE, min = 0, null = TRUE, length = 1, call = call)
+
+  if(!is.null(clinicalTableSample) && isTRUE(clinicalTableSample > 0)){
+    cli::cli_abort("Only NULL and 0 currently supported for clinicalTableSample")
+  }
 
   # Variables
   cdm <- omopgenerics::cdmReference(cohort)
@@ -87,6 +94,7 @@ databaseDiagnostics <- function(cohort){
         dplyr::mutate(result_type = "summarise_obs_density"))
 
   # Summarising omop tables - Empty cohort codelist
+  if(is.null(clinicalTableSample) || isFALSE(clinicalTableSample == 0)){
   emptyCodelist <- checkEmptyCodelists(cdm = cdm, cohortName = cohortName)
 
   if(isFALSE(emptyCodelist)){
@@ -129,6 +137,8 @@ databaseDiagnostics <- function(cohort){
             if (!is.null(getOption("omopgenerics.logFile"))) {
               omopgenerics::logMessage("Database diagnostics - summarising clinical tables - summary")
             }
+
+            # browser()
           results[["omop_tabs"]] <- OmopSketch::summariseClinicalRecords(cdm,
                                                                          omopTableName = workingOmopTables)
           if (!is.null(getOption("omopgenerics.logFile"))) {
@@ -142,6 +152,7 @@ databaseDiagnostics <- function(cohort){
         }
       }
     }
+  }
   }
 
   results <- results |>

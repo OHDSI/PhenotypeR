@@ -25,6 +25,18 @@ NULL
 #' @keywords internal
 NULL
 
+#' Helper for consistent documentation of `clinicalTableSample`.
+#'
+#' @param clinicalTableSample The number of records to take a random sample for
+#' database diagnostics. If `clinicalTableSample = NULL`, no sampling will be
+#' performed. If `clinicalTableSample = 0` clinical table summaries will not be
+#' run.
+#'
+#' @name clinicalTableSample
+#' @keywords internal
+NULL
+
+
 #' Helper for consistent documentation of `measurementSample`.
 #'
 #' @param measurementSample The number of people to take a random sample for
