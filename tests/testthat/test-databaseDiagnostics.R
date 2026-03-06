@@ -50,6 +50,27 @@ test_that("db diagnostics", {
                      unique(),
                    "databaseDiagnostics")
 
+  # skip clinical table summary
+  expect_no_error(db_diag_no_clinical_summary <- databaseDiagnostics(cdm$my_cohort, clinicalTableSample = 0))
+  expect_false("summarise_clinical_records" %in%
+                 (omopgenerics::settings(db_diag_no_clinical_summary) |>
+                    dplyr::pull("result_type")))
+  expect_false("summarise_trend" %in%
+                 (omopgenerics::settings(db_diag_no_clinical_summary) |>
+                    dplyr::pull("result_type")))
+
+  # no sampling
+  expect_no_error(db_diag_w_clinical_summary <- databaseDiagnostics(cdm$my_cohort, clinicalTableSample = NULL))
+  expect_true("summarise_clinical_records" %in%
+                 (omopgenerics::settings(db_diag_w_clinical_summary) |>
+                    dplyr::pull("result_type")))
+  expect_true("summarise_trend" %in%
+                 (omopgenerics::settings(db_diag_w_clinical_summary) |>
+                    dplyr::pull("result_type")))
+
+  # sampling not yet supported
+  expect_error(db_diag_no_clinical_summary <- databaseDiagnostics(cdm$my_cohort, clinicalTableSample = 1000))
+
   CDMConnector::cdmDisconnect(cdm = cdm)
 
 })
