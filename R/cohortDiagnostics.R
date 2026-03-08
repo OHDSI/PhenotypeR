@@ -76,7 +76,10 @@ cohortDiagnostics <- function(cohort, survival = FALSE, cohortSample = 20000, ma
       if (!is.null(getOption("omopgenerics.logFile"))) {
         omopgenerics::logMessage(paste0("Cohort diagnostics - sampling cohorts to up to ", cohortSample, " individuals"))
       }
-      cdm[[cohortNameSampled]] <- CohortConstructor::sampleCohorts(cdm[[cohortName]], n = cohortSample, name = cohortNameSampled)
+      cdm[[cohortNameSampled]] <- CohortConstructor::sampleCohorts(cdm[[cohortName]],
+                                                                   independent = FALSE,
+                                                                   n = cohortSample,
+                                                                   name = cohortNameSampled)
     }
   }
 
@@ -258,6 +261,7 @@ createMatchedCohorts <- function(cdm, tempCohortName, cohortName, cohortIds, mat
       cli::cli_bullets(c(">" = glue::glue("Sampling cohort `{cohortName}`")))
       cdm[[tempCohortNameId]] <- CohortConstructor::sampleCohorts(cdm[[tempCohortNameId]],
                                                                   cohortId = workingCohortId,
+                                                                  independent = TRUE,
                                                                   n = matchedSample,
                                                                   name = tempCohortNameId)
     }
