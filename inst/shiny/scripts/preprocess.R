@@ -145,14 +145,14 @@ msgCohortSample  <- ""
 
 if("summarise_drug_use" %in% names(dataFiltered)){
   choices$summarise_drug_use_drug_type <- choices$summarise_drug_use_drug_type[order(
-    choices$summarise_drug_use_drug_type != "overall", 
+    choices$summarise_drug_use_drug_type != "overall",
     choices$summarise_drug_use_drug_type)]
   choices$summarise_drug_use_route <- choices$summarise_drug_use_route[order(
-    choices$summarise_drug_use_route != "overall", 
+    choices$summarise_drug_use_route != "overall",
     choices$summarise_drug_use_route)]
-  
-  selected$summarise_drug_use_drug_type <- "overall" 
-  selected$summarise_drug_use_route <- "overall" 
+
+  selected$summarise_drug_use_drug_type <- "overall"
+  selected$summarise_drug_use_route <- "overall"
 }
 
 if("cohortDiagnostics" %in% diagnostics){
@@ -173,7 +173,7 @@ if("cohortDiagnostics" %in% diagnostics){
   if("cohort_sample" %in% (omopgenerics::settings(result) |> colnames())){
     cohort_sample <- as.numeric(omopgenerics::settings(dataFiltered$summarise_large_scale_characteristics) |> dplyr::pull("cohort_sample") |> unique())
     cohort_sample <- formatC(cohort_sample, format = "f", digits = 0, big.mark = ",")
-    msgCohortSample <- glue::glue("Cohorts were sampled to up to {cohort_sample} participants")
+    msgCohortSample <- glue::glue("Cohorts were jointly sampled to up to {cohort_sample} participants")
     typeCohort <- "sampled"
   }
 
