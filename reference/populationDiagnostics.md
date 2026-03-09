@@ -82,7 +82,7 @@ result <- cdm$warfarin |>
 #> ℹ Getting prevalence for analysis 5 of 7
 #> ℹ Getting prevalence for analysis 6 of 7
 #> ℹ Getting prevalence for analysis 7 of 7
-#> ✔ Time taken: 0 mins and 5 secs
+#> ✔ Time taken: 0 mins and 6 secs
 #> `populationDateStart`, `populationDateEnd`, and `populationSample` casted to
 #> character.
 #> `populationDateStart` and `populationDateEnd` eliminated from settings as all
