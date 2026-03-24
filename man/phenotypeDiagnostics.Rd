@@ -84,6 +84,6 @@ cdm$warfarin <- conceptCohort(cdm,
                                                               40163554L)),
                               name = "warfarin")
 
-result <- phenotypeDiagnostics(cdm$warfarin)
+result <- phenotypeDiagnostics(cdm$warfarin, populationSample = 100000)
 }
 }
