@@ -64,7 +64,7 @@ cdm$warfarin <- conceptCohort(cdm,
 #> ✔ Cohort warfarin created.
 
 result <- cdm$warfarin |>
-  populationDiagnostics()
+  populationDiagnostics(populationSample = 100000)
 #> ℹ Creating denominator cohorts
 #> ✔ Cohorts created in 0 min and 5 sec
 #> ℹ Getting incidence for analysis 1 of 7

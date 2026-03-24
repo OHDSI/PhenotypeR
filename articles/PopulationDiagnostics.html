@@ -100,7 +100,8 @@ with an ankle sprain using the Eunomia synthetic data.</p>
 <p>We can get the incidence and prevalence of our study cohort using
 <code><a href="../reference/populationDiagnostics.html">populationDiagnostics()</a></code>:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pop_diag</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/populationDiagnostics.html">populationDiagnostics</a></span><span class="op">(</span><span class="va">cdm</span><span class="op">$</span><span class="va">injuries</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">pop_diag</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/populationDiagnostics.html">populationDiagnostics</a></span><span class="op">(</span><span class="va">cdm</span><span class="op">$</span><span class="va">injuries</span>, </span>
+<span>                                  populationSample <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span></span></code></pre></div>
 <p>This function builds on <a href="https://darwin-eu.github.io/IncidencePrevalence/index.html" class="external-link">IncidencePrevalence</a>
 R package to perform the following analyses:</p>
 <ul>

@@ -33,7 +33,8 @@ We can get the incidence and prevalence of our study cohort using
 [`populationDiagnostics()`](https://ohdsi.github.io/PhenotypeR/reference/populationDiagnostics.md):
 
 ``` r
-pop_diag <- populationDiagnostics(cdm$injuries)
+pop_diag <- populationDiagnostics(cdm$injuries, 
+                                  populationSample = 10000)
 ```
 
 This function builds on
