@@ -778,10 +778,10 @@ server <- function(input, output, session) {
                                   striped = TRUE,
                                   compact = TRUE,
                                   showSortable = TRUE) |>
-        reactablefmtr::add_title("Summary of achilles codes",
+        reactablefmtr_add_title("Summary of achilles codes",
                                  font_size = 25,
                                  font_weight = "normal") |>
-        reactablefmtr::add_subtitle("Codes from codelist observed in achilles tables.",
+        reactablefmtr_add_subtitle("Codes from codelist observed in achilles tables.",
                                     font_size = 15,
                                     font_weight = "normal")
 
@@ -901,10 +901,10 @@ server <- function(input, output, session) {
                        striped = TRUE,
                        compact = TRUE,
                        showSortable = TRUE) |>
-        reactablefmtr::add_title("Summary of orphan codes",
+        reactablefmtr_add_title("Summary of orphan codes",
                                  font_size = 25,
                                  font_weight = "normal") |>
-        reactablefmtr::add_subtitle("Orphan codes refer to concepts present in the database that are not in a codelist but are related to included codes.",
+        reactablefmtr_add_subtitle("Orphan codes refer to concepts present in the database that are not in a codelist but are related to included codes.",
                                     font_size = 15,
                                     font_weight = "normal")
 
@@ -1036,10 +1036,10 @@ server <- function(input, output, session) {
                        striped = TRUE,
                        compact = TRUE,
                        showSortable = TRUE) |>
-        reactablefmtr::add_title("Summary of cohort code use",
+        reactablefmtr_add_title("Summary of cohort code use",
                                  font_size = 25,
                                  font_weight = "normal") |>
-        reactablefmtr::add_subtitle("Codes from codelist observed on day of cohort entry. Note more than one code could be seen for a person on this day (both of which would have led to inclusion).",
+        reactablefmtr_add_subtitle("Codes from codelist observed on day of cohort entry. Note more than one code could be seen for a person on this day (both of which would have led to inclusion).",
                                     font_size = 15,
                                     font_weight = "normal")
 
@@ -1409,7 +1409,7 @@ server <- function(input, output, session) {
                        striped = TRUE,
                        compact = TRUE,
                        showSortable = TRUE) |>
-        reactablefmtr::add_title("Drug diagnostics",
+        reactablefmtr_add_title("Drug diagnostics",
                                  font_size = 25,
                                  font_weight = "normal")
     }
@@ -1759,10 +1759,10 @@ server <- function(input, output, session) {
               striped = TRUE,
               compact = TRUE,
               showSortable = TRUE) |>
-      reactablefmtr::add_title("Large scale characteristics",
+      reactablefmtr_add_title("Large scale characteristics",
                                font_size = 25,
                                font_weight = "normal") |>
-      reactablefmtr::add_subtitle("Summary of all records from clinical tables within a time window. The sampled cohort represents individuals from the original cohort, the matched cohort comprises individuals of similar age and sex from the database.",
+      reactablefmtr_add_subtitle("Summary of all records from clinical tables within a time window. The sampled cohort represents individuals from the original cohort, the matched cohort comprises individuals of similar age and sex from the database.",
                                   font_size = 15,
                                   font_weight = "normal")
 

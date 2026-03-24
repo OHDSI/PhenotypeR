@@ -32,7 +32,6 @@ library(reactable)
 library(stringr)
 library(qs2)
 library(lubridate)
-library(reactablefmtr)
 library(systemfonts)
 
 source(here::here("scripts", "functions.R"))
