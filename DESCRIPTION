@@ -68,7 +68,7 @@ Imports:
     cli,
     clock,
     CodelistGenerator (>= 4.0.2),
-    CohortCharacteristics (>= 1.1.0),
+    CohortCharacteristics (>= 1.1.2),
     CohortConstructor (>= 0.6.2),
     dplyr,
     DrugUtilisation (>= 1.1.0),

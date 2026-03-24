@@ -59,7 +59,8 @@ cdm$injuries <- conceptCohort(cdm = cdm,
 
 We can get the incidence and prevalence of our study cohort using `populationDiagnostics()`:
 ```{r}
-pop_diag <- populationDiagnostics(cdm$injuries)
+pop_diag <- populationDiagnostics(cdm$injuries, 
+                                  populationSample = 10000)
 ```
 
 This function builds on [IncidencePrevalence](https://darwin-eu.github.io/IncidencePrevalence/index.html) R package to perform the following analyses:
