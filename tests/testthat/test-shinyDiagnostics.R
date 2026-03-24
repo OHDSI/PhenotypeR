@@ -24,7 +24,7 @@ test_that("basic working example with one cohort", {
   cdm <- CDMConnector::copyCdmTo(con = db, cdm = cdm_local,
                                  schema ="main", overwrite = TRUE)
 
-  my_result_cohort_diag <- cdm$my_cohort |> phenotypeDiagnostics()
+  my_result_cohort_diag <- cdm$my_cohort |> phenotypeDiagnostics(populationSample = 100000)
 
   expect_no_error(shinyDiagnostics(my_result_cohort_diag,
                                    directory = tempdir()))
@@ -63,7 +63,7 @@ test_that("only one diagnostic", {
   result <- cohortDiagnostics(cdm$new_cohort, survival = FALSE)
   expect_warning(shinyDiagnostics(result, directory = tempdir()))
 
-  result <- populationDiagnostics(cdm$new_cohort)
+  result <- populationDiagnostics(cdm$new_cohort, populationSample = 10000)
   expect_no_error(shinyDiagnostics(result, directory = tempdir()))
 })
 
