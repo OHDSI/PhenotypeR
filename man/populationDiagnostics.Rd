@@ -47,7 +47,7 @@ cdm$warfarin <- conceptCohort(cdm,
                               name = "warfarin")
 
 result <- cdm$warfarin |>
-  populationDiagnostics()
+  populationDiagnostics(populationSample = 100000)
 
 CDMConnector::cdmDisconnect(cdm = cdm)
 }

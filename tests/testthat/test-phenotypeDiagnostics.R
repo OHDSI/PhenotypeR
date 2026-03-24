@@ -21,7 +21,7 @@ test_that("overall diagnostics function", {
   # running diagnostics should leave the original cohort unchanged
   cohort_pre <- cdm$my_cohort |>
     dplyr::collect()
-  expect_no_error(my_result <- phenotypeDiagnostics(cdm$my_cohort))
+  expect_no_error(my_result <- phenotypeDiagnostics(cdm$my_cohort, populationSample = 10000))
   cohort_post <- cdm$my_cohort |>
     dplyr::collect()
 
@@ -64,14 +64,15 @@ test_that("overall diagnostics function", {
   )
 
   cohort_pop_diag_only <-  phenotypeDiagnostics(cdm$my_cohort,
-                                            diagnostics = "populationDiagnostics")
+                                            diagnostics = "populationDiagnostics",
+                                            populationSample = 10000)
   expect_true(
     all(c("incidence", "incidence_attrition", "prevalence", "prevalence_attrition") %in%
           unique(settings(cohort_pop_diag_only) |>
                    dplyr::pull("result_type"))))
 
   # logging is included in the overall result
-  all_diag <- phenotypeDiagnostics(cdm$my_cohort)
+  all_diag <- phenotypeDiagnostics(cdm$my_cohort, populationSample = 10000)
   log_types <- settings(all_diag) |>
     dplyr::pull("result_type")
   expect_true("summarise_log_file" %in% log_types)
@@ -105,7 +106,7 @@ test_that("incremental save", {
 
   pathToSave <- tempdir()
   options("PhenotypeR.incremenatl_save_path" = pathToSave)
-  diag <- phenotypeDiagnostics(cdm$my_cohort)
+  diag <- phenotypeDiagnostics(cdm$my_cohort, populationSample = 10000)
   end_files <- list.files(pathToSave)
   expect_true("incremental_codelist_diagnostics.csv" %in% end_files)
   expect_true("incremental_cohort_diagnostics.csv" %in% end_files)
@@ -114,6 +115,6 @@ test_that("incremental save", {
 
   # no error if file doesn't exist
   options("PhenotypeR.incremenatl_save_path" = "not_a_path")
-  expect_no_error(phenotypeDiagnostics(cdm$my_cohort))
+  expect_no_error(phenotypeDiagnostics(cdm$my_cohort, populationSample = 10000))
 
 })

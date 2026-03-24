@@ -10,7 +10,6 @@ server <- function(input, output, session) {
 
   # fill selectise variables ----
   shiny::observe({
-
     for (k in seq_along(choices)) {
       if(!grepl("cdm_name|cohort_name", names(choices)[k])){
         shiny::updateSelectizeInput(
@@ -25,10 +24,6 @@ server <- function(input, output, session) {
                                         inputId = names(choices)[k],
                                         choices = choices[[k]],
                                         selected = selected[[k]])
-      }else if(grepl("cdm_name", names(choices[k]))){
-        updatePickerInput(session, names(choices[k]), selected = shared_cdm_names())
-      }else if(grepl("cohort_name", names(choices[k]))){
-        updatePickerInput(session, names(choices[k]), selected = shared_cohort_names())
       }
     }
     inputs_initialized(TRUE)
@@ -228,8 +223,8 @@ server <- function(input, output, session) {
     )
   })
   outputOptions(output, "drug_diagnostics_sortable", suspendWhenHidden = FALSE)
-  
-  
+
+
   output$summarise_characteristics_sortable <- renderUI({
     sortable::bucket_list(
       header = "Table formatting",
@@ -340,56 +335,80 @@ server <- function(input, output, session) {
 
 
   # Define shared cdm_names values ----
-  shiny::observe({
-    cdm_values <- names(choices)[grepl("cdm_name", names(choices)) & names(choices) != "shared_cdm_names"]
-    for(inputValue in cdm_values){
-      local({
-        inputValue_local <- inputValue
-        shiny::observeEvent(input[[inputValue_local]], {
-          val <- input[[inputValue_local]]
-          if (is.null(val) || length(val) == 0 || all(val == "")) { val <- character(0) }
-          shared_cdm_names(val)
-        }, ignoreNULL = FALSE)
-      })
-    }
-  })
+  cdm_values <- names(choices)[grepl("cdm_name", names(choices)) & names(choices) != "shared_cdm_names"]
+  last_active_cdm_input <- reactiveVal(NULL)
+  for(inputValue in cdm_values){
+    local({
+      inputValue_local <- inputValue
+      shiny::observeEvent(input[[inputValue_local]], {
+        val <- input[[inputValue_local]]
+        if (is.null(val) || length(val) == 0 || all(val == "")) {
+          val <- character(0)
+        }
 
-  shiny::observe({
-    cdm_values <- names(choices)[grepl("cdm_name", names(choices)) & names(choices) != "shared_cdm_names"]
+        if (!identical(val, shared_cdm_names())) {
+          last_active_cdm_input(inputValue_local)
+          shared_cdm_names(val)
+        }
+      }, ignoreNULL = FALSE)
+    })
+  }
+
+  shiny::observeEvent(shared_cdm_names(), {
+    new_shared_val <- shared_cdm_names()
+    source_input <- isolate(last_active_cdm_input())
+
     for (inputId in cdm_values) {
-      local({
-        inputId_local <- inputId
-        shiny::observeEvent(shared_cdm_names(), {
-          updatePickerInput(session, inputId_local, selected = shared_cdm_names())
-        })
-      })}
-  })
+      if (!is.null(source_input) && inputId == source_input) {
+        next
+      }
+
+      current_val <- isolate(input[[inputId]])
+      if (is.null(current_val)) current_val <- character(0)
+
+      if (!identical(new_shared_val, current_val)) {
+        shinyWidgets::updatePickerInput(session, inputId, selected = new_shared_val)
+      }
+    }
+  }, ignoreNULL = FALSE, ignoreInit = TRUE)
 
   # Define shared cohort_names values ----
-  shiny::observe({
-    cohort_values <- names(choices)[grepl("cohort_name", names(choices)) & names(choices) != "shared_cohort_names"]
-    for(inputValue in cohort_values){
-      local({
-        inputValue_local <- inputValue
-        shiny::observeEvent(input[[inputValue_local]], {
-          val <- input[[inputValue_local]]
-          if (is.null(val) || length(val) == 0 || all(val == "")) { val <- character(0) }
-          shared_cohort_names(val)
-        }, ignoreNULL = FALSE)
-      })
-    }
-  })
+  cohort_values <- names(choices)[grepl("cohort_name", names(choices)) & names(choices) != "shared_cohort_names"]
+  last_active_cohort_input <- reactiveVal(NULL)
+  for(inputValue in cohort_values){
+    local({
+      inputValue_local <- inputValue
+      shiny::observeEvent(input[[inputValue_local]], {
+        val <- input[[inputValue_local]]
+        if (is.null(val) || length(val) == 0 || all(val == "")) {
+          val <- character(0)
+        }
 
-  shiny::observe({
-    cohort_values <- names(choices)[grepl("cohort_name", names(choices)) & names(choices) != "shared_cohort_names"]
+        if (!identical(val, shared_cohort_names())) {
+          last_active_cohort_input(inputValue_local) # Log the source!
+          shared_cohort_names(val)
+        }
+      }, ignoreNULL = FALSE)
+    })
+  }
+
+  shiny::observeEvent(shared_cohort_names(), {
+    new_shared_val <- shared_cohort_names()
+    source_input <- isolate(last_active_cohort_input())
+
     for (inputId in cohort_values) {
-      local({
-        inputId_local <- inputId
-        shiny::observeEvent(shared_cohort_names(), {
-          updatePickerInput(session, inputId_local, selected = shared_cohort_names())
-        })
-      })}
-  })
+      if (!is.null(source_input) && inputId == source_input) {
+        next
+      }
+
+      current_val <- isolate(input[[inputId]])
+      if (is.null(current_val)) { current_val <- character(0) }
+
+      if (!identical(new_shared_val, current_val)) {
+        shinyWidgets::updatePickerInput(session, inputId, selected = new_shared_val)
+      }
+    }
+  }, ignoreNULL = FALSE, ignoreInit = TRUE)
 
   # download raw data -----
   output$download_raw <- shiny::downloadHandler(
@@ -759,10 +778,10 @@ server <- function(input, output, session) {
                                   striped = TRUE,
                                   compact = TRUE,
                                   showSortable = TRUE) |>
-        reactablefmtr::add_title("Summary of achilles codes",
+        reactablefmtr_add_title("Summary of achilles codes",
                                  font_size = 25,
                                  font_weight = "normal") |>
-        reactablefmtr::add_subtitle("Codes from codelist observed in achilles tables.",
+        reactablefmtr_add_subtitle("Codes from codelist observed in achilles tables.",
                                     font_size = 15,
                                     font_weight = "normal")
 
@@ -882,10 +901,10 @@ server <- function(input, output, session) {
                        striped = TRUE,
                        compact = TRUE,
                        showSortable = TRUE) |>
-        reactablefmtr::add_title("Summary of orphan codes",
+        reactablefmtr_add_title("Summary of orphan codes",
                                  font_size = 25,
                                  font_weight = "normal") |>
-        reactablefmtr::add_subtitle("Orphan codes refer to concepts present in the database that are not in a codelist but are related to included codes.",
+        reactablefmtr_add_subtitle("Orphan codes refer to concepts present in the database that are not in a codelist but are related to included codes.",
                                     font_size = 15,
                                     font_weight = "normal")
 
@@ -1017,10 +1036,10 @@ server <- function(input, output, session) {
                        striped = TRUE,
                        compact = TRUE,
                        showSortable = TRUE) |>
-        reactablefmtr::add_title("Summary of cohort code use",
+        reactablefmtr_add_title("Summary of cohort code use",
                                  font_size = 25,
                                  font_weight = "normal") |>
-        reactablefmtr::add_subtitle("Codes from codelist observed on day of cohort entry. Note more than one code could be seen for a person on this day (both of which would have led to inclusion).",
+        reactablefmtr_add_subtitle("Codes from codelist observed on day of cohort entry. Note more than one code could be seen for a person on this day (both of which would have led to inclusion).",
                                     font_size = 15,
                                     font_weight = "normal")
 
@@ -1288,23 +1307,23 @@ server <- function(input, output, session) {
     }
 
     result <- dataFiltered$summarise_drug_use |>
-      dplyr::filter(.data$cdm_name %in% shared_cdm_names()) |> 
+      dplyr::filter(.data$cdm_name %in% shared_cdm_names()) |>
       visOmopResults::filterGroup(.data$cohort_name %in%
                                     shared_cohort_names()) |>
-      omopgenerics::filterGroup(.data$codelist_name %in% 
+      omopgenerics::filterGroup(.data$codelist_name %in%
                                   input$summarise_drug_use_codelist_name) |>
-      omopgenerics::filterGroup(.data$route %in% 
+      omopgenerics::filterGroup(.data$route %in%
                                   input$summarise_drug_use_route) |>
-      omopgenerics::filterGroup(.data$drug_type %in% 
+      omopgenerics::filterGroup(.data$drug_type %in%
                                   input$summarise_drug_use_drug_type)
 
     if(isFALSE(input$drug_use_overall)){
-      result <- result |> 
+      result <- result |>
         dplyr::filter(str_detect(group_name, "concept_name"))
     }
-    
+
     if(isFALSE(input$drug_use_by_concept)){
-      result <- result |> 
+      result <- result |>
         dplyr::filter(str_detect(group_name, "concept_name", negate = TRUE))
     }
 
@@ -1335,9 +1354,9 @@ server <- function(input, output, session) {
 
     return(tbl)
   })
-  
+
   createDrugDiagnosticsInteractive <- shiny::reactive({
-    
+
     res <- filterDrugDiagnostics()
     tbl <- res |>
       dplyr::arrange(group_name, group_level) |>
@@ -1348,7 +1367,7 @@ server <- function(input, output, session) {
                                                     Range = "<min> to <max>",
                                                     `Percentage missing` = "<percentage_missing> %"),
                                    hide = input$drug_diagnostics_gt_hide,
-                                   type = "tibble") 
+                                   type = "tibble")
     names(tbl) <-stringr::str_remove_all(names(tbl),
                                          "\\[header_name\\]CDM name\\n\\[header_level\\]")
     names(tbl) <- stringr::str_remove_all(names(tbl),
@@ -1356,7 +1375,7 @@ server <- function(input, output, session) {
     names(tbl) <- stringr::str_replace_all(names(tbl),
                                            "\n\\[header_name\\]",
                                            ": ")
-    
+
     return(tbl)
   })
 
@@ -1365,18 +1384,18 @@ server <- function(input, output, session) {
       tbl <- createDrugDiagnosticsGT()
       return(tbl)
     } else {
-      tbl <- createDrugDiagnosticsInteractive() 
-      
+      tbl <- createDrugDiagnosticsInteractive()
+
       tbl <- tbl |>
         dplyr::mutate("Cohort name - Codelist name" =
                         paste0(.data[["Cohort name"]], " - ", .data[["Codelist name"]])) |>
         dplyr::select(-c("Cohort name", "Codelist name")) |>
         dplyr::relocate("Cohort name - Codelist name")
-      
-      
+
+
       # column ordering by codelist and first column with a count
       order <- list("Cohort name - Codelist name"  = "asc")
-      
+
       tbl <- reactable(tbl,
                        groupBy = c("Cohort name - Codelist name"),
                        columns = getColsForTbl(tbl,
@@ -1390,9 +1409,9 @@ server <- function(input, output, session) {
                        striped = TRUE,
                        compact = TRUE,
                        showSortable = TRUE) |>
-        reactablefmtr::add_title("Drug diagnostics",
+        reactablefmtr_add_title("Drug diagnostics",
                                  font_size = 25,
-                                 font_weight = "normal") 
+                                 font_weight = "normal")
     }
     tbl
   })
@@ -1740,10 +1759,10 @@ server <- function(input, output, session) {
               striped = TRUE,
               compact = TRUE,
               showSortable = TRUE) |>
-      reactablefmtr::add_title("Large scale characteristics",
+      reactablefmtr_add_title("Large scale characteristics",
                                font_size = 25,
                                font_weight = "normal") |>
-      reactablefmtr::add_subtitle("Summary of all records from clinical tables within a time window. The sampled cohort represents individuals from the original cohort, the matched cohort comprises individuals of similar age and sex from the database.",
+      reactablefmtr_add_subtitle("Summary of all records from clinical tables within a time window. The sampled cohort represents individuals from the original cohort, the matched cohort comprises individuals of similar age and sex from the database.",
                                   font_size = 15,
                                   font_weight = "normal")
 
