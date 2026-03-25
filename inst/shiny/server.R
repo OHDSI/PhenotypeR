@@ -432,36 +432,40 @@ server <- function(input, output, session) {
   clinical_description <- eventReactive(input$updateClinicalDescription, {
     req(shared_cohort_names())
     req(inputs_initialized())
-    
+
     # require exactly one selection
-    if(length(shared_cohort_names()) > 1){ 
+    if(length(shared_cohort_names()) > 1){
       info <- "Please select only one cohort"
     }else{
       info <- clinical_descriptions[[shared_cohort_names()]]
+
+      info <- info |>
+        dplyr::select("phenotype", "author", "date", "key_sources", "description" = all_of(input$phenotypes_section))
     }
-    return(info)   
+
+    return(info)
   })
-  
+
   output$clinical_text <- renderUI({
     info <- clinical_description()
-    
+
     if (is.null(info) || length(info) == 0) {
       return(tags$p("No clinical description for this cohort."))
     }
-    
+
     if (length(info) == 1) {
       return(tags$p(info))
     }
-    
+
     author      <- if (!is.null(info$author) && info$author != "") info$author else "Unknown author"
     date        <- if (!is.null(info$date)   && info$date != "")   info$date   else "Unknown date"
     key_sources <- if (!is.null(info$key_sources) && info$key_sources != "") info$key_sources else "Unknown key sources"
     metadata_text <- paste0("Author: ", author, " (Date: ", date, ")<br>Sources: ", key_sources)
-    
+
     info <- info |>
-      dplyr::select(-dplyr::any_of(c("phenotype", "author", "date", "key_sources"))) 
-    
-    info <- info[[input$phenotypes_section]][[1]]
+      dplyr::select(-dplyr::any_of(c("phenotype", "author", "date", "key_sources")))
+
+    info <- info[["description"]][[1]]
     info <- paste0("<lbr>", info, "</br>")
     text <- c("<ul>", info, "</ul>")
 
@@ -476,7 +480,7 @@ server <- function(input, output, session) {
       )
     )
   })
-  
+
   # summarise_omop_snapshot -----
   filterOmopSnapshot <- eventReactive(input$updateSnapshot, ({
     if (is.null(dataFiltered$summarise_omop_snapshot)) {

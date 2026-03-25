@@ -259,6 +259,15 @@ docs <- purrr::imap(
     path
   })
 
+# Check for other docx files in the folder
+other <- list.files(path = file.path("data","raw","clinical_descriptions"), pattern = "\\.docx$")
+other <- gsub(".docx","",other)
+other <- setdiff(other, names(docs))
+if(length(other)) {
+  cli::cli_warn("A docx file ({other}) was found in 'data/raw/clinical_descriptions' that does not match any cohort name. This file will be ignored. Please note that clinical description documents must be named exactly the same as their corresponding cohort.")
+}
+
+# Read clinical descriptions
 clinical_descriptions <- list()
 for(i in seq_along(docs)){
   name <- names(docs)[[i]]

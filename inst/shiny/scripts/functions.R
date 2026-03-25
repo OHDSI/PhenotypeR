@@ -125,18 +125,26 @@ find_info_in_the_line <- function(doc_text, string) {
 }
 
 find_info_in_the_paragraph <- function(doc_text, start, end, addStyle, removeFirstTitle = FALSE){
+
+  if( !any(stringr::str_detect(doc_text$text, regex(paste0("^", start), ignore_case = TRUE)), na.rm = TRUE)) {
+    msg <- glue::glue("No `{start}` found in the clinical description.")
+    cli::cli_warn(message = msg)
+    return( msg )
+  }
+  
   pi_start <- doc_text |>
     dplyr::filter(stringr::str_detect(text, regex(paste0("^", start), ignore_case = TRUE))) |>
     dplyr::pull("paragraph_index")
 
   if(removeFirstTitle){pi_start <- pi_start + 1}
-  if(is.null(end)){
+  
+  pi_end <- c(doc_text |>
+                dplyr::filter(stringr::str_detect(text, regex(paste0("^", end), ignore_case = TRUE))) |>
+                dplyr::pull("paragraph_index")-1)
+  
+  if(is.null(end) | length(pi_end) == 0){
     pi_end <- doc_text |> dplyr::filter(dplyr::row_number() == nrow(doc_text)) |>
       dplyr::pull("paragraph_index")
-  }else{
-    pi_end <- c(doc_text |>
-                  dplyr::filter(stringr::str_detect(text, regex(paste0("^", end), ignore_case = TRUE))) |>
-                  dplyr::pull("paragraph_index")-1)
   }
 
   doc_text <- doc_text |>
@@ -161,7 +169,6 @@ find_info_in_the_paragraph <- function(doc_text, start, end, addStyle, removeFir
 
   return(doc_text)
 }
-
 
 parse_docx_runs <- function(path_docx) {
 
