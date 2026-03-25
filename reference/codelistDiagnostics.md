@@ -76,15 +76,15 @@ result <- codelistDiagnostics(cdm$warfarin)
 #> • quantity: min, q01, q05, q25, median, q75, q95, q99, max, percentage_missing
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side
-#> → Start summary of data, at 2026-03-25 13:52:13.224401
-#> ✔ Summary finished, at 2026-03-25 13:52:14.204345
+#> → Start summary of data, at 2026-03-25 15:55:07.108281
+#> ✔ Summary finished, at 2026-03-25 15:55:07.984331
 #> ℹ The following estimates will be calculated:
 #> • days_to_next_record: min, q01, q05, q25, median, q75, q95, q99, max,
 #>   percentage_missing
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side
-#> → Start summary of data, at 2026-03-25 13:52:14.934988
-#> ✔ Summary finished, at 2026-03-25 13:52:15.120071
+#> → Start summary of data, at 2026-03-25 15:55:08.659978
+#> ✔ Summary finished, at 2026-03-25 15:55:08.82499
 #> ! No common ingredient found for codelist: `warfarin`.
 #> ℹ Change ingredient threshold with options(PhenotypeR_ingredient_threshold),
 #>   threshold = 0.8.
