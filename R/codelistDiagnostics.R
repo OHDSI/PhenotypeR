@@ -13,6 +13,7 @@
 #' attribute must be populated. The cdm reference must contain achilles
 #' tables as these will be used for deriving concept counts.
 #' @inheritParams measurementSampleDoc
+#' @inheritParams drugExposureSampleDoc
 #'
 #' @return A summarised result
 #' @export
@@ -32,17 +33,20 @@
 #'
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
-codelistDiagnostics <- function(cohort, measurementSample = 20000){
+codelistDiagnostics <- function(cohort,
+                                measurementSample = 20000,
+                                drugExposureSample = 20000){
 
-  if (!is.null(getOption("omopgenerics.logFile"))) {
-    omopgenerics::logMessage("Codelist diagnostics - input validation")
-  }
   cohort <- omopgenerics::validateCohortArgument(cohort = cohort)
   cdm <- omopgenerics::cdmReference(cohort)
   cohortTable <- omopgenerics::tableName(cohort)
   cohortIds <- omopgenerics::settings(cohort) |>
     dplyr::select("cohort_definition_id") |>
     dplyr::pull()
+  measurementSample <- omopgenerics::assertNumeric(measurementSample,
+                                                   min = 0, length = 1, null = TRUE)
+  drugExposureSample <- omopgenerics::assertNumeric(drugExposureSample,
+                                                   min = 0, length = 1, null = TRUE)
 
   addAttribute <- c("i" = "You can add a codelist to a cohort with `addCodelistAttribute()`.")
   notPresentCodelist <- is.null(attr(cdm[[cohortTable]], "cohort_codelist"))
@@ -93,27 +97,11 @@ codelistDiagnostics <- function(cohort, measurementSample = 20000){
   if (!is.null(getOption("omopgenerics.logFile"))) {
     omopgenerics::logMessage("Codelist diagnostics - index event breakdown")
   }
-
-  for (i in seq_along(cohortIds)){
-    cohortId <- cohortIds[i]
-    if (cohortId %in% ids) {
-      cli::cli_warn(message = c("!" = paste0("cohort_definition_id ", cohortId, " is empty. Skipping code use for this cohort.")))
-      results[[paste0("index_event_", i)]] <- omopgenerics::emptySummarisedResult()
-    } else {
-      codes <- omopgenerics::cohortCodelist(cohortTable = cdm[[cohortTable]], cohortId = cohortId)
-      if (length(codes) > 0) {
-        results[[paste0("index_event_", i)]] <- CodelistGenerator::summariseCohortCodeUse(
-          x = codes,
-          cdm = cdm,
-          cohortTable = cohortTable,
-          cohortId = cohortId,
-          timing = "entry",
-          countBy = c("record", "person"),
-          byConcept = TRUE
-        )
-      }
-    }
-  }
+  results[["index_event_"]] <- CodelistGenerator::summariseCohortCodeUse(
+    cdm = cdm,
+    cohortTable = cohortTable,
+    timing = "entry",
+    countBy = c("record", "person"))
 
   # If any measurement/observation codes: do measurement diagnostics
   measurements <- cdm$concept |>
@@ -145,7 +133,7 @@ codelistDiagnostics <- function(cohort, measurementSample = 20000){
       results[[paste0("measurement_diagnostics_", id)]] <- MeasurementDiagnostics::summariseCohortMeasurementUse(
         codes = codes,
         cohort = measurementCohort,
-        timing = "during",
+        timing = "any",
         byConcept = TRUE,
         byYear = FALSE,
         bySex = FALSE,
@@ -159,6 +147,7 @@ codelistDiagnostics <- function(cohort, measurementSample = 20000){
   }
 
   # If any drug codes: do drug exposure diagnostics
+  if(!0 %in% drugExposureSample){
   drugs <- cdm$concept |>
     dplyr::select(dplyr::all_of(c("concept_id", "domain_id"))) |>
     dplyr::inner_join(
@@ -169,28 +158,37 @@ codelistDiagnostics <- function(cohort, measurementSample = 20000){
     dplyr::filter(tolower(.data$domain_id) %in% c("drug")) |>
     dplyr::collect()
   if (nrow(drugs) > 0) {
-    cli::cli_bullets(c("*" = "Getting diagnostics for drug concepts"))
+    if (!is.null(getOption("omopgenerics.logFile"))) {
+      omopgenerics::logMessage("Codelist diagnostics - drug diagnostics")
+    }
     drugCohortsIds <- unique(drugs$cohort_definition_id)
     for (id in drugCohortsIds) {
       nm <- omopgenerics::uniqueTableName()
       drugCohort <- cdm[[cohortTable]] |>
         CohortConstructor::subsetCohorts(cohortId = id, name = nm)
+      if(!is.null(drugExposureSample)){
+        drugCohort <- drugCohort |>
+          CohortConstructor::sampleCohorts(drugExposureSample)
+      }
       codes <- drugs |>
         dplyr::filter(.data$cohort_definition_id == id) |>
         omopgenerics::newCodelist()
       results[[paste0("drug_diagnostics_", id)]] <- summariseCohortDrugUse(
         cohort = drugCohort,
         codes = codes,
-        timing = "during",
+        timing = "any",
         byConcept = TRUE,
         byYear = FALSE,
         bySex = FALSE,
         ageGroup = NULL,
         dateRange = as.Date(c(NA, NA)),
-        checks = c("missing", "exposureDuration", "quantity", "type", "route", "quantity", "dose")
+        checks = c("exposureDuration", "quantity", "type",
+                   "route", "quantity", "dose",
+                   "daysBetween")
       )
       omopgenerics::dropSourceTable(cdm = cdm, name = nm)
     }
+  }
   }
 
   # all other analyses require achilles, so return if not available
@@ -204,7 +202,7 @@ codelistDiagnostics <- function(cohort, measurementSample = 20000){
       omopgenerics::logMessage("Codelist diagnostics - orphan concepts")
     }
 
-    results[[paste0("orphan_codes", i)]] <- CodelistGenerator::summariseOrphanCodes(
+    results[["orphan_codes"]] <- CodelistGenerator::summariseOrphanCodes(
       x = all_codelists,
       cdm = cdm
     )

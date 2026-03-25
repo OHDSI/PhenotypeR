@@ -51,7 +51,7 @@ test_that("run with multiple cohorts", {
   testthat::skip_on_cran()
 
   cdm_local <- omock::mockCdmReference() |>
-    omock::mockPerson(nPerson = 100) |>
+    omock::mockPerson(nPerson = 100, seed = 1234) |>
     omock::mockObservationPeriod() |>
     omock::mockConditionOccurrence() |>
     omock::mockDrugExposure() |>

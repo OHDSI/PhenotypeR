@@ -2,9 +2,9 @@ ui <- fluidPage(
   bslib::page_navbar(
     theme = bs_theme(5, "pulse"),
     navbar_options =list(class = "bg-dark", theme = "dark"),
-    
+
     title = "PhenotypeR",
-    
+
     bslib::nav_panel(title = "Background",
                      icon = shiny::icon("disease"),
                      shiny::includeMarkdown(path = "background.md")),
@@ -45,7 +45,7 @@ ui <- fluidPage(
             )
           )
         ),
-        
+
         bslib::layout_sidebar(
           sidebar = bslib::sidebar(width = 400, open = "closed",
                                    bslib::accordion(
@@ -73,7 +73,7 @@ ui <- fluidPage(
       )
     ),
     # clinicalDescriptions_end -----
-    
+
     # databaseDiagnostics_start -----
     bslib::nav_menu(
       title = "Database diagnostics",
@@ -173,7 +173,7 @@ ui <- fluidPage(
           )
         )
       ),
-      
+
       ## observation periods -----
       bslib::nav_panel(
         title = "Observation periods",
@@ -565,7 +565,7 @@ ui <- fluidPage(
                                                       label = "Interactive",
                                                       status = "primary"),
                                        uiOutput("orphan_sortable")
-                                       
+
                                      )
                                    )
           ),
@@ -1018,7 +1018,7 @@ ui <- fluidPage(
       ## drug_diagnostics_start
       ## Drug diagnostics -----
       bslib::nav_panel(
-        title = "Drug diagnostics",        
+        title = "Drug diagnostics",
         bslib::accordion(
           bslib::accordion_panel(
             title = "Shared inputs",
@@ -1067,6 +1067,60 @@ ui <- fluidPage(
             )
           )),
         icon = shiny::icon("pills"),
+        bslib::layout_sidebar(
+          sidebar = bslib::sidebar(width = 400, open = "closed",
+                                   bslib::accordion(
+                                     bslib::accordion_panel(
+                                       title = "Settings",
+                                       shinyWidgets::pickerInput(
+                                         inputId = "summarise_drug_use_codelist_name",
+                                         label = "Codelist",
+                                         choices = NULL,
+                                         selected = NULL,
+                                         multiple = TRUE,
+                                         options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                       ),
+                                       div(style="display: flex; justify-content: space-between;",
+                                           div(style="flex: 1;", prettyCheckbox(inputId = "drug_use_overall",
+                                                                                label = "Overall",
+                                                                                value = TRUE,
+                                                                                status = "primary",
+                                                                                shape = "curve",
+                                                                                outline = TRUE)),
+                                           div(style="flex: 1;", prettyCheckbox(inputId = "drug_use_by_concept",
+                                                                                label = "By concept",
+                                                                                value = TRUE,
+                                                                                status = "primary",
+                                                                                shape = "curve",
+                                                                                outline = TRUE))
+                                       ),
+                                       shinyWidgets::pickerInput(
+                                         inputId = "summarise_drug_use_drug_type",
+                                         label = "Drug type",
+                                         choices = NULL,
+                                         selected = NULL,
+                                         multiple = TRUE,
+                                         options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                       ),
+                                       shinyWidgets::pickerInput(
+                                         inputId = "summarise_drug_use_route",
+                                         label = "Route",
+                                         choices = NULL,
+                                         selected = NULL,
+                                         multiple = TRUE,
+                                         options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                       )
+                                     ),
+                                     bslib::accordion_panel(
+                                       title = "Table formatting",
+                                       materialSwitch(inputId = "drug_diagnostics_interactive",
+                                                      value = FALSE,
+                                                      label = "Interactive",
+                                                      status = "primary"),
+                                       uiOutput("drug_diagnostics_sortable")
+                                     )
+                                   )
+          ),
         bslib::navset_card_tab(
           bslib::nav_panel(
             title = "Drug diagnostics",
@@ -1076,16 +1130,11 @@ ui <- fluidPage(
                 shiny::downloadButton(outputId = "drug_diagnostics_gt_download", label = ""),
                 class = "text-end"
               ),
-              bslib::layout_sidebar(
-                sidebar = bslib::sidebar(width = 400, open = "closed",
-                                         uiOutput("drug_diagnostics_sortable"),
-                                         position = "right"
-                ),
                 gt::gt_output("drug_diagnostics_tbl") |> withSpinner()
-              )
             )
           )
         )
+      )
       )
       ## drug_diagnostics_end
     ),
@@ -1223,7 +1272,7 @@ ui <- fluidPage(
           )
         )
       ),
-      
+
       ## Cohort characteristics -----
       bslib::nav_panel(
         title = "Cohort characteristics",
@@ -1364,7 +1413,7 @@ ui <- fluidPage(
           )
         )
       ),
-      
+
       ## Large scale characteristics -----
       bslib::nav_panel(
         title = "Large scale characteristics",
@@ -1494,7 +1543,7 @@ ui <- fluidPage(
           )
         )
       ),
-      
+
       ## Compare large scale characteristics -----
       bslib::nav_panel(
         title = "Compare large scale characteristics",
@@ -1707,7 +1756,7 @@ ui <- fluidPage(
           )
         )
       ),
-      
+
       ## Compare cohorts -----
       bslib::nav_panel(
         title = "Compare cohorts",
@@ -2588,7 +2637,7 @@ ui <- fluidPage(
     ),
     # populationDiagnostics_end ----
     nav_spacer(),
-    
+
     # log ----
     tags$head(
       tags$style(HTML("

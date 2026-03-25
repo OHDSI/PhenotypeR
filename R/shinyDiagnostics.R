@@ -34,7 +34,7 @@
 #'                                                               40163554L)),
 #'                               name = "warfarin")
 #'
-#' result <- phenotypeDiagnostics(cdm$warfarin)
+#' result <- phenotypeDiagnostics(cdm$warfarin, populationSample = 100000)
 #'
 #' expectations <- dplyr::tibble("cohort_name" = "warfarin",
 #'                        "value" = c("Mean age",
@@ -199,6 +199,9 @@ checkWhichDiagnostics <- function(result){
     }
     if(!"measurement_summary" %in% (omopgenerics::settings(result) |> dplyr::pull("result_type") |> unique())){
       to_remove <- append(to_remove, "measurement_diagnostics")
+    }
+    if(!"summarise_drug_use" %in% (omopgenerics::settings(result) |> dplyr::pull("result_type") |> unique())){
+      to_remove <- append(to_remove, "drug_diagnostics")
     }
   }
   if(!"cohortDiagnostics" %in% to_remove){

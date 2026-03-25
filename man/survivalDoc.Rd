@@ -4,7 +4,8 @@
 \alias{survivalDoc}
 \title{Helper for consistent documentation of `survival`.}
 \arguments{
-\item{survival}{Boolean variable. Whether to conduct survival analysis (TRUE) or not (FALSE).}
+\item{survival}{TRUE or FALSE. Whether to conduct survival analysis (TRUE)
+or not (FALSE).}
 }
 \description{
 Helper for consistent documentation of `survival`.

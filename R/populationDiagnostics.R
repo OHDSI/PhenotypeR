@@ -26,7 +26,7 @@
 #'                               name = "warfarin")
 #'
 #' result <- cdm$warfarin |>
-#'   populationDiagnostics()
+#'   populationDiagnostics(populationSample = 100000)
 #'
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
@@ -34,9 +34,6 @@ populationDiagnostics <- function(cohort,
                                   populationSample = 1000000,
                                   populationDateRange = as.Date(c(NA, NA))) {
 
-  if (!is.null(getOption("omopgenerics.logFile"))) {
-    omopgenerics::logMessage("Population diagnosics - input validation")
-  }
   cohort <- omopgenerics::validateCohortArgument(cohort = cohort)
   checksPopulationDiagnostics(populationSample, populationDateRange)
 

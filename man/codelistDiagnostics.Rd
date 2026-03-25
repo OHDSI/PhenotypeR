@@ -4,7 +4,11 @@
 \alias{codelistDiagnostics}
 \title{Run codelist-level diagnostics}
 \usage{
-codelistDiagnostics(cohort, measurementSample = 20000)
+codelistDiagnostics(
+  cohort,
+  measurementSample = 20000,
+  drugExposureSample = 20000
+)
 }
 \arguments{
 \item{cohort}{A cohort table in a cdm reference. The cohort_codelist
@@ -14,6 +18,11 @@ tables as these will be used for deriving concept counts.}
 \item{measurementSample}{The number of people to take a random sample for
 measurement diagnostics. If `measurementSample = NULL`, no sampling will be
 performed. If `measurementSample = 0` measurement diagnostics will not be
+run.}
+
+\item{drugExposureSample}{The number of people to take a random sample for
+drug diagnostics. If `drugExposureSample = NULL`, no sampling will be
+performed. If `drugExposureSample = 0` drug diagnostics will not be
 run.}
 }
 \value{

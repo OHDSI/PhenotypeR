@@ -13,7 +13,9 @@
 #' @param diagnostics Vector indicating which diagnostics to perform. Options
 #' include: `databaseDiagnostics`, `codelistDiagnostics`, `cohortDiagnostics`,
 #' and `populationDiagnostics`.
+#' @inheritParams clinicalTableSample
 #' @inheritParams measurementSampleDoc
+#' @inheritParams drugExposureSampleDoc
 #' @inheritParams survivalDoc
 #' @inheritParams cohortSampleDoc
 #' @inheritParams matchedDoc
@@ -34,12 +36,14 @@
 #'                                                               40163554L)),
 #'                               name = "warfarin")
 #'
-#' result <- phenotypeDiagnostics(cdm$warfarin)
+#' result <- phenotypeDiagnostics(cdm$warfarin, populationSample = 100000)
 #' }
 phenotypeDiagnostics <- function(cohort,
                                  diagnostics = c("databaseDiagnostics", "codelistDiagnostics",
                                                  "cohortDiagnostics", "populationDiagnostics"),
+                                 clinicalTableSample = NULL,
                                  measurementSample = 20000,
+                                 drugExposureSample = 20000,
                                  survival = FALSE,
                                  cohortSample = 20000,
                                  matchedSample = 1000,
@@ -49,17 +53,14 @@ phenotypeDiagnostics <- function(cohort,
   cohort <- omopgenerics::validateCohortArgument(cohort = cohort)
 
   # Check if a log file exists
-  oldLogFile <- getOption(x = "omopgenerics.logFile", default = NULL) 
-  
+  oldLogFile <- getOption(x = "omopgenerics.logFile", default = NULL)
+
   if (is.null(oldLogFile)) {
     # If no log file exists, create a new temporary one
     log_file <- tempfile(pattern = "phenotypeDiagnostics_log_{date}_{time}", fileext = ".txt")
     omopgenerics::createLogFile(logFile = log_file)
     on.exit(options("omopgenerics.logFile" = NULL))
-  } 
-  
-  omopgenerics::logMessage("Phenotype diagnostics - input validation")
-
+  }
   omopgenerics::assertChoice(diagnostics,
                              c("databaseDiagnostics", "codelistDiagnostics",
                                "cohortDiagnostics", "populationDiagnostics"),
@@ -73,7 +74,8 @@ phenotypeDiagnostics <- function(cohort,
   cdm <- omopgenerics::cdmReference(cohort)
   results <- list()
   if ("databaseDiagnostics" %in% diagnostics) {
-    results[["db_diag"]] <- databaseDiagnostics(cohort)
+    results[["db_diag"]] <- databaseDiagnostics(cohort,
+                                                clinicalTableSample = clinicalTableSample)
     if(!is.null(incrementalResultPath)){
       if (dir.exists(incrementalResultPath)) {
       exportSummarisedResult(results[["db_diag"]] ,
@@ -85,7 +87,8 @@ phenotypeDiagnostics <- function(cohort,
 
   if ("codelistDiagnostics" %in% diagnostics) {
     results[["code_diag"]] <- codelistDiagnostics(cohort,
-                                                  measurementSample = measurementSample)
+                                                  measurementSample = measurementSample,
+                                                  drugExposureSample = drugExposureSample)
     if(!is.null(incrementalResultPath)){
       if (dir.exists(incrementalResultPath)) {
         exportSummarisedResult(results[["code_diag"]],

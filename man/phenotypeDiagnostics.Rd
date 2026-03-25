@@ -8,7 +8,9 @@ phenotypeDiagnostics(
   cohort,
   diagnostics = c("databaseDiagnostics", "codelistDiagnostics", "cohortDiagnostics",
     "populationDiagnostics"),
+  clinicalTableSample = NULL,
   measurementSample = 20000,
+  drugExposureSample = 20000,
   survival = FALSE,
   cohortSample = 20000,
   matchedSample = 1000,
@@ -23,12 +25,23 @@ phenotypeDiagnostics(
 include: `databaseDiagnostics`, `codelistDiagnostics`, `cohortDiagnostics`,
 and `populationDiagnostics`.}
 
+\item{clinicalTableSample}{The number of records to take a random sample for
+database diagnostics. If `clinicalTableSample = NULL`, no sampling will be
+performed. If `clinicalTableSample = 0` clinical table summaries will not be
+run.}
+
 \item{measurementSample}{The number of people to take a random sample for
 measurement diagnostics. If `measurementSample = NULL`, no sampling will be
 performed. If `measurementSample = 0` measurement diagnostics will not be
 run.}
 
-\item{survival}{Boolean variable. Whether to conduct survival analysis (TRUE) or not (FALSE).}
+\item{drugExposureSample}{The number of people to take a random sample for
+drug diagnostics. If `drugExposureSample = NULL`, no sampling will be
+performed. If `drugExposureSample = 0` drug diagnostics will not be
+run.}
+
+\item{survival}{TRUE or FALSE. Whether to conduct survival analysis (TRUE)
+or not (FALSE).}
 
 \item{cohortSample}{The number of people to take a random sample for cohortDiagnostics. If `cohortSample = NULL`, no sampling will be performed.}
 
@@ -71,6 +84,6 @@ cdm$warfarin <- conceptCohort(cdm,
                                                               40163554L)),
                               name = "warfarin")
 
-result <- phenotypeDiagnostics(cdm$warfarin)
+result <- phenotypeDiagnostics(cdm$warfarin, populationSample = 100000)
 }
 }

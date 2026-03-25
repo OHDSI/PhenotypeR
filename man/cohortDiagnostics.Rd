@@ -14,7 +14,8 @@ cohortDiagnostics(
 \arguments{
 \item{cohort}{Cohort table in a cdm reference}
 
-\item{survival}{Boolean variable. Whether to conduct survival analysis (TRUE) or not (FALSE).}
+\item{survival}{TRUE or FALSE. Whether to conduct survival analysis (TRUE)
+or not (FALSE).}
 
 \item{cohortSample}{The number of people to take a random sample for cohortDiagnostics. If `cohortSample = NULL`, no sampling will be performed.}
 
