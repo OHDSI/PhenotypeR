@@ -61,7 +61,7 @@ Suggests:
     progress,
     qs2,
     lubridate,
-    systemfonts
+    systemfonts,
     officer
 Config/testthat/edition: 3
 RoxygenNote: 7.3.3
