@@ -183,10 +183,17 @@ plotAgeDensity <- function(summarise_table, summarise_characteristics, show_inte
   data <- data |>
     dplyr::filter(sex %in% c("Female", "Male"))
 
-  plot <- ggplot2::ggplot(data, ggplot2::aes(x = density_x, y = density_y, fill = sex)) +
-    geom_polygon() +
-    scale_y_continuous(labels = function(x) scales::label_percent()(abs(x)),
-                       limits = c(-max_density*1.2, max_density*1.2)) +
+  plot <-  plot_data |>
+    ggplot(aes(y = density_x, fill = sex)) +
+    geom_ribbon(aes(xmin = 0, xmax = density_y), alpha = 0.8) +
+    facet_wrap(vars(cdm_name, group_level)) +
+    scale_x_continuous(labels = abs) +
+    geom_vline(xintercept = 0, color = "grey50", linewidth = 0.5) +
+    labs(
+      y = "Age",
+      x = "Density",
+      fill = "Sex"
+    ) +
     themeVisOmop() +
     theme(
       axis.text.x = element_text(),
@@ -199,23 +206,50 @@ plotAgeDensity <- function(summarise_table, summarise_characteristics, show_inte
       legend.title = ggplot2::element_blank(),
       panel.background = ggplot2::element_blank()
     ) +
-    scale_x_continuous(labels = c(as.character(seq(min_age,max_age-5,5)), paste0(max_age,"+")),
-                       breaks = c(seq(min_age, max_age-5,5), max_age)) +
-    scale_fill_manual(values = list("Male" = "#77A9B4","Female" = "#E1B12D")) +
-    facet_wrap(c("cdm_name", "group_level")) +
-    coord_flip(clip = "off")
+    scale_fill_manual(values = list("Male" = "#77A9B4","Female" = "#E1B12D"))
 
   if(show_interquantile_range){
     plot <- plot +
-      geom_segment(data = iqr[iqr$estimate_name == "median", ],
-                   aes(x = estimate_value, y = 0, xend = estimate_value, yend = density_y),
-                   linewidth = 0.75) +
-      geom_segment(data = iqr[iqr$estimate_name != "median", ],
-                   aes(x = estimate_value, y = 0, xend = estimate_value, yend = density_y),
-                   linetype = 2,
-                   linewidth = 0.75) +
-      labs(subtitle = "The solid line represents the median, while the dotted lines indicate the interquartile range. Notice that these may not appear if in the cohort there are less than the minimum cell count specified. Please be aware that statistics are calculated by record, not by subject. Records with missing sex do not appear in the figure.") +
-      facet_wrap(c("cdm_name", "group_level"))
+      geom_segment(
+        data = iqr |> filter(estimate_name == "median"),
+        aes(
+          y = estimate_value,
+          yend = estimate_value,
+          x = 0,
+          xend = density_y
+        ),
+        color = "black",
+        linetype = "solid",
+        linewidth = 0.7,
+        show.legend = FALSE
+      ) +
+      geom_segment(
+        data = iqr |> filter(estimate_name == "q25"),
+        aes(
+          y = estimate_value,
+          yend = estimate_value,
+          x = 0,
+          xend = density_y
+        ),
+        color = "black",
+        linetype = "dashed",
+        linewidth = 0.7,
+        show.legend = FALSE
+      )+
+      geom_segment(
+        data = iqr |> filter(estimate_name == "q75"),
+        aes(
+          y = estimate_value,
+          yend = estimate_value,
+          x = 0,
+          xend = density_y
+        ),
+        color = "black",
+        linetype = "dashed",
+        linewidth = 0.7,
+        show.legend = FALSE
+      ) +
+      labs(subtitle = "The solid line represents the median, while the dotted lines indicate the interquartile range. Notice that these may not appear if in the cohort there are less than the minimum cell count specified. Please be aware that statistics are calculated by record, not by subject. Records with missing sex do not appear in the figure.")
   }else{
     plot <- plot +
       labs(subtitle = "Please be aware that statistics are calculated by record, not by subject. Records with missing sex do not appear in the figure.")
