@@ -183,10 +183,10 @@ plotAgeDensity <- function(summarise_table, summarise_characteristics, show_inte
   data <- data |>
     dplyr::filter(sex %in% c("Female", "Male"))
 
-  plot <-  plot_data |>
+  plot <-  data |>
     ggplot(aes(y = density_x, fill = sex)) +
     geom_ribbon(aes(xmin = 0, xmax = density_y), alpha = 0.8) +
-    facet_wrap(vars(cdm_name, group_level)) +
+    facet_wrap(vars(group_level, cdm_name)) +
     scale_x_continuous(labels = abs) +
     geom_vline(xintercept = 0, color = "grey50", linewidth = 0.5) +
     labs(
