@@ -757,7 +757,7 @@ server <- function(input, output, session) {
       # column ordering by codelist and first column with a count
       order <- list("Codelist name"  = "asc",
                     "count" = "desc")
-      names(order)[2] <- names(tbl)[9]
+      names(order)[2] <- names(tbl)[ncol(tbl)]
 
       # suppressed to NA
       tbl <- tbl |>
