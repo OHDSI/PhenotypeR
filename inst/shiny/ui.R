@@ -2366,7 +2366,7 @@ ui <- fluidPage(
       ),
       ## Prevalence -----
       bslib::nav_panel(
-        title = "Prevalence",
+        title = "Period Prevalence",
         bslib::accordion(
           bslib::accordion_panel(
             title = "Shared inputs",
@@ -2457,7 +2457,7 @@ ui <- fluidPage(
           ),
           bslib::navset_card_tab(
             bslib::nav_panel(
-              title = "Table prevalence",
+              title = "Table Period Prevalence",
               bslib::card(
                 full_screen = TRUE,
                 bslib::card_header(
@@ -2469,7 +2469,7 @@ ui <- fluidPage(
               )
             ),
             bslib::nav_panel(
-              title = "Plot prevalence",
+              title = "Plot Period Prevalence",
               bslib::card(
                 full_screen = TRUE,
                 bslib::card_header(
