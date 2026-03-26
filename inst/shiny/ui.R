@@ -1692,7 +1692,7 @@ ui <- fluidPage(
         )
       ),
 
-      ## Compare cohorts -----
+      ## compare_cohorts_start -----
       bslib::nav_panel(
         title = "Compare cohorts",
         bslib::accordion(
@@ -1969,6 +1969,7 @@ ui <- fluidPage(
           )
         )
       ),
+      ## compare_cohorts_end -----
       ## cohort_survival_start
       ## Cohort survival -----
       bslib::nav_panel(

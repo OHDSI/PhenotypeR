@@ -104,6 +104,7 @@ shinyDiagnostics <- function(result,
     ui <- removeLines(ui, result, diag_to_remove)
     writeLines(ui, file.path(to,"ui.R"))
   }
+
   # export expectations
   dir.create(file.path(to,"data","raw","expectations"))
   if(!is.null(expectations)){
@@ -205,6 +206,18 @@ checkWhichDiagnostics <- function(result){
     }
   }
   if(!"cohortDiagnostics" %in% to_remove){
+
+    n_cohorts <- result |>
+      omopgenerics::filterSettings(.data$diagnostic == "cohortDiagnostics") |>
+      visOmopResults::splitGroup() |>
+      dplyr::distinct(cohort_name) |>
+      dplyr::filter(!grepl("sampled|matched", .data$cohort_name)) |>
+      nrow()
+
+    if(n_cohorts == 1) {
+      to_remove <- append(to_remove, "compare_cohorts")
+    }
+
     if(!"survival_estimates" %in% (omopgenerics::settings(result) |> dplyr::pull("result_type") |> unique())){
       to_remove <- append(to_remove, "cohort_survival")
     }
@@ -225,6 +238,7 @@ removeLines <- function(ui, result, diagnostic){
              "measurement_diagnostics" = "No measurements present in the concept list. Removing tab from the shiny app.",
              "cohort_survival" = "No survival analysis present in cohortDiagnostics. Removing tab from the shiny app.",
              "achilles_results" = "No achilles code use or orphan codes results in codelistDiagnostics. Removing tabs from the shiny app.",
+             "compare_cohorts" = "Only one cohort present in cohortDiagnostics. Removing Compare Cohorts tab from the shiny app."
              "{x} not present in the summarised result. Removing tab from the shiny app.")
       cli::cli_warn(msg)
     }
