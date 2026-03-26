@@ -52,6 +52,9 @@ reference:
 - contents:
   - getCohortExpectations
   - tableCohortExpectations
+- subtitle: Download clinical description template
+- contents:
+  - downloadClinicalDescriptionTemplate
 - subtitle: Codelist diagnostics helper
 - contents:
   - addCodelistAttribute
