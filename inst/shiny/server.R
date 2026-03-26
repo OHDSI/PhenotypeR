@@ -2447,7 +2447,7 @@ server <- function(input, output, session) {
     ) |>
       tab_header(
         title = "Period Prevalence Estimates",
-        subtitle = "Period prevalence rates estimated for outcomes of interest"
+        subtitle = "Period prevalence estimated for outcomes of interest"
       ) |>
       tab_options(
         heading.align = "left"
