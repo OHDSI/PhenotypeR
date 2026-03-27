@@ -176,8 +176,26 @@ cohortDiagnostics <- function(cohort, survival = FALSE, cohortSample = 20000, ma
   if (!is.null(getOption("omopgenerics.logFile"))) {
     omopgenerics::logMessage("Cohort diagnostics - large scale characteristics")
   }
+  if((omopgenerics::cohortCount(cdm[[tempCohortName]]) |>
+    dplyr::filter(.data$number_records != .data$number_subjects) |>
+    nrow()) >= 1){
+    omopgenerics::logMessage("Sampling to one record per person for large scale characteristics")
+    prefix2 <- omopgenerics::tmpPrefix()
+    lscCohortName <- paste0(prefix2, cohortName)
+    cdm[[lscCohortName]] <- cdm[[tempCohortName]] |>
+      dplyr::group_by(subject_id, cohort_definition_id) |>
+      dplyr::slice_sample(n = 1)|>
+      dplyr::ungroup() |>
+      dplyr::compute(
+        name = lscCohortName, temporary = FALSE,
+        logPrefix = "CohortConstructor_sampleCohorts_sample_"
+      )
+  } else{
+    lscCohortName <- tempCohortName
+    }
+
   results[["lsc_standard"]] <- CohortCharacteristics::summariseLargeScaleCharacteristics(
-    cohort = cdm[[tempCohortName]],
+    cohort = cdm[[lscCohortName]],
     window = lscWindows,
     eventInWindow = lscTableEvents,
     episodeInWindow = lscTableEpisodes,
@@ -187,7 +205,7 @@ cohortDiagnostics <- function(cohort, survival = FALSE, cohortSample = 20000, ma
   )
 
   results[["lsc_source"]] <- CohortCharacteristics::summariseLargeScaleCharacteristics(
-    cohort = cdm[[tempCohortName]],
+    cohort = cdm[[lscCohortName]],
     window = lscWindows,
     eventInWindow = lscTableEvents,
     episodeInWindow = lscTableEpisodes,
@@ -224,6 +242,9 @@ cohortDiagnostics <- function(cohort, survival = FALSE, cohortSample = 20000, ma
   }
 
   omopgenerics::dropSourceTable(cdm, dplyr::starts_with(prefix))
+  if(lscCohortName != tempCohortName){
+  omopgenerics::dropSourceTable(cdm, dplyr::starts_with(prefix2))
+  }
   results <- results |>
     vctrs::list_drop_empty() |>
     omopgenerics::bind()
