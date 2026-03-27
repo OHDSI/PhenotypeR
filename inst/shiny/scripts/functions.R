@@ -107,6 +107,125 @@ yesno <- function(msg, .envir = parent.frame()) {
   utils::menu(qs[rand]) != which(rand == 1)
 }
 
+find_info_in_the_line <- function(doc_text, string) {
+  pattern <- paste0("^", string, "\\s*")
+
+  pi <- doc_text |>
+    dplyr::filter(stringr::str_detect(text, regex(pattern, ignore_case = TRUE))) |>
+    dplyr::pull("paragraph_index")
+
+  doc_text <- doc_text |>
+    dplyr::filter(.data$paragraph_index == pi) |>
+    dplyr::pull("text") |>
+    paste0(collapse = "")
+
+  doc_text <- gsub(pattern, "", doc_text, ignore.case = TRUE)
+
+  return(doc_text)
+}
+
+find_info_in_the_paragraph <- function(doc_text, start, end, addStyle, removeFirstTitle = FALSE){
+
+  if( !any(stringr::str_detect(doc_text$text, regex(paste0("^", start), ignore_case = TRUE)), na.rm = TRUE)) {
+    msg <- glue::glue("No `{start}` found in the clinical description.")
+    cli::cli_warn(message = msg)
+    return( msg )
+  }
+  
+  pi_start <- doc_text |>
+    dplyr::filter(stringr::str_detect(text, regex(paste0("^", start), ignore_case = TRUE))) |>
+    dplyr::pull("paragraph_index")
+
+  if(removeFirstTitle){pi_start <- pi_start + 1}
+  
+  pi_end <- c(doc_text |>
+                dplyr::filter(stringr::str_detect(text, regex(paste0("^", end), ignore_case = TRUE))) |>
+                dplyr::pull("paragraph_index")-1)
+  
+  if(is.null(end) | length(pi_end) == 0){
+    pi_end <- doc_text |> dplyr::filter(dplyr::row_number() == nrow(doc_text)) |>
+      dplyr::pull("paragraph_index")
+  }
+
+  doc_text <- doc_text |>
+    dplyr::filter(.data$paragraph_index %in% c(pi_start:pi_end))
+
+  if(isTRUE(addStyle)){
+    doc_text <- doc_text |>
+      dplyr::mutate("text" = dplyr::if_else(bold, paste0("<strong>", .data$text, "</strong>"), .data$text),
+                    "text" = dplyr::if_else(italic, paste0("<em>", .data$text, "</em>"), .data$text),
+                    "text" = dplyr::if_else(underline, paste0("<span style='text-decoration: underline;'>", .data$text, "</span>"), text))
+
+
+  }
+
+  doc_text <- doc_text |>
+    dplyr::arrange(paragraph_index, run_index) |>
+    dplyr::group_by(paragraph_index) |>
+    dplyr::summarise("text" = paste0(text, collapse = "")) |>
+    dplyr::pull(text)
+
+  doc_text <- stringr::str_replace(string = doc_text, pattern = "^NA$", replacement = "\n")
+
+  return(doc_text)
+}
+
+parse_docx_runs <- function(path_docx) {
+
+  unzip(path_docx, files = "word/document.xml", exdir = "data/raw/clinical_description")
+  doc_xml_path <- file.path("data/raw/clinical_description", "word", "document.xml")
+  if (!file.exists(doc_xml_path)) stop("document.xml not found in docx")
+
+  doc <- xml2::read_xml(doc_xml_path)
+  ns <- xml2::xml_ns(doc)
+
+  paragraphs <- xml2::xml_find_all(doc, ".//w:p", ns = ns)
+
+  rows <- purrr::imap_dfr(paragraphs, function(pnode, p_index) {
+    pstyle_node <- xml2::xml_find_first(pnode, ".//w:pPr/w:pStyle", ns = ns)
+    style_name <- if (!is.na(pstyle_node)) xml2::xml_attr(pstyle_node, "w:val") else NA_character_
+
+    runs <- xml2::xml_find_all(pnode, ".//w:r", ns = ns)
+    if (length(runs) == 0) {
+      text_nodes <- xml2::xml_find_all(pnode, ".//w:t", ns = ns)
+      text_combined <- paste0(xml2::xml_text(text_nodes), collapse = "")
+      dplyr::tibble(
+        "paragraph_index" = p_index,
+        "run_index" = 1L,
+        "text" = ifelse(text_combined == "", NA_character_, text_combined),
+        "bold" = FALSE,
+        "italic" = FALSE,
+        "underline" = FALSE,
+        "style_name" = style_name
+      )
+    } else {
+      purrr::imap_dfr(runs, function(rnode, r_index) {
+        tnodes <- xml2::xml_find_all(rnode, ".//w:t", ns = ns)
+        text_run <- if (length(tnodes) == 0) "" else paste0(xml2::xml_text(tnodes), collapse = "")
+
+        has_b <- length(xml2::xml_find_all(rnode, ".//w:rPr/w:b", ns = ns)) > 0
+        has_i <- length(xml2::xml_find_all(rnode, ".//w:rPr/w:i", ns = ns)) > 0
+        has_u <- length(xml2::xml_find_all(rnode, ".//w:rPr/w:u", ns = ns)) > 0
+
+        dplyr::tibble(
+          "paragraph_index" = p_index,
+          "run_index" = r_index,
+          "text" = ifelse(text_run == "", NA_character_, text_run),
+          "bold" = has_b,
+          "italic" = has_i,
+          "underline" = has_u,
+          "style_name" = style_name
+        )
+      })
+    }
+  })
+
+  rows <- rows |>
+    dplyr::arrange(paragraph_index, run_index)
+
+  unlink(file.path("data/raw/clinical_description", "word"))
+  return(rows)
+}
 
 # reactablefmtr no longer on cran
 reactablefmtr_add_title <- function(table = NULL,
