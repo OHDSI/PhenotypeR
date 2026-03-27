@@ -2446,8 +2446,8 @@ server <- function(input, output, session) {
                          "outcome_cohort_name")
     ) |>
       tab_header(
-        title = "Prevalence estimates",
-        subtitle = "Prevalence rates estimated for outcomes of interest"
+        title = "Period Prevalence Estimates",
+        subtitle = "Period prevalence estimated for outcomes of interest"
       ) |>
       tab_options(
         heading.align = "left"
@@ -2457,7 +2457,7 @@ server <- function(input, output, session) {
     createTablePrevalence()
   })
   output$prevalence_gt_download <- shiny::downloadHandler(
-    filename = "prevalence_gt.docx",
+    filename = "period_prevalence_gt.docx",
     content = function(file) {
       obj <- createTablePrevalence()
       gt::gtsave(data = obj, filename = file)

@@ -1129,12 +1129,14 @@ ui <- fluidPage(
             )
           )),
         icon = shiny::icon("person"),
+        # cohort_count_expectations_start
         accordion(open = FALSE,
                   accordion_panel(
                     title = "Show cohort expectations",
                     value = "panel_ce_1",
                     reactable::reactableOutput("cohort_count_expectations")
                   )),
+        # cohort_count_expectations_end
         bslib::layout_sidebar(
           sidebar = bslib::sidebar(width = 400, open = "closed",
                                    bslib::accordion(
@@ -1259,12 +1261,14 @@ ui <- fluidPage(
             )
           )),
         icon = shiny::icon("users-gear"),
+        # cohort_characteristics_expectations_start
         accordion(open = FALSE,
                   accordion_panel(
                     title = "Show cohort expectations",
                     value = "panel_ce_2",
                     reactable::reactableOutput("cohort_characteristics_expectations")
                   )),
+        # cohort_characteristics_expectations_end
         bslib::layout_sidebar(
           sidebar = bslib::sidebar(width = 400, open = "closed",
                                    bslib::accordion(
@@ -1400,12 +1404,14 @@ ui <- fluidPage(
             )
           )),
         icon = shiny::icon("arrow-up-right-dots"),
+        # large_scale_characteristics_expectations_start
         accordion(open = FALSE,
                   accordion_panel(
                     title = "Show cohort expectations",
                     value = "panel_ce_3",
                     reactable::reactableOutput("large_scale_characteristics_expectations")
                   )),
+        # large_scale_characteristics_expectations_end
         bslib::layout_sidebar(
           sidebar = bslib::sidebar(width = 400, open = "closed",
                                    bslib::accordion(
@@ -1530,12 +1536,14 @@ ui <- fluidPage(
             )
           )),
         icon = shiny::icon("people-arrows"),
+        # compare_large_scale_characteristics_expectations_start
         accordion(open = FALSE,
                   accordion_panel(
                     title = "Show cohort expectations",
                     value = "panel_ce_4",
                     reactable::reactableOutput("compare_large_scale_characteristics_expectations")
                   )),
+        # compare_large_scale_characteristics_expectations_end
         bslib::layout_sidebar(
           sidebar = bslib::sidebar(width = 400, open = "closed",
                                    bslib::accordion(
@@ -1692,7 +1700,7 @@ ui <- fluidPage(
         )
       ),
 
-      ## Compare cohorts -----
+      ## compare_cohorts_start -----
       bslib::nav_panel(
         title = "Compare cohorts",
         bslib::accordion(
@@ -1743,12 +1751,14 @@ ui <- fluidPage(
             )
           )),
         icon = shiny::icon("yin-yang"),
+        # compare_cohorts_expectations_start
         accordion(open = FALSE,
                   accordion_panel(
                     title = "Show cohort expectations",
                     value = "panel_ce_5",
                     reactable::reactableOutput("compare_cohorts_expectations")
                   )),
+        # compare_cohorts_expectations_end
         bslib::layout_sidebar(
           sidebar = bslib::sidebar(width = 400, open = "closed",
                                    bslib::accordion(
@@ -1969,6 +1979,7 @@ ui <- fluidPage(
           )
         )
       ),
+      ## compare_cohorts_end -----
       ## cohort_survival_start
       ## Cohort survival -----
       bslib::nav_panel(
@@ -2021,12 +2032,14 @@ ui <- fluidPage(
             )
           )),
         icon = shiny::icon("chart-gantt"),
+        # cohort_survival_expectations_start
         accordion(open = FALSE,
                   accordion_panel(
                     title = "Show cohort expectations",
                     value = "panel_ce_6",
                     reactable::reactableOutput("cohort_survival_expectations")
                   )),
+        # cohort_survival_expectations_end
         bslib::layout_sidebar(
           sidebar = bslib::sidebar(width = 400, open = "closed",
                                    bslib::accordion(
@@ -2366,7 +2379,7 @@ ui <- fluidPage(
       ),
       ## Prevalence -----
       bslib::nav_panel(
-        title = "Prevalence",
+        title = "Period Prevalence",
         bslib::accordion(
           bslib::accordion_panel(
             title = "Shared inputs",
@@ -2457,7 +2470,7 @@ ui <- fluidPage(
           ),
           bslib::navset_card_tab(
             bslib::nav_panel(
-              title = "Table prevalence",
+              title = "Table Period Prevalence",
               bslib::card(
                 full_screen = TRUE,
                 bslib::card_header(
@@ -2469,7 +2482,7 @@ ui <- fluidPage(
               )
             ),
             bslib::nav_panel(
-              title = "Plot prevalence",
+              title = "Plot Period Prevalence",
               bslib::card(
                 full_screen = TRUE,
                 bslib::card_header(
