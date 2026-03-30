@@ -16,7 +16,6 @@
 #' @inheritParams clinicalTableSample
 #' @inheritParams measurementSampleDoc
 #' @inheritParams drugExposureSampleDoc
-#' @inheritParams survivalDoc
 #' @inheritParams cohortSampleDoc
 #' @inheritParams matchedDoc
 #' @inheritParams populationSampleDoc
@@ -44,7 +43,6 @@ phenotypeDiagnostics <- function(cohort,
                                  clinicalTableSample = NULL,
                                  measurementSample = 20000,
                                  drugExposureSample = 20000,
-                                 survival = FALSE,
                                  cohortSample = 20000,
                                  matchedSample = 1000,
                                  populationSample = 1000000,
@@ -65,7 +63,7 @@ phenotypeDiagnostics <- function(cohort,
                              c("databaseDiagnostics", "codelistDiagnostics",
                                "cohortDiagnostics", "populationDiagnostics"),
                              unique = TRUE)
-  checksCohortDiagnostics(survival, cohortSample, matchedSample)
+  checksCohortDiagnostics(cohortSample, matchedSample)
   checksPopulationDiagnostics(populationSample, populationDateRange)
 
   incrementalResultPath <- getOption(x = "PhenotypeR.incremenatl_save_path")
@@ -100,7 +98,6 @@ phenotypeDiagnostics <- function(cohort,
 
   if ("cohortDiagnostics" %in% diagnostics) {
     results[["cohort_diag"]] <- cohortDiagnostics(cohort,
-                                                  survival = survival,
                                                   cohortSample  = cohortSample,
                                                   matchedSample = matchedSample)
     if(!is.null(incrementalResultPath)){

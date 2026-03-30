@@ -51,7 +51,7 @@ cdm$my_cohort <- conceptCohort(cdm = cdm,
                                name = "my_cohort")
 
 # Run PhenotypeDiagnostics including all diagnostics
-result <- phenotypeDiagnostics(cdm$my_cohort, survival = TRUE)
+result <- phenotypeDiagnostics(cdm$my_cohort)
 
 # Generate expectations
 chat <- chat("google_gemini")

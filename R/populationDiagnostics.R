@@ -8,6 +8,8 @@
 #' * Prevalence
 #'
 #' @inheritParams cohortDoc
+#' @param diagnostics Diagnostics to perform within populationDiagnostics.
+#' This includes any of: c("incidence", "period_prevalence")
 #' @inheritParams populationSampleDoc
 #'
 #' @return A summarised result
@@ -31,11 +33,13 @@
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
 populationDiagnostics <- function(cohort,
+                                  diagnostics = c("incidence", "period_prevalence"),
                                   populationSample = 1000000,
                                   populationDateRange = as.Date(c(NA, NA))) {
 
   cohort <- omopgenerics::validateCohortArgument(cohort = cohort)
   checksPopulationDiagnostics(populationSample, populationDateRange)
+  omopgenerics::assertChoice(diagnostics, choices = c("incidence", "period_prevalence"), null = TRUE)
 
   cdm <- omopgenerics::cdmReference(cohort)
   cohortName <- omopgenerics::tableName(cohort)
@@ -105,32 +109,37 @@ populationDiagnostics <- function(cohort,
 
   results <- list()
 
-  if (!is.null(getOption("omopgenerics.logFile"))) {
-    omopgenerics::logMessage("Population diagnosics - incidence")
+  if("incidence" %in% diagnostics) {
+    if (!is.null(getOption("omopgenerics.logFile"))) {
+      omopgenerics::logMessage("Population diagnosics - incidence")
+    }
+    results[["incidence"]] <- IncidencePrevalence::estimateIncidence(
+      cdm = cdm,
+      denominatorTable = denominatorTable,
+      outcomeTable = cohortName,
+      interval = c("years", "overall"),
+      repeatedEvents = FALSE,
+      outcomeWashout = Inf,
+      completeDatabaseIntervals = FALSE)
   }
-  results[["incidence"]] <- IncidencePrevalence::estimateIncidence(
-    cdm = cdm,
-    denominatorTable = denominatorTable,
-    outcomeTable = cohortName,
-    interval = c("years", "overall"),
-    repeatedEvents = FALSE,
-    outcomeWashout = Inf,
-    completeDatabaseIntervals = FALSE)
 
-  if (!is.null(getOption("omopgenerics.logFile"))) {
-    omopgenerics::logMessage("Population diagnosics - prevalence")
+  if("period_prevalence" %in% diagnostics) {
+    if (!is.null(getOption("omopgenerics.logFile"))) {
+      omopgenerics::logMessage("Population diagnosics - prevalence")
+    }
+
+    results[["prevalence"]] <- IncidencePrevalence::estimatePeriodPrevalence(
+      cdm = cdm,
+      denominatorTable = denominatorTable,
+      outcomeTable = cohortName,
+      interval = c("years", "overall"),
+      completeDatabaseIntervals = TRUE,
+      fullContribution = FALSE)
+
+    results <- results |>
+      vctrs::list_drop_empty() |>
+      omopgenerics::bind()
   }
-  results[["prevalence"]] <- IncidencePrevalence::estimatePeriodPrevalence(
-    cdm = cdm,
-    denominatorTable = denominatorTable,
-    outcomeTable = cohortName,
-    interval = c("years", "overall"),
-    completeDatabaseIntervals = TRUE,
-    fullContribution = FALSE)
-
-  results <- results |>
-    vctrs::list_drop_empty() |>
-    omopgenerics::bind()
 
   newSettings <- results |>
     omopgenerics::settings() |>

@@ -78,7 +78,7 @@ ui <- fluidPage(
     bslib::nav_menu(
       title = "Database diagnostics",
       icon = shiny::icon("list"),
-      ## snapshot -----
+      ## snapshot_start -----
       bslib::nav_panel(
         title = "Snapshot",
         bslib::accordion(
@@ -121,7 +121,8 @@ ui <- fluidPage(
           gt::gt_output("summarise_omop_snapshot_gt") |> withSpinner()
         )
       ),
-      ## person -----
+      ## snapshot_end -----
+      ## person_start -----
       bslib::nav_panel(
         title = "Person",
         bslib::accordion(
@@ -173,8 +174,8 @@ ui <- fluidPage(
           )
         )
       ),
-
-      ## observation periods -----
+      ## person_end -----
+      ## observation_period_start -----
       bslib::nav_panel(
         title = "Observation periods",
         bslib::accordion(
@@ -226,6 +227,7 @@ ui <- fluidPage(
           )
         )
       ),
+      ## observation_period_end -----
       ## clinical_records_start ----
       bslib::nav_panel(
         title = "Clinical Records",
@@ -333,8 +335,7 @@ ui <- fluidPage(
     bslib::nav_menu(
       title = "Codelist diagnostics",
       icon = shiny::icon("list"),
-      ## achilles_results_start
-      ## achilles code use -----
+      ## achilles_code_use_start -----
       bslib::nav_panel(
         title = "Achilles code use",
         bslib::accordion(
@@ -419,84 +420,8 @@ ui <- fluidPage(
           )
         )
       ),
-      ## unmapped concepts -----
-      # bslib::nav_panel(
-      #   title = "Unmapped concepts",
-      #   icon = shiny::icon("database"),
-      #   bslib::layout_sidebar(
-      #     sidebar = bslib::sidebar(width = 400, open = "closed",
-      #                              bslib::accordion(
-      #                                bslib::accordion_panel(
-      #                                  title = "Settings",
-      #                                  shinyWidgets::pickerInput(
-      #                                    inputId = "unmapped_cdm_name",
-      #                                    label = "Database",
-      #                                    choices = NULL,
-      #                                    selected = NULL,
-      #                                    multiple = TRUE,
-      #                                    options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-      #                                  ),
-      #                                  shinyWidgets::pickerInput(
-      #                                    inputId = "unmapped_codelist_name",
-      #                                    label = "Codelist name",
-      #                                    choices = NULL,
-      #                                    selected = NULL,
-      #                                    multiple = TRUE,
-      #                                    options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-      #                                  )
-      #                                ),
-      #                                bslib::accordion_panel(
-      #                                  title = "Table formatting",
-      #                                  sortable::bucket_list(
-      #                                    header = NULL,
-      #                                    sortable::add_rank_list(
-      #                                      text = "none",
-      #                                      labels = c( "codelist_name"),
-      #                                      input_id = "unmapped_none"
-      #                                    ),
-      #                                    sortable::add_rank_list(
-      #                                      text = "header",
-      #                                      labels = c("cdm_name", "estimate_name"),
-      #                                      input_id = "unmapped_header"
-      #                                    ),
-      #                                    sortable::add_rank_list(
-      #                                      text = "groupColumn",
-      #                                      labels = NULL,
-      #                                      input_id = "unmapped_groupColumn"
-      #                                    ),
-      #                                    sortable::add_rank_list(
-      #                                      text = "hide",
-      #                                      labels = character(),
-      #                                      input_id = "unmapped_hide"
-      #                                    )
-      #                                  )
-      #                                )
-      #                              )
-      #     ),
-      #     bslib::nav_panel(
-      #       title = "Unmapped",
-      #         bslib::card(
-      #           full_screen = TRUE,
-      #           bslib::card_header(
-      #             bslib::popover(
-      #               shiny::icon("download"),
-      #               shinyWidgets::pickerInput(
-      #                 inputId = "unmapped_formatted_download_type",
-      #                 label = "File type",
-      #                 selected = "docx",
-      #                 choices = c("docx", "png", "pdf", "html"),
-      #                 multiple = FALSE
-      #               ),
-      #               shiny::downloadButton(outputId = "unmapped_formatted_download", label = "Download")
-      #             ),
-      #             class = "text-end"
-      #           ),
-      #           gt::gt_output("unmapped_formatted") |> withSpinner()
-      #         )
-      #     )
-      #   )
-      # ),
-      ## Orphan codes -----
+      ## achilles_code_use_end ----
+      ## orphan_code_use_start ----
       bslib::nav_panel(
         title = "Orphan codes",
         bslib::accordion(
@@ -579,8 +504,8 @@ ui <- fluidPage(
           )
         )
       ),
-      ## achilles_results_end
-      ## Cohort code use -----
+      ## orphan_code_use_end ----
+      ## cohort_code_use_start -----
       bslib::nav_panel(
         title = "Cohort code use",
         bslib::accordion(
@@ -682,10 +607,10 @@ ui <- fluidPage(
           )
         )
       ),
-      ## measurement_diagnostics_start
-      ## Measurement code use -----
+      ## cohort_code_use_end -----
+      ## measurement_diagnostics_start ----
       bslib::nav_panel(
-        title = "Measurements Code Use",
+        title = "Measurement Diagnostics",
         bslib::accordion(
           bslib::accordion_panel(
             title = "Shared inputs",
@@ -1014,9 +939,9 @@ ui <- fluidPage(
             )
           )
         )
-      ), ## measurement_diagnostics_end
-      ## drug_diagnostics_start
-      ## Drug diagnostics -----
+      ),
+      ## measurement_diagnostics_end ----
+      ## drug_diagnostics_start ----
       bslib::nav_panel(
         title = "Drug diagnostics",
         bslib::accordion(
@@ -1136,14 +1061,14 @@ ui <- fluidPage(
         )
       )
       )
-      ## drug_diagnostics_end
+      ## drug_diagnostics_end ----
     ),
     # codelistDiagnostics_end ----
     # cohortDiagnostics_start -----
     bslib::nav_menu(
       title = "Cohort diagnostics",
       icon = shiny::icon("list"),
-      ## Cohort count ----
+      ## cohort_count_start ----
       bslib::nav_panel(
         title = "Cohort count",
         bslib::accordion(
@@ -1274,8 +1199,8 @@ ui <- fluidPage(
           )
         )
       ),
-
-      ## Cohort characteristics -----
+      ## cohort_count_end ----
+      ## cohort_characteristics_start -----
       bslib::nav_panel(
         title = "Cohort characteristics",
         bslib::accordion(
@@ -1417,8 +1342,8 @@ ui <- fluidPage(
           )
         )
       ),
-
-      ## Large scale characteristics -----
+      ## cohort_characteristics_end -----
+      ## large_scale_characteristics_start -----
       bslib::nav_panel(
         title = "Large scale characteristics",
         bslib::accordion(
@@ -1549,8 +1474,8 @@ ui <- fluidPage(
           )
         )
       ),
-
-      ## Compare large scale characteristics -----
+      ## large_scale_characteristics_end -----
+      ## compare_large_scale_characteristics_start -----
       bslib::nav_panel(
         title = "Compare large scale characteristics",
         bslib::accordion(
@@ -1764,7 +1689,7 @@ ui <- fluidPage(
           )
         )
       ),
-
+      ## compare_large_scale_characteristics_end -----
       ## compare_cohorts_start -----
       bslib::nav_panel(
         title = "Compare cohorts",
@@ -2045,8 +1970,7 @@ ui <- fluidPage(
         )
       ),
       ## compare_cohorts_end -----
-      ## cohort_survival_start
-      ## Cohort survival -----
+      ## cohort_survival_start ----
       bslib::nav_panel(
         title = "Cohort survival",
         bslib::accordion(
@@ -2227,14 +2151,14 @@ ui <- fluidPage(
           )
         )
       )
-      ## cohort_survival_end
+      ## cohort_survival_end ----
     ),
     # cohortDiagnostics_end ----
     # populationDiagnostics_start -----
     bslib::nav_menu(
       title = "Population diagnostics",
       icon = shiny::icon("list"),
-      ## Incidence -----
+      ## incidence_start -----
       bslib::nav_panel(
         title = "Incidence",
         bslib::accordion(
@@ -2442,7 +2366,8 @@ ui <- fluidPage(
           )
         )
       ),
-      ## Prevalence -----
+      ## incidence_end -----
+      ## prevalence_start -----
       bslib::nav_panel(
         title = "Period Prevalence",
         bslib::accordion(
@@ -2647,6 +2572,7 @@ ui <- fluidPage(
           )
         )
       )
+      # prevalence_end
     ),
     # populationDiagnostics_end ----
     nav_spacer(),

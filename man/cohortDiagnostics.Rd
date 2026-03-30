@@ -6,7 +6,8 @@
 \usage{
 cohortDiagnostics(
   cohort,
-  survival = FALSE,
+  diagnostics = c("cohort_count", "cohort_characteristics",
+    "large_scale_characteristics", "compare_cohorts", "cohort_survival"),
   cohortSample = 20000,
   matchedSample = 1000
 )
@@ -14,8 +15,9 @@ cohortDiagnostics(
 \arguments{
 \item{cohort}{Cohort table in a cdm reference}
 
-\item{survival}{TRUE or FALSE. Whether to conduct survival analysis (TRUE)
-or not (FALSE).}
+\item{diagnostics}{Diagnostics to perform within cohortDiagnostics. This
+includes any of: c("cohort_count", "cohort_characteristics", #
+"large_scale_characteristics","compare_cohorts", "cohort_survival")}
 
 \item{cohortSample}{The number of people to take a random sample for cohortDiagnostics. If `cohortSample = NULL`, no sampling will be performed.}
 

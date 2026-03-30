@@ -6,6 +6,8 @@
 \usage{
 codelistDiagnostics(
   cohort,
+  diagnostics = c("achilles_code_use", "orphan_code_use", "cohort_code_use",
+    "measurement_diagnostics", "drug_diagnostics"),
   measurementSample = 20000,
   drugExposureSample = 20000
 )
@@ -14,6 +16,10 @@ codelistDiagnostics(
 \item{cohort}{A cohort table in a cdm reference. The cohort_codelist
 attribute must be populated. The cdm reference must contain achilles
 tables as these will be used for deriving concept counts.}
+
+\item{diagnostics}{Diagnostics to perform within codelistDiagnostics.
+This includes any of:  c("achilles_code_use", "orphan_code_use", "cohort_code_use",
+"measurement_diagnostics", "drug_diagnostics")}
 
 \item{measurementSample}{The number of people to take a random sample for
 measurement diagnostics. If `measurementSample = NULL`, no sampling will be

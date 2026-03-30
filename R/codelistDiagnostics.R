@@ -12,6 +12,9 @@
 #' @param cohort A cohort table in a cdm reference. The cohort_codelist
 #' attribute must be populated. The cdm reference must contain achilles
 #' tables as these will be used for deriving concept counts.
+#' @param diagnostics Diagnostics to perform within codelistDiagnostics.
+#'  This includes any of:  c("achilles_code_use", "orphan_code_use", "cohort_code_use",
+#'  "measurement_diagnostics", "drug_diagnostics")
 #' @inheritParams measurementSampleDoc
 #' @inheritParams drugExposureSampleDoc
 #'
@@ -34,10 +37,12 @@
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
 codelistDiagnostics <- function(cohort,
+                                diagnostics = c("achilles_code_use", "orphan_code_use", "cohort_code_use", "measurement_diagnostics", "drug_diagnostics"),
                                 measurementSample = 20000,
                                 drugExposureSample = 20000){
 
   cohort <- omopgenerics::validateCohortArgument(cohort = cohort)
+  omopgenerics::assertChoice(diagnostics, c("achilles_code_use", "orphan_code_use", "cohort_code_use", "measurement_diagnostics", "drug_diagnostics"), null = TRUE)
   cdm <- omopgenerics::cdmReference(cohort)
   cohortTable <- omopgenerics::tableName(cohort)
   cohortIds <- omopgenerics::settings(cohort) |>
@@ -94,14 +99,16 @@ codelistDiagnostics <- function(cohort,
     dplyr::filter(.data$number_subjects == 0) |>
     dplyr::pull("cohort_definition_id")
 
-  if (!is.null(getOption("omopgenerics.logFile"))) {
-    omopgenerics::logMessage("Codelist diagnostics - index event breakdown")
+  if("cohort_code_use" %in% diagnostics) {
+    if (!is.null(getOption("omopgenerics.logFile"))) {
+      omopgenerics::logMessage("Codelist diagnostics - index event breakdown")
+    }
+    results[["index_event_"]] <- CodelistGenerator::summariseCohortCodeUse(
+      cdm = cdm,
+      cohortTable = cohortTable,
+      timing = "entry",
+      countBy = c("record", "person"))
   }
-  results[["index_event_"]] <- CodelistGenerator::summariseCohortCodeUse(
-    cdm = cdm,
-    cohortTable = cohortTable,
-    timing = "entry",
-    countBy = c("record", "person"))
 
   # If any measurement/observation codes: do measurement diagnostics
   measurements <- cdm$concept |>
@@ -114,7 +121,7 @@ codelistDiagnostics <- function(cohort,
     dplyr::filter(tolower(.data$domain_id) %in% c("measurement")) |>
     dplyr::collect()
 
-  if (nrow(measurements) > 0 && (!0 %in% measurementSample)) {
+  if ("measurement_diagnostics" %in% diagnostics && nrow(measurements) > 0 && (!0 %in% measurementSample)) {
     if (!is.null(getOption("omopgenerics.logFile"))) {
       omopgenerics::logMessage("Codelist diagnostics - measurement concepts")
     }
@@ -147,7 +154,7 @@ codelistDiagnostics <- function(cohort,
   }
 
   # If any drug codes: do drug exposure diagnostics
-  if(!0 %in% drugExposureSample){
+  if("drug_diagnostics" %in% diagnostics && !0 %in% drugExposureSample){
   drugs <- cdm$concept |>
     dplyr::select(dplyr::all_of(c("concept_id", "domain_id"))) |>
     dplyr::inner_join(
@@ -193,19 +200,24 @@ codelistDiagnostics <- function(cohort,
 
   # all other analyses require achilles, so return if not available
   if("achilles_results" %in% names(cdm)){
-    if (!is.null(getOption("omopgenerics.logFile"))) {
-      omopgenerics::logMessage("Codelist diagnostics - achilles code counts")
-    }
-    results[[paste0("achilles_code_use")]] <- CodelistGenerator::summariseAchillesCodeUse(x = all_codelists, cdm = cdm)
 
-    if (!is.null(getOption("omopgenerics.logFile"))) {
-      omopgenerics::logMessage("Codelist diagnostics - orphan concepts")
+    if("achilles_code_use" %in% diagnostics) {
+      if (!is.null(getOption("omopgenerics.logFile"))) {
+        omopgenerics::logMessage("Codelist diagnostics - achilles code counts")
+      }
+      results[[paste0("achilles_code_use")]] <- CodelistGenerator::summariseAchillesCodeUse(x = all_codelists, cdm = cdm)
     }
 
-    results[["orphan_codes"]] <- CodelistGenerator::summariseOrphanCodes(
-      x = all_codelists,
-      cdm = cdm
-    )
+    if("orphan_code_use" %in% diagnostics) {
+      if (!is.null(getOption("omopgenerics.logFile"))) {
+        omopgenerics::logMessage("Codelist diagnostics - orphan concepts")
+      }
+      results[["orphan_codes"]] <- CodelistGenerator::summariseOrphanCodes(
+        x = all_codelists,
+        cdm = cdm
+      )
+    }
+
   }else{
     cli::cli_warn(
       c("The CDM reference containing the cohort must also contain achilles tables.",

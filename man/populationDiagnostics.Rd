@@ -6,12 +6,16 @@
 \usage{
 populationDiagnostics(
   cohort,
+  diagnostics = c("incidence", "period_prevalence"),
   populationSample = 1e+06,
   populationDateRange = as.Date(c(NA, NA))
 )
 }
 \arguments{
 \item{cohort}{Cohort table in a cdm reference}
+
+\item{diagnostics}{Diagnostics to perform within populationDiagnostics.
+This includes any of: c("incidence", "period_prevalence")}
 
 \item{populationSample}{Number of people from the cdm to sample. If NULL no
 sampling will be performed. Sample will be within populationDateRange if

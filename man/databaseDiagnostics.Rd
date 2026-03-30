@@ -4,10 +4,17 @@
 \alias{databaseDiagnostics}
 \title{Database diagnostics}
 \usage{
-databaseDiagnostics(cohort, clinicalTableSample = NULL)
+databaseDiagnostics(
+  cohort,
+  diagnostics = c("snapshot", "person", "observation_periods", "clinical_records"),
+  clinicalTableSample = NULL
+)
 }
 \arguments{
 \item{cohort}{Cohort table in a cdm reference}
+
+\item{diagnostics}{Diagnostics to perform within databaseDiagnostics.
+This includes any of: c("snapshot", "person", "observation_periods", "clinical_records")}
 
 \item{clinicalTableSample}{The number of records to take a random sample for
 database diagnostics. If `clinicalTableSample = NULL`, no sampling will be
