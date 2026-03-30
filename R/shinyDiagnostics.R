@@ -18,6 +18,7 @@
 #' FALSE, the shiny app will be created but not launched.
 #' @inheritParams expectationsDoc
 #' @param clinicalDescriptionsDir Directory where to find the clinical descriptions word documents.
+#' @param databaseDescriptionsDir Directory where to find the clinical descriptions word documents.
 #' @param removeEmptyTabs Whether to remove tabs of those diagnostics that have not been performed or that were insufficient counts to produce a result (TRUE) or not (FALSE)
 #'
 #' @return A shiny app

@@ -29,6 +29,8 @@ FALSE, the shiny app will be created but not launched.}
 
 \item{clinicalDescriptionsDir}{Directory where to find the clinical descriptions word documents.}
 
+\item{databaseDescriptionsDir}{Directory where to find the clinical descriptions word documents.}
+
 \item{removeEmptyTabs}{Whether to remove tabs of those diagnostics that have not been performed or that were insufficient counts to produce a result (TRUE) or not (FALSE)}
 }
 \value{
