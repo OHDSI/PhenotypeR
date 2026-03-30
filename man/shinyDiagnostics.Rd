@@ -11,6 +11,7 @@ shinyDiagnostics(
   open = rlang::is_interactive(),
   expectations = NULL,
   clinicalDescriptionsDir = NULL,
+  databaseDescriptionsDir = NULL,
   removeEmptyTabs = TRUE
 )
 }
@@ -55,16 +56,20 @@ cdm$warfarin <- conceptCohort(cdm,
                                                               40163554L)),
                               name = "warfarin")
 
-result <- phenotypeDiagnostics(cdm$warfarin, populationSample = 100000)
+result <- phenotypeDiagnostics(cdm$warfarin,
+                               populationSample = 100000)
 
 expectations <- dplyr::tibble("cohort_name" = "warfarin",
-                       "value" = c("Mean age",
+                       "estimate" = c("Mean age",
                                    "Male percentage",
-                                   "Survival probability after 5y"),
-                       "estimate" = c("32", "74\%",  "4\%"),
+                                   "Frequently seen comorbidities"),
+                       "value" = c("32", "74\%",  "Atrial fibrillation, heart failure, hypertension and ischaemic heart disease"),
+                       "diagnostics" = c("cohort_characteristics", "cohort_characteristics", "compare_large_scale_characteristics"),
                        "source" = c("AlbertAI"))
 
-shinyDiagnostics(result, tempdir(), expectations = expectations)
+shinyDiagnostics(result,
+                tempdir(),
+                expectations = expectations)
 
 CDMConnector::cdmDisconnect(cdm = cdm)
 }
