@@ -28,8 +28,8 @@ downloadDatabaseDescriptionTemplate <- function(directory,
 }
 
 internalDescriptionTemplates <- function(type, directory, name, call = parent.frame()) {
-  omopgenerics::assertCharacter(directory, length = 1)
-  omopgenerics::assertCharacter(name, length = 1)
+  omopgenerics::assertCharacter(directory, length = 1, call = call)
+  omopgenerics::assertCharacter(name, length = 1, call = call)
 
   if(!dir.exists(directory)){
     cli::cli_abort("Directory {directory} does not exist.", call = call)

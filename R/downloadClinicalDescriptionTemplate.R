@@ -22,7 +22,7 @@
 downloadClinicalDescriptionTemplate <- function(directory,
                                                 name = "clinical_description_template") {
 
-  internalDescriptionTemplates(type = "clinical descritpion",
+  internalDescriptionTemplates(type = "clinical description",
                                directory = directory,
                                name = name)
 }
