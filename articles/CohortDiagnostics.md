@@ -18,13 +18,7 @@ library(PhenotypeR)
 library(dplyr)
 library(ggplot2)
 
-con <- DBI::dbConnect(duckdb::duckdb(), 
-                      CDMConnector::eunomiaDir("synpuf-1k", "5.3"))
-cdm <- CDMConnector::cdmFromCon(con = con, 
-                                cdmName = "Eunomia Synpuf",
-                                cdmSchema   = "main",
-                                writeSchema = "main", 
-                                achillesSchema = "main")
+cdm <- omock::mockCdmFromDataset(datasetName = "synpuf-1k_5.3", source = "duckdb")
 
 cdm$injuries <- conceptCohort(cdm = cdm,
   conceptSet = list(
@@ -111,7 +105,9 @@ We will now use different functions to visualise the results generated
 by CohortDiagnostics. Notice that these functions are from
 [CohortCharacteristics](https://darwin-eu.github.io/CohortCharacteristics/)
 and [CohortSurvival](https://darwin-eu-dev.github.io/CohortSurvival/) R
-packages packages. \### Cohort counts
+packages packages.
+
+### Cohort counts
 
 ``` r
 tableCohortCount(cohort_diag)
@@ -142,7 +138,7 @@ tableCharacteristics(cohort_diag)
 ### Cohort large scale characteristics
 
 ``` r
-tableLargeScaleCharacteristics(cohort_diag)
+tableLargeScaleCharacteristics(cohort_diag, hide = c())
 ```
 
 ### Cohort overlap
@@ -157,8 +153,9 @@ tableCohortOverlap(cohort_diag)
 plotCohortOverlap(cohort_diag)
 ```
 
-![](CohortDiagnostics_files/figure-html/unnamed-chunk-11-1.png) \###
-Cohort timing
+![](CohortDiagnostics_files/figure-html/unnamed-chunk-11-1.png)
+
+### Cohort timing
 
 ``` r
 tableCohortTiming(cohort_diag)
@@ -172,8 +169,9 @@ tableCohortTiming(cohort_diag)
 plotCohortTiming(cohort_diag)
 ```
 
-![](CohortDiagnostics_files/figure-html/unnamed-chunk-13-1.png) \###
-Cohort survival
+![](CohortDiagnostics_files/figure-html/unnamed-chunk-13-1.png)
+
+### Cohort survival
 
 ``` r
 tableSurvival(cohort_diag, header = "estimate_name")

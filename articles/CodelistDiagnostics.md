@@ -18,13 +18,7 @@ library(MeasurementDiagnostics)
 library(dplyr)
 library(ggplot2)
 
-con <- DBI::dbConnect(duckdb::duckdb(), 
-                      CDMConnector::eunomiaDir("synpuf-1k", "5.3"))
-cdm <- CDMConnector::cdmFromCon(con = con, 
-                                cdmName = "Eunomia Synpuf",
-                                cdmSchema   = "main",
-                                writeSchema = "main", 
-                                achillesSchema = "main")
+cdm <- omock::mockCdmFromDataset(datasetName = "synpuf-1k_5.3", source = "duckdb")
 
 cdm$injuries <- conceptCohort(cdm = cdm,
   conceptSet = list(
@@ -39,11 +33,11 @@ cdm$injuries |>
   glimpse()
 #> Rows: ??
 #> Columns: 4
-#> Database: DuckDB 1.5.1 [unknown@Linux 6.17.0-1008-azure:R 4.5.3//tmp/RtmpoV81mD/file231f26e55e61.duckdb]
-#> $ cohort_definition_id <int> 5, 5, 5, 5, 5, 5, 5, 2, 2, 2, 5, 5, 5, 5, 5, 5, 5…
-#> $ subject_id           <int> 41, 147, 831, 1137, 1172, 638, 820, 435, 80, 243,…
-#> $ cohort_start_date    <date> 2008-05-27, 2009-04-17, 2009-10-10, 2008-11-11, …
-#> $ cohort_end_date      <date> 2008-05-27, 2009-04-17, 2009-10-10, 2008-11-11, …
+#> Database: DuckDB 1.5.1 [unknown@Linux 6.17.0-1008-azure:R 4.5.3//tmp/RtmpKH1oDR/file20cc7db044e8.duckdb]
+#> $ cohort_definition_id <int> 5, 5, 2, 5, 5, 5, 5, 5, 5, 2, 5, 5, 5, 5, 2, 5, 5…
+#> $ subject_id           <int> 53, 923, 435, 635, 720, 768, 924, 1301, 4, 347, 2…
+#> $ cohort_start_date    <date> 2008-11-25, 2009-09-08, 2008-12-19, 2009-03-23, …
+#> $ cohort_end_date      <date> 2008-11-25, 2009-09-08, 2008-12-19, 2009-03-23, …
 ```
 
 ## Summarising code use
@@ -111,7 +105,9 @@ R packages packages.
 tableAchillesCodeUse(code_diag)
 ```
 
-[TABLE]
+|                   |
+|-------------------|
+| Table has no data |
 
 ### Orphan code use
 
@@ -119,7 +115,9 @@ tableAchillesCodeUse(code_diag)
 tableOrphanCodes(code_diag)
 ```
 
-[TABLE]
+|                   |
+|-------------------|
+| Table has no data |
 
 ### Cohort code use
 
@@ -135,15 +133,15 @@ tableCohortCodeUse(code_diag)
 tableMeasurementSummary(code_diag)
 ```
 
-| CDM name       | Cohort name         | Codelist name       | Variable name             | Estimate name        | Estimate value       |
-|:---------------|:--------------------|:--------------------|:--------------------------|:---------------------|:---------------------|
-| Eunomia Synpuf | measurements_cohort | measurements_cohort | Cohort records            | N                    | 339                  |
-|                |                     |                     | Cohort subjects           | N                    | 255                  |
-|                |                     |                     | Number subjects           | N (%)                | 255 (100.00%)        |
-|                |                     |                     | Days between measurements | Median \[Q25 – Q75\] | 150 \[19 – 356\]     |
-|                |                     |                     |                           | Range                | 0 to 930             |
-|                |                     |                     | Measurements per subject  | Median \[Q25 – Q75\] | 1.00 \[1.00 – 2.00\] |
-|                |                     |                     |                           | Range                | 1.00 to 10.00        |
+| CDM name  | Cohort name         | Codelist name       | Variable name             | Estimate name        | Estimate value       |
+|:----------|:--------------------|:--------------------|:--------------------------|:---------------------|:---------------------|
+| synpuf-1k | measurements_cohort | measurements_cohort | Cohort records            | N                    | 339                  |
+|           |                     |                     | Cohort subjects           | N                    | 255                  |
+|           |                     |                     | Number subjects           | N (%)                | 255 (100.00%)        |
+|           |                     |                     | Days between measurements | Median \[Q25 – Q75\] | 150 \[19 – 356\]     |
+|           |                     |                     |                           | Range                | 0 to 930             |
+|           |                     |                     | Measurements per subject  | Median \[Q25 – Q75\] | 1.00 \[1.00 – 2.00\] |
+|           |                     |                     |                           | Range                | 1.00 to 10.00        |
 
 ``` r
 plotMeasurementSummary(code_diag)
@@ -160,7 +158,7 @@ tableMeasurementValueAsConcept(code_diag)
 | CDM name            | Cohort name         | Concept name                                                                                                                                                                                                                  | Concept ID | Source concept name                                                                                                                                                                                                           | Source concept ID | Domain ID   | Variable name       | Value as concept name | Value as concept ID | Estimate name | Estimate value |
 |---------------------|---------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|-------------|---------------------|-----------------------|---------------------|---------------|----------------|
 | measurements_cohort |                     |                                                                                                                                                                                                                               |            |                                                                                                                                                                                                                               |                   |             |                     |                       |                     |               |                |
-| Eunomia Synpuf      | measurements_cohort | overall                                                                                                                                                                                                                       | overall    | overall                                                                                                                                                                                                                       | overall           | overall     | Measurement records | No matching concept   | 0                   | N (%)         | 364 (100.00%)  |
+| synpuf-1k           | measurements_cohort | overall                                                                                                                                                                                                                       | overall    | overall                                                                                                                                                                                                                       | overall           | overall     | Measurement records | No matching concept   | 0                   | N (%)         | 364 (100.00%)  |
 |                     |                     | Prostate cancer screening; prostate specific antigen test (psa)                                                                                                                                                               | 2617206    | Prostate cancer screening; prostate specific antigen test (psa)                                                                                                                                                               | 2617206           | Measurement | Measurement records | No matching concept   | 0                   | N (%)         | 146 (100.00%)  |
 |                     |                     | Screening cytopathology, cervical or vaginal (any reporting system), collected in preservative fluid, automated thin layer preparation, with screening by automated system and manual rescreening under physician supervision | 2617239    | Screening cytopathology, cervical or vaginal (any reporting system), collected in preservative fluid, automated thin layer preparation, with screening by automated system and manual rescreening under physician supervision | 2617239           | Measurement | Measurement records | No matching concept   | 0                   | N (%)         | 52 (100.00%)   |
 |                     |                     | Laboratory test                                                                                                                                                                                                               | 4034850    | Laboratory examination ordered as part of a routine general medical examination                                                                                                                                               | 44823881          | Measurement | Measurement records | No matching concept   | 0                   | N (%)         | 14 (100.00%)   |
@@ -187,7 +185,7 @@ tableMeasurementValueAsNumber(code_diag)
 | CDM name            | Cohort name         | Concept name                                                                                                                                                                                                                  | Concept ID | Source concept name                                                                                                                                                                                                           | Source concept ID | Domain ID   | Unit concept name   | Unit concept ID | Variable name       | Estimate name        | Estimate value |
 |---------------------|---------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|-------------|---------------------|-----------------|---------------------|----------------------|----------------|
 | measurements_cohort |                     |                                                                                                                                                                                                                               |            |                                                                                                                                                                                                                               |                   |             |                     |                 |                     |                      |                |
-| Eunomia Synpuf      | measurements_cohort | overall                                                                                                                                                                                                                       | overall    | overall                                                                                                                                                                                                                       | overall           | overall     | No matching concept | 0               | Measurement records | N                    | 364            |
+| synpuf-1k           | measurements_cohort | overall                                                                                                                                                                                                                       | overall    | overall                                                                                                                                                                                                                       | overall           | overall     | No matching concept | 0               | Measurement records | N                    | 364            |
 |                     |                     |                                                                                                                                                                                                                               |            |                                                                                                                                                                                                                               |                   |             |                     |                 | Value as number     | Median \[Q25 – Q75\] | –              |
 |                     |                     |                                                                                                                                                                                                                               |            |                                                                                                                                                                                                                               |                   |             |                     |                 |                     | Q05 – Q95            | –              |
 |                     |                     |                                                                                                                                                                                                                               |            |                                                                                                                                                                                                                               |                   |             |                     |                 |                     | Q01 – Q99            | –              |

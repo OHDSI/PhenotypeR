@@ -12,13 +12,7 @@ library(CohortConstructor)
 library(PhenotypeR)
 library(dplyr)
 
-con <- DBI::dbConnect(duckdb::duckdb(), 
-                      CDMConnector::eunomiaDir("synpuf-1k", "5.3"))
-cdm <- CDMConnector::cdmFromCon(con = con, 
-                                cdmName = "Eunomia Synpuf",
-                                cdmSchema   = "main",
-                                writeSchema = "main", 
-                                achillesSchema = "main")
+cdm <- omock::mockCdmFromDataset(datasetName = "synpuf-1k_5.3", source = "duckdb")
 
 # Create a code lists
 codes <- list("user_of_warfarin" = c(1310149L, 40163554L),

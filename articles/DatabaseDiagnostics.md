@@ -11,13 +11,7 @@ library(PhenotypeR)
 library(dplyr)
 library(CohortConstructor)
 
-con <- DBI::dbConnect(duckdb::duckdb(), 
-                      CDMConnector::eunomiaDir("synpuf-1k", "5.3"))
-cdm <- CDMConnector::cdmFromCon(con = con, 
-                                cdmName = "Eunomia Synpuf",
-                                cdmSchema   = "main",
-                                writeSchema = "main", 
-                                achillesSchema = "main")
+cdm <- omock::mockCdmFromDataset(datasetName = "synpuf-1k_5.3", source = "duckdb")
 
 cdm$injuries <- conceptCohort(cdm = cdm,
   conceptSet = list(
@@ -82,7 +76,7 @@ tableOmopSnapshot(db_diagnostics)
 
 [TABLE]
 
-Snapshot of the cdm Eunomia Synpuf
+Snapshot of the cdm synpuf-1k
 
 ### Observation Periods
 
