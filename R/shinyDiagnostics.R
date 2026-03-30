@@ -104,7 +104,6 @@ shinyDiagnostics <- function(result,
                                        fileName = "result.csv",
                                        path = file.path(to, "data", "raw"))
 
-
   # copy clinical descriptions directory
   if(!is.null(clinicalDescriptionsDir)) {
       invisible(copyDirectory(from = clinicalDescriptionsDir, to = file.path(to, "data","raw","clinical_descriptions")))
