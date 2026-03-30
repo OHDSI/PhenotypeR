@@ -111,7 +111,7 @@ tableCharacteristics(cohort_diag)
 
 ### Cohort large scale characteristics
 ```{r}
-tableLargeScaleCharacteristics(cohort_diag)
+tableLargeScaleCharacteristics(cohort_diag, hide = c())
 ```
 
 ### Cohort overlap

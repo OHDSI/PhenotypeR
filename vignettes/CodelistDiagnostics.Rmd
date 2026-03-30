@@ -105,6 +105,7 @@ tableCohortCodeUse(code_diag)
 ```{r}
 tableMeasurementSummary(code_diag)
 ```
+
 ```{r}
 plotMeasurementSummary(code_diag)
 ```
