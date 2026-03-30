@@ -5,7 +5,7 @@ server <- function(input, output, session) {
 
   # Shared variables
   inputs_initialized <- reactiveVal(FALSE)
-  shared_cdm_names     <- reactiveVal(NULL)
+  shared_cdm_names   <- reactiveVal(NULL)
   shared_cohort_names  <- reactiveVal(NULL)
 
   # fill selectise variables ----
@@ -28,7 +28,6 @@ server <- function(input, output, session) {
     }
     inputs_initialized(TRUE)
   })
-
 
   # sortable ui elements -----
   # have these in server to avoid race condition (if in UI)
@@ -428,6 +427,59 @@ server <- function(input, output, session) {
       })
     }
   )
+
+  # clinical description ----
+  clinical_description <- eventReactive(input$updateClinicalDescription, {
+    req(shared_cohort_names())
+    req(inputs_initialized())
+
+    # require exactly one selection
+    if(length(shared_cohort_names()) > 1){
+      info <- "Please select only one cohort"
+    }else{
+      info <- clinical_descriptions[[shared_cohort_names()]]
+
+      info <- info |>
+        dplyr::select("phenotype", "author", "date", "key_sources", "description" = all_of(input$phenotypes_section))
+    }
+
+    return(info)
+  })
+
+  output$clinical_text <- renderUI({
+    info <- clinical_description()
+
+    if (is.null(info) || length(info) == 0) {
+      return(tags$p("No clinical description for this cohort."))
+    }
+
+    if (length(info) == 1) {
+      return(tags$p(info))
+    }
+
+    author      <- if (!is.null(info$author) && info$author != "") info$author else "Unknown author"
+    date        <- if (!is.null(info$date)   && info$date != "")   info$date   else "Unknown date"
+    key_sources <- if (!is.null(info$key_sources) && info$key_sources != "") info$key_sources else "Unknown key sources"
+    metadata_text <- paste0("Author: ", author, " (Date: ", date, ")<br>Sources: ", key_sources)
+
+    info <- info |>
+      dplyr::select(-dplyr::any_of(c("phenotype", "author", "date", "key_sources")))
+
+    info <- info[["description"]][[1]]
+    info <- paste0("<lbr>", info, "</br>")
+    text <- c("<ul>", info, "</ul>")
+
+    tagList(
+      tags$div(
+        style = "padding: 15px; border-left: 4px solid #750075; color = grey; background: #E9E9E9; font-style: italic;",
+        shiny::HTML(metadata_text)
+      ),
+      tags$div(
+        style = "padding: 15px; border-left: 4px solid #750075; background: #E9E9E9; font-weight: normal;",
+        shiny::HTML(text)
+      )
+    )
+  })
 
   # summarise_omop_snapshot -----
   filterOmopSnapshot <- eventReactive(input$updateSnapshot, ({

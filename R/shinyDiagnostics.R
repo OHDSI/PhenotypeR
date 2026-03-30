@@ -17,6 +17,7 @@
 #' @param open If TRUE, the shiny app will be launched in a new session. If
 #' FALSE, the shiny app will be created but not launched.
 #' @inheritParams expectationsDoc
+#' @param clinicalDescriptionsDir Directory where to find the clinical descriptions word documents.
 #' @param removeEmptyTabs Whether to remove tabs of those diagnostics that have not been performed or that were insufficient counts to produce a result (TRUE) or not (FALSE)
 #'
 #' @return A shiny app
@@ -53,6 +54,7 @@ shinyDiagnostics <- function(result,
                              minCellCount = 5,
                              open = rlang::is_interactive(),
                              expectations = NULL,
+                             clinicalDescriptionsDir = NULL,
                              removeEmptyTabs = TRUE){
   folderName <- "PhenotypeRShiny"
   omopgenerics::assertTable(expectations,
@@ -97,6 +99,12 @@ shinyDiagnostics <- function(result,
                                        minCellCount = minCellCount,
                                        fileName = "result.csv",
                                        path = file.path(to, "data", "raw"))
+
+  # copy clinical descriptions directory
+  if(!is.null(clinicalDescriptionsDir)) {
+      invisible(copyDirectory(from = clinicalDescriptionsDir, to = file.path(to, "data","raw","clinical_descriptions")))
+  }
+
   # remove tabs
   if(isTRUE(removeEmptyTabs)){
     ui <- readLines(con = file.path(to,"ui.R"))
@@ -131,7 +139,6 @@ shinyDiagnostics <- function(result,
 
   return(invisible())
 }
-
 
 validateDirectory <- function(directory, folderName) {
   # create directory if it does not exit
@@ -248,7 +255,6 @@ checkWhichDiagnostics <- function(result, expectations){
       to_remove <- append(to_remove, "compare_large_scale_characteristics_expectations")
     }
   }
-
   return(to_remove)
 }
 removeLines <- function(ui, result, diagnostic, expectations){
