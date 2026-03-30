@@ -38,10 +38,11 @@
 #' result <- phenotypeDiagnostics(cdm$warfarin, populationSample = 100000)
 #'
 #' expectations <- dplyr::tibble("cohort_name" = "warfarin",
-#'                        "value" = c("Mean age",
+#'                        "estimate" = c("Mean age",
 #'                                    "Male percentage",
-#'                                    "Survival probability after 5y"),
-#'                        "estimate" = c("32", "74%",  "4%"),
+#'                                    "Frequently seen comorbidities"),
+#'                        "value" = c("32", "74%",  "Atrial fibrillation, heart failure, hypertension and ischaemic heart disease"),
+#'                        "diagnostics" = c("cohort_characteristics", "cohort_characteristics", "compare_large_scale_characteristics"),
 #'                        "source" = c("AlbertAI"))
 #'
 #' shinyDiagnostics(result, tempdir(), expectations = expectations)
@@ -107,10 +108,11 @@ shinyDiagnostics <- function(result,
   # remove tabs
   if(isTRUE(removeEmptyTabs)){
     ui <- readLines(con = file.path(to,"ui.R"))
-    diag_to_remove <- checkWhichDiagnostics(result)
-    ui <- removeLines(ui, result, diag_to_remove)
+    diag_to_remove <- checkWhichDiagnostics(result, expectations)
+    ui <- removeLines(ui, result, diag_to_remove, expectations)
     writeLines(ui, file.path(to,"ui.R"))
   }
+
   # export expectations
   dir.create(file.path(to,"data","raw","expectations"))
   if(!is.null(expectations)){
@@ -185,20 +187,24 @@ copyDirectory <- function(from, to) {
   file.copy(from = oldFiles, to = NewFiles)
 }
 
-checkWhichDiagnostics <- function(result){
+checkWhichDiagnostics <- function(result, expectations){
+
   if(nrow(result) == 0){
     diag_present <- ""
   }else{
     diag_present <- omopgenerics::settings(result) |> dplyr::pull("diagnostic") |> unique()
   }
+
   diagnostics  <- c("databaseDiagnostics", "codelistDiagnostics", "cohortDiagnostics", "populationDiagnostics")
 
   to_remove <- diagnostics[!diagnostics %in% diag_present]
+
   if(!"databaseDiagnostics" %in% to_remove){
     if(!"summarise_clinical_records" %in% (omopgenerics::settings(result) |> dplyr::pull("result_type") |> unique())){
       to_remove <- append(to_remove, "clinical_records")
     }
   }
+
   if(!"codelistDiagnostics" %in% to_remove){
     if(!"achilles_code_use" %in% (omopgenerics::settings(result) |> dplyr::pull("result_type") |> unique())){
       to_remove <- append(to_remove, "achilles_results")
@@ -210,35 +216,78 @@ checkWhichDiagnostics <- function(result){
       to_remove <- append(to_remove, "drug_diagnostics")
     }
   }
+
   if(!"cohortDiagnostics" %in% to_remove){
+
+    n_cohorts <- result |>
+      omopgenerics::filterSettings(.data$diagnostic == "cohortDiagnostics") |>
+      visOmopResults::splitGroup() |>
+      dplyr::distinct(cohort_name) |>
+      dplyr::filter(!grepl("sampled|matched", .data$cohort_name)) |>
+      nrow()
+
+    if(n_cohorts == 1) {
+      to_remove <- append(to_remove, "compare_cohorts")
+    } else {
+      if (is.null(expectations) | !any(grepl("compare_cohorts", expectations$diagnostics))) {
+        to_remove <- append(to_remove, "compare_cohorts_expectations")
+      }
+    }
+
     if(!"survival_estimates" %in% (omopgenerics::settings(result) |> dplyr::pull("result_type") |> unique())){
       to_remove <- append(to_remove, "cohort_survival")
+    } else {
+      if (is.null(expectations) | !any(grepl("cohort_survival", expectations$diagnostics))) {
+        to_remove <- append(to_remove, "cohort_survival_expectations")
+      }
+    }
+
+    if (is.null(expectations) | !any(grepl("\\bcohort_count", expectations$diagnostics))) {
+      to_remove <- append(to_remove, "cohort_count_expectations")
+    }
+    if (is.null(expectations) | !any(grepl("\\bcohort_characteristics", expectations$diagnostics))) {
+      to_remove <- append(to_remove, "cohort_characteristics_expectations")
+    }
+    if (is.null(expectations) | !any(grepl("\\blarge_scale_characteristics", expectations$diagnostics))) {
+      to_remove <- append(to_remove, "large_scale_characteristics_expectations")
+    }
+    if (is.null(expectations) | !any(grepl("\\bcompare_large_scale_characteristics", expectations$diagnostics))) {
+      to_remove <- append(to_remove, "compare_large_scale_characteristics_expectations")
     }
   }
   return(to_remove)
 }
-removeLines <- function(ui, result, diagnostic){
+removeLines <- function(ui, result, diagnostic, expectations){
+
+  if(is.null(expectations)) {
+    cli::cli_warn("No expectations provided. Removing expectations tabs from the shiny app.")
+  }
+
   for(x in diagnostic){
-    start <- which(stringr::str_detect(ui, paste0(x, "_start")))
-    end   <- which(stringr::str_detect(ui, paste0(x, "_end")))
+
+    start <- which(stringr::str_detect(ui, stringr::regex(paste0("\\b", x, "_start\\b"), ignore_case = FALSE)))
+    end   <- which(stringr::str_detect(ui, stringr::regex(paste0("\\b", x, "_end\\b"), ignore_case = FALSE)))
 
     if(length(start) == 1 && length(end) == 1){
       ui <- ui[-seq(start,end,1)]
 
-      msg <- switch(x,
-             "clinical_records" = "No summary of the clinical records containing the codes from the concept list. Removing tab from the shiny app.",
-             "measurement_diagnostics" = "No measurements present in the concept list. Removing tab from the shiny app.",
-             "cohort_survival" = "No survival analysis present in cohortDiagnostics. Removing tab from the shiny app.",
-             "achilles_results" = "No achilles code use or orphan codes results in codelistDiagnostics. Removing tabs from the shiny app.",
-             "{x} not present in the summarised result. Removing tab from the shiny app.")
-      cli::cli_warn(msg)
+      if( (!is.null(expectations)) & stringr::str_detect(x, "expectations")) {
+        cli::cli_warn("No expectations for {gsub('_',' ',gsub('_expectations','', x))}. Removing tab from the shiny app.")
+      }else if (!stringr::str_detect(x, "expectations")){
+        msg <- switch(x,
+                      "clinical_records" = "No summary of the clinical records containing the codes from the concept list. Removing tab from the shiny app.",
+                      "measurement_diagnostics" = "No measurements present in the concept list. Removing tab from the shiny app.",
+                      "cohort_survival" = "No survival analysis present in cohortDiagnostics. Removing tab from the shiny app.",
+                      "achilles_results" = "No achilles code use or orphan codes results in codelistDiagnostics. Removing tabs from the shiny app.",
+                      "drug_diagnostics" = "No drug diagnostics present in the summarised result. Removing tab from the shiny app.",
+                      "compare_cohorts" = "Only one cohort present in cohortDiagnostics. Removing Compare Cohorts tab from the shiny app.",
+                      "{x} not present in the summarised result. Removing tab from the shiny app.")
+        cli::cli_warn(msg)
+      }
     }
   }
   return(ui)
 }
-
-
-
 
 
 

@@ -456,7 +456,6 @@ summariseDose <- function(drugRecords, group, strata, ingredient) {
   return(omopgenerics::bind(result))
 }
 findIngredient <- function(codes, cdm) {
-  threshold <- min(1, as.numeric(getOption("PhenotypeR_ingredient_threshold", "0.8")))
 
   if (length(codes) == 0) {
     return(dplyr::tibble(
@@ -497,22 +496,37 @@ findIngredient <- function(codes, cdm) {
     dplyr::summarise(den = as.numeric(dplyr::n())) |>
     dplyr::inner_join(x, by = "codelist_name") |>
     dplyr::mutate(freq = .data$n / .data$den) |>
-    dplyr::filter(.data$freq >= .env$threshold) |>
     dplyr::select(
       "codelist_name",
       "ingredient_concept_id" = "ancestor_concept_id",
-      "ingredient_name"
+      "ingredient_name",
+      "freq"
     )
 }
 reportIngredient <- function(conceptTib) {
-  mes <- c(i = "Change ingredient threshold with options(PhenotypeR_ingredient_threshold).")
-  if (nrow(conceptTib) == 0) {
-    cli::cli_inform(c("!" = "No common ingredient found.", mes))
-  } else {
-    x <- paste0("codelist_name: `", conceptTib$codelist_name, "`; ingredient: `", conceptTib$ingredient_name, "`")
-    cli::cli_inform(c("v" = "Dose calculated for the following codelists and ingredients:", x,  mes))
+  threshold <- min(1, as.numeric(getOption("PhenotypeR_ingredient_threshold", "0.8")))
+
+  codelists <- unique(conceptTib$codelist_name)
+  ingredients <- conceptTib |>
+    dplyr::filter(.data$freq >= .env$threshold) |>
+    dplyr::select(!"freq")
+
+  mes <- character()
+
+  for (codelist in codelists) {
+    ing <- ingredients$ingredient_name[ingredients$codelist_name == codelist]
+    if (length(ing) > 0) {
+      mes <- c(mes, "!" = paste0("No common ingredient found for codelist: `", codelist, "`."))
+    } else {
+      pl <- ifelse(length(ing) == 1, "ingredient", paste0(length(ing), " ingredients"))
+      mes <- c(mes, "v" = paste0("Dose calculated for codelist: `", codelist, "` and ", pl, ": `", paste0(ing, collapse = "`, `"), "`."))
+    }
   }
-  return(conceptTib)
+
+  mes <- c(mes, i = paste0("Change ingredient threshold with options(PhenotypeR_ingredient_threshold), threshold = ", threshold, "."))
+  cli::cli_inform(message = mes)
+
+  return(ingredients)
 }
 
 #' Visusalise the results in a table object
