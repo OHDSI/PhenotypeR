@@ -35,7 +35,8 @@
 #'                                                               40163554L)),
 #'                               name = "warfarin")
 #'
-#' result <- phenotypeDiagnostics(cdm$warfarin, populationSample = 100000)
+#' result <- phenotypeDiagnostics(cdm$warfarin,
+#'                                populationSample = 100000)
 #'
 #' expectations <- dplyr::tibble("cohort_name" = "warfarin",
 #'                        "estimate" = c("Mean age",
@@ -45,7 +46,9 @@
 #'                        "diagnostics" = c("cohort_characteristics", "cohort_characteristics", "compare_large_scale_characteristics"),
 #'                        "source" = c("AlbertAI"))
 #'
-#' shinyDiagnostics(result, tempdir(), expectations = expectations)
+#' shinyDiagnostics(result,
+#'                 tempdir(),
+#'                 expectations = expectations)
 #'
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
@@ -55,6 +58,7 @@ shinyDiagnostics <- function(result,
                              open = rlang::is_interactive(),
                              expectations = NULL,
                              clinicalDescriptionsDir = NULL,
+                             databaseDescriptionsDir = NULL,
                              removeEmptyTabs = TRUE){
   folderName <- "PhenotypeRShiny"
   omopgenerics::assertTable(expectations,
@@ -104,6 +108,11 @@ shinyDiagnostics <- function(result,
   # copy clinical descriptions directory
   if(!is.null(clinicalDescriptionsDir)) {
       invisible(copyDirectory(from = clinicalDescriptionsDir, to = file.path(to, "data","raw","clinical_descriptions")))
+  }
+
+  # copy database descriptions directory
+  if(!is.null(clinicalDescriptionsDir)) {
+    invisible(copyDirectory(from = databaseDescriptionsDir, to = file.path(to, "data","raw","database_descriptions")))
   }
 
   # remove tabs

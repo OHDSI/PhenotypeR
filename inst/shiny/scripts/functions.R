@@ -127,19 +127,19 @@ find_info_in_the_line <- function(doc_text, string) {
 find_info_in_the_paragraph <- function(doc_text, start, end, addStyle, removeFirstTitle = FALSE){
 
   if( !any(stringr::str_detect(doc_text$text, regex(paste0("^", start), ignore_case = TRUE)), na.rm = TRUE)) {
-    msg <- glue::glue("No `{start}` found in the clinical description.")
+    msg <- glue::glue("No `{start}` found.")
     cli::cli_warn(message = msg)
     return( msg )
   }
   
   pi_start <- doc_text |>
-    dplyr::filter(stringr::str_detect(text, regex(paste0("^", start), ignore_case = TRUE))) |>
+    dplyr::filter(stringr::str_detect(text, regex(paste0("^", start), ignore_case = TRUE)) & run_index == 1) |>
     dplyr::pull("paragraph_index")
 
   if(removeFirstTitle){pi_start <- pi_start + 1}
   
   pi_end <- c(doc_text |>
-                dplyr::filter(stringr::str_detect(text, regex(paste0("^", end), ignore_case = TRUE))) |>
+                dplyr::filter(stringr::str_detect(text, regex(paste0("^", end), ignore_case = TRUE)) & run_index == 1) |>
                 dplyr::pull("paragraph_index")-1)
   
   if(is.null(end) | length(pi_end) == 0){
@@ -170,10 +170,10 @@ find_info_in_the_paragraph <- function(doc_text, start, end, addStyle, removeFir
   return(doc_text)
 }
 
-parse_docx_runs <- function(path_docx) {
+parse_docx_runs <- function(path_docx, folder) {
 
-  unzip(path_docx, files = "word/document.xml", exdir = "data/raw/clinical_description")
-  doc_xml_path <- file.path("data/raw/clinical_description", "word", "document.xml")
+  unzip(path_docx, files = "word/document.xml", exdir = paste0("data/raw/",folder))
+  doc_xml_path <- file.path(paste0("data/raw/",folder), "word", "document.xml")
   if (!file.exists(doc_xml_path)) stop("document.xml not found in docx")
 
   doc <- xml2::read_xml(doc_xml_path)
@@ -223,7 +223,7 @@ parse_docx_runs <- function(path_docx) {
   rows <- rows |>
     dplyr::arrange(paragraph_index, run_index)
 
-  unlink(file.path("data/raw/clinical_description", "word"))
+  unlink(file.path(paste0("data/raw/",folder), "word"))
   return(rows)
 }
 
