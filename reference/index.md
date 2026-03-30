@@ -28,6 +28,11 @@
 - [`tableCohortExpectations()`](https://ohdsi.github.io/PhenotypeR/reference/tableCohortExpectations.md)
   : Create a table summarising cohort expectations
 
+### Download clinical description template
+
+- [`downloadClinicalDescriptionTemplate()`](https://ohdsi.github.io/PhenotypeR/reference/downloadClinicalDescriptionTemplate.md)
+  : Download a Clinical Description Template
+
 ### Codelist diagnostics helper
 
 - [`addCodelistAttribute()`](https://ohdsi.github.io/PhenotypeR/reference/addCodelistAttribute.md)
