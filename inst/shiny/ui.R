@@ -12,7 +12,50 @@ ui <- fluidPage(
     bslib::nav_menu(
       title = "Background",
       icon = shiny::icon("list"),
-      # clinicalDescriptions_end
+      # databaseDescriptions_start
+      bslib::nav_panel(
+        title = "Database descriptions",
+        bslib::accordion(
+          bslib::accordion_panel(
+            title = "Shared inputs",
+            tags$div(
+              style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
+              tags$label("Select Database(s):"),
+              tags$div(
+                style = "width: 225px;",
+                tags$div(
+                  style = "margin-top: 15px;",
+                  shinyWidgets::pickerInput(
+                    inputId = "summarise_database_description_cdm_name",
+                    label = NULL,
+                    selected = selected$shared_cdm_names,
+                    choices = choices$shared_cdm_names,
+                    multiple = TRUE,
+                    options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                                   `deselect-all-text` = "None", `select-all-text` = "All"),
+                    width = "100%"
+                  )
+                )
+              ),
+              tags$div(
+                style = "width: 225px;",
+                actionBttn("updateDatabaseDescription", "Update",
+                           style = "simple"),
+                width = "100%"
+              )
+            )
+          )
+        ),
+        bslib::nav_panel(
+          title = "Description",
+          bslib::card(
+            full_screen = TRUE,
+            shiny::uiOutput("database_text")
+          )
+        )
+      ),
+      # databaseDescriptions_end -----
+      # clinicalDescriptions_start
       bslib::nav_panel(
         title = "Clinical descriptions",
         bslib::accordion(
@@ -70,52 +113,10 @@ ui <- fluidPage(
             )
           )
         )
-      ),
-      # clinicalDescriptions_end
-      # databaseDescriptions_start
-      bslib::nav_panel(
-        title = "Database descriptions",
-        bslib::accordion(
-          bslib::accordion_panel(
-            title = "Shared inputs",
-            tags$div(
-              style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
-              tags$label("Select Database(s):"),
-              tags$div(
-                style = "width: 225px;",
-                tags$div(
-                  style = "margin-top: 15px;",
-                  shinyWidgets::pickerInput(
-                    inputId = "summarise_database_description_cdm_name",
-                    label = NULL,
-                    selected = selected$shared_cdm_names,
-                    choices = choices$shared_cdm_names,
-                    multiple = TRUE,
-                    options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                                   `deselect-all-text` = "None", `select-all-text` = "All"),
-                    width = "100%"
-                  )
-                )
-              ),
-              tags$div(
-                style = "width: 225px;",
-                actionBttn("updateDatabaseDescription", "Update",
-                           style = "simple"),
-                width = "100%"
-              )
-            )
-          )
-        ),
-        bslib::nav_panel(
-          title = "Description",
-          bslib::card(
-            full_screen = TRUE,
-            shiny::uiOutput("database_text")
-          )
-        )
       )
+      # clinicalDescriptions_end
     ),
-    # databaseDescriptions_end -----
+    # Background_end
     # databaseDiagnostics_start -----
     bslib::nav_menu(
       title = "Database diagnostics",
