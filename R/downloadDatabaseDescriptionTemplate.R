@@ -11,9 +11,8 @@
 #' @examples
 #' \donttest{
 #' library(PhenotypeR)
-#' library(here)
 #'
-#' downloadDatabaseDescriptionTemplate(directory = here(),
+#' downloadDatabaseDescriptionTemplate(directory = tempdir(),
 #'                                     name = "GiBleed")
 #'
 #'
@@ -22,7 +21,7 @@
 downloadDatabaseDescriptionTemplate <- function(directory,
                                                 name = "database_description_template") {
 
-  internalDescriptionTemplates(type = "database descritpion",
+  internalDescriptionTemplates(type = "database description",
                                directory = directory,
                                name = name)
 }
