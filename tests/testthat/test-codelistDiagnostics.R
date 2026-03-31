@@ -130,7 +130,7 @@ test_that("measurementDiagnostics working", {
 
   # no measurement diagnostics
   res_no_meas <- PhenotypeR::codelistDiagnostics(cdm$measurement_cohort,
-                                                 measurementDiagnosticsSample = 0)
+                                                 measurementDiagnostics = FALSE)
   expect_false("measurement_summary" %in% omopgenerics::settings(res_no_meas))
 
   multiple_codes <- CodelistGenerator::stratifyByConcept(codes, cdm)
@@ -188,7 +188,7 @@ test_that("drugDiagnostics working", {
 
   # no drug diagnostics
   expect_no_error(res <- PhenotypeR::codelistDiagnostics(cdm$drug_cohort,
-                                                         drugDiagnosticsSample = 0))
+                                                         drugDiagnostics = FALSE))
   expect_false(any(
     settings(res)$result_type %in% c("summarise_drug_use")
   ))
