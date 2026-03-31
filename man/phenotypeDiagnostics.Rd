@@ -10,6 +10,7 @@ phenotypeDiagnostics(
     "populationDiagnostics"),
   measurementDiagnosticsSample = 20000,
   drugDiagnosticsSample = 20000,
+  cohortSurvival = FALSE,
   cohortSample = 20000,
   matchedSample = 1000,
   populationSample = 1e+06,
@@ -32,6 +33,8 @@ run.}
 drug diagnostics. If `drugDiagnosticsSample = NULL`, no sampling will be
 performed. If `drugDiagnosticsSample = 0` drug diagnostics will not be
 run.}
+
+\item{cohortSurvival}{Whether to perform survival analysis (TRUE) or not (FALSE).}
 
 \item{cohortSample}{The number of people to take a random sample for cohortDiagnostics. If `cohortSample = NULL`, no sampling will be performed.}
 

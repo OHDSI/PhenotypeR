@@ -75,11 +75,11 @@ phenotypeDiagnostics <- function(cohort,
     results[["db_diag"]] <- databaseDiagnostics(cohort)
     if(!is.null(incrementalResultPath)){
       if (dir.exists(incrementalResultPath)) {
-      exportSummarisedResult(results[["db_diag"]] ,
-                             fileName = "incremental_database_diagnostics.csv",
-                             path = incrementalResultPath)
+        exportSummarisedResult(results[["db_diag"]] ,
+                               fileName = "incremental_database_diagnostics.csv",
+                               path = incrementalResultPath)
       }
-      }
+    }
   }
 
   if ("codelistDiagnostics" %in% diagnostics) {
@@ -93,7 +93,7 @@ phenotypeDiagnostics <- function(cohort,
                                path = incrementalResultPath)
       }
     }
-}
+  }
 
   if ("cohortDiagnostics" %in% diagnostics) {
     results[["cohort_diag"]] <- cohortDiagnostics(cohort,

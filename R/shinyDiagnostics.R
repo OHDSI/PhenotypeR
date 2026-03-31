@@ -110,9 +110,9 @@ shinyDiagnostics <- function(result,
     ui <- readLines(con = file.path(to,"ui.R"))
     diag_to_remove <- checkWhichDiagnostics(result)
     ui <- removeDiagnostics(ui, result, diag_to_remove)
+    ui <- removeExpectations(ui, expectations, diag_to_remove)
     writeLines(ui, file.path(to,"ui.R"))
   }
-
   # export expectations
   dir.create(file.path(to,"data","raw","expectations"))
   if(!is.null(expectations)){
@@ -281,7 +281,30 @@ removeDiagnostics <- function(ui, result, to_remove){
   return(ui)
 }
 
+removeExpectations <- function(ui, expectations, to_remove) {
 
+  all_exp <- c("cohort_count", "cohort_characteristics", "large_scale_characteristics",
+               "compare_large_scale_characteristics", "compare_cohorts", "cohort_survival")
+  x <- unique(expectations$diagnostics)
+
+  if("cohortDiagnostics" %in% names(to_remove)) {
+    all_exp <- setdiff(all_exp, to_remove$cohortDiagnostics)
+    x <- setdiff(x, to_remove$cohortDiagnostics)
+    x <- setdiff(all_exp, x)
+
+    if(length(x) != 0) {
+      for(i in seq_along(x)) {
+        start <- which(stringr::str_detect(ui, stringr::regex(paste0("\\b", x[[i]], "_expectations_start\\b"), ignore_case = FALSE)))
+        end   <- which(stringr::str_detect(ui, stringr::regex(paste0("\\b", x[[i]], "_expectations_end\\b"), ignore_case = FALSE)))
+        ui <- ui[-seq(start,end,1)]
+      }
+    }
+
+    cli::cli_warn("Expectations tab in {x} will be removed, as none were provided.")
+  }
+
+  return(ui)
+}
 
 
 
