@@ -110,7 +110,7 @@ codelistDiagnostics <- function(cohort,
     dplyr::filter(.data$number_subjects == 0) |>
     dplyr::pull("cohort_definition_id")
 
-  if("cohort_code_use" %in% diagnostics) {
+  if(isTRUE(cohortCodeUse)) {
     if (!is.null(getOption("omopgenerics.logFile"))) {
       omopgenerics::logMessage("Codelist diagnostics - index event breakdown")
     }
@@ -132,7 +132,7 @@ codelistDiagnostics <- function(cohort,
     dplyr::filter(tolower(.data$domain_id) %in% c("measurement")) |>
     dplyr::collect()
 
-  if ("measurement_diagnostics" %in% diagnostics && nrow(measurements) > 0) {
+  if (isTRUE(measurementDiagnostics) && nrow(measurements) > 0) {
     if (!is.null(getOption("omopgenerics.logFile"))) {
       omopgenerics::logMessage("Codelist diagnostics - measurement concepts")
     }
@@ -165,7 +165,7 @@ codelistDiagnostics <- function(cohort,
   }
 
   # If any drug codes: do drug exposure diagnostics
-  if("drug_diagnostics" %in% diagnostics){
+  if(isTRUE(drugDiagnostics)){
   drugs <- cdm$concept |>
     dplyr::select(dplyr::all_of(c("concept_id", "domain_id"))) |>
     dplyr::inner_join(
@@ -212,14 +212,14 @@ codelistDiagnostics <- function(cohort,
   # all other analyses require achilles, so return if not available
   if("achilles_results" %in% names(cdm)){
 
-    if("achilles_code_use" %in% diagnostics) {
+    if(isTRUE(achillesCodeUse)) {
       if (!is.null(getOption("omopgenerics.logFile"))) {
         omopgenerics::logMessage("Codelist diagnostics - achilles code counts")
       }
       results[[paste0("achilles_code_use")]] <- CodelistGenerator::summariseAchillesCodeUse(x = all_codelists, cdm = cdm)
     }
 
-    if("orphan_code_use" %in% diagnostics) {
+    if(isTRUE(orphanCodeUse)) {
       if (!is.null(getOption("omopgenerics.logFile"))) {
         omopgenerics::logMessage("Codelist diagnostics - orphan concepts")
       }
