@@ -253,9 +253,9 @@ removeDiagnostics <- function(ui, result, to_remove){
   # Eliminate overall diagnostics
   x <- setdiff(c("databaseDiagnostics", "codelistDiagnostics", "cohortDiagnostics", "populationDiagnostics"), names(to_remove))
   if(length(x) != 0) {
-    for(xi in seq_along(x)){
-      start <- which(stringr::str_detect(ui, stringr::regex(paste0("\\b", xi, "_start\\b"), ignore_case = FALSE)))
-      end   <- which(stringr::str_detect(ui, stringr::regex(paste0("\\b", xi, "_end\\b"), ignore_case = FALSE)))
+    for(i in seq_along(x)){
+      start <- which(stringr::str_detect(ui, stringr::regex(paste0("\\b", x[[i]], "_start\\b"), ignore_case = FALSE)))
+      end   <- which(stringr::str_detect(ui, stringr::regex(paste0("\\b", x[[i]], "_end\\b"), ignore_case = FALSE)))
       ui <- ui[-seq(start,end,1)]
     }
     cli::cli_warn("{x} tab{?s} will be removed as the diagnostic{?s} {?was/were} not performed")

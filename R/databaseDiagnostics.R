@@ -86,7 +86,7 @@ databaseDiagnostics <- function(cohort,
   }
 
   # Observation period ----
-  if("observation_period" %in% diagnostics) {
+  if("observation_periods" %in% diagnostics) {
     if (!is.null(getOption("omopgenerics.logFile"))) {
       omopgenerics::logMessage("Database diagnostics - summarising observation period")
     }
