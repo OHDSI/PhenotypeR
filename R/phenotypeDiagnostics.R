@@ -15,6 +15,7 @@
 #' and `populationDiagnostics`.
 #' @inheritParams measurementDiagnosticsSampleDoc
 #' @inheritParams drugDiagnosticsSampleDoc
+#' @param cohortSurvival Whether to perform survival analysis (TRUE) or not (FALSE).
 #' @inheritParams cohortSampleDoc
 #' @inheritParams matchedDoc
 #' @inheritParams populationSampleDoc
@@ -41,6 +42,7 @@ phenotypeDiagnostics <- function(cohort,
                                                  "cohortDiagnostics", "populationDiagnostics"),
                                  measurementDiagnosticsSample = 20000,
                                  drugDiagnosticsSample = 20000,
+                                 cohortSurvival = FALSE,
                                  cohortSample = 20000,
                                  matchedSample = 1000,
                                  populationSample = 1000000,
