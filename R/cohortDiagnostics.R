@@ -10,9 +10,17 @@
 #' * Overlap between cohorts (if more than one cohort is being used).
 #'
 #' @inheritParams cohortDoc
-#' @param diagnostics Diagnostics to perform within cohortDiagnostics. This
-#' includes any of: c("cohort_count", "cohort_characteristics", #
-#' "large_scale_characteristics","compare_cohorts", "cohort_survival")
+#' @param cohortCount Whether to run `CohortCharacteristics::summariseCohortCount()` and
+#'       `CohortCharacteristics::summariseCohortAttrition()` (TRUE) or not (FALSE).
+#' @param cohortCharacteristics Whether to run `CohortCharacteristics::summariseCharacteristics()` and
+#'        summarise age density (TRUE) or not (FALSE).
+#' @param largeScaleCharacteristics Whether to run `CohortCharacteristics::summariseLargeScaleCharacteristics()` (TRUE)
+#'        or not (FALSE).
+#' @param compareCohorts Whether to run `CohortCharacteristics::summariseCohortOverlap()` and
+#'        `CohortCharacteristics::summariseCohortTiming()` (TRUE) or not (FALSE). Notice that,
+#'        if set to TRUE, the diagnostics will only be run when there are more than one cohort.
+#' @param cohortSurvival Whether to run `CohortSurvival::estimateSingleEventSurvival()` (TRUE) or
+#'        not (FALSE).
 #' @inheritParams cohortSampleDoc
 #' @inheritParams matchedDoc
 #'
@@ -34,18 +42,23 @@
 #' result <- cohortDiagnostics(cdm$warfarin)
 #' }
 cohortDiagnostics <- function(cohort,
-                              diagnostics = c("cohort_count", "cohort_characteristics", "large_scale_characteristics",
-                                              "compare_cohorts", "cohort_survival"),
+                              cohortCount = TRUE,
+                              cohortCharacteristics = TRUE,
+                              largeScaleCharacteristics = TRUE,
+                              compareCohorts = TRUE,
+                              cohortSurvival = FALSE,
                               cohortSample = 20000,
                               matchedSample = 1000){
 
   # Initial checks ----
   omopgenerics::validateCohortArgument(cohort)
-  omopgenerics::assertChoice(diagnostics,
-                             choice = c("cohort_count", "cohort_characteristics", "large_scale_characteristics",
-                                        "compare_large_scale_characteristics", "compare_cohorts", "cohort_survival"),
-                             null = TRUE)
-  if("cohort_survival" %in% diagnostics) rlang::check_installed("CohortSurvival", version = "1.0.2")
+  omopgenerics::assertLogical(cohortCount, length = 1)
+  omopgenerics::assertLogical(cohortCharacteristics, length = 1)
+  omopgenerics::assertLogical(largeScaleCharacteristics, length = 1)
+  omopgenerics::assertLogical(compareCohorts, length = 1)
+  omopgenerics::assertLogical(cohortSurvival, length = 1)
+
+  if(isTRUE(cohortSurvival)) rlang::check_installed("CohortSurvival", version = "1.0.2")
 
   cdm <- omopgenerics::cdmReference(cohort)
   cohortName <- omopgenerics::tableName(cohort)
@@ -58,7 +71,7 @@ cohortDiagnostics <- function(cohort,
   results <- list()
 
   # Cohort count ----
-  if("cohort_count" %in% diagnostics) {
+  if(isTRUE(cohortCount)) {
     if (!is.null(getOption("omopgenerics.logFile"))) {
       omopgenerics::logMessage("Cohort diagnostics - cohort attrition")
     }
@@ -98,7 +111,7 @@ cohortDiagnostics <- function(cohort,
 
   # Compare cohorts ----
   # if there is more than one cohort, we'll get timing and overlap of all together
-  if("compare_cohorts" %in% diagnostics && length(cohortIds) > 1){
+  if(isTRUE(compareCohorts) && length(cohortIds) > 1){
     if (!is.null(getOption("omopgenerics.logFile"))) {
       omopgenerics::logMessage("Cohort diagnostics - cohort overlap")
     }
@@ -113,7 +126,7 @@ cohortDiagnostics <- function(cohort,
   }
 
   # Cohort characteristics ----
-  if(("cohort_characteristics" %in% diagnostics | "large_scale_characteristics" %in% diagnostics) && is.null(matchedSample) || matchedSample != 0){
+  if((isTRUE(cohortCharacteristics) | isTRUE(largeScaleCharacteristics)) && is.null(matchedSample) || matchedSample != 0){
     if (!is.null(getOption("omopgenerics.logFile"))) {
       omopgenerics::logMessage("Cohort diagnostics - matched cohorts")
     }
@@ -124,7 +137,7 @@ cohortDiagnostics <- function(cohort,
                                                             name = tempCohortName)
   }
 
-  if("cohort_characteristics" %in% diagnostics) {
+  if(isTRUE(cohortCharacteristics)) {
     cli::cli_bullets(c(">" = "Getting cohorts and indexes"))
     cdm[[tempCohortName]]  <- cdm[[tempCohortName]] |>
       PatientProfiles::addDemographics(age = TRUE,
@@ -167,7 +180,7 @@ cohortDiagnostics <- function(cohort,
   }
 
   # Large scale characteristics ----
-  if("large_scale_characteristics" %in% diagnostics) {
+  if(isTRUE(largeScaleCharacteristics)) {
     lscWindows <- list(c(-Inf, -366), c(-365, -31),
                        c(-30, -1), c(0, 0),
                        c(1, 30), c(31, 365),
@@ -235,7 +248,7 @@ cohortDiagnostics <- function(cohort,
   }
 
   # Cohort survival ----
-  if("cohort_survival" %in% diagnostics){
+  if(isTRUE(cohortSurvival)){
     if("death" %in% names(cdm)){
       if (!is.null(getOption("omopgenerics.logFile"))) {
         omopgenerics::logMessage("Cohort diagnostics - death cohorts")

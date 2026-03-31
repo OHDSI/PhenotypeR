@@ -6,10 +6,13 @@
 \usage{
 codelistDiagnostics(
   cohort,
-  diagnostics = c("achilles_code_use", "orphan_code_use", "cohort_code_use",
-    "measurement_diagnostics", "drug_diagnostics"),
-  measurementSample = 20000,
-  drugExposureSample = 20000
+  achillesCodeUse = TRUE,
+  orphanCodeUse = TRUE,
+  cohortCodeUse = TRUE,
+  drugDiagnostics = TRUE,
+  measurementDiagnostics = TRUE,
+  measurementDiagnosticsSample = 20000,
+  drugDiagnosticsSample = 20000
 )
 }
 \arguments{
@@ -17,18 +20,26 @@ codelistDiagnostics(
 attribute must be populated. The cdm reference must contain achilles
 tables as these will be used for deriving concept counts.}
 
-\item{diagnostics}{Diagnostics to perform within codelistDiagnostics.
-This includes any of:  c("achilles_code_use", "orphan_code_use", "cohort_code_use",
-"measurement_diagnostics", "drug_diagnostics")}
+\item{achillesCodeUse}{Whether to run `CodelistGenerator::summariseAchillesCodeUse()` (TRUE) or not (FALSE).}
 
-\item{measurementSample}{The number of people to take a random sample for
-measurement diagnostics. If `measurementSample = NULL`, no sampling will be
-performed. If `measurementSample = 0` measurement diagnostics will not be
+\item{orphanCodeUse}{Whether to run `CodelistGenerator::summariseOrphanCodeUse()` (TRUE) or not (FALSE).}
+
+\item{cohortCodeUse}{Whether to run `CodelistGenerator::summariseCohortCodeUse()` (TRUE) or not (FALSE).}
+
+\item{drugDiagnostics}{Whether to run drug diagnostics (TRUE) or not (FALSE). Note that, if set to TRUE, the
+diagnostics will only run if the cohort code list contains drug codes.}
+
+\item{measurementDiagnostics}{Whether to run measurement diagnostics (TRUE) or not (FALSE). Note that, if set to TRUE, the
+diagnostics will only run if the cohort code list contains measurement codes.}
+
+\item{measurementDiagnosticsSample}{The number of people to take a random sample for
+measurement diagnostics. If `measurementDiagnosticsSample = NULL`, no sampling will be
+performed. If `measurementDiagnosticsSample = 0` measurement diagnostics will not be
 run.}
 
-\item{drugExposureSample}{The number of people to take a random sample for
-drug diagnostics. If `drugExposureSample = NULL`, no sampling will be
-performed. If `drugExposureSample = 0` drug diagnostics will not be
+\item{drugDiagnosticsSample}{The number of people to take a random sample for
+drug diagnostics. If `drugDiagnosticsSample = NULL`, no sampling will be
+performed. If `drugDiagnosticsSample = 0` drug diagnostics will not be
 run.}
 }
 \value{

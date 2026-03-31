@@ -8,8 +8,10 @@
 #' * Prevalence
 #'
 #' @inheritParams cohortDoc
-#' @param diagnostics Diagnostics to perform within populationDiagnostics.
-#' This includes any of: c("incidence", "period_prevalence")
+#' @param incidence Whether to run `IncidencePrevalence::estimateIncidence()` (TRUE)
+#'        or not (FALSE).
+#' @param periodPrevalence Whether to run `IncidencePrevalence::estimatePeriodPrevalence()` (TRUE)
+#'        or not (FALSE).
 #' @inheritParams populationSampleDoc
 #'
 #' @return A summarised result
@@ -33,13 +35,15 @@
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
 populationDiagnostics <- function(cohort,
-                                  diagnostics = c("incidence", "period_prevalence"),
+                                  incidence = TRUE,
+                                  periodPrevalence = TRUE,
                                   populationSample = 1000000,
                                   populationDateRange = as.Date(c(NA, NA))) {
 
   cohort <- omopgenerics::validateCohortArgument(cohort = cohort)
   checksPopulationDiagnostics(populationSample, populationDateRange)
-  omopgenerics::assertChoice(diagnostics, choices = c("incidence", "period_prevalence"), null = TRUE)
+  omopgenerics::assertLogical(incidence, length = 1)
+  omopgenerics::assertLogical(periodPrevalence, length = 1)
 
   cdm <- omopgenerics::cdmReference(cohort)
   cohortName <- omopgenerics::tableName(cohort)
@@ -109,7 +113,7 @@ populationDiagnostics <- function(cohort,
 
   results <- list()
 
-  if("incidence" %in% diagnostics) {
+  if(isTRUE(incidence)) {
     if (!is.null(getOption("omopgenerics.logFile"))) {
       omopgenerics::logMessage("Population diagnosics - incidence")
     }
@@ -123,7 +127,7 @@ populationDiagnostics <- function(cohort,
       completeDatabaseIntervals = FALSE)
   }
 
-  if("period_prevalence" %in% diagnostics) {
+  if(isTRUE(periodPrevalence)) {
     if (!is.null(getOption("omopgenerics.logFile"))) {
       omopgenerics::logMessage("Population diagnosics - prevalence")
     }

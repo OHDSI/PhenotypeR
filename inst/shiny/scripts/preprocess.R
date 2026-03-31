@@ -109,8 +109,6 @@ if("codelistDiagnostics" %in% diagnostics){
   values$orphan_code_use_codelist_name   <- values$orphan_code_use_codelist_name |> sort()
 }
 
-
-
 if("cohortDiagnostics" %in% diagnostics){
   # Add compare large scale characteristics
   values_subset <- values[stringr::str_detect(names(values), "large_scale")]
@@ -277,7 +275,7 @@ for(i in seq_along(docs)){
   }else{
     path_docx <- here::here(docs[[i]])
     text <- parse_docx_runs(path_docx)
-    
+
     clinical_descriptions[[name]] <- tibble::tibble(
       "phenotype" = find_info_in_the_line(text, "Phenotype name:"),
       "author" = find_info_in_the_line(text, "author:"),

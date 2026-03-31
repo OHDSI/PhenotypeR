@@ -103,7 +103,7 @@ test_that("measurementDiagnostics working", {
                                                              codes,
                                                              "measurement_cohort")
   res <- PhenotypeR::codelistDiagnostics(cdm$measurement_cohort,
-                                         measurementSample = NULL)
+                                         measurementDiagnosticsSample = NULL)
 
   expect_equal(
     settings(res)$result_type,
@@ -120,7 +120,7 @@ test_that("measurementDiagnostics working", {
 
 
  # sampling
-  res_sampled <- PhenotypeR::codelistDiagnostics(cdm$measurement_cohort, measurementSample = 5)
+  res_sampled <- PhenotypeR::codelistDiagnostics(cdm$measurement_cohort, measurementDiagnosticsSample = 5)
 
   expect_true(res_sampled |>
     omopgenerics::filterSettings(result_type == "measurement_summary") |>
@@ -130,7 +130,7 @@ test_that("measurementDiagnostics working", {
 
   # no measurement diagnostics
   res_no_meas <- PhenotypeR::codelistDiagnostics(cdm$measurement_cohort,
-                                                 measurementSample = 0)
+                                                 measurementDiagnosticsSample = 0)
   expect_false("measurement_summary" %in% omopgenerics::settings(res_no_meas))
 
   multiple_codes <- CodelistGenerator::stratifyByConcept(codes, cdm)
@@ -188,14 +188,14 @@ test_that("drugDiagnostics working", {
 
   # no drug diagnostics
   expect_no_error(res <- PhenotypeR::codelistDiagnostics(cdm$drug_cohort,
-                                                         drugExposureSample = 0))
+                                                         drugDiagnosticsSample = 0))
   expect_false(any(
     settings(res)$result_type %in% c("summarise_drug_use")
   ))
 
   # sampling
   expect_no_error(res <- PhenotypeR::codelistDiagnostics(cdm$drug_cohort,
-                                                         drugExposureSample = 2))
+                                                         drugDiagnosticsSample = 2))
   # add test for sampling, but needs better test data (with associated ingredient)
 
 

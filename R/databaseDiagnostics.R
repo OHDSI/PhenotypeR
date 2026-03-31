@@ -1,17 +1,20 @@
 #' Database diagnostics
 #'
 #' @description
-#' phenotypeR diagnostics on the cdm object.
+#' PhenotypeR diagnostics on the cdm object.
 #'
 #' Diagnostics include:
 #' * Summarise a cdm_reference object, creating a snapshot with the metadata of the cdm_reference object.
 #' * Summarise the observation period table getting some overall statistics in a summarised_result object.
 #' * Summarise the person table including demographics (sex, race, ethnicity, year of birth) and related statistics.
+#' * Summarise the OMOP clinical tables where the codes associated with your cohort are found.
 #'
 #' @inheritParams cohortDoc
-#' @param diagnostics Diagnostics to perform within databaseDiagnostics.
-#' This includes any of: c("snapshot", "person", "observation_periods", "clinical_records")
-#' @inheritParams clinicalTableSample
+#' @param snapshot Whether to run `OmopSketch::summariseOmopSnapshot()` (TRUE) or not (FALSE).
+#' @param person Whether to run `OmopSketch::summarisePerson()` (TRUE) or not (FALSE).
+#' @param observationPeriods Whether to run `OmopSketch::summariseObservationPeriod()` (TRUE) or not (FALSE).
+#' @param clinicalRecords Whether to run `OmopSketch::summariseClinicalRecords()` on those clinical
+#' tables where the codes associated with your cohort are found (TRUE) or not (FALSE).
 #'
 #' @return A summarised result
 #' @export
@@ -28,22 +31,22 @@
 #'                                 conceptSet = list("codes" = c(40213201L, 4336464L)),
 #'                                 name = "new_cohort")
 #'
-# result <- databaseDiagnostics(cohort = cdm$new_cohort)
-#
-# CDMConnector::cdmDisconnect(cdm = cdm)
+#'  result <- databaseDiagnostics(cohort = cdm$new_cohort)
+#'
+#'  CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
 databaseDiagnostics <- function(cohort,
-                                diagnostics = c("snapshot", "person", "observation_periods", "clinical_records"),
-                                clinicalTableSample = NULL){
+                                snapshot = TRUE,
+                                person = TRUE,
+                                observationPeriods = TRUE,
+                                clinicalRecords = TRUE){
 
   # Initial checks
   omopgenerics::validateCohortArgument(cohort)
-  omopgenerics::assertChoice(diagnostics, choices = c("snapshot", "person", "observation_periods", "clinical_records"), null = TRUE)
-  omopgenerics::assertNumeric(clinicalTableSample, integerish = TRUE, min = 0, null = TRUE, length = 1, call = call)
-
-  if(!is.null(clinicalTableSample) && isTRUE(clinicalTableSample > 0)){
-    cli::cli_abort("Only NULL and 0 currently supported for clinicalTableSample")
-  }
+  omopgenerics::assertLogical(snapshot, length = 1)
+  omopgenerics::assertLogical(person, length = 1)
+  omopgenerics::assertLogical(observationPeriods, length = 1)
+  omopgenerics::assertLogical(clinicalRecords, length = 1)
 
   # Variables
   cdm <- omopgenerics::cdmReference(cohort)
@@ -55,7 +58,7 @@ databaseDiagnostics <- function(cohort,
   results <- list()
 
   # Snapshot ----
-  if("snapshot" %in% diagnostics) {
+  if(isTRUE(snapshot)) {
     if (!is.null(getOption("omopgenerics.logFile"))) {
       omopgenerics::logMessage("Database diagnostics - getting CDM Snapshot")
     }
@@ -63,7 +66,7 @@ databaseDiagnostics <- function(cohort,
   }
 
   # Person table ----
-  if("person" %in% diagnostics) {
+  if(isTRUE(person)) {
     if (!is.null(getOption("omopgenerics.logFile"))) {
       omopgenerics::logMessage("Database diagnostics - summarising person table")
     }
@@ -86,7 +89,7 @@ databaseDiagnostics <- function(cohort,
   }
 
   # Observation period ----
-  if("observation_periods" %in% diagnostics) {
+  if(isTRUE(observationPeriods)) {
     if (!is.null(getOption("omopgenerics.logFile"))) {
       omopgenerics::logMessage("Database diagnostics - summarising observation period")
     }
@@ -105,62 +108,59 @@ databaseDiagnostics <- function(cohort,
   }
 
   # Summarising omop tables - Empty cohort codelist ----
-  if("clinical_records" %in% diagnostics) {
-    if(is.null(clinicalTableSample) || isFALSE(clinicalTableSample == 0)){
-      emptyCodelist <- checkEmptyCodelists(cdm = cdm, cohortName = cohortName)
+  if(isTRUE(clinicalRecords)) {
+    emptyCodelist <- checkEmptyCodelists(cdm = cdm, cohortName = cohortName)
 
-      if(isFALSE(emptyCodelist)){
-        # Get all cohorts with codelists
-        cohortId <- dplyr::pull(attr(cdm[[cohortName]], "cohort_codelist"), "cohort_definition_id") |> unique()
-        cohortIds <- cohortIds[cohortIds %in% cohortId]
+    if(isFALSE(emptyCodelist)){
+      # Get all cohorts with codelists
+      cohortId <- dplyr::pull(attr(cdm[[cohortName]], "cohort_codelist"), "cohort_definition_id") |> unique()
+      cohortIds <- cohortIds[cohortIds %in% cohortId]
 
-        # get all cohort codelists
-        all_codelists <- purrr::map(cohortIds, \(x) {
-          omopgenerics::cohortCodelist(cohort = cdm[[cohortName]], cohortId = x)
-        }) |>
-          duplicatedCodelists()
+      # get all cohort codelists
+      all_codelists <- purrr::map(cohortIds, \(x) {
+        omopgenerics::cohortCodelist(cohort = cdm[[cohortName]], cohortId = x)
+      }) |>
+        duplicatedCodelists()
 
-        if(length(all_codelists) == 0){
-          cli::cli_warn(message = c("!" = "Cohort has no codelist available."))
-        }else{
-          # Check empty cohorts
-          ids <- omopgenerics::cohortCount(cdm[[cohortName]]) |>
-            dplyr::filter(.data$number_subjects == 0) |>
-            dplyr::pull("cohort_definition_id")
-          cohortIds <- cohortIds[!cohortIds %in% ids]
-          if(length(cohortIds) != 0){
-            codes <- omopgenerics::cohortCodelist(cohort = cdm[[cohortName]], cohortId = cohortIds)
+      if(length(all_codelists) == 0){
+        cli::cli_warn(message = c("!" = "Cohort has no codelist available."))
+      }else{
+        # Check empty cohorts
+        ids <- omopgenerics::cohortCount(cdm[[cohortName]]) |>
+          dplyr::filter(.data$number_subjects == 0) |>
+          dplyr::pull("cohort_definition_id")
+        cohortIds <- cohortIds[!cohortIds %in% ids]
+        if(length(cohortIds) != 0){
+          codes <- omopgenerics::cohortCodelist(cohort = cdm[[cohortName]], cohortId = cohortIds)
 
-            if(inherits(codes, "concept_set_expression")){
-              cli::cli_warn(message = c("!" = "Concept_set_expression codelists are not supported by PhenotypeR yet.
+          if(inherits(codes, "concept_set_expression")){
+            cli::cli_warn(message = c("!" = "Concept_set_expression codelists are not supported by PhenotypeR yet.
                                       OMOP tables related to the cohort codelists will not be summarised."))
 
-            }else{
-              domains <- CodelistGenerator::associatedDomains(codes, cdm) |>
-                purrr::flatten_chr() |>
-                unique() |>
-                sort()
-              workingOmopTables <- getTableFromDomain(domains) |>
-                stringr::str_split(pattern = ";") |>
-                purrr::flatten_chr() |>
-                sort()
-              workingOmopTables <- intersect(workingOmopTables, names(cdm))
-              if(length(workingOmopTables) >= 1) {
-                if (!is.null(getOption("omopgenerics.logFile"))) {
-                  omopgenerics::logMessage("Database diagnostics - summarising clinical tables - summary")
-                }
-
-                # browser()
-                results[["omop_tabs"]] <- OmopSketch::summariseClinicalRecords(cdm,
-                                                                               omopTableName = workingOmopTables)
-                if (!is.null(getOption("omopgenerics.logFile"))) {
-                  omopgenerics::logMessage("Database diagnostics - summarising clinical tables - trends")
-                }
-                results[["omop_tab_trends"]] <- OmopSketch::summariseTrend(cdm = cdm,
-                                                                           event = workingOmopTables,
-                                                                           output = "record",
-                                                                           interval = "years")
+          }else{
+            domains <- CodelistGenerator::associatedDomains(codes, cdm) |>
+              purrr::flatten_chr() |>
+              unique() |>
+              sort()
+            workingOmopTables <- getTableFromDomain(domains) |>
+              stringr::str_split(pattern = ";") |>
+              purrr::flatten_chr() |>
+              sort()
+            workingOmopTables <- intersect(workingOmopTables, names(cdm))
+            if(length(workingOmopTables) >= 1) {
+              if (!is.null(getOption("omopgenerics.logFile"))) {
+                omopgenerics::logMessage("Database diagnostics - summarising clinical tables - summary")
               }
+
+              results[["omop_tabs"]] <- OmopSketch::summariseClinicalRecords(cdm,
+                                                                             omopTableName = workingOmopTables)
+              if (!is.null(getOption("omopgenerics.logFile"))) {
+                omopgenerics::logMessage("Database diagnostics - summarising clinical tables - trends")
+              }
+              results[["omop_tab_trends"]] <- OmopSketch::summariseTrend(cdm = cdm,
+                                                                         event = workingOmopTables,
+                                                                         output = "record",
+                                                                         interval = "years")
             }
           }
         }

@@ -8,9 +8,8 @@ phenotypeDiagnostics(
   cohort,
   diagnostics = c("databaseDiagnostics", "codelistDiagnostics", "cohortDiagnostics",
     "populationDiagnostics"),
-  clinicalTableSample = NULL,
-  measurementSample = 20000,
-  drugExposureSample = 20000,
+  measurementDiagnosticsSample = 20000,
+  drugDiagnosticsSample = 20000,
   cohortSample = 20000,
   matchedSample = 1000,
   populationSample = 1e+06,
@@ -24,19 +23,14 @@ phenotypeDiagnostics(
 include: `databaseDiagnostics`, `codelistDiagnostics`, `cohortDiagnostics`,
 and `populationDiagnostics`.}
 
-\item{clinicalTableSample}{The number of records to take a random sample for
-database diagnostics. If `clinicalTableSample = NULL`, no sampling will be
-performed. If `clinicalTableSample = 0` clinical table summaries will not be
+\item{measurementDiagnosticsSample}{The number of people to take a random sample for
+measurement diagnostics. If `measurementDiagnosticsSample = NULL`, no sampling will be
+performed. If `measurementDiagnosticsSample = 0` measurement diagnostics will not be
 run.}
 
-\item{measurementSample}{The number of people to take a random sample for
-measurement diagnostics. If `measurementSample = NULL`, no sampling will be
-performed. If `measurementSample = 0` measurement diagnostics will not be
-run.}
-
-\item{drugExposureSample}{The number of people to take a random sample for
-drug diagnostics. If `drugExposureSample = NULL`, no sampling will be
-performed. If `drugExposureSample = 0` drug diagnostics will not be
+\item{drugDiagnosticsSample}{The number of people to take a random sample for
+drug diagnostics. If `drugDiagnosticsSample = NULL`, no sampling will be
+performed. If `drugDiagnosticsSample = 0` drug diagnostics will not be
 run.}
 
 \item{cohortSample}{The number of people to take a random sample for cohortDiagnostics. If `cohortSample = NULL`, no sampling will be performed.}

@@ -60,7 +60,7 @@ test_that("only one diagnostic", {
   result <- codelistDiagnostics(cdm$new_cohort)
   expect_warning(shinyDiagnostics(result, directory = tempdir()))
 
-  result <- cohortDiagnostics(cdm$new_cohort, diagnostics = c("cohort_count", "cohort_characteristics", "large_scale_characteristics", "compare_cohorts"))
+  result <- cohortDiagnostics(cdm$new_cohort, cohortSurvival = FALSE)
   expect_warning(shinyDiagnostics(result, directory = tempdir()))
 
   result <- populationDiagnostics(cdm$new_cohort, populationSample = 10000)
