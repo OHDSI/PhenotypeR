@@ -1635,6 +1635,23 @@ ui <- fluidPage(
                   )
                 )
               ),
+              tags$label("Select Comparator Cohort:"),
+              tags$div(
+                style = "width: 225px;",
+                tags$div(
+                  style = "margin-top: 15px;",
+                  shinyWidgets::pickerInput(
+                    inputId = "compare_large_scale_characteristics_cohort_compare",
+                    label = NULL,
+                    selected = NULL,
+                    choices = NULL,
+                    multiple = TRUE,
+                    options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                                   `deselect-all-text` = "None", `select-all-text` = "All"),
+                    width = "100%"
+                  )
+                )
+              ),
               tags$div(
                 style = "width: 225px;",
                 actionBttn("updateCompareLSC", "Update",
@@ -1653,18 +1670,10 @@ ui <- fluidPage(
                   )),
         # compare_large_scale_characteristics_expectations_end
         bslib::layout_sidebar(
-          sidebar = bslib::sidebar(width = 400, open = "closed",
+          sidebar = bslib::sidebar(width = 400, open = "open",
                                    bslib::accordion(
                                      bslib::accordion_panel(
                                        title = "Settings",
-                                       shinyWidgets::pickerInput(
-                                         inputId = "compare_large_scale_characteristics_cohort_compare",
-                                         label = "Comparator cohort",
-                                         choices = NULL,
-                                         selected = NULL,
-                                         multiple = FALSE,
-                                         options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                                       ),
                                        shiny::fluidRow(
                                          shiny::column(width = 5, offset = 1,
                                                        shinyWidgets::pickerInput(
