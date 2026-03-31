@@ -428,6 +428,60 @@ server <- function(input, output, session) {
     }
   )
 
+  # database description ----
+  database_description <- eventReactive(input$updateDatabaseDescription, {
+    req(shared_cdm_names())
+    req(inputs_initialized())
+
+    # require exactly one selection
+    if(length(shared_cdm_names()) > 1){
+      info <- "Please select only one database"
+    }else{
+      info <- database_descriptions[[shared_cdm_names()]]
+
+      info <- info |>
+        dplyr::tibble() |>
+        dplyr::select(any_of(c("database", "author", "date", "key_sources", "description")))
+    }
+
+    return(info)
+  })
+
+  output$database_text <- renderUI({
+    info <- database_description()
+
+    if (is.null(info) || length(info) == 0) {
+      return(tags$p("No database description for this database."))
+    }
+
+    if (length(info) == 1) {
+      return(tags$p(info))
+    }
+
+    author      <- if (is.null(info$author) | info$author == "") {"Unknown author"}else{info$author}
+    date        <- if (is.null(info$date)   | info$date == "") "Unknown date" else info$date
+    key_sources <- if (is.null(info$key_sources) | info$key_sources == "") "Unknown key sources" else info$key_sources
+    metadata_text <- paste0("Author: ", author, " (Date: ", date, ")<br>Sources: ", key_sources)
+
+    info <- info |>
+      dplyr::select(-dplyr::any_of(c("database", "author", "date", "key_sources")))
+
+    info <- info[["description"]][[1]]
+    info <- paste0("<lbr>", info, "</br>")
+    text <- c("<ul>", info, "</ul>")
+
+    tagList(
+      tags$div(
+        style = "padding: 15px; border-left: 4px solid #750075; color = grey; background: #E9E9E9; font-style: italic;",
+        shiny::HTML(metadata_text)
+      ),
+      tags$div(
+        style = "padding: 15px; border-left: 4px solid #750075; background: #E9E9E9; font-weight: normal;",
+        shiny::HTML(text)
+      )
+    )
+  })
+
   # clinical description ----
   clinical_description <- eventReactive(input$updateClinicalDescription, {
     req(shared_cohort_names())
@@ -439,8 +493,9 @@ server <- function(input, output, session) {
     }else{
       info <- clinical_descriptions[[shared_cohort_names()]]
 
+      if(is.null(info)){return(info)}
       info <- info |>
-        dplyr::select("phenotype", "author", "date", "key_sources", "description" = all_of(input$phenotypes_section))
+        dplyr::select("phenotype", "author", "date", "key_sources",  "description" = all_of(input$phenotypes_section))
     }
 
     return(info)
