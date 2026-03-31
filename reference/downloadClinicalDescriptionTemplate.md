@@ -37,7 +37,7 @@ library(here)
 
 downloadClinicalDescriptionTemplate(directory = here(),
                                     name = "metformin")
-#> ✔ Clinical description download correctly.
+#> ✔ Clinical description template download correctly!
 
 
 # }
