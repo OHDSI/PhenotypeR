@@ -109,8 +109,6 @@ if("codelistDiagnostics" %in% diagnostics){
   values$orphan_code_use_codelist_name   <- values$orphan_code_use_codelist_name |> sort()
 }
 
-
-
 if("cohortDiagnostics" %in% diagnostics){
   # Add compare large scale characteristics
   values_subset <- values[stringr::str_detect(names(values), "large_scale")]
@@ -276,7 +274,7 @@ for(i in seq_along(docs)){
     clinical_descriptions[[name]] <- NULL
   }else{
     path_docx <- here::here(docs[[i]])
-    text <- parse_docx_runs(path_docx)
+    text <- parse_docx_runs(path_docx, folder = "clinical_descriptions")
     
     clinical_descriptions[[name]] <- tibble::tibble(
       "phenotype" = find_info_in_the_line(text, "Phenotype name:"),
@@ -289,9 +287,50 @@ for(i in seq_along(docs)){
   }
 }
 
+# Load database description ----
+docs <- purrr::imap(
+  rlang::set_names(values$shared_cdm_names),
+  \(x, name) {
+    path <- file.path("data", "raw", "database_descriptions", paste0(name, ".docx"))
+    if (!file.exists(path)) return(NULL)
+    path
+  })
+
+# Check for other docx files in the folder
+other <- list.files(path = file.path("data","raw","database_descriptions"), pattern = "\\.docx$")
+other <- gsub(".docx","",other)
+other <- setdiff(other, names(docs))
+if(length(other)) {
+  cli::cli_warn("A docx file ({other}) was found in 'data/raw/database_descriptions' that does not match any database name. This file will be ignored. Please note that database description documents must be named exactly the same as their corresponding database.")
+}
+
+# Read database descriptions
+database_descriptions <- list()
+for(i in seq_along(docs)){
+  name <- names(docs)[[i]]
+  
+  if(length(docs[[i]]) == 0){
+    database_descriptions[[name]] <- NULL
+  }else{
+    path_docx <- here::here(docs[[i]])
+    text <- parse_docx_runs(path_docx, folder = "database_descriptions")
+    
+    database_descriptions[[name]] <- tibble::tibble(
+      "database" = find_info_in_the_line(text, "database name:"),
+      "author" = find_info_in_the_line(text, "author:"),
+      "date" = find_info_in_the_line(text, "Date:"),
+      "key_sources" = find_info_in_the_paragraph(text, start = "Information source", end = "Description", addStyle = FALSE, removeFirstTitle = TRUE),
+      "description" = list("item" = find_info_in_the_paragraph(text, start = "Description", end = NULL, addStyle = TRUE, removeFirstTitle = FALSE))
+    )
+  }
+}
+
 clinical_descriptions <- purrr::compact(clinical_descriptions)
-selected$summarise_clinical_description_cohort_name <- selected$shared_cohort_name
+database_descriptions <- purrr::compact(database_descriptions)
+selected$summarise_clinical_description_cohort_name <- selected$shared_cohort_names
 choices$summarise_clinical_description_cohort_name <- choices$shared_cohort_names
+selected$summarise_database_description_cdm_name <- selected$shared_cdm_names
+choices$summarise_database_description_cdm_name <- choices$shared_cdm_names
 
 selected$shared_cohort_names <- selected$shared_cohort_names[[1]]
 
@@ -307,7 +346,9 @@ qs2::qs_savem(dataFiltered,
      phenotyper_version,
      expectations,
      clinical_descriptions,
+     database_descriptions,
      file = here::here("data", "appData.qs"))
 
-rm(result, data, expectations, dataFiltered, choices, selected, values, values_subset)
+rm(result, data, expectations, dataFiltered, choices, selected, values, values_subset,
+   clinical_descriptions, database_descriptions)
 
