@@ -40,4 +40,4 @@ result <- omopgenerics::bind(result)
 
 PhenotypeR::shinyDiagnostics(result = result,
                              expectations = expectations,
-                             minCellCount = 2, directory = getwd(), open = TRUE)
+                             minCellCount = 2, directory = getwd(), open = FALSE)

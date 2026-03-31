@@ -1,3 +1,52 @@
+test_that("test check functions", {
+  expect_error(checkDatabaseDiagnosticsInput(databaseDiagnostics = "h"))
+  expect_error(checkDatabaseDiagnosticsInput(codelistDiagnostics = list("h" = 1)))
+  expect_error(checkDatabaseDiagnosticsInput(codelistDiagnostics = list("h")))
+  expect_error(checkDatabaseDiagnosticsInput(databaseDiagnostics = list("diagnostics" = "h")))
+  expect_no_error(x <- checkDatabaseDiagnosticsInput(databaseDiagnostics =  NULL))
+  expect_true(is.null(x))
+  expect_no_error(x <- checkDatabaseDiagnosticsInput(databaseDiagnostics = list()))
+  expect_equal(formals("databaseDiagnostics")[-which(names(formals("databaseDiagnostics")) == "cohort")],
+               x)
+
+  expect_error(checkCodelistDiagnosticsInput(codelistDiagnostics = "h"))
+  expect_error(checkCodelistDiagnosticsInput(codelistDiagnostics = list("h" = 1)))
+  expect_error(checkCodelistDiagnosticsInput(codelistDiagnostics = list("h")))
+  expect_error(checkCodelistDiagnosticsInput(codelistDiagnostics = list("diagnostics" = "h")))
+  expect_error(checkCodelistDiagnosticsInput(codelistDiagnostics = list("measurementDiagnosticsSample" = "h")))
+  expect_error(checkCodelistDiagnosticsInput(codelistDiagnostics = list("drugDiagnosticsSample" = "h")))
+  expect_no_error(x <- checkCodelistDiagnosticsInput(codelistDiagnostics =  NULL))
+  expect_true(is.null(x))
+  expect_no_error(x <- checkCodelistDiagnosticsInput(codelistDiagnostics = list()))
+  expect_equal(formals("codelistDiagnostics")[-which(names(formals("codelistDiagnostics")) == "cohort")],
+               x)
+
+  expect_error(checkCohortDiagnosticsInput(cohortDiagnostics = "h"))
+  expect_error(checkCohortDiagnosticsInput(cohortDiagnostics = list("h" = 1)))
+  expect_error(checkCohortDiagnosticsInput(cohortDiagnostics = list("h")))
+  expect_error(checkCohortDiagnosticsInput(cohortDiagnostics = list("diagnostics" = "h")))
+  expect_error(checkCohortDiagnosticsInput(cohortDiagnostics = list("matchedSample" = "h")))
+  expect_error(checkCohortDiagnosticsInput(cohortDiagnostics = list("cohortSample" = 0)))
+  expect_no_error(x <- checkCohortDiagnosticsInput(cohortDiagnostics =  NULL))
+  expect_true(is.null(x))
+  expect_no_error(x <- checkCohortDiagnosticsInput(cohortDiagnostics = list()))
+  expect_equal(formals("cohortDiagnostics")[-which(names(formals("cohortDiagnostics")) == "cohort")],
+               x)
+
+  expect_error(checkPopulationDiagnosticsInput(populationDiagnostics = "h"))
+  expect_error(checkPopulationDiagnosticsInput(populationDiagnostics = list("h" = 1)))
+  expect_error(checkPopulationDiagnosticsInput(populationDiagnostics = list("h")))
+  expect_error(checkPopulationDiagnosticsInput(populationDiagnostics = list("diagnostics" = "h")))
+  expect_error(checkPopulationDiagnosticsInput(populationDiagnostics = list("populationSample" = "h")))
+  expect_error(checkPopulationDiagnosticsInput(populationDiagnostics = list("populationDateRange" = 0)))
+  expect_no_error(x <- checkPopulationDiagnosticsInput(populationDiagnostics =  NULL))
+  expect_true(is.null(x))
+  expect_no_error(x <- checkPopulationDiagnosticsInput(populationDiagnostics = list()))
+  expect_equal(formals("populationDiagnostics")[-which(names(formals("populationDiagnostics")) == "cohort")],
+               x)
+}
+)
+
 test_that("overall diagnostics function", {
 
   skip_on_cran()
