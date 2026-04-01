@@ -159,9 +159,8 @@ if("cohortDiagnostics" %in% diagnostics){
   selected$compare_large_scale_characteristics_table_name     <- "condition_occurrence"
   selected$compare_large_scale_characteristics_cohort_1  <- "sampled"
   selected$compare_large_scale_characteristics_cohort_2  <- "matched"
-  selected$compare_large_scale_characteristics_compare_cohort <- values$compare_large_scale_characteristics_compare_cohort[1]
-
-  if("survival_probability" %in% names(dataFiltered)){
+  selected$compare_large_scale_characteristics_cohort_compare <- values$compare_large_scale_characteristics_cohort_compare[1]
+   if("survival_probability" %in% names(dataFiltered)){
     selected$survival_probability_cohort_name <- c(paste0(gsub("_matched|sampled", "", selected$survival_probability_cohort_name[1]),"_sampled"),
                                                    paste0(gsub("_matched|sampled", "", selected$survival_probability_cohort_name[1]),"_matched"))
 
@@ -275,7 +274,7 @@ for(i in seq_along(docs)){
   }else{
     path_docx <- here::here(docs[[i]])
     text <- parse_docx_runs(path_docx, folder = "clinical_descriptions")
-    
+
     clinical_descriptions[[name]] <- tibble::tibble(
       "phenotype" = find_info_in_the_line(text, "Phenotype name:"),
       "author" = find_info_in_the_line(text, "author:"),
@@ -308,13 +307,13 @@ if(length(other)) {
 database_descriptions <- list()
 for(i in seq_along(docs)){
   name <- names(docs)[[i]]
-  
+
   if(length(docs[[i]]) == 0){
     database_descriptions[[name]] <- NULL
   }else{
     path_docx <- here::here(docs[[i]])
     text <- parse_docx_runs(path_docx, folder = "database_descriptions")
-    
+
     database_descriptions[[name]] <- tibble::tibble(
       "database" = find_info_in_the_line(text, "database name:"),
       "author" = find_info_in_the_line(text, "author:"),

@@ -82,6 +82,15 @@ plotComparedLsc <- function(lsc, cohorts, imputeMissings, colour = NULL, facet =
     pivot_wider(names_from = cohort_name,
                 values_from = percentage)
 
+  missing_target_col <- setdiff(cohorts[1], colnames(plot_data))
+  if(length(missing_target_col)>0){
+    plot_data[missing_target_col] <- NA_integer_
+  }
+  missing_comparator_col <- setdiff(cohorts[2], colnames(plot_data))
+  if(length(missing_comparator_col)>0){
+    plot_data[missing_comparator_col] <- NA_integer_
+  }
+
   if(isTRUE(imputeMissings)){
     plot_data <- plot_data |>
       mutate(across(c(cohorts[1], cohorts[2]), ~if_else(is.na(.x), 0, .x)))
@@ -126,11 +135,13 @@ plotComparedLsc <- function(lsc, cohorts, imputeMissings, colour = NULL, facet =
                                 line   = FALSE,
                                 point  = TRUE,
                                 label  = "Details") +
-    geom_abline(slope = 1, intercept = 0,
-                color = "red", linetype = "dashed") +
+    annotate("segment", x = 0, y = 0, xend = 1, yend = 1,
+             color = "grey30", linetype = "dashed") +
     theme_bw() +
     xlab(paste0(stringr::str_to_sentence(gsub("_"," ", cohorts[1])), " (%)")) +
-    ylab(paste0(stringr::str_to_sentence(gsub("_"," ", cohorts[2])), " (%)"))
+    ylab(paste0(stringr::str_to_sentence(gsub("_"," ", cohorts[2])), " (%)"))+
+    scale_x_continuous(limits = c(0, NA)) +
+    scale_y_continuous(limits = c(0, NA))
 
   return(plot)
 }
