@@ -59,14 +59,18 @@ cdm$warfarin <- conceptCohort(cdm,
                               name = "warfarin")
 
 result <- phenotypeDiagnostics(cdm$warfarin,
-                               populationSample = 100000)
+                               populationDiagnostics = list("populationSample" = 100000))
 
 expectations <- dplyr::tibble("cohort_name" = "warfarin",
                        "estimate" = c("Mean age",
                                    "Male percentage",
                                    "Frequently seen comorbidities"),
-                       "value" = c("32", "74\%",  "Atrial fibrillation, heart failure, hypertension and ischaemic heart disease"),
-                       "diagnostics" = c("cohort_characteristics", "cohort_characteristics", "compare_large_scale_characteristics"),
+                       "value" = c("32", "74\%", "Atrial fibrillation,
+                                   heart failure, hypertension and ischaemic
+                                   heart disease"),
+                       "diagnostics" = c("cohort_characteristics",
+                                         "cohort_characteristics",
+                                         "compare_large_scale_characteristics"),
                        "source" = c("AlbertAI"))
 
 shinyDiagnostics(result,

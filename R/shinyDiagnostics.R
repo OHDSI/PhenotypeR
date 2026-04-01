@@ -37,7 +37,7 @@
 #'                               name = "warfarin")
 #'
 #' result <- phenotypeDiagnostics(cdm$warfarin,
-#'                                populationSample = 100000)
+#'                                populationDiagnostics = list("populationSample" = 100000))
 #'
 #' expectations <- dplyr::tibble("cohort_name" = "warfarin",
 #'                        "estimate" = c("Mean age",

@@ -24,7 +24,8 @@ test_that("basic working example with one cohort", {
   cdm <- CDMConnector::copyCdmTo(con = db, cdm = cdm_local,
                                  schema ="main", overwrite = TRUE)
 
-  my_result_cohort_diag <- cdm$my_cohort |> phenotypeDiagnostics(populationSample = 100000)
+  my_result_cohort_diag <- cdm$my_cohort |>
+    phenotypeDiagnostics(populationDiagnostics = list("populationSample" = 10000))
 
   expect_no_error(shinyDiagnostics(my_result_cohort_diag,
                                    directory = tempdir()))

@@ -33,8 +33,10 @@ cdm$my_cohort <- cdm$my_cohort |>
   CohortConstructor::exitAtObservationEnd(cohortId = c("hypertension",
                                                        "type_2_diabetes"))
 result[[working_dataset]] <- PhenotypeR::phenotypeDiagnostics(cohort = cdm$my_cohort,
-                                                              cohortSurvival = TRUE,
-                                                              populationSample = 100000)
+                                                              cohortDiagnostics = list("diagnostics" = c("cohortCount", "cohortCharacteristics",
+                                                                                                         "largeScaleCharacteristics", "compareCohorts",
+                                                                                                         "cohortSurvival")),
+                                                              populationDiagnostics = list("populationSample" = 100000))
 }
 result <- omopgenerics::bind(result)
 
