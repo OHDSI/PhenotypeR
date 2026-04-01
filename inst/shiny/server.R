@@ -12,6 +12,16 @@ server <- function(input, output, session) {
   shiny::observe({
     for (k in seq_along(choices)) {
       if(!grepl("cdm_name|cohort_name", names(choices)[k])){
+
+        if(any(c("compare_large_scale_characteristics_cohort_1",
+                 "compare_large_scale_characteristics_cohort_2") %in%
+           names(choices)[k])){
+          shinyWidgets::updateRadioGroupButtons(session,
+                                          inputId = names(choices)[k],
+                                          choices = choices[[k]],
+                                          selected = selected[[k]],
+                                          status = "custom-light")
+        } else {
         shiny::updateSelectizeInput(
           session,
           inputId = names(choices)[k],
@@ -24,6 +34,7 @@ server <- function(input, output, session) {
                                         inputId = names(choices)[k],
                                         choices = choices[[k]],
                                         selected = selected[[k]])
+        }
       }
     }
     inputs_initialized(TRUE)
