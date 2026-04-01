@@ -160,7 +160,7 @@ phenotypeDiagnostics <- function(cohort,
     }
   }
 
-  if (!is.null(cohortDiagnostic)) {
+  if (!is.null(cohortDiagnostics)) {
     results[["cohort_diag"]] <- cohortDiagnostics(cohort,
                                                   cohortCount = cohortDiagnostics$cohortCount,
                                                   cohortCharacteristics = cohortDiagnostics$cohortCharacteristics,
