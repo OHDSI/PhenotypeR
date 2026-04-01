@@ -12,6 +12,16 @@ server <- function(input, output, session) {
   shiny::observe({
     for (k in seq_along(choices)) {
       if(!grepl("cdm_name|cohort_name", names(choices)[k])){
+
+        if(any(c("compare_large_scale_characteristics_cohort_1",
+                 "compare_large_scale_characteristics_cohort_2") %in%
+           names(choices)[k])){
+          shinyWidgets::updateRadioGroupButtons(session,
+                                          inputId = names(choices)[k],
+                                          choices = choices[[k]],
+                                          selected = selected[[k]],
+                                          status = "custom-light")
+        } else {
         shiny::updateSelectizeInput(
           session,
           inputId = names(choices)[k],
@@ -24,6 +34,7 @@ server <- function(input, output, session) {
                                         inputId = names(choices)[k],
                                         choices = choices[[k]],
                                         selected = selected[[k]])
+        }
       }
     }
     inputs_initialized(TRUE)
@@ -1919,7 +1930,6 @@ server <- function(input, output, session) {
     if(length(cohort) > 1){
       validate("Please select only one cohort")
     }
-
     if(length(cohort) == 0){
       validate("Please select a cohort")
     }
@@ -1933,6 +1943,13 @@ server <- function(input, output, session) {
                       "original" = input$compare_large_scale_characteristics_cohort_compare,
                       "sampled" = paste0(input$compare_large_scale_characteristics_cohort_compare,"_sampled"),
                       "matched" = paste0(input$compare_large_scale_characteristics_cohort_compare,"_matched"))
+
+    if(length(cohort2) > 1){
+      validate("Please select only one comparator cohort")
+    }
+    if(length(cohort2) == 0){
+      validate("Please select a comparator cohort")
+    }
 
     return(list("cohort1" = cohort1,
                 "cohort2" = cohort2))
@@ -1983,6 +2000,17 @@ server <- function(input, output, session) {
       tidy() |>
       tidyr::pivot_wider(names_from = cohort_name,
                          values_from = percentage)
+
+    lsc <- lscFiltered |>
+      dplyr::filter(.data$estimate_name == "percentage") |>
+      tidy() |>
+      tidyr::pivot_wider(names_from = cohort_name,
+                         values_from = percentage)
+
+    missing_target_col <- setdiff(target_cohort, colnames(lsc))
+    if(length(missing_target_col)>0){
+      lsc[missing_target_col] <- NA_integer_
+    }
 
     if(isTRUE(input$compare_large_scale_characteristics_impute_missings)){
       lsc <- lsc |>

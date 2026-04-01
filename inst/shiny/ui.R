@@ -1521,70 +1521,86 @@ ui <- fluidPage(
       ## compare_large_scale_characteristics_start -----
       bslib::nav_panel(
         title = "Compare large scale characteristics",
+
+
         bslib::accordion(
           bslib::accordion_panel(
             title = "Shared inputs",
             tags$div(
-              style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
-              tags$label("Select Database(s):"),
+              style = "background-color: #750075; color: white; padding: 15px; display: flex; flex-direction: column; gap: 15px;",
               tags$div(
-                style = "width: 225px;",
-                tags$div(
-                  style = "margin-top: 15px;",
-                  shinyWidgets::pickerInput(
-                    inputId = "compare_large_scale_characteristics_cdm_name",
-                    label = NULL,
-                    selected = selected$shared_cdm_names,
-                    choices = choices$shared_cdm_names,
-                    multiple = TRUE,
-                    options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                                   `deselect-all-text` = "None", `select-all-text` = "All"),
-                    width = "100%",
-                  )
-                )
-              ),
-              tags$label("Select Cohort(s):"),
-              tags$div(
-                style = "width: 225px;",
-                tags$div(
-                  style = "margin-top: 15px;",
-                  shinyWidgets::pickerInput(
-                    inputId = "compare_large_scale_characteristics_cohort_name",
-                    label = NULL,
-                    selected = selected$shared_cohort_names,
-                    choices = choices$shared_cohort_names,
-                    multiple = TRUE,
-                    options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                                   `deselect-all-text` = "None", `select-all-text` = "All"),
-                    width = "100%"
-                  )
-                )
-              ),
-              tags$label("Select Comparator Cohort:"),
-              tags$div(
-                style = "width: 225px;",
-                tags$div(
-                  style = "margin-top: 15px;",
-                  shinyWidgets::pickerInput(
-                    inputId = "compare_large_scale_characteristics_cohort_compare",
-                    label = NULL,
-                    selected = NULL,
-                    choices = NULL,
-                    multiple = TRUE,
-                    options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                                   `deselect-all-text` = "None", `select-all-text` = "All"),
-                    width = "100%"
-                  )
+                style = "display: flex; align-items: center; gap: 15px;",
+                tags$strong("Database:"),
+                tags$div(style = "width: 300px;",
+                         shinyWidgets::pickerInput(
+                           inputId = "compare_large_scale_characteristics_cdm_name",
+                           label = NULL,
+                           selected = selected$shared_cdm_names,
+                           choices = choices$shared_cdm_names,
+                           multiple = TRUE,
+                           options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                                          `deselect-all-text` = "None", `select-all-text` = "All"),
+                           width = "100%",
+                         )
                 )
               ),
               tags$div(
-                style = "width: 225px;",
-                actionBttn("updateCompareLSC", "Update",
-                           style = "simple"),
-                width = "100%"
+                style = "display: flex; flex-wrap: wrap; gap: 30px; align-items: flex-start; background: rgba(0,0,0,0.1); padding: 15px; border-radius: 5px;",
+
+                tags$div(
+                  style = "display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 250px;",
+                  tags$div(
+                    style = "flex: 1; min-width: 15px; border: 2px solid #993399; padding: 5px; border-radius: 8px; background-color: rgba(255,255,255,0.05);",
+                    tags$strong("Reference cohort:"),
+                    shinyWidgets::pickerInput(
+                      inputId = "compare_large_scale_characteristics_cohort_name",
+                      label = NULL,
+                      selected = selected$shared_cohort_names,
+                      choices = choices$shared_cohort_names,
+                      multiple = TRUE,
+                      options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                                     `deselect-all-text` = "None", `select-all-text` = "All"),
+                      width = "100%"
+                    ),
+                    shinyWidgets::radioGroupButtons(
+                      inputId = "compare_large_scale_characteristics_cohort_1",
+                      label = NULL,
+                      choices = "",
+                      width = "100%",
+                      status = "custom-light"
+                    )
+                  )
+                ),
+                tags$div(
+                  style = "display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 250px;",
+                  tags$div(
+                    style = "flex: 1; min-width: 15px; border: 2px solid #993399; padding: 5px; border-radius: 8px; background-color: rgba(255,255,255,0.05);",
+                    tags$strong("Comparator cohort:"),
+                    shinyWidgets::pickerInput("compare_large_scale_characteristics_cohort_compare",
+                                              label = NULL,
+                                              choices = NULL,
+                                              multiple = TRUE,
+                                              options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                                                             `deselect-all-text` = "None", `select-all-text` = "All"),
+                                              width = "100%"),
+
+                    shinyWidgets::radioGroupButtons(
+                      inputId = "compare_large_scale_characteristics_cohort_2",
+                      label = NULL,
+                      choices = "",
+                      width = "100%",
+                      status = "custom-light"
+                    )
+                  )
+                )
+              ),
+              tags$div(
+                style = "display: flex; justify-content: flex-end;",
+                shinyWidgets::actionBttn("updateCompareLSC", "Update", style = "simple")
               )
             )
-          )),
+          )
+        ),
         icon = shiny::icon("people-arrows"),
         # compare_large_scale_characteristics_expectations_start
         accordion(open = FALSE,
@@ -1599,40 +1615,6 @@ ui <- fluidPage(
                                    bslib::accordion(
                                      bslib::accordion_panel(
                                        title = "Settings",
-                                       shiny::fluidRow(
-                                         shiny::column(width = 5, offset = 1,
-                                                       shinyWidgets::pickerInput(
-                                                         inputId = "compare_large_scale_characteristics_cohort_1",
-                                                         label = "Cohort type (reference)",
-                                                         choices = NULL,
-                                                         selected = NULL,
-                                                         multiple = FALSE,
-                                                         options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                                                       ),
-                                                       tags$style(HTML("
-                                                       label[for='compare_large_scale_characteristics_cohort_1'] {
-                                                       text-align: center;
-                                                       width: 100%;
-                                                       display: block;
-                                                       }"))
-                                         ),
-                                         shiny::column(width = 5,
-                                                       shinyWidgets::pickerInput(
-                                                         inputId = "compare_large_scale_characteristics_cohort_2",
-                                                         label = "Cohort type (comparator)",
-                                                         choices = NULL,
-                                                         selected = NULL,
-                                                         multiple = FALSE,
-                                                         options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                                                       ),
-                                                       tags$style(HTML("
-                                                       label[for='compare_large_scale_characteristics_cohort_2'] {
-                                                       text-align: center;
-                                                       width: 100%;
-                                                       display: block;
-                                                       }"))
-                                         )
-                                       ),
                                        shinyWidgets::pickerInput(
                                          inputId = "compare_large_scale_characteristics_table_name",
                                          label = "Domain",
@@ -2632,6 +2614,26 @@ ui <- fluidPage(
     # log ----
     tags$head(
       tags$style(HTML("
+          body .btn-custom-light {
+          background-color: transparent !important;
+          background-image: none !important;
+          color: #ffffff !important;
+          border: none !important;
+          box-shadow: none !important;
+          outline: none !important;
+        }
+
+        /* 2. Selected button style: Keeps transparent background, text stays white */
+        body .btn-check:checked + .btn-custom-light,
+        body .btn-custom-light.active {
+          background-color: transparent !important;
+          background-image: none !important;
+          color: #ffffff !important;
+          border: none !important;
+          box-shadow: none !important;
+        }
+
+
     /* 1. Expand the main container */
     .log-popover-wide {
       /* Uses 90% of screen width, but caps at 1200px on ultra-wide monitors */
