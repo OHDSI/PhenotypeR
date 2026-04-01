@@ -52,8 +52,8 @@ checkCodelistDiagnosticsInput <- function(codelistDiagnostics, call = parent.fra
   }
 
   diagnostics <- c("achillesCodeUse", "orphanCodeUse", "cohortCodeUse", "drugDiagnostics", "measurementDiagnostics")
-  measurementDiagnosticsSample <- formals("codelistDiagnostics")$measurementDiagnosticsSample
-  drugDiagnosticsSample <- formals("codelistDiagnostics")$measurementDiagnosticsSample
+  measurementDiagnosticsSample <- eval(formals("codelistDiagnostics")$measurementDiagnosticsSample)
+  drugDiagnosticsSample <- eval(formals("codelistDiagnostics")$measurementDiagnosticsSample)
 
   if(!length(codelistDiagnostics) == 0) {
     omopgenerics::assertChoice(names(codelistDiagnostics),
@@ -106,8 +106,8 @@ checkCohortDiagnosticsInput <- function(cohortDiagnostics, call = parent.frame()
   }
 
   diagnostics <- c("cohortCount", "cohortCharacteristics", "largeScaleCharacteristics", "compareCohorts", "cohortSurvival")
-  cohortSample <- formals("cohortDiagnostics")$cohortSample
-  matchedSample <- formals("cohortDiagnostics")$matchedSample
+  cohortSample <- eval(formals("cohortDiagnostics")$cohortSample)
+  matchedSample <- eval(formals("cohortDiagnostics")$matchedSample)
 
   if(!length(cohortDiagnostics) == 0) {
     omopgenerics::assertChoice(names(cohortDiagnostics),
@@ -160,7 +160,7 @@ checkPopulationDiagnosticsInput <- function(populationDiagnostics, call = parent
   }
 
   diagnostics <- c("incidence", "periodPrevalence")
-  populationSample <- formals("populationDiagnostics")$populationSample
+  populationSample <- eval(formals("populationDiagnostics")$populationSample)
   populationDateRange <- eval(formals("populationDiagnostics")$populationDateRange)
 
   if(!length(populationDiagnostics) == 0) {
