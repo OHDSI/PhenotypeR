@@ -18,6 +18,7 @@
 #' FALSE, the shiny app will be created but not launched.
 #' @inheritParams expectationsDoc
 #' @param clinicalDescriptionsDir Directory where to find the clinical descriptions word documents.
+#' @param databaseDescriptionsDir Directory where to find the clinical descriptions word documents.
 #' @param removeEmptyTabs Whether to remove tabs of those diagnostics that have not been performed or that were insufficient counts to produce a result (TRUE) or not (FALSE)
 #'
 #' @return A shiny app
@@ -35,17 +36,24 @@
 #'                                                               40163554L)),
 #'                               name = "warfarin")
 #'
-#' result <- phenotypeDiagnostics(cdm$warfarin, populationSample = 100000)
+#' result <- phenotypeDiagnostics(cdm$warfarin,
+#'                                populationSample = 100000)
 #'
 #' expectations <- dplyr::tibble("cohort_name" = "warfarin",
 #'                        "estimate" = c("Mean age",
 #'                                    "Male percentage",
 #'                                    "Frequently seen comorbidities"),
-#'                        "value" = c("32", "74%",  "Atrial fibrillation, heart failure, hypertension and ischaemic heart disease"),
-#'                        "diagnostics" = c("cohort_characteristics", "cohort_characteristics", "compare_large_scale_characteristics"),
+#'                        "value" = c("32", "74%", "Atrial fibrillation,
+#'                                    heart failure, hypertension and ischaemic
+#'                                    heart disease"),
+#'                        "diagnostics" = c("cohort_characteristics",
+#'                                          "cohort_characteristics",
+#'                                          "compare_large_scale_characteristics"),
 #'                        "source" = c("AlbertAI"))
 #'
-#' shinyDiagnostics(result, tempdir(), expectations = expectations)
+#' shinyDiagnostics(result,
+#'                 tempdir(),
+#'                 expectations = expectations)
 #'
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
@@ -55,6 +63,7 @@ shinyDiagnostics <- function(result,
                              open = rlang::is_interactive(),
                              expectations = NULL,
                              clinicalDescriptionsDir = NULL,
+                             databaseDescriptionsDir = NULL,
                              removeEmptyTabs = TRUE){
   folderName <- "PhenotypeRShiny"
   omopgenerics::assertTable(expectations,
@@ -103,6 +112,11 @@ shinyDiagnostics <- function(result,
   # copy clinical descriptions directory
   if(!is.null(clinicalDescriptionsDir)) {
       invisible(copyDirectory(from = clinicalDescriptionsDir, to = file.path(to, "data","raw","clinical_descriptions")))
+  }
+
+  # copy database descriptions directory
+  if(!is.null(clinicalDescriptionsDir)) {
+    invisible(copyDirectory(from = databaseDescriptionsDir, to = file.path(to, "data","raw","database_descriptions")))
   }
 
   # remove tabs

@@ -3,15 +3,59 @@ ui <- fluidPage(
     theme = bs_theme(5, "pulse"),
     navbar_options =list(class = "bg-dark", theme = "dark"),
 
-    title = "PhenotypeR",
 
-    bslib::nav_panel(title = "Background",
-                     icon = shiny::icon("disease"),
+    bslib::nav_panel(title = "PhenotypeR",
+                     icon = shiny::icon("search"),
                      shiny::includeMarkdown(path = "background.md")),
-    # clinicalDescriptions_start -----
+
+    # Background_start -----
     bslib::nav_menu(
-      title = "Phenotypes",
+      title = "Background",
       icon = shiny::icon("list"),
+      # databaseDescriptions_start
+      bslib::nav_panel(
+        title = "Database descriptions",
+        bslib::accordion(
+          bslib::accordion_panel(
+            title = "Shared inputs",
+            tags$div(
+              style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
+              tags$label("Select Database(s):"),
+              tags$div(
+                style = "width: 225px;",
+                tags$div(
+                  style = "margin-top: 15px;",
+                  shinyWidgets::pickerInput(
+                    inputId = "summarise_database_description_cdm_name",
+                    label = NULL,
+                    selected = selected$shared_cdm_names,
+                    choices = choices$shared_cdm_names,
+                    multiple = TRUE,
+                    options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                                   `deselect-all-text` = "None", `select-all-text` = "All"),
+                    width = "100%"
+                  )
+                )
+              ),
+              tags$div(
+                style = "width: 225px;",
+                actionBttn("updateDatabaseDescription", "Update",
+                           style = "simple"),
+                width = "100%"
+              )
+            )
+          )
+        ),
+        bslib::nav_panel(
+          title = "Description",
+          bslib::card(
+            full_screen = TRUE,
+            shiny::uiOutput("database_text")
+          )
+        )
+      ),
+      # databaseDescriptions_end -----
+      # clinicalDescriptions_start
       bslib::nav_panel(
         title = "Clinical descriptions",
         bslib::accordion(
@@ -45,7 +89,6 @@ ui <- fluidPage(
             )
           )
         ),
-
         bslib::layout_sidebar(
           sidebar = bslib::sidebar(width = 400, open = "closed",
                                    bslib::accordion(
@@ -63,7 +106,7 @@ ui <- fluidPage(
                                    )
           ),
           bslib::nav_panel(
-            title = "Table cohort code use",
+            title = "Table",
             bslib::card(
               full_screen = TRUE,
               shiny::uiOutput("clinical_text")
@@ -71,9 +114,9 @@ ui <- fluidPage(
           )
         )
       )
+      # clinicalDescriptions_end
     ),
-    # clinicalDescriptions_end -----
-
+    # Background_end
     # databaseDiagnostics_start -----
     bslib::nav_menu(
       title = "Database diagnostics",
@@ -1046,22 +1089,22 @@ ui <- fluidPage(
                                      )
                                    )
           ),
-        bslib::navset_card_tab(
-          bslib::nav_panel(
-            title = "Drug diagnostics",
-            bslib::card(
-              full_screen = TRUE,
-              bslib::card_header(
-                shiny::downloadButton(outputId = "drug_diagnostics_gt_download", label = ""),
-                class = "text-end"
-              ),
+          bslib::navset_card_tab(
+            bslib::nav_panel(
+              title = "Drug diagnostics",
+              bslib::card(
+                full_screen = TRUE,
+                bslib::card_header(
+                  shiny::downloadButton(outputId = "drug_diagnostics_gt_download", label = ""),
+                  class = "text-end"
+                ),
                 gt::gt_output("drug_diagnostics_tbl") |> withSpinner()
+              )
             )
           )
         )
       )
-      )
-      ## drug_diagnostics_end ----
+      ## drug_diagnostics_end
     ),
     # codelistDiagnostics_end ----
     # cohortDiagnostics_start -----
@@ -1517,6 +1560,23 @@ ui <- fluidPage(
                   )
                 )
               ),
+              tags$label("Select Comparator Cohort:"),
+              tags$div(
+                style = "width: 225px;",
+                tags$div(
+                  style = "margin-top: 15px;",
+                  shinyWidgets::pickerInput(
+                    inputId = "compare_large_scale_characteristics_cohort_compare",
+                    label = NULL,
+                    selected = NULL,
+                    choices = NULL,
+                    multiple = TRUE,
+                    options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                                   `deselect-all-text` = "None", `select-all-text` = "All"),
+                    width = "100%"
+                  )
+                )
+              ),
               tags$div(
                 style = "width: 225px;",
                 actionBttn("updateCompareLSC", "Update",
@@ -1535,18 +1595,10 @@ ui <- fluidPage(
                   )),
         # compare_large_scale_characteristics_expectations_end
         bslib::layout_sidebar(
-          sidebar = bslib::sidebar(width = 400, open = "closed",
+          sidebar = bslib::sidebar(width = 400, open = "open",
                                    bslib::accordion(
                                      bslib::accordion_panel(
                                        title = "Settings",
-                                       shinyWidgets::pickerInput(
-                                         inputId = "compare_large_scale_characteristics_cohort_compare",
-                                         label = "Comparator cohort",
-                                         choices = NULL,
-                                         selected = NULL,
-                                         multiple = FALSE,
-                                         options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                                       ),
                                        shiny::fluidRow(
                                          shiny::column(width = 5, offset = 1,
                                                        shinyWidgets::pickerInput(

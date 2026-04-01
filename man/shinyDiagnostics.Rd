@@ -11,6 +11,7 @@ shinyDiagnostics(
   open = rlang::is_interactive(),
   expectations = NULL,
   clinicalDescriptionsDir = NULL,
+  databaseDescriptionsDir = NULL,
   removeEmptyTabs = TRUE
 )
 }
@@ -27,6 +28,8 @@ FALSE, the shiny app will be created but not launched.}
 \item{expectations}{Data frame or tibble with cohort expectations. It must contain the following columns: cohort_name, estimate, value, and source.}
 
 \item{clinicalDescriptionsDir}{Directory where to find the clinical descriptions word documents.}
+
+\item{databaseDescriptionsDir}{Directory where to find the clinical descriptions word documents.}
 
 \item{removeEmptyTabs}{Whether to remove tabs of those diagnostics that have not been performed or that were insufficient counts to produce a result (TRUE) or not (FALSE)}
 }
@@ -55,7 +58,8 @@ cdm$warfarin <- conceptCohort(cdm,
                                                               40163554L)),
                               name = "warfarin")
 
-result <- phenotypeDiagnostics(cdm$warfarin, populationSample = 100000)
+result <- phenotypeDiagnostics(cdm$warfarin,
+                               populationSample = 100000)
 
 expectations <- dplyr::tibble("cohort_name" = "warfarin",
                        "estimate" = c("Mean age",
@@ -65,7 +69,9 @@ expectations <- dplyr::tibble("cohort_name" = "warfarin",
                        "diagnostics" = c("cohort_characteristics", "cohort_characteristics", "compare_large_scale_characteristics"),
                        "source" = c("AlbertAI"))
 
-shinyDiagnostics(result, tempdir(), expectations = expectations)
+shinyDiagnostics(result,
+                tempdir(),
+                expectations = expectations)
 
 CDMConnector::cdmDisconnect(cdm = cdm)
 }
