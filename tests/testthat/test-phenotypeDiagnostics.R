@@ -44,15 +44,21 @@ test_that("overall diagnostics function", {
   cohort_diag_only <-  phenotypeDiagnostics(cdm$my_cohort,
                                             diagnostics = "cohortDiagnostics",
                                             matchedSample = 0)
-  expect_true(
-    all(c("summarise_characteristics", "summarise_table",
+  expect_identical(
+    c("summarise_characteristics",
+          "summarise_cohort_count",
           "summarise_cohort_attrition",
-          "summarise_cohort_attrition",
-          "summarise_cohort_overlap", "summarise_cohort_timing",
-          "summarise_large_scale_characteristics") %in%
+          "summarise_cohort_overlap",
+          "summarise_cohort_timing",
+          "summarise_large_scale_characteristics",
+          "summarise_log_file",
+      "summarise_table") |>
+      sort(),
           (settings(cohort_diag_only) |>
              dplyr::pull("result_type") |>
-             unique())))
+             unique()) |>
+      sort()
+    )
   expect_identical(
       c(cohort_diag_only |>
       omopgenerics::filterSettings(result_type != "summarise_log_file") |>
