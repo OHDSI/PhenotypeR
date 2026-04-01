@@ -120,8 +120,9 @@ We can easily run all the analyses explained above (**database diagnostics**, **
 
 ```{r, message = FALSE}
 result <- phenotypeDiagnostics(cdm$my_cohort, 
-                               cohortDiagnostics = list("diagnostics" = c("cohortCount", "cohortCharacteristics", 
-                                                                          "largeScaleCharacteristics","compareCohorts", "cohortSurvival")))
+                               cohortDiagnostics = list(
+                                 "diagnostics" = c("cohortCount", "cohortCharacteristics",
+                                                   "largeScaleCharacteristics","compareCohorts", "cohortSurvival")))
 ```
 
 You can also create a table with the expected results, so you can compare later with the actual results.

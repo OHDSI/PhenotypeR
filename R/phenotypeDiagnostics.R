@@ -92,11 +92,11 @@
 #'                                ))
 #'
 #' # By default, cohortSurvival analysis will not be run. If you want to run it, please use:
-#' # result <- phenotypeDiagnostics(cdm$warfarin,
+#' result <- phenotypeDiagnostics(cdm$warfarin,
 #'                                cohortDiagnostics = list(
-#'                                  "diagnostics" = c("cohortCount", "cohortCharacteristics",
-#'                                                    "largeScaleCharacteristics",
-#'                                                    "compareCohorts", "cohortSurvival")))
+#'                                "diagnostics" = c("cohortCount", "cohortCharacteristics",
+#'                                                  "largeScaleCharacteristics",
+#'                                                  "compareCohorts", "cohortSurvival")))
 #'
 #'
 #' # Run PhenotypeR with the default values, except for populationSample:
