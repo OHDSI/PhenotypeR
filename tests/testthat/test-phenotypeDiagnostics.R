@@ -42,7 +42,9 @@ test_that("test check functions", {
   expect_no_error(x <- checkPopulationDiagnosticsInput(populationDiagnostics =  NULL))
   expect_true(is.null(x))
   expect_no_error(x <- checkPopulationDiagnosticsInput(populationDiagnostics = list()))
-  expect_equal(formals("populationDiagnostics")[-which(names(formals("populationDiagnostics")) == "cohort")],
+  x1 <- formals("populationDiagnostics")[-which(names(formals("populationDiagnostics")) == "cohort")]
+  x1$populationDateRange <- eval(x1$populationDateRange)
+  expect_equal(x1,
                x)
 }
 )
