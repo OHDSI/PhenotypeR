@@ -161,7 +161,7 @@ checkPopulationDiagnosticsInput <- function(populationDiagnostics, call = parent
 
   diagnostics <- c("incidence", "periodPrevalence")
   populationSample <- formals("populationDiagnostics")$populationSample
-  populationDateRange <- formals("populationDiagnostics")$populationDateRange
+  populationDateRange <- eval(formals("populationDiagnostics")$populationDateRange)
 
   if(!length(populationDiagnostics) == 0) {
     omopgenerics::assertChoice(names(populationDiagnostics),
