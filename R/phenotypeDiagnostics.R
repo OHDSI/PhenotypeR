@@ -10,38 +10,39 @@
 #' * A diagnostics on the population via `populationDiagnostics`.
 #'
 #' @inheritParams cohortDoc
-#' @param databaseDiagnostics A list of arguments that uses `databaseDiagnostics`. If the list is empty,
-#'        the default values will be used.
-#'        Example:
-#'        *databaseDiagnostics = list(
-#'                                "diagnostics" = c("snapshot", "person", "observationPeriods", "clinicalRecords")
-#'                                )*
-#' @param codelistDiagnostics A list of arguments that uses `codelistDiagnostics`. If the list is empty,
-#'        the default values will be used.
-#'        Example:
-#'        *codelistDiagnostics = list(
-#'                                  "diagnostics" = c("achillesCodeUse", "orphanCodeUse", "cohortCodeUse", "drugDiagnostics",
-#'                                                    "measurementDiagnostics"),
-#'                                  "measurementDiagnosticsSample" = 20000,
-#'                                  "drugDiagnosticsSample" = 20000
-#'                                )*
-#' @param cohortDiagnostics A list of arguments that uses `cohortDiagnostics`. If the list is empty,
-#'        the default values will be used.
-#'        Example:
-#'        *cohortDiagnostics = list(
-#'                               "diagnostics" = c("cohortCount", "cohortCharacteristics", "largeScaleCharacteristics",
-#'                                                "compareCohorts", "cohortSurvival),
-#'                               "cohortSample" = 20000,
-#'                               "matchedSample" = 1000
-#'                                 )*
-#' @param populationDiagnostics A list of arguments that uses `populationDiagnostics`. If the list is empty,
-#'        the default values will be used.
-#'        Example:
-#'        *populationDiagnostics = list(
-#'                                  "diagnostics" = c("incidence", "periodPrevalence"),
-#'                                  "populationSample" = 1000000,
-#'                                  "populationDateRange" = as.Date(c(NA,NA))
-#'                                )*
+#' @param databaseDiagnostics A list of arguments that uses `databaseDiagnostics`.
+#'  If the list is empty, the default values will be used.
+#'  Example:
+#'  *databaseDiagnostics = list(
+#'  "diagnostics" = c("snapshot", "person", "observationPeriods", "clinicalRecords")
+#'   )*
+#' @param codelistDiagnostics A list of arguments that uses `codelistDiagnostics`.
+#' If the list is empty, the default values will be used.
+#' Example:
+#' *codelistDiagnostics = list(
+#'  "diagnostics" = c("achillesCodeUse", "orphanCodeUse", "cohortCodeUse",
+#'  "drugDiagnostics", "measurementDiagnostics"),
+#'  "measurementDiagnosticsSample" = 20000,
+#'  "drugDiagnosticsSample" = 20000
+#'   )*
+#' @param cohortDiagnostics A list of arguments that uses `cohortDiagnostics`.
+#' If the list is empty,
+#' the default values will be used.
+#' Example:
+#' *cohortDiagnostics = list(
+#'  "diagnostics" = c("cohortCount", "cohortCharacteristics", "largeScaleCharacteristics",
+#'                    "compareCohorts", "cohortSurvival),
+#'  "cohortSample" = 20000,
+#'  "matchedSample" = 1000
+#'  )*
+#' @param populationDiagnostics A list of arguments that uses `populationDiagnostics`.
+#' If the list is empty, the default values will be used.
+#' Example:
+#' *populationDiagnostics = list(
+#'  "diagnostics" = c("incidence", "periodPrevalence"),
+#'  "populationSample" = 1000000,
+#'  "populationDateRange" = as.Date(c(NA,NA))
+#'  )*
 #'
 #' @return A summarised result
 #' @export
@@ -67,16 +68,19 @@
 #' # all the default values:
 #' result <- phenotypeDiagnostics(cdm$warfarin,
 #'                                databaseDiagnostics = list(
-#'                                  "diagnostics" = c("snapshot", "person", "observationPeriods", "clinicalRecords"),
+#'                                  "diagnostics" = c("snapshot", "person",
+#'                                  "observationPeriods", "clinicalRecords"),
 #'                                ),
 #'                                codelistDiagnostics = list(
-#'                                  "diagnostics" = c("achillesCodeUse", "orphanCodeUse", "cohortCodeUse", "drugDiagnostics",
+#'                                  "diagnostics" = c("achillesCodeUse", "orphanCodeUse",
+#'                                                    "cohortCodeUse", "drugDiagnostics",
 #'                                                    "measurementDiagnostics"),
 #'                                  "measurementDiagnosticsSample" = 20000,
 #'                                  "drugDiagnosticsSample" = 20000
 #'                                ),
 #'                                cohortDiagnostics = list(
-#'                                  "diagnostics" = c("cohortCount", "cohortCharacteristics", "largeScaleCharacteristics",
+#'                                  "diagnostics" = c("cohortCount", "cohortCharacteristics",
+#'                                                    "largeScaleCharacteristics",
 #'                                                    "compareCohorts"),
 #'                                  "cohortSample" = 20000,
 #'                                  "matchedSample" = 1000
@@ -87,10 +91,11 @@
 #'                                  "populationDateRange" = as.Date(c(NA,NA))
 #'                                ))
 #'
-#' By default, cohortSurvival analysis will not be run. If you want to run it, please use:
-#' #' result <- phenotypeDiagnostics(cdm$warfarin,
+#' # By default, cohortSurvival analysis will not be run. If you want to run it, please use:
+#' # result <- phenotypeDiagnostics(cdm$warfarin,
 #'                                cohortDiagnostics = list(
-#'                                  "diagnostics" = c("cohortCount", "cohortCharacteristics", "largeScaleCharacteristics",
+#'                                  "diagnostics" = c("cohortCount", "cohortCharacteristics",
+#'                                                    "largeScaleCharacteristics",
 #'                                                    "compareCohorts", "cohortSurvival")))
 #'
 #'

@@ -34,10 +34,10 @@ checkDatabaseDiagnosticsInput <- function(databaseDiagnostics, call = parent.fra
     x <- setdiff(diagnostics, databaseDiagnostics$diagnostics)
     databaseDiagnostics <- append(databaseDiagnostics,
                                   purrr::map(x, ~ FALSE) |>
-                                    setNames(x))
+                                    stats::setNames(x))
     databaseDiagnostics <- append(databaseDiagnostics,
                                   purrr::map(databaseDiagnostics$diagnostics, ~ TRUE) |>
-                                    setNames(databaseDiagnostics$diagnostics))
+                                    stats::setNames(databaseDiagnostics$diagnostics))
   }
 
   return(databaseDiagnostics)
@@ -75,10 +75,10 @@ checkCodelistDiagnosticsInput <- function(codelistDiagnostics, call = parent.fra
     x <- setdiff(diagnostics, codelistDiagnostics$diagnostics)
     codelistDiagnostics <- append(codelistDiagnostics,
                                   purrr::map(x, ~ FALSE) |>
-                                    setNames(x))
+                                    stats::setNames(x))
     codelistDiagnostics <- append(codelistDiagnostics,
                                   purrr::map(codelistDiagnostics$diagnostics, ~ TRUE) |>
-                                    setNames(codelistDiagnostics$diagnostics))
+                                    stats::setNames(codelistDiagnostics$diagnostics))
   }
 
   if(is.null(codelistDiagnostics$measurementDiagnosticsSample)) {
@@ -129,10 +129,10 @@ checkCohortDiagnosticsInput <- function(cohortDiagnostics, call = parent.frame()
     x <- setdiff(diagnostics, cohortDiagnostics$diagnostics)
     cohortDiagnostics <- append(cohortDiagnostics,
                                 purrr::map(x, ~ FALSE) |>
-                                  setNames(x))
+                                  stats::setNames(x))
     cohortDiagnostics <- append(cohortDiagnostics,
                                 purrr::map(cohortDiagnostics$diagnostics, ~ TRUE) |>
-                                  setNames(cohortDiagnostics$diagnostics))
+                                  stats::setNames(cohortDiagnostics$diagnostics))
   }
 
   if(is.null(cohortDiagnostics$cohortSample)) {
@@ -183,10 +183,10 @@ checkPopulationDiagnosticsInput <- function(populationDiagnostics, call = parent
     x <- setdiff(diagnostics, populationDiagnostics$diagnostics)
     populationDiagnostics <- append(populationDiagnostics,
                                     purrr::map(x, ~ FALSE) |>
-                                      setNames(x))
+                                      stats::setNames(x))
     populationDiagnostics <- append(populationDiagnostics,
                                     purrr::map(populationDiagnostics$diagnostics, ~ TRUE) |>
-                                      setNames(populationDiagnostics$diagnostics))
+                                      stats::setNames(populationDiagnostics$diagnostics))
   }
 
   if(is.null(populationDiagnostics$populationSample)) {

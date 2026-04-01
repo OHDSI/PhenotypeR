@@ -15,41 +15,42 @@ phenotypeDiagnostics(
 \arguments{
 \item{cohort}{Cohort table in a cdm reference}
 
-\item{databaseDiagnostics}{A list of arguments that uses `databaseDiagnostics`. If the list is empty,
-the default values will be used.
+\item{databaseDiagnostics}{A list of arguments that uses `databaseDiagnostics`.
+If the list is empty, the default values will be used.
 Example:
 *databaseDiagnostics = list(
-                        "diagnostics" = c("snapshot", "person", "observationPeriods", "clinicalRecords")
-                        )*}
+"diagnostics" = c("snapshot", "person", "observationPeriods", "clinicalRecords")
+ )*}
 
-\item{codelistDiagnostics}{A list of arguments that uses `codelistDiagnostics`. If the list is empty,
-the default values will be used.
+\item{codelistDiagnostics}{A list of arguments that uses `codelistDiagnostics`.
+If the list is empty, the default values will be used.
 Example:
 *codelistDiagnostics = list(
-                          "diagnostics" = c("achillesCodeUse", "orphanCodeUse", "cohortCodeUse", "drugDiagnostics",
-                                            "measurementDiagnostics"),
-                          "measurementDiagnosticsSample" = 20000,
-                          "drugDiagnosticsSample" = 20000
-                        )*}
+ "diagnostics" = c("achillesCodeUse", "orphanCodeUse", "cohortCodeUse",
+ "drugDiagnostics", "measurementDiagnostics"),
+ "measurementDiagnosticsSample" = 20000,
+ "drugDiagnosticsSample" = 20000
+  )*}
 
-\item{cohortDiagnostics}{A list of arguments that uses `cohortDiagnostics`. If the list is empty,
+\item{cohortDiagnostics}{A list of arguments that uses `cohortDiagnostics`.
+If the list is empty,
 the default values will be used.
 Example:
 *cohortDiagnostics = list(
-                       "diagnostics" = c("cohortCount", "cohortCharacteristics", "largeScaleCharacteristics",
-                                        "compareCohorts", "cohortSurvival),
-                       "cohortSample" = 20000,
-                       "matchedSample" = 1000
-                         )*}
+ "diagnostics" = c("cohortCount", "cohortCharacteristics", "largeScaleCharacteristics",
+                   "compareCohorts", "cohortSurvival),
+ "cohortSample" = 20000,
+ "matchedSample" = 1000
+ )*}
 
-\item{populationDiagnostics}{A list of arguments that uses `populationDiagnostics`. If the list is empty,
-the default values will be used.
+\item{populationDiagnostics}{A list of arguments that uses `populationDiagnostics`.
+If the list is empty, the default values will be used.
 Example:
 *populationDiagnostics = list(
-                          "diagnostics" = c("incidence", "periodPrevalence"),
-                          "populationSample" = 1000000,
-                          "populationDateRange" = as.Date(c(NA,NA))
-                        )*}
+ "diagnostics" = c("incidence", "periodPrevalence"),
+ "populationSample" = 1000000,
+ "populationDateRange" = as.Date(c(NA,NA))
+ )*}
 }
 \value{
 A summarised result
@@ -84,16 +85,19 @@ result <- phenotypeDiagnostics(cdm$warfarin)
 # all the default values:
 result <- phenotypeDiagnostics(cdm$warfarin,
                                databaseDiagnostics = list(
-                                 "diagnostics" = c("snapshot", "person", "observationPeriods", "clinicalRecords"),
+                                 "diagnostics" = c("snapshot", "person",
+                                 "observationPeriods", "clinicalRecords"),
                                ),
                                codelistDiagnostics = list(
-                                 "diagnostics" = c("achillesCodeUse", "orphanCodeUse", "cohortCodeUse", "drugDiagnostics",
+                                 "diagnostics" = c("achillesCodeUse", "orphanCodeUse",
+                                                   "cohortCodeUse", "drugDiagnostics",
                                                    "measurementDiagnostics"),
                                  "measurementDiagnosticsSample" = 20000,
                                  "drugDiagnosticsSample" = 20000
                                ),
                                cohortDiagnostics = list(
-                                 "diagnostics" = c("cohortCount", "cohortCharacteristics", "largeScaleCharacteristics",
+                                 "diagnostics" = c("cohortCount", "cohortCharacteristics",
+                                                   "largeScaleCharacteristics",
                                                    "compareCohorts"),
                                  "cohortSample" = 20000,
                                  "matchedSample" = 1000
@@ -104,10 +108,11 @@ result <- phenotypeDiagnostics(cdm$warfarin,
                                  "populationDateRange" = as.Date(c(NA,NA))
                                ))
 
-By default, cohortSurvival analysis will not be run. If you want to run it, please use:
-#' result <- phenotypeDiagnostics(cdm$warfarin,
+# By default, cohortSurvival analysis will not be run. If you want to run it, please use:
+# result <- phenotypeDiagnostics(cdm$warfarin,
                                cohortDiagnostics = list(
-                                 "diagnostics" = c("cohortCount", "cohortCharacteristics", "largeScaleCharacteristics",
+                                 "diagnostics" = c("cohortCount", "cohortCharacteristics",
+                                                   "largeScaleCharacteristics",
                                                    "compareCohorts", "cohortSurvival")))
 
 
