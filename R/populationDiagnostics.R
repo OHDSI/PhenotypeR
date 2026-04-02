@@ -37,7 +37,7 @@
 populationDiagnostics <- function(cohort,
                                   incidence = TRUE,
                                   periodPrevalence = TRUE,
-                                  populationSample = 1000000,
+                                  populationSample = 100000,
                                   populationDateRange = as.Date(c(NA, NA))) {
 
   cohort <- omopgenerics::validateCohortArgument(cohort = cohort)

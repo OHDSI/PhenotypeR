@@ -40,7 +40,7 @@
 #' Example:
 #' *populationDiagnostics = list(
 #'  "diagnostics" = c("incidence", "periodPrevalence"),
-#'  "populationSample" = 1000000,
+#'  "populationSample" = 100000,
 #'  "populationDateRange" = as.Date(c(NA,NA))
 #'  )*
 #'
@@ -87,7 +87,7 @@
 #'                                ),
 #'                                populationDiagnostics = list(
 #'                                  "diagnostics" = c("incidence", "periodPrevalence"),
-#'                                  "populationSample" = 1000000,
+#'                                  "populationSample" = 100000,
 #'                                  "populationDateRange" = as.Date(c(NA,NA))
 #'                                ))
 #'
@@ -108,7 +108,6 @@ phenotypeDiagnostics <- function(cohort,
                                  codelistDiagnostics = list(),
                                  cohortDiagnostics = list(),
                                  populationDiagnostics = list()) {
-
   # Get arguments
   cohort <- omopgenerics::validateCohortArgument(cohort = cohort)
   databaseDiagnostics <- checkDatabaseDiagnosticsInput(databaseDiagnostics)
