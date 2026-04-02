@@ -69,7 +69,7 @@
 #' result <- phenotypeDiagnostics(cdm$warfarin,
 #'                                databaseDiagnostics = list(
 #'                                  "diagnostics" = c("snapshot", "person",
-#'                                  "observationPeriods", "clinicalRecords"),
+#'                                  "observationPeriods", "clinicalRecords")
 #'                                ),
 #'                                codelistDiagnostics = list(
 #'                                  "diagnostics" = c("achillesCodeUse", "orphanCodeUse",
