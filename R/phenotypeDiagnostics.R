@@ -10,16 +10,39 @@
 #' * A diagnostics on the population via `populationDiagnostics`.
 #'
 #' @inheritParams cohortDoc
-#' @param diagnostics Vector indicating which diagnostics to perform. Options
-#' include: `databaseDiagnostics`, `codelistDiagnostics`, `cohortDiagnostics`,
-#' and `populationDiagnostics`.
-#' @inheritParams clinicalTableSample
-#' @inheritParams measurementSampleDoc
-#' @inheritParams drugExposureSampleDoc
-#' @inheritParams survivalDoc
-#' @inheritParams cohortSampleDoc
-#' @inheritParams matchedDoc
-#' @inheritParams populationSampleDoc
+#' @param databaseDiagnostics A list of arguments that uses `databaseDiagnostics`.
+#'  If the list is empty, the default values will be used.
+#'  Example:
+#'  *databaseDiagnostics = list(
+#'  "diagnostics" = c("snapshot", "person", "observationPeriods", "clinicalRecords")
+#'   )*
+#' @param codelistDiagnostics A list of arguments that uses `codelistDiagnostics`.
+#' If the list is empty, the default values will be used.
+#' Example:
+#' *codelistDiagnostics = list(
+#'  "diagnostics" = c("achillesCodeUse", "orphanCodeUse", "cohortCodeUse",
+#'  "drugDiagnostics", "measurementDiagnostics"),
+#'  "measurementDiagnosticsSample" = 20000,
+#'  "drugDiagnosticsSample" = 20000
+#'   )*
+#' @param cohortDiagnostics A list of arguments that uses `cohortDiagnostics`.
+#' If the list is empty,
+#' the default values will be used.
+#' Example:
+#' *cohortDiagnostics = list(
+#'  "diagnostics" = c("cohortCount", "cohortCharacteristics", "largeScaleCharacteristics",
+#'                    "compareCohorts", "cohortSurvival),
+#'  "cohortSample" = 20000,
+#'  "matchedSample" = 1000
+#'  )*
+#' @param populationDiagnostics A list of arguments that uses `populationDiagnostics`.
+#' If the list is empty, the default values will be used.
+#' Example:
+#' *populationDiagnostics = list(
+#'  "diagnostics" = c("incidence", "periodPrevalence"),
+#'  "populationSample" = 100000,
+#'  "populationDateRange" = as.Date(c(NA,NA))
+#'  )*
 #'
 #' @return A summarised result
 #' @export
@@ -36,21 +59,61 @@
 #'                                                               40163554L)),
 #'                               name = "warfarin")
 #'
-#' result <- phenotypeDiagnostics(cdm$warfarin, populationSample = 100000)
+#' # Run PhenotypeR with the default values. If you want to check which are the
+#' # default values, use:
+#' # `formals(populationDiagnostics)`
+#' result <- phenotypeDiagnostics(cdm$warfarin)
+#'
+#' # Notice that the previous line of code will give the same results as typing manually
+#' # all the default values:
+#' result <- phenotypeDiagnostics(cdm$warfarin,
+#'                                databaseDiagnostics = list(
+#'                                  "diagnostics" = c("snapshot", "person",
+#'                                  "observationPeriods", "clinicalRecords")
+#'                                ),
+#'                                codelistDiagnostics = list(
+#'                                  "diagnostics" = c("achillesCodeUse", "orphanCodeUse",
+#'                                                    "cohortCodeUse", "drugDiagnostics",
+#'                                                    "measurementDiagnostics"),
+#'                                  "measurementDiagnosticsSample" = 20000,
+#'                                  "drugDiagnosticsSample" = 20000
+#'                                ),
+#'                                cohortDiagnostics = list(
+#'                                  "diagnostics" = c("cohortCount", "cohortCharacteristics",
+#'                                                    "largeScaleCharacteristics",
+#'                                                    "compareCohorts"),
+#'                                  "cohortSample" = 20000,
+#'                                  "matchedSample" = 1000
+#'                                ),
+#'                                populationDiagnostics = list(
+#'                                  "diagnostics" = c("incidence", "periodPrevalence"),
+#'                                  "populationSample" = 100000,
+#'                                  "populationDateRange" = as.Date(c(NA,NA))
+#'                                ))
+#'
+#' # By default, cohortSurvival analysis will not be run. If you want to run it, please use:
+#' result <- phenotypeDiagnostics(cdm$warfarin,
+#'                                cohortDiagnostics = list(
+#'                                "diagnostics" = c("cohortCount", "cohortCharacteristics",
+#'                                                  "largeScaleCharacteristics",
+#'                                                  "compareCohorts", "cohortSurvival")))
+#'
+#'
+#' # Run PhenotypeR with the default values, except for populationSample:
+#' result <- phenotypeDiagnostics(cdm$warfarin,
+#'                                populationDiagnostics = list("populationSample" = 1000))
 #' }
 phenotypeDiagnostics <- function(cohort,
-                                 diagnostics = c("databaseDiagnostics", "codelistDiagnostics",
-                                                 "cohortDiagnostics", "populationDiagnostics"),
-                                 clinicalTableSample = NULL,
-                                 measurementSample = 20000,
-                                 drugExposureSample = 20000,
-                                 survival = FALSE,
-                                 cohortSample = 20000,
-                                 matchedSample = 1000,
-                                 populationSample = 1000000,
-                                 populationDateRange = as.Date(c(NA, NA))) {
-
+                                 databaseDiagnostics = list(),
+                                 codelistDiagnostics = list(),
+                                 cohortDiagnostics = list(),
+                                 populationDiagnostics = list()) {
+  # Get arguments
   cohort <- omopgenerics::validateCohortArgument(cohort = cohort)
+  databaseDiagnostics <- checkDatabaseDiagnosticsInput(databaseDiagnostics)
+  codelistDiagnostics <- checkCodelistDiagnosticsInput(codelistDiagnostics)
+  cohortDiagnostics   <- checkCohortDiagnosticsInput(cohortDiagnostics)
+  populationDiagnostics <- checkPopulationDiagnosticsInput(populationDiagnostics)
 
   # Check if a log file exists
   oldLogFile <- getOption(x = "omopgenerics.logFile", default = NULL)
@@ -61,34 +124,37 @@ phenotypeDiagnostics <- function(cohort,
     omopgenerics::createLogFile(logFile = log_file)
     on.exit(options("omopgenerics.logFile" = NULL))
   }
-  omopgenerics::assertChoice(diagnostics,
-                             c("databaseDiagnostics", "codelistDiagnostics",
-                               "cohortDiagnostics", "populationDiagnostics"),
-                             unique = TRUE)
-  checksCohortDiagnostics(survival, cohortSample, matchedSample)
-  checksPopulationDiagnostics(populationSample, populationDateRange)
 
   incrementalResultPath <- getOption(x = "PhenotypeR.incremenatl_save_path")
 
   # Run phenotypeR diagnostics
   cdm <- omopgenerics::cdmReference(cohort)
   results <- list()
-  if ("databaseDiagnostics" %in% diagnostics) {
+
+  if (!is.null(databaseDiagnostics)) {
     results[["db_diag"]] <- databaseDiagnostics(cohort,
-                                                clinicalTableSample = clinicalTableSample)
+                                                snapshot = databaseDiagnostics$snapshot,
+                                                person = databaseDiagnostics$person,
+                                                observationPeriods = databaseDiagnostics$observationPeriods,
+                                                clinicalRecords = databaseDiagnostics$clinicalRecords)
     if(!is.null(incrementalResultPath)){
       if (dir.exists(incrementalResultPath)) {
-      exportSummarisedResult(results[["db_diag"]] ,
-                             fileName = "incremental_database_diagnostics.csv",
-                             path = incrementalResultPath)
+        exportSummarisedResult(results[["db_diag"]] ,
+                               fileName = "incremental_database_diagnostics.csv",
+                               path = incrementalResultPath)
       }
-      }
+    }
   }
 
-  if ("codelistDiagnostics" %in% diagnostics) {
+  if (!is.null(codelistDiagnostics)) {
     results[["code_diag"]] <- codelistDiagnostics(cohort,
-                                                  measurementSample = measurementSample,
-                                                  drugExposureSample = drugExposureSample)
+                                                  achillesCodeUse = codelistDiagnostics$achillesCodeUse,
+                                                  orphanCodeUse = codelistDiagnostics$orphanCodeUse,
+                                                  cohortCodeUse = codelistDiagnostics$cohortCodeUse,
+                                                  drugDiagnostics = codelistDiagnostics$drugDiagnostics,
+                                                  measurementDiagnostics = codelistDiagnostics$measurementDiagnostics,
+                                                  measurementDiagnosticsSample = codelistDiagnostics$measurementDiagnosticsSample,
+                                                  drugDiagnosticsSample = codelistDiagnostics$drugDiagnosticsSample)
     if(!is.null(incrementalResultPath)){
       if (dir.exists(incrementalResultPath)) {
         exportSummarisedResult(results[["code_diag"]],
@@ -96,13 +162,17 @@ phenotypeDiagnostics <- function(cohort,
                                path = incrementalResultPath)
       }
     }
-}
+  }
 
-  if ("cohortDiagnostics" %in% diagnostics) {
+  if (!is.null(cohortDiagnostics)) {
     results[["cohort_diag"]] <- cohortDiagnostics(cohort,
-                                                  survival = survival,
-                                                  cohortSample  = cohortSample,
-                                                  matchedSample = matchedSample)
+                                                  cohortCount = cohortDiagnostics$cohortCount,
+                                                  cohortCharacteristics = cohortDiagnostics$cohortCharacteristics,
+                                                  largeScaleCharacteristics = cohortDiagnostics$largeScaleCharacteristics,
+                                                  compareCohorts = cohortDiagnostics$compareCohorts,
+                                                  cohortSurvival = cohortDiagnostics$cohortSurvival,
+                                                  cohortSample = cohortDiagnostics$cohortSample,
+                                                  matchedSample = cohortDiagnostics$matchedSample)
     if(!is.null(incrementalResultPath)){
       if (dir.exists(incrementalResultPath)) {
         exportSummarisedResult(results[["cohort_diag"]] ,
@@ -111,10 +181,12 @@ phenotypeDiagnostics <- function(cohort,
       }
     }
   }
-  if ("populationDiagnostics" %in% diagnostics) {
+  if (!is.null(populationDiagnostics)) {
     results[["pop_diag"]] <- populationDiagnostics(cohort,
-                                                   populationSample = populationSample,
-                                                   populationDateRange = populationDateRange)
+                                                   incidence = populationDiagnostics$incidence,
+                                                   periodPrevalence = populationDiagnostics$periodPrevalence,
+                                                   populationSample = populationDiagnostics$populationSample,
+                                                   populationDateRange = populationDiagnostics$populationDateRange)
     if(!is.null(incrementalResultPath)){
       if (dir.exists(incrementalResultPath)) {
         exportSummarisedResult(results[["pop_diag"]] ,
@@ -143,5 +215,5 @@ phenotypeDiagnostics <- function(cohort,
     results <- omopgenerics::emptySummarisedResult()
   }
 
-  results
+  return(results)
 }

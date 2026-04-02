@@ -10,8 +10,18 @@
 #' * Overlap between cohorts (if more than one cohort is being used).
 #'
 #' @inheritParams cohortDoc
+#' @param cohortCount Whether to run `CohortCharacteristics::summariseCohortCount()` and
+#'       `CohortCharacteristics::summariseCohortAttrition()` (TRUE) or not (FALSE).
+#' @param cohortCharacteristics Whether to run `CohortCharacteristics::summariseCharacteristics()` and
+#'        summarise age density (TRUE) or not (FALSE).
+#' @param largeScaleCharacteristics Whether to run `CohortCharacteristics::summariseLargeScaleCharacteristics()` (TRUE)
+#'        or not (FALSE).
+#' @param compareCohorts Whether to run `CohortCharacteristics::summariseCohortOverlap()` and
+#'        `CohortCharacteristics::summariseCohortTiming()` (TRUE) or not (FALSE). Notice that,
+#'        if set to TRUE, the diagnostics will only be run when there are more than one cohort.
+#' @param cohortSurvival Whether to run `CohortSurvival::estimateSingleEventSurvival()` (TRUE) or
+#'        not (FALSE).
 #' @inheritParams cohortSampleDoc
-#' @inheritParams survivalDoc
 #' @inheritParams matchedDoc
 #'
 #' @return A summarised result
@@ -31,11 +41,24 @@
 #'
 #' result <- cohortDiagnostics(cdm$warfarin)
 #' }
-cohortDiagnostics <- function(cohort, survival = FALSE, cohortSample = 20000, matchedSample = 1000){
+cohortDiagnostics <- function(cohort,
+                              cohortCount = TRUE,
+                              cohortCharacteristics = TRUE,
+                              largeScaleCharacteristics = TRUE,
+                              compareCohorts = TRUE,
+                              cohortSurvival = FALSE,
+                              cohortSample = 20000,
+                              matchedSample = 1000){
 
   # Initial checks ----
   omopgenerics::validateCohortArgument(cohort)
-  checksCohortDiagnostics(survival, cohortSample, matchedSample)
+  omopgenerics::assertLogical(cohortCount, length = 1)
+  omopgenerics::assertLogical(cohortCharacteristics, length = 1)
+  omopgenerics::assertLogical(largeScaleCharacteristics, length = 1)
+  omopgenerics::assertLogical(compareCohorts, length = 1)
+  omopgenerics::assertLogical(cohortSurvival, length = 1)
+
+  if(isTRUE(cohortSurvival)) rlang::check_installed("CohortSurvival", version = "1.0.2")
 
   cdm <- omopgenerics::cdmReference(cohort)
   cohortName <- omopgenerics::tableName(cohort)
@@ -47,17 +70,20 @@ cohortDiagnostics <- function(cohort, survival = FALSE, cohortSample = 20000, ma
   tempCohortName  <- paste0(prefix, cohortName)
   results <- list()
 
-  if (!is.null(getOption("omopgenerics.logFile"))) {
-    omopgenerics::logMessage("Cohort diagnostics - cohort attrition")
-  }
-  results[["cohort_attrition"]] <- cdm[[cohortName]] |>
-    CohortCharacteristics::summariseCohortAttrition()
+  # Cohort count ----
+  if(isTRUE(cohortCount)) {
+    if (!is.null(getOption("omopgenerics.logFile"))) {
+      omopgenerics::logMessage("Cohort diagnostics - cohort attrition")
+    }
+    results[["cohort_attrition"]] <- cdm[[cohortName]] |>
+      CohortCharacteristics::summariseCohortAttrition()
 
-  if (!is.null(getOption("omopgenerics.logFile"))) {
-    omopgenerics::logMessage("Cohort diagnostics - cohort count")
+    if (!is.null(getOption("omopgenerics.logFile"))) {
+      omopgenerics::logMessage("Cohort diagnostics - cohort count")
+    }
+    results[["cohort_count"]] <- cdm[[cohortName]] |>
+      CohortCharacteristics::summariseCohortCount()
   }
-  results[["cohort_count"]] <- cdm[[cohortName]] |>
-    CohortCharacteristics::summariseCohortCount()
 
   cohortNameSampled <- paste0(prefix, "sampled")
   if(is.null(cohortSample)){
@@ -83,8 +109,9 @@ cohortDiagnostics <- function(cohort, survival = FALSE, cohortSample = 20000, ma
     }
   }
 
+  # Compare cohorts ----
   # if there is more than one cohort, we'll get timing and overlap of all together
-  if(length(cohortIds) > 1){
+  if(isTRUE(compareCohorts) && length(cohortIds) > 1){
     if (!is.null(getOption("omopgenerics.logFile"))) {
       omopgenerics::logMessage("Cohort diagnostics - cohort overlap")
     }
@@ -98,7 +125,8 @@ cohortDiagnostics <- function(cohort, survival = FALSE, cohortSample = 20000, ma
       CohortCharacteristics::summariseCohortTiming(estimates = c("median", "q25", "q75", "min", "max", "density"))
   }
 
-  if(is.null(matchedSample) || matchedSample != 0){
+  # Cohort characteristics ----
+  if((isTRUE(cohortCharacteristics) | isTRUE(largeScaleCharacteristics)) && is.null(matchedSample) || matchedSample != 0){
     if (!is.null(getOption("omopgenerics.logFile"))) {
       omopgenerics::logMessage("Cohort diagnostics - matched cohorts")
     }
@@ -109,113 +137,118 @@ cohortDiagnostics <- function(cohort, survival = FALSE, cohortSample = 20000, ma
                                                             name = tempCohortName)
   }
 
-  cli::cli_bullets(c(">" = "Getting cohorts and indexes"))
-  cdm[[tempCohortName]]  <- cdm[[tempCohortName]] |>
-    PatientProfiles::addDemographics(age = TRUE,
-                                     ageGroup = list(c(0, 17), c(18, 64), c(65, 150)),
-                                     sex = TRUE,
-                                     priorObservation = FALSE,
-                                     futureObservation = FALSE,
-                                     dateOfBirth = FALSE,
-                                     name = tempCohortName)
-  cdm[[tempCohortName]] <- CohortConstructor::addCohortTableIndex(cdm[[tempCohortName]])
+  if(isTRUE(cohortCharacteristics)) {
+    cli::cli_bullets(c(">" = "Getting cohorts and indexes"))
+    cdm[[tempCohortName]]  <- cdm[[tempCohortName]] |>
+      PatientProfiles::addDemographics(age = TRUE,
+                                       ageGroup = list(c(0, 17), c(18, 64), c(65, 150)),
+                                       sex = TRUE,
+                                       priorObservation = FALSE,
+                                       futureObservation = FALSE,
+                                       dateOfBirth = FALSE,
+                                       name = tempCohortName)
+    cdm[[tempCohortName]] <- CohortConstructor::addCohortTableIndex(cdm[[tempCohortName]])
 
-  if (!is.null(getOption("omopgenerics.logFile"))) {
-    omopgenerics::logMessage("Cohort diagnostics - cohort characteristics")
-  }
-  results[["cohort_summary"]] <- cdm[[tempCohortName]] |>
-    CohortCharacteristics::summariseCharacteristics(
-      strata = list("age_group", "sex"),
-      tableIntersectCount = list(
-        "Number visits prior year" = list(
-          tableName = "visit_occurrence",
-          window = c(-365, -1)
+    if (!is.null(getOption("omopgenerics.logFile"))) {
+      omopgenerics::logMessage("Cohort diagnostics - cohort characteristics")
+    }
+    results[["cohort_summary"]] <- cdm[[tempCohortName]] |>
+      CohortCharacteristics::summariseCharacteristics(
+        strata = list("age_group", "sex"),
+        tableIntersectCount = list(
+          "Number visits prior year" = list(
+            tableName = "visit_occurrence",
+            window = c(-365, -1)
+          )
         )
       )
-    )
 
-  if (!is.null(getOption("omopgenerics.logFile"))) {
-    omopgenerics::logMessage("Cohort diagnostics - age density")
-  }
-  results[["cohort_density"]] <- cdm[[tempCohortName]] |>
-    PatientProfiles::addCohortName() |>
-    PatientProfiles::summariseResult(
-      counts = FALSE,
-      strata    = "sex",
-      includeOverallStrata = FALSE,
-      group     = "cohort_name",
-      includeOverallGroup  = FALSE,
-      variables = "age",
-      estimates = "density"
-    )
-
-  # Large scale characteristics
-  lscWindows <- list(c(-Inf, -366), c(-365, -31),
-                     c(-30, -1), c(0, 0),
-                     c(1, 30), c(31, 365),
-                     c(366, Inf))
-
-  lscTableEvents<-c("condition_occurrence",
-                    "visit_occurrence",
-                    # "visit_detail",  # not currently supported by CohortCharacteristics
-                    "measurement",
-                    "procedure_occurrence",
-                    "device_exposure",
-                    "observation")
-  lscTableEvents<-intersect(lscTableEvents, names(cdm))
-
-  lscTableEpisodes<- c("drug_exposure", "drug_era")
-  lscTableEpisodes<-intersect(lscTableEpisodes, names(cdm))
-
-  # skip lsc for any empty tables
-  lscTableEvents <- lscTableEvents[sapply(lscTableEvents, function(tbl) hasRows(cdm[[tbl]]))]
-  lscTableEpisodes <- lscTableEpisodes[sapply(lscTableEpisodes, function(tbl) hasRows(cdm[[tbl]]))]
-
-  lscMminimumFrequency <- 0.01
-
-  if (!is.null(getOption("omopgenerics.logFile"))) {
-    omopgenerics::logMessage("Cohort diagnostics - large scale characteristics")
-  }
-  if((omopgenerics::cohortCount(cdm[[tempCohortName]]) |>
-    dplyr::filter(.data$number_records != .data$number_subjects) |>
-    nrow()) >= 1){
-    omopgenerics::logMessage("Filtering to first record per person per cohort for large scale characteristics")
-    prefix2 <- omopgenerics::tmpPrefix()
-    lscCohortName <- paste0(prefix2, cohortName)
-    cdm[[lscCohortName]] <- cdm[[tempCohortName]] |>
-      dplyr::arrange(.data$cohort_start_date) |>
-      dplyr::group_by(.data$subject_id, .data$cohort_definition_id) |>
-      dplyr::filter(dplyr::row_number() == 1L) |>
-      dplyr::ungroup() |>
-      dplyr::compute(
-        name = lscCohortName, temporary = FALSE,
-        logPrefix = "CohortConstructor_sampleCohorts_first_"
+    if (!is.null(getOption("omopgenerics.logFile"))) {
+      omopgenerics::logMessage("Cohort diagnostics - age density")
+    }
+    results[["cohort_density"]] <- cdm[[tempCohortName]] |>
+      PatientProfiles::addCohortName() |>
+      PatientProfiles::summariseResult(
+        counts = FALSE,
+        strata    = "sex",
+        includeOverallStrata = FALSE,
+        group     = "cohort_name",
+        includeOverallGroup  = FALSE,
+        variables = "age",
+        estimates = "density"
       )
-  } else{
-    lscCohortName <- tempCohortName
+  }
+
+  # Large scale characteristics ----
+  if(isTRUE(largeScaleCharacteristics)) {
+    lscWindows <- list(c(-Inf, -366), c(-365, -31),
+                       c(-30, -1), c(0, 0),
+                       c(1, 30), c(31, 365),
+                       c(366, Inf))
+
+    lscTableEvents<-c("condition_occurrence",
+                      "visit_occurrence",
+                      # "visit_detail",  # not currently supported by CohortCharacteristics
+                      "measurement",
+                      "procedure_occurrence",
+                      "device_exposure",
+                      "observation")
+    lscTableEvents<-intersect(lscTableEvents, names(cdm))
+
+    lscTableEpisodes<- c("drug_exposure", "drug_era")
+    lscTableEpisodes<-intersect(lscTableEpisodes, names(cdm))
+
+    # skip lsc for any empty tables
+    lscTableEvents <- lscTableEvents[sapply(lscTableEvents, function(tbl) hasRows(cdm[[tbl]]))]
+    lscTableEpisodes <- lscTableEpisodes[sapply(lscTableEpisodes, function(tbl) hasRows(cdm[[tbl]]))]
+
+    lscMminimumFrequency <- 0.01
+
+    if (!is.null(getOption("omopgenerics.logFile"))) {
+      omopgenerics::logMessage("Cohort diagnostics - large scale characteristics")
+    }
+    if((omopgenerics::cohortCount(cdm[[tempCohortName]]) |>
+        dplyr::filter(.data$number_records != .data$number_subjects) |>
+        nrow()) >= 1){
+      omopgenerics::logMessage("Filtering to first record per person per cohort for large scale characteristics")
+      prefix2 <- omopgenerics::tmpPrefix()
+      lscCohortName <- paste0(prefix2, cohortName)
+      cdm[[lscCohortName]] <- cdm[[tempCohortName]] |>
+        dplyr::arrange(.data$cohort_start_date) |>
+        dplyr::group_by(.data$subject_id, .data$cohort_definition_id) |>
+        dplyr::filter(dplyr::row_number() == 1L) |>
+        dplyr::ungroup() |>
+        dplyr::compute(
+          name = lscCohortName, temporary = FALSE,
+          logPrefix = "CohortConstructor_sampleCohorts_first_"
+        )
+    } else{
+      lscCohortName <- tempCohortName
     }
 
-  results[["lsc_standard"]] <- CohortCharacteristics::summariseLargeScaleCharacteristics(
-    cohort = cdm[[lscCohortName]],
-    window = lscWindows,
-    eventInWindow = lscTableEvents,
-    episodeInWindow = lscTableEpisodes,
-    minimumFrequency = lscMminimumFrequency,
-    includeSource = FALSE,
-    excludedCodes = NULL
-  )
+    results[["lsc_standard"]] <- CohortCharacteristics::summariseLargeScaleCharacteristics(
+      cohort = cdm[[lscCohortName]],
+      window = lscWindows,
+      eventInWindow = lscTableEvents,
+      episodeInWindow = lscTableEpisodes,
+      minimumFrequency = lscMminimumFrequency,
+      includeSource = FALSE,
+      excludedCodes = NULL
+    )
 
-  results[["lsc_source"]] <- CohortCharacteristics::summariseLargeScaleCharacteristics(
-    cohort = cdm[[lscCohortName]],
-    window = lscWindows,
-    eventInWindow = lscTableEvents,
-    episodeInWindow = lscTableEpisodes,
-    minimumFrequency = lscMminimumFrequency,
-    includeSource = TRUE,
-    excludedCodes = NULL
-  )
+    results[["lsc_source"]] <- CohortCharacteristics::summariseLargeScaleCharacteristics(
+      cohort = cdm[[lscCohortName]],
+      window = lscWindows,
+      eventInWindow = lscTableEvents,
+      episodeInWindow = lscTableEpisodes,
+      minimumFrequency = lscMminimumFrequency,
+      includeSource = TRUE,
+      excludedCodes = NULL
+    )
+  }
 
-  if(isTRUE(survival)){
+  # Cohort survival ----
+  if(isTRUE(cohortSurvival)){
     if("death" %in% names(cdm)){
       if (!is.null(getOption("omopgenerics.logFile"))) {
         omopgenerics::logMessage("Cohort diagnostics - death cohorts")
@@ -244,7 +277,7 @@ cohortDiagnostics <- function(cohort, survival = FALSE, cohortSample = 20000, ma
 
   omopgenerics::dropSourceTable(cdm, dplyr::starts_with(prefix))
   if(lscCohortName != tempCohortName){
-  omopgenerics::dropSourceTable(cdm, dplyr::starts_with(prefix2))
+    omopgenerics::dropSourceTable(cdm, dplyr::starts_with(prefix2))
   }
   results <- results |>
     vctrs::list_drop_empty() |>
@@ -298,11 +331,7 @@ createMatchedCohorts <- function(cdm, tempCohortName, cohortName, cohortIds, mat
   return(cdm)
 }
 
-checksCohortDiagnostics <- function(survival, cohortSample, matchedSample, call = parent.frame()){
-  omopgenerics::assertLogical(survival, call = call)
-  if(isTRUE(survival)){
-    rlang::check_installed("CohortSurvival", version = "1.0.2")
-  }
+checksCohortDiagnostics <- function(cohortSample, matchedSample, call = parent.frame()){
   omopgenerics::assertNumeric(cohortSample, integerish = TRUE, min = 0, null = TRUE, length = 1, call = call)
   omopgenerics::assertNumeric(matchedSample, integerish = TRUE, min = 0, null = TRUE, length = 1, call = call)
 }

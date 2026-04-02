@@ -6,7 +6,11 @@
 \usage{
 cohortDiagnostics(
   cohort,
-  survival = FALSE,
+  cohortCount = TRUE,
+  cohortCharacteristics = TRUE,
+  largeScaleCharacteristics = TRUE,
+  compareCohorts = TRUE,
+  cohortSurvival = FALSE,
   cohortSample = 20000,
   matchedSample = 1000
 )
@@ -14,8 +18,21 @@ cohortDiagnostics(
 \arguments{
 \item{cohort}{Cohort table in a cdm reference}
 
-\item{survival}{TRUE or FALSE. Whether to conduct survival analysis (TRUE)
+\item{cohortCount}{Whether to run `CohortCharacteristics::summariseCohortCount()` and
+`CohortCharacteristics::summariseCohortAttrition()` (TRUE) or not (FALSE).}
+
+\item{cohortCharacteristics}{Whether to run `CohortCharacteristics::summariseCharacteristics()` and
+summarise age density (TRUE) or not (FALSE).}
+
+\item{largeScaleCharacteristics}{Whether to run `CohortCharacteristics::summariseLargeScaleCharacteristics()` (TRUE)
 or not (FALSE).}
+
+\item{compareCohorts}{Whether to run `CohortCharacteristics::summariseCohortOverlap()` and
+`CohortCharacteristics::summariseCohortTiming()` (TRUE) or not (FALSE). Notice that,
+if set to TRUE, the diagnostics will only be run when there are more than one cohort.}
+
+\item{cohortSurvival}{Whether to run `CohortSurvival::estimateSingleEventSurvival()` (TRUE) or
+not (FALSE).}
 
 \item{cohortSample}{The number of people to take a random sample for cohortDiagnostics. If `cohortSample = NULL`, no sampling will be performed.}
 

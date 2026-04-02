@@ -25,9 +25,8 @@ Download a Clinical Description Template
 \examples{
 \donttest{
 library(PhenotypeR)
-library(here)
 
-downloadDatabaseDescriptionTemplate(directory = here(),
+downloadDatabaseDescriptionTemplate(directory = tempdir(),
                                     name = "GiBleed")
 
 

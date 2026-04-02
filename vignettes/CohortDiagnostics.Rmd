@@ -60,10 +60,10 @@ cdm$injuries <- conceptCohort(cdm = cdm,
 
 We can run cohort diagnostics analyses for each of our overall cohorts like so:
 ```{r}
-cohort_diag <- cohortDiagnostics(cdm$injuries, 
+cohort_diag <- cohortDiagnostics(cdm$injuries,
+                                 cohortSurvival = TRUE, 
                                  cohortSample = NULL,
-                                 matchedSample = NULL,
-                                 survival = TRUE)
+                                 matchedSample = NULL)
 ```
 
 Cohort diagnostics builds on [CohortCharacteristics](https://darwin-eu.github.io/CohortCharacteristics/) and [CohortSurvival](https://darwin-eu-dev.github.io/CohortSurvival/) R packages to perform the following analyses on our cohorts:
@@ -78,7 +78,7 @@ Cohort diagnostics builds on [CohortCharacteristics](https://darwin-eu.github.io
 [summariseCohortOverlap()](https://darwin-eu.github.io/CohortCharacteristics/reference/summariseCohortOverlap.html).
 -   **Cohort timing:** If there is more than one cohort in the cohort table supplied, summarises the timing between them using 
 [summariseCohortTiming()](https://darwin-eu.github.io/CohortCharacteristics/reference/summariseCohortTiming.html).
--   **Cohort survival:** If `survival = TRUE`, summarises the survival until the event of death (if death table is present in the cdm) using  
+-   **Cohort survival:** Smmarises the survival until the event of death (if death table is present in the cdm) using  
 [estimateSingleEventSurvival()](https://darwin-eu-dev.github.io/CohortSurvival/reference/estimateSingleEventSurvival.html). 
 
 The analyses **cohort characteristics**, **cohort age distribution**, **cohort large scale characteristics**, and **cohort survival** will also be performed (by default) in a matched cohort. The matched cohort will be created based on year of birth and sex (see [matchCohorts()](https://ohdsi.github.io/CohortConstructor/reference/matchCohorts.html) function in CohortConstructor package). This can help us to compare the results in our cohorts to those obtain in the matched cohort, representing the general population. Notice that the analysis will be performed in: (1) the original cohort, (2) individuals in the original cohorts that have a match (named the sampled cohort), and (3) the matched cohort. 

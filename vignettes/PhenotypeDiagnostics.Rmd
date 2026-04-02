@@ -76,17 +76,19 @@ Now we will proceed to run `phenotypeDiagnotics()`. This function will run the f
 -   **Cohort diagnostics**: This summarises the characteristics of our cohorts, as well as comparing them to age and sex matched controls from the database.. See [Cohort diagnostics vignette](https://ohdsi.github.io/PhenotypeR/articles/a05_CohortDiagnostics.html) for further details.
 -   **Population diagnostics**: Calculates the frequency of our study cohorts in the database in terms of their incidence rates and prevalence. See [Population diagnostics vignette](https://ohdsi.github.io/PhenotypeR/articles/a07_PopulationDiagnostics.html) for further details.
 
-We can specify which analysis we want to perform by setting to TRUE or FALSE each one of the corresponding arguments:
+We can specify which analysis we want to perform:
 ```{r, eval=FALSE}
 result <- phenotypeDiagnostics(
   cohort = cdm$my_cohort, 
-  diagnostics = c("databaseDiagnostics", "codelistDiagnostics", 
-                  "cohortDiagnostics", "populationDiagnostics"),
-  cohortSample = 20000,
-  matchedSample = 1000,
-  populationSample = 1e+06,
-  populationDateRange = as.Date(c(NA, NA))
+  cohortDiagnostics = list(
+    "cohortSample" = 20000,
+    "matchedSample" = 1000
+  ),
+  populationSample = list(
+    "populationSample" = 1e+06,
+    "populationDateRange" = as.Date(c(NA, NA))
   )
+  
 result |> glimpse()
 ```
 

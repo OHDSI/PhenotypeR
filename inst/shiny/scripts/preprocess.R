@@ -273,6 +273,7 @@ for(i in seq_along(docs)){
     clinical_descriptions[[name]] <- NULL
   }else{
     path_docx <- here::here(docs[[i]])
+
     text <- parse_docx_runs(path_docx, folder = "clinical_descriptions")
 
     clinical_descriptions[[name]] <- tibble::tibble(

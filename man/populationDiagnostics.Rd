@@ -6,12 +6,20 @@
 \usage{
 populationDiagnostics(
   cohort,
+  incidence = TRUE,
+  periodPrevalence = TRUE,
   populationSample = 1e+06,
   populationDateRange = as.Date(c(NA, NA))
 )
 }
 \arguments{
 \item{cohort}{Cohort table in a cdm reference}
+
+\item{incidence}{Whether to run `IncidencePrevalence::estimateIncidence()` (TRUE)
+or not (FALSE).}
+
+\item{periodPrevalence}{Whether to run `IncidencePrevalence::estimatePeriodPrevalence()` (TRUE)
+or not (FALSE).}
 
 \item{populationSample}{Number of people from the cdm to sample. If NULL no
 sampling will be performed. Sample will be within populationDateRange if

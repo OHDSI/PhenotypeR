@@ -119,7 +119,7 @@ diagnostics**, **codelist diagnostics**, **cohort diagnostics**, and
 **population diagnostics**) using `phenotypeDiagnostics()`:
 
 ``` r
-result <- phenotypeDiagnostics(cdm$my_cohort, survival = TRUE)
+result <- phenotypeDiagnostics(cdm$my_cohort)
 ```
 
 You can also create a table with the expected results, so you can
