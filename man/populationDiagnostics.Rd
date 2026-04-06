@@ -8,7 +8,7 @@ populationDiagnostics(
   cohort,
   incidence = TRUE,
   periodPrevalence = TRUE,
-  populationSample = 1e+06,
+  populationSample = 1e+05,
   populationDateRange = as.Date(c(NA, NA))
 )
 }

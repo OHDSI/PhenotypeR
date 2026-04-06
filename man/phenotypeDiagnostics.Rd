@@ -48,7 +48,7 @@ If the list is empty, the default values will be used.
 Example:
 *populationDiagnostics = list(
  "diagnostics" = c("incidence", "periodPrevalence"),
- "populationSample" = 1000000,
+ "populationSample" = 100000,
  "populationDateRange" = as.Date(c(NA,NA))
  )*}
 }
@@ -86,7 +86,7 @@ result <- phenotypeDiagnostics(cdm$warfarin)
 result <- phenotypeDiagnostics(cdm$warfarin,
                                databaseDiagnostics = list(
                                  "diagnostics" = c("snapshot", "person",
-                                 "observationPeriods", "clinicalRecords"),
+                                 "observationPeriods", "clinicalRecords")
                                ),
                                codelistDiagnostics = list(
                                  "diagnostics" = c("achillesCodeUse", "orphanCodeUse",
@@ -104,7 +104,7 @@ result <- phenotypeDiagnostics(cdm$warfarin,
                                ),
                                populationDiagnostics = list(
                                  "diagnostics" = c("incidence", "periodPrevalence"),
-                                 "populationSample" = 1000000,
+                                 "populationSample" = 100000,
                                  "populationDateRange" = as.Date(c(NA,NA))
                                ))
 
