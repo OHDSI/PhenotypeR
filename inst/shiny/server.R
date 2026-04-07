@@ -631,6 +631,7 @@ server <- function(input, output, session) {
 
     result <- dataFiltered$summarise_dob_density |>
       dplyr::filter(cdm_name %in% shared_cdm_names())
+    
     validateFilteredResult(result)
 
     return(result)
@@ -638,6 +639,10 @@ server <- function(input, output, session) {
 
   output$dobPlot <- renderPlot({
     filterPersonDob() |>
+        dplyr::filter(estimate_name == "density_y" |
+                        (estimate_name == "density_x" &
+                           as.Date(estimate_value) >= input$dob_date_range[[1]]) &
+                        as.Date(estimate_value) <= input$dob_date_range[[2]]) |> 
       visOmopResults::scatterPlot(
         x = "density_x",
         y = "density_y",
@@ -650,7 +655,9 @@ server <- function(input, output, session) {
       ggplot2::xlab("Date of Birth") +
       ggplot2::ylab("Density") +
       ggplot2::scale_y_continuous(labels = scales::label_number()) +
-      visOmopResults::themeVisOmop()
+      visOmopResults::themeVisOmop() +
+      ggplot2::theme(legend.title = element_blank(), 
+                     legend.position = "top")
   })
 
   # summarise_observation_period -----
@@ -706,18 +713,24 @@ server <- function(input, output, session) {
 
   output$obsPlot <- renderPlot({
 
-    filterObs() |>
+    plot_data <- filterObs() |>
+      dplyr::filter(estimate_name == "density_y" |
+                      (estimate_name == "density_x" &
+                         as.Date(estimate_value) >= input$obs_date_range[[1]]) &
+                      as.Date(estimate_value) <= input$obs_date_range[[2]]) |> 
       dplyr::mutate(variable_name =
                       dplyr::if_else(variable_name == "observation_period_start_date",
                                      "observation period start date",
                                      "observation period end date")) |>
       dplyr::mutate(variable_name = factor(variable_name,
                                            levels = c("observation period start date",
-                                                      "observation period end date"))) |>
+                                                      "observation period end date")))
+
+    plot_data |> 
       visOmopResults::scatterPlot(
         x = "density_x",
         y = "density_y",
-        group = "variable_name",
+        group = c("cdm_name", "variable_name"),
         facet = "variable_name",
         colour = "cdm_name",
         line = TRUE,
@@ -727,9 +740,13 @@ server <- function(input, output, session) {
         ymax = NULL) +
       ggplot2::xlab("Date") +
       ggplot2::ylab("Density") +
-      ggplot2::scale_y_continuous(labels = scales::label_number()) +
       ggplot2::facet_wrap(vars(variable_name),
-                          ncol = 1, scales = "free_y")
+                          ncol = 1, scales = "free_y") +
+      ggplot2::scale_y_continuous(labels = scales::label_number()) +
+      visOmopResults::themeVisOmop() +
+      ggplot2::theme(legend.title = element_blank(), 
+                     legend.position = "top") +
+      ggplot2::scale_y_continuous(labels = scales::label_number())
 
   })
 
@@ -787,10 +804,21 @@ server <- function(input, output, session) {
 
   output$clinicalTrends <- renderPlot({
 
-  plot <- filterClinicalRecordTrends() |>
+  plot_data <- filterClinicalRecordTrends() |>
+    dplyr::filter(
+      as.Date(stringr::str_split_i(additional_level, " to", 1)) >= input$records_date_range[[1]] &
+        as.Date(stringr::str_split_i(additional_level, " to", 1)) <= input$records_date_range[[2]]
+    )
+
+  plot <- plot_data |> 
       OmopSketch::plotTrend(style = "default",
                           colour = input$clinical_records_plot_colour,
-                          facet = input$clinical_records_plot_facet)
+                          facet = input$clinical_records_plot_facet) +
+    visOmopResults::themeVisOmop() +
+    ggplot2::theme(legend.title = element_blank(), 
+                   legend.position = "top") +
+    ggplot2::scale_y_continuous(labels = scales::label_number()) +
+    ggplot2::ggtitle("")
 
   if(!is.null(input$clinical_records_plot_facet) &&
      isTRUE(input$clinical_records_plot_facet_free)){
@@ -799,7 +827,12 @@ server <- function(input, output, session) {
                  scales = "free_y")
   }
 
-  plot
+  plot@data <- plot@data  |> 
+    dplyr::mutate(time_interval = stringr::str_split_i(time_interval, " to", 1)) |> 
+    dplyr::mutate(time_interval = as.Date(time_interval))
+    
+  plot +
+    ggplot2::scale_x_date()
   })
 
   # achilles_code_use -----
