@@ -201,7 +201,7 @@ ui <- fluidPage(
         icon = shiny::icon("eye"),
         bslib::navset_card_tab(
           bslib::nav_panel(
-            title = "Table person",
+            title = "Person table summary",
             bslib::card(
               full_screen = TRUE,
               bslib::card_header(
@@ -212,9 +212,54 @@ ui <- fluidPage(
             )
           ),
           bslib::nav_panel(
-            title = "Date of birth",
-            plotOutput("dobPlot")
+            title = "Date of birth distribution",
+            bslib::card(
+              full_screen = TRUE,
+              bslib::card_header(
+                # bslib::popover(
+                #   shiny::icon("download"),
+                #   shiny::numericInput(
+                #     inputId = "plot_age_pyramid_download_width",
+                #     label = "Width",
+                #     value = 15
+                #   ),
+                #   shiny::numericInput(
+                #     inputId = "plot_age_pyramid_download_height",
+                #     label = "Height",
+                #     value = 10
+                #   ),
+                #   shinyWidgets::pickerInput(
+                #     inputId = "plot_age_pyramid_download_units",
+                #     label = "Units",
+                #     selected = "cm",
+                #     choices = c("px", "cm", "inch"),
+                #     multiple = FALSE
+                #   ),
+                #   shiny::numericInput(
+                #     inputId = "plot_age_pyramid_download_dpi",
+                #     label = "dpi",
+                #     value = 300
+                #   ),
+                #   shiny::downloadButton(outputId = "plot_age_pyramid_download", label = "Download")
+                # ),
+                # class = "text-end",
+            bslib::layout_sidebar(
+              sidebar = bslib::sidebar(width = 400, open = "closed",
+                                       sliderInput(
+                                         inputId = "dob_date_range",
+                                         label = "Trim date range:",
+                                         min = minDob,
+                                         max = maxDob,
+                                         value = c(minDob, maxDob),
+                                         timeFormat = "%Y"
+                                       ),
+                                       position = "right"
+              ),
+              shiny::plotOutput("dobPlot")
+            )
           )
+            )
+        )
         )
       ),
       ## person_end -----
@@ -254,7 +299,7 @@ ui <- fluidPage(
         icon = shiny::icon("eye"),
         bslib::navset_card_tab(
           bslib::nav_panel(
-            title = "Table observation period",
+            title = "Observation period table",
             bslib::card(
               full_screen = TRUE,
               bslib::card_header(
@@ -265,8 +310,53 @@ ui <- fluidPage(
             )
           ),
           bslib::nav_panel(
-            title = "Observation periods",
+            title = "Observation period distributions",
+            bslib::card(
+              full_screen = TRUE,
+              bslib::card_header(
+                # bslib::popover(
+                #   shiny::icon("download"),
+                #   shiny::numericInput(
+                #     inputId = "plot_age_pyramid_download_width",
+                #     label = "Width",
+                #     value = 15
+                #   ),
+                #   shiny::numericInput(
+                #     inputId = "plot_age_pyramid_download_height",
+                #     label = "Height",
+                #     value = 10
+                #   ),
+                #   shinyWidgets::pickerInput(
+                #     inputId = "plot_age_pyramid_download_units",
+                #     label = "Units",
+                #     selected = "cm",
+                #     choices = c("px", "cm", "inch"),
+                #     multiple = FALSE
+                #   ),
+                #   shiny::numericInput(
+                #     inputId = "plot_age_pyramid_download_dpi",
+                #     label = "dpi",
+                #     value = 300
+                #   ),
+                #   shiny::downloadButton(outputId = "plot_age_pyramid_download", label = "Download")
+                # ),
+                # class = "text-end",
+            bslib::layout_sidebar(
+              sidebar = bslib::sidebar(width = 400, open = "closed",
+                                       sliderInput(
+                                         inputId = "obs_date_range",
+                                         label = "Trim date range:",
+                                         min = minObs,
+                                         max = maxObs,
+                                         value = c(minObs, maxObs),
+                                         timeFormat = "%Y"
+                                       ),
+                                       position = "right"
+              ),
             plotOutput("obsPlot")
+            )
+          )
+        )
           )
         )
       ),
@@ -337,6 +427,14 @@ ui <- fluidPage(
               title = "Trends",
               bslib::layout_sidebar(
                 sidebar = bslib::sidebar(width = 400, open = "closed",
+                                         sliderInput(
+                                           inputId = "records_date_range",
+                                           label = "Trim date range:",
+                                           min = minRecords,
+                                           max = maxRecords,
+                                           value = c(minRecords, maxRecords),
+                                           timeFormat = "%Y"
+                                         ),
                                          shinyWidgets::pickerInput(
                                            inputId = "clinical_records_plot_facet",
                                            label = "Facet",
