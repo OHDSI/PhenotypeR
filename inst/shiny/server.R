@@ -452,7 +452,7 @@ server <- function(input, output, session) {
   
   output$database_text <- renderUI({
     info <- database_description()
-
+    
     info$author[which(info$author == "")] <- "Unknown author"
     info$date[which(info$date == "")]     <- "Unknown date"
     info$key_sources[which(info$key_sources == "")] <- "Unknown key sources"
@@ -461,11 +461,11 @@ server <- function(input, output, session) {
       dplyr::mutate("metadata" = paste0("Author: ", author, " (Date: ", date, ")<br>Sources: ", key_sources))
     
     info$description <-  purrr::map(info$description,
-                        function(info) {paste0("<lbr>", info, "</br>")})
-
+                                    function(info) {paste0("<lbr>", info, "</br>")})
+    
     lapply(1:nrow(info), function(i) {
       row <- info[i, ]
-
+      
       has_meta <- !is.na(row$author) && !is.na(row$date) && !is.na(row$key_sources)
       
       tags$details(
@@ -485,7 +485,8 @@ server <- function(input, output, session) {
               )
             )
           } else{
-            tags$div("No database description for this database")
+            tags$div(style = "padding: 15px; border-left: 4px solid #750075; background: #E9E9E9; font-weight: normal;",
+                     "No database description for this database")
           }
         )
       )
@@ -496,11 +497,11 @@ server <- function(input, output, session) {
   clinical_description <- eventReactive(input$updateClinicalDescription, {
     req(shared_cohort_names())
     req(inputs_initialized())
-
+    
     info <- clinical_descriptions |>
       dplyr::filter(.data$phenotype %in% shared_cohort_names()) |>
       dplyr::mutate("description" = input$phenotypes_section)
-
+    
     return(info)
   })
   
@@ -514,7 +515,7 @@ server <- function(input, output, session) {
       dplyr::mutate("metadata" = paste0("Author: ", author, " (Date: ", date, ")<br>Sources: ", key_sources))
     
     info$description <-  purrr::map(info$description,
-                                   function(info) {paste0("<lbr>", info, "</br>")})
+                                    function(info) {paste0("<lbr>", info, "</br>")})
     
     lapply(1:nrow(info), function(i) {
       row <- info[i, ]
@@ -538,7 +539,10 @@ server <- function(input, output, session) {
               )
             )
           } else{
-            tags$div("No description for this cohort")
+            tags$div(
+              style = "padding: 15px; border-left: 4px solid #750075; background: #E9E9E9; font-weight: normal;",
+              "No description for this cohort")
+            
           }
         )
       )
