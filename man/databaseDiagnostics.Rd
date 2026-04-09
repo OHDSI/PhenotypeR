@@ -4,26 +4,37 @@
 \alias{databaseDiagnostics}
 \title{Database diagnostics}
 \usage{
-databaseDiagnostics(cohort, clinicalTableSample = NULL)
+databaseDiagnostics(
+  cohort,
+  snapshot = TRUE,
+  personTableSummary = TRUE,
+  observationPeriodsSummary = TRUE,
+  clinicalRecordsSummary = TRUE
+)
 }
 \arguments{
 \item{cohort}{Cohort table in a cdm reference}
 
-\item{clinicalTableSample}{The number of records to take a random sample for
-database diagnostics. If `clinicalTableSample = NULL`, no sampling will be
-performed. If `clinicalTableSample = 0` clinical table summaries will not be
-run.}
+\item{snapshot}{Whether to run `OmopSketch::summariseOmopSnapshot()` (TRUE) or not (FALSE).}
+
+\item{personTableSummary}{Whether to run `OmopSketch::summarisePerson()` (TRUE) or not (FALSE).}
+
+\item{observationPeriodsSummary}{Whether to run `OmopSketch::summariseObservationPeriod()` (TRUE) or not (FALSE).}
+
+\item{clinicalRecordsSummary}{Whether to run `OmopSketch::summariseClinicalRecords()` on those clinical
+tables where the codes associated with your cohort are found (TRUE) or not (FALSE).}
 }
 \value{
 A summarised result
 }
 \description{
-phenotypeR diagnostics on the cdm object.
+PhenotypeR diagnostics on the cdm object.
 
 Diagnostics include:
 * Summarise a cdm_reference object, creating a snapshot with the metadata of the cdm_reference object.
 * Summarise the observation period table getting some overall statistics in a summarised_result object.
 * Summarise the person table including demographics (sex, race, ethnicity, year of birth) and related statistics.
+* Summarise the OMOP clinical tables where the codes associated with your cohort are found.
 }
 \examples{
 \donttest{
@@ -37,5 +48,8 @@ cdm$new_cohort <- conceptCohort(cdm,
                                 conceptSet = list("codes" = c(40213201L, 4336464L)),
                                 name = "new_cohort")
 
+ result <- databaseDiagnostics(cohort = cdm$new_cohort)
+
+ CDMConnector::cdmDisconnect(cdm = cdm)
 }
 }

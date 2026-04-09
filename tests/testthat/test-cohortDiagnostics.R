@@ -112,7 +112,7 @@ test_that("run with multiple cohorts", {
 
   # empty death tables
   cdm <- omopgenerics::emptyOmopTable(cdm, name = "death")
-  expect_warning(cohortDiagnostics(cdm$my_cohort, survival = TRUE))
+  expect_warning(cohortDiagnostics(cdm$my_cohort, cohortSurvival = TRUE))
 
   # check survival analysis is being done
   cdm_local <- omock::mockCdmReference() |>
@@ -130,7 +130,8 @@ test_that("run with multiple cohorts", {
   db <- DBI::dbConnect(duckdb::duckdb())
   cdm <- CDMConnector::copyCdmTo(con = db, cdm = cdm_local,
                                  schema ="main", overwrite = TRUE)
-  result <- cohortDiagnostics(cdm$my_cohort, survival = TRUE)
+  result <- cohortDiagnostics(cdm$my_cohort,
+                              cohortSurvival = TRUE)
 
   expect_true("summarise_cohort_count" %in%
                    c(result |>
@@ -189,3 +190,4 @@ test_that("check table and plotting functionality work", {
   # (these tests don't check whether the plots look nice)
 
 })
+

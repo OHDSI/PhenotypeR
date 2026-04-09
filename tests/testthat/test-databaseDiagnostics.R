@@ -18,13 +18,13 @@ test_that("db diagnostics", {
                                  schema ="main", overwrite = TRUE)
 
   # Empty codelist
- expect_warning(db_diag <- databaseDiagnostics(cdm$my_cohort))
- expect_true("summarise_omop_snapshot" %in%
-               settings(db_diag)$result_type)
- expect_true("summarise_observation_period" %in%
-               settings(db_diag)$result_type)
- expect_true("summarise_person" %in%
-               settings(db_diag)$result_type)
+  expect_warning(db_diag <- databaseDiagnostics(cdm$my_cohort))
+  expect_equal(settings(db_diag)$result_type |>
+                 unique() |>
+                 sort(),
+               c("summarise_dob_density", "summarise_obs_density",
+                 "summarise_observation_period",
+                 "summarise_omop_snapshot", "summarise_person") )
 
   # Only one codelist
   cdm$my_cohort <- cdm$my_cohort |>
@@ -34,14 +34,14 @@ test_that("db diagnostics", {
       cohortName = c("cohort_1", "cohort_1")
     )
   expect_no_error(db_diag <- databaseDiagnostics(cdm$my_cohort))
-  expect_true("summarise_omop_snapshot" %in%
-                settings(db_diag)$result_type)
-  expect_true("summarise_observation_period" %in%
-                settings(db_diag)$result_type)
-  expect_true("summarise_person" %in%
-                settings(db_diag)$result_type)
-  expect_identical(db_diag$group_level |> unique(),
-                   c("overall", "all", "1st", "condition_occurrence", "drug_exposure"))
+  expect_equal(settings(db_diag)$result_type |>
+                 unique() |>
+                 sort(),
+               c("summarise_clinical_records",
+                 "summarise_dob_density", "summarise_obs_density",
+                 "summarise_observation_period",
+                 "summarise_omop_snapshot", "summarise_person", "summarise_trend"))
+
   expect_no_error(OmopSketch::tableOmopSnapshot(db_diag))
   expect_no_error(OmopSketch::tableClinicalRecords(db_diag))
   expect_identical(db_diag |>
@@ -51,25 +51,14 @@ test_that("db diagnostics", {
                    "databaseDiagnostics")
 
   # skip clinical table summary
-  expect_no_error(db_diag_no_clinical_summary <- databaseDiagnostics(cdm$my_cohort, clinicalTableSample = 0))
+  expect_no_error(db_diag_no_clinical_summary <- databaseDiagnostics(cdm$my_cohort,
+                                                                     clinicalRecordsSummary = FALSE))
   expect_false("summarise_clinical_records" %in%
                  (omopgenerics::settings(db_diag_no_clinical_summary) |>
                     dplyr::pull("result_type")))
   expect_false("summarise_trend" %in%
                  (omopgenerics::settings(db_diag_no_clinical_summary) |>
                     dplyr::pull("result_type")))
-
-  # no sampling
-  expect_no_error(db_diag_w_clinical_summary <- databaseDiagnostics(cdm$my_cohort, clinicalTableSample = NULL))
-  expect_true("summarise_clinical_records" %in%
-                 (omopgenerics::settings(db_diag_w_clinical_summary) |>
-                    dplyr::pull("result_type")))
-  expect_true("summarise_trend" %in%
-                 (omopgenerics::settings(db_diag_w_clinical_summary) |>
-                    dplyr::pull("result_type")))
-
-  # sampling not yet supported
-  expect_error(db_diag_no_clinical_summary <- databaseDiagnostics(cdm$my_cohort, clinicalTableSample = 1000))
 
   CDMConnector::cdmDisconnect(cdm = cdm)
 

@@ -25,37 +25,25 @@ NULL
 #' @keywords internal
 NULL
 
-#' Helper for consistent documentation of `clinicalTableSample`.
+#' Helper for consistent documentation of `measurementDiagnosticsSample`.
 #'
-#' @param clinicalTableSample The number of records to take a random sample for
-#' database diagnostics. If `clinicalTableSample = NULL`, no sampling will be
-#' performed. If `clinicalTableSample = 0` clinical table summaries will not be
+#' @param measurementDiagnosticsSample The number of people to take a random sample for
+#' measurement diagnostics. If `measurementDiagnosticsSample = NULL`, no sampling will be
+#' performed. If `measurementDiagnosticsSample = 0` measurement diagnostics will not be
 #' run.
 #'
-#' @name clinicalTableSample
+#' @name measurementDiagnosticsSampleDoc
 #' @keywords internal
 NULL
 
-
-#' Helper for consistent documentation of `measurementSample`.
+#' Helper for consistent documentation of `drugDiagnosticsSample`.
 #'
-#' @param measurementSample The number of people to take a random sample for
-#' measurement diagnostics. If `measurementSample = NULL`, no sampling will be
-#' performed. If `measurementSample = 0` measurement diagnostics will not be
+#' @param drugDiagnosticsSample The number of people to take a random sample for
+#' drug diagnostics. If `drugDiagnosticsSample = NULL`, no sampling will be
+#' performed. If `drugDiagnosticsSample = 0` drug diagnostics will not be
 #' run.
 #'
-#' @name measurementSampleDoc
-#' @keywords internal
-NULL
-
-#' Helper for consistent documentation of `drugExposureSample`.
-#'
-#' @param drugExposureSample The number of people to take a random sample for
-#' drug diagnostics. If `drugExposureSample = NULL`, no sampling will be
-#' performed. If `drugExposureSample = 0` drug diagnostics will not be
-#' run.
-#'
-#' @name drugExposureSampleDoc
+#' @name drugDiagnosticsSampleDoc
 #' @keywords internal
 NULL
 
