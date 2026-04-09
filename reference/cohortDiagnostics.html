@@ -69,7 +69,11 @@ The diganostics include:
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cohortDiagnostics</span><span class="op">(</span></span>
 <span>  <span class="va">cohort</span>,</span>
-<span>  survival <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  cohortCount <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  cohortCharacteristics <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  largeScaleCharacteristics <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  compareCohorts <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  cohortSurvival <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  cohortSample <span class="op">=</span> <span class="fl">20000</span>,</span>
 <span>  matchedSample <span class="op">=</span> <span class="fl">1000</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -83,9 +87,30 @@ The diganostics include:
 <dd><p>Cohort table in a cdm reference</p></dd>
 
 
-<dt id="arg-survival">survival<a class="anchor" aria-label="anchor" href="#arg-survival"></a></dt>
-<dd><p>TRUE or FALSE. Whether to conduct survival analysis (TRUE)
+<dt id="arg-cohortcount">cohortCount<a class="anchor" aria-label="anchor" href="#arg-cohortcount"></a></dt>
+<dd><p>Whether to run `CohortCharacteristics::summariseCohortCount()` and
+`CohortCharacteristics::summariseCohortAttrition()` (TRUE) or not (FALSE).</p></dd>
+
+
+<dt id="arg-cohortcharacteristics">cohortCharacteristics<a class="anchor" aria-label="anchor" href="#arg-cohortcharacteristics"></a></dt>
+<dd><p>Whether to run `CohortCharacteristics::summariseCharacteristics()` and
+summarise age density (TRUE) or not (FALSE).</p></dd>
+
+
+<dt id="arg-largescalecharacteristics">largeScaleCharacteristics<a class="anchor" aria-label="anchor" href="#arg-largescalecharacteristics"></a></dt>
+<dd><p>Whether to run `CohortCharacteristics::summariseLargeScaleCharacteristics()` (TRUE)
 or not (FALSE).</p></dd>
+
+
+<dt id="arg-comparecohorts">compareCohorts<a class="anchor" aria-label="anchor" href="#arg-comparecohorts"></a></dt>
+<dd><p>Whether to run `CohortCharacteristics::summariseCohortOverlap()` and
+`CohortCharacteristics::summariseCohortTiming()` (TRUE) or not (FALSE). Notice that,
+if set to TRUE, the diagnostics will only be run when there are more than one cohort.</p></dd>
+
+
+<dt id="arg-cohortsurvival">cohortSurvival<a class="anchor" aria-label="anchor" href="#arg-cohortsurvival"></a></dt>
+<dd><p>Whether to run `CohortSurvival::estimateSingleEventSurvival()` (TRUE) or
+not (FALSE).</p></dd>
 
 
 <dt id="arg-cohortsample">cohortSample<a class="anchor" aria-label="anchor" href="#arg-cohortsample"></a></dt>
@@ -160,8 +185,8 @@ matched cohorts will be created.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> age: density</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   the database side</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-01 16:46:13.37412</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-01 16:46:13.494535</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-09 10:02:01.191128</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-09 10:02:01.317972</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising large scale characteristics </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
@@ -220,7 +245,7 @@ matched cohorts will be created.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window 31 and …</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window 366 and…</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Formatting result</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 471 estimates dropped as frequency less than 1%</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 463 estimates dropped as frequency less than 1%</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summarising large scale characteristics</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising large scale characteristics </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7)</span>
@@ -280,7 +305,7 @@ matched cohorts will be created.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window 31 and …</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window 366 and…</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Formatting result</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 471 estimates dropped as frequency less than 1%</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 463 estimates dropped as frequency less than 1%</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summarising large scale characteristics</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `cohort_sample` and `matched_sample` casted to character.</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>

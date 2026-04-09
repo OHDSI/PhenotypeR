@@ -13,8 +13,13 @@ present in the cdm so that concept counts could be derived.
 ``` r
 codelistDiagnostics(
   cohort,
-  measurementSample = 20000,
-  drugExposureSample = 20000
+  achillesCodeUse = TRUE,
+  orphanCodeUse = TRUE,
+  cohortCodeUse = TRUE,
+  drugDiagnostics = TRUE,
+  measurementDiagnostics = TRUE,
+  measurementDiagnosticsSample = 20000,
+  drugDiagnosticsSample = 20000
 )
 ```
 
@@ -26,18 +31,45 @@ codelistDiagnostics(
   be populated. The cdm reference must contain achilles tables as these
   will be used for deriving concept counts.
 
-- measurementSample:
+- achillesCodeUse:
+
+  Whether to run \`CodelistGenerator::summariseAchillesCodeUse()\`
+  (TRUE) or not (FALSE).
+
+- orphanCodeUse:
+
+  Whether to run \`CodelistGenerator::summariseOrphanCodeUse()\` (TRUE)
+  or not (FALSE).
+
+- cohortCodeUse:
+
+  Whether to run \`CodelistGenerator::summariseCohortCodeUse()\` (TRUE)
+  or not (FALSE).
+
+- drugDiagnostics:
+
+  Whether to run drug diagnostics (TRUE) or not (FALSE). Note that, if
+  set to TRUE, the diagnostics will only run if the cohort code list
+  contains drug codes.
+
+- measurementDiagnostics:
+
+  Whether to run measurement diagnostics (TRUE) or not (FALSE). Note
+  that, if set to TRUE, the diagnostics will only run if the cohort code
+  list contains measurement codes.
+
+- measurementDiagnosticsSample:
 
   The number of people to take a random sample for measurement
-  diagnostics. If \`measurementSample = NULL\`, no sampling will be
-  performed. If \`measurementSample = 0\` measurement diagnostics will
-  not be run.
+  diagnostics. If \`measurementDiagnosticsSample = NULL\`, no sampling
+  will be performed. If \`measurementDiagnosticsSample = 0\` measurement
+  diagnostics will not be run.
 
-- drugExposureSample:
+- drugDiagnosticsSample:
 
   The number of people to take a random sample for drug diagnostics. If
-  \`drugExposureSample = NULL\`, no sampling will be performed. If
-  \`drugExposureSample = 0\` drug diagnostics will not be run.
+  \`drugDiagnosticsSample = NULL\`, no sampling will be performed. If
+  \`drugDiagnosticsSample = 0\` drug diagnostics will not be run.
 
 ## Value
 
@@ -76,15 +108,15 @@ result <- codelistDiagnostics(cdm$warfarin)
 #> • quantity: min, q01, q05, q25, median, q75, q95, q99, max, percentage_missing
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side
-#> → Start summary of data, at 2026-04-01 16:45:39.398535
-#> ✔ Summary finished, at 2026-04-01 16:45:40.277341
+#> → Start summary of data, at 2026-04-09 10:01:28.744096
+#> ✔ Summary finished, at 2026-04-09 10:01:29.615626
 #> ℹ The following estimates will be calculated:
 #> • days_to_next_record: min, q01, q05, q25, median, q75, q95, q99, max,
 #>   percentage_missing
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side
-#> → Start summary of data, at 2026-04-01 16:45:40.958868
-#> ✔ Summary finished, at 2026-04-01 16:45:41.129721
+#> → Start summary of data, at 2026-04-09 10:01:30.291495
+#> ✔ Summary finished, at 2026-04-09 10:01:30.460017
 #> ! No common ingredient found for codelist: `warfarin`.
 #> ℹ Change ingredient threshold with options(PhenotypeR_ingredient_threshold),
 #>   threshold = 0.8.

@@ -10,7 +10,9 @@ denomination population. Diagnostics include:
 ``` r
 populationDiagnostics(
   cohort,
-  populationSample = 1e+06,
+  incidence = TRUE,
+  periodPrevalence = TRUE,
+  populationSample = 1e+05,
   populationDateRange = as.Date(c(NA, NA))
 )
 ```
@@ -20,6 +22,16 @@ populationDiagnostics(
 - cohort:
 
   Cohort table in a cdm reference
+
+- incidence:
+
+  Whether to run \`IncidencePrevalence::estimateIncidence()\` (TRUE) or
+  not (FALSE).
+
+- periodPrevalence:
+
+  Whether to run \`IncidencePrevalence::estimatePeriodPrevalence()\`
+  (TRUE) or not (FALSE).
 
 - populationSample:
 
@@ -74,7 +86,7 @@ result <- cdm$warfarin |>
 #> ℹ Getting incidence for analysis 5 of 7
 #> ℹ Getting incidence for analysis 6 of 7
 #> ℹ Getting incidence for analysis 7 of 7
-#> ✔ Overall time taken: 0 mins and 10 secs
+#> ✔ Overall time taken: 0 mins and 9 secs
 #> ℹ Getting prevalence for analysis 1 of 7
 #> ℹ Getting prevalence for analysis 2 of 7
 #> ℹ Getting prevalence for analysis 3 of 7

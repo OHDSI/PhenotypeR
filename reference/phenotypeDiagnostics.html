@@ -66,16 +66,10 @@ this includes:</p>
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">phenotypeDiagnostics</span><span class="op">(</span></span>
 <span>  <span class="va">cohort</span>,</span>
-<span>  diagnostics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"databaseDiagnostics"</span>, <span class="st">"codelistDiagnostics"</span>, <span class="st">"cohortDiagnostics"</span>,</span>
-<span>    <span class="st">"populationDiagnostics"</span><span class="op">)</span>,</span>
-<span>  clinicalTableSample <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  measurementSample <span class="op">=</span> <span class="fl">20000</span>,</span>
-<span>  drugExposureSample <span class="op">=</span> <span class="fl">20000</span>,</span>
-<span>  survival <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  cohortSample <span class="op">=</span> <span class="fl">20000</span>,</span>
-<span>  matchedSample <span class="op">=</span> <span class="fl">1000</span>,</span>
-<span>  populationSample <span class="op">=</span> <span class="fl">1e+06</span>,</span>
-<span>  populationDateRange <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span></span>
+<span>  databaseDiagnostics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  codelistDiagnostics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  cohortDiagnostics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  populationDiagnostics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -87,61 +81,49 @@ this includes:</p>
 <dd><p>Cohort table in a cdm reference</p></dd>
 
 
-<dt id="arg-diagnostics">diagnostics<a class="anchor" aria-label="anchor" href="#arg-diagnostics"></a></dt>
-<dd><p>Vector indicating which diagnostics to perform. Options
-include: `databaseDiagnostics`, `codelistDiagnostics`, `cohortDiagnostics`,
-and `populationDiagnostics`.</p></dd>
+<dt id="arg-databasediagnostics">databaseDiagnostics<a class="anchor" aria-label="anchor" href="#arg-databasediagnostics"></a></dt>
+<dd><p>A list of arguments that uses `databaseDiagnostics`.
+If the list is empty, the default values will be used.
+Example:
+*databaseDiagnostics = list(
+"diagnostics" = c("snapshot", "personTableSummary", "observationPeriodsSummary", "clinicalRecordsSummary")
+ )*</p></dd>
 
 
-<dt id="arg-clinicaltablesample">clinicalTableSample<a class="anchor" aria-label="anchor" href="#arg-clinicaltablesample"></a></dt>
-<dd><p>The number of records to take a random sample for
-database diagnostics. If `clinicalTableSample = NULL`, no sampling will be
-performed. If `clinicalTableSample = 0` clinical table summaries will not be
-run.</p></dd>
+<dt id="arg-codelistdiagnostics">codelistDiagnostics<a class="anchor" aria-label="anchor" href="#arg-codelistdiagnostics"></a></dt>
+<dd><p>A list of arguments that uses `codelistDiagnostics`.
+If the list is empty, the default values will be used.
+Example:
+*codelistDiagnostics = list(
+ "diagnostics" = c("achillesCodeUse", "orphanCodeUse", "cohortCodeUse",
+ "drugDiagnostics", "measurementDiagnostics"),
+ "measurementDiagnosticsSample" = 20000,
+ "drugDiagnosticsSample" = 20000
+  )*</p></dd>
 
 
-<dt id="arg-measurementsample">measurementSample<a class="anchor" aria-label="anchor" href="#arg-measurementsample"></a></dt>
-<dd><p>The number of people to take a random sample for
-measurement diagnostics. If `measurementSample = NULL`, no sampling will be
-performed. If `measurementSample = 0` measurement diagnostics will not be
-run.</p></dd>
+<dt id="arg-cohortdiagnostics">cohortDiagnostics<a class="anchor" aria-label="anchor" href="#arg-cohortdiagnostics"></a></dt>
+<dd><p>A list of arguments that uses `cohortDiagnostics`.
+If the list is empty,
+the default values will be used.
+Example:
+*cohortDiagnostics = list(
+ "diagnostics" = c("cohortCount", "cohortCharacteristics", "largeScaleCharacteristics",
+                   "compareCohorts", "cohortSurvival),
+ "cohortSample" = 20000,
+ "matchedSample" = 1000
+ )*</p></dd>
 
 
-<dt id="arg-drugexposuresample">drugExposureSample<a class="anchor" aria-label="anchor" href="#arg-drugexposuresample"></a></dt>
-<dd><p>The number of people to take a random sample for
-drug diagnostics. If `drugExposureSample = NULL`, no sampling will be
-performed. If `drugExposureSample = 0` drug diagnostics will not be
-run.</p></dd>
-
-
-<dt id="arg-survival">survival<a class="anchor" aria-label="anchor" href="#arg-survival"></a></dt>
-<dd><p>TRUE or FALSE. Whether to conduct survival analysis (TRUE)
-or not (FALSE).</p></dd>
-
-
-<dt id="arg-cohortsample">cohortSample<a class="anchor" aria-label="anchor" href="#arg-cohortsample"></a></dt>
-<dd><p>The number of people to take a random sample for cohortDiagnostics. If `cohortSample = NULL`, no sampling will be performed.</p></dd>
-
-
-<dt id="arg-matchedsample">matchedSample<a class="anchor" aria-label="anchor" href="#arg-matchedsample"></a></dt>
-<dd><p>The number of people to take a random sample for
-matching. If `matchedSample = NULL`, no sampling will be performed. If `matchedSample = 0`, no
-matched cohorts will be created.</p></dd>
-
-
-<dt id="arg-populationsample">populationSample<a class="anchor" aria-label="anchor" href="#arg-populationsample"></a></dt>
-<dd><p>Number of people from the cdm to sample. If NULL no
-sampling will be performed. Sample will be within populationDateRange if
-specified.</p></dd>
-
-
-<dt id="arg-populationdaterange">populationDateRange<a class="anchor" aria-label="anchor" href="#arg-populationdaterange"></a></dt>
-<dd><p>Two dates. The first indicating the earliest cohort
-start date and the second indicating the latest possible cohort end date. If
-NULL or the first date is set as missing, the earliest observation_start_date
-in the observation_period table will be used for the former. If  NULL or the
-second date is set as missing, the latest observation_end_date in the
-observation_period table will be used for the latter.</p></dd>
+<dt id="arg-populationdiagnostics">populationDiagnostics<a class="anchor" aria-label="anchor" href="#arg-populationdiagnostics"></a></dt>
+<dd><p>A list of arguments that uses `populationDiagnostics`.
+If the list is empty, the default values will be used.
+Example:
+*populationDiagnostics = list(
+ "diagnostics" = c("incidence", "periodPrevalence"),
+ "populationSample" = 100000,
+ "populationDateRange" = as.Date(c(NA,NA))
+ )*</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -172,19 +154,22 @@ observation_period table will be used for the latter.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Merging overlapping records.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Cohort <span style="font-weight: bold;">warfarin</span> created.</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">phenotypeDiagnostics</span><span class="op">(</span><span class="va">cdm</span><span class="op">$</span><span class="va">warfarin</span>, populationSample <span class="op">=</span> <span class="fl">100000</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Run PhenotypeR with the default values. If you want to check which are the</span></span></span>
+<span class="r-in"><span><span class="co"># default values, use:</span></span></span>
+<span class="r-in"><span><span class="co"># `formals(populationDiagnostics)`</span></span></span>
+<span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">phenotypeDiagnostics</span><span class="op">(</span><span class="va">cdm</span><span class="op">$</span><span class="va">warfarin</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Creating log file:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   <span style="color: #0000BB;">/tmp/RtmphC4rnn/phenotypeDiagnostics_log_2026_04_01_16_47_361e4d61be867.txt</span>.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-01 16:47:36]</span> - Log file created</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-01 16:47:36]</span> - Database diagnostics - getting CDM Snapshot</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-01 16:47:37]</span> - Database diagnostics - summarising person table</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   <span style="color: #0000BB;">/tmp/Rtmpv9Qvve/phenotypeDiagnostics_log_2026_04_09_10_03_381cb422620f6e.txt</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:03:38]</span> - Log file created</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:03:38]</span> - Database diagnostics - getting CDM Snapshot</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:03:38]</span> - Database diagnostics - summarising person table</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The following estimates will be calculated:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> date_of_birth: density</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   the database side</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-01 16:47:41.605431</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-01 16:47:41.663314</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-01 16:47:41]</span> - Database diagnostics - summarising observation period</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-09 10:03:42.504051</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-09 10:03:42.570116</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:03:42]</span> - Database diagnostics - summarising observation period</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> retrieving cdm object from <span style="font-style: italic;">cdm_table</span>.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span><span style="color: #BBBB00;">!</span> There are 2649 individuals not included in the person table.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The following estimates will be calculated:</span>
@@ -192,9 +177,9 @@ observation_period table will be used for the latter.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> observation_period_end_date: density</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   the database side</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-01 16:47:44.852181</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-01 16:47:44.918425</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-01 16:47:45]</span> - Database diagnostics - summarising clinical tables -</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-09 10:03:45.855033</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-09 10:03:45.927857</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:03:46]</span> - Database diagnostics - summarising clinical tables -</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> summary</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Adding variables of interest to <span style="color: #0000BB;">drug_exposure</span>.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising records per person in <span style="color: #0000BB;">drug_exposure</span>.</span>
@@ -208,11 +193,11 @@ observation_period table will be used for the latter.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising concept types in <span style="color: #0000BB;">drug_exposure</span>.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising concept class in <span style="color: #0000BB;">drug_exposure</span>.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising missing data in <span style="color: #0000BB;">drug_exposure</span>.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-01 16:47:49]</span> - Database diagnostics - summarising clinical tables -</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:03:50]</span> - Database diagnostics - summarising clinical tables -</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> trends</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-01 16:47:50]</span> - Codelist diagnostics - index event breakdown</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:03:50]</span> - Codelist diagnostics - index event breakdown</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Getting counts of warfarin codes for cohort warfarin</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-01 16:47:51]</span> - Codelist diagnostics - drug diagnostics</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:03:52]</span> - Codelist diagnostics - drug diagnostics</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Returning entry cohort as the size of the cohorts to be sampled is equal or</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> smaller than `n`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The following estimates will be calculated:</span>
@@ -221,28 +206,28 @@ observation_period table will be used for the latter.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> quantity: min, q01, q05, q25, median, q75, q95, q99, max, percentage_missing</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   the database side</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-01 16:47:53.41562</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-01 16:47:54.243913</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-09 10:03:54.109144</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-09 10:03:54.938788</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The following estimates will be calculated:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> days_to_next_record: min, q01, q05, q25, median, q75, q95, q99, max,</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   percentage_missing</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   the database side</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-01 16:47:54.901304</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-01 16:47:55.063667</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-09 10:03:55.577006</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-09 10:03:55.734149</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> No common ingredient found for codelist: `warfarin`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Change ingredient threshold with options(PhenotypeR_ingredient_threshold),</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   threshold = 0.8.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The CDM reference containing the cohort must also contain achilles tables.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> Returning only index event breakdown.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-01 16:47:58]</span> - Cohort diagnostics - cohort attrition</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-01 16:47:59]</span> - Cohort diagnostics - cohort count</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:03:59]</span> - Cohort diagnostics - cohort attrition</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:03:59]</span> - Cohort diagnostics - cohort count</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising data</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising cohort <span style="color: #0000BB;">warfarin</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> summariseCharacteristics finished!</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Skipping cohort sampling as all cohorts have less than 20000 individuals.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-01 16:48:00]</span> - Cohort diagnostics - matched cohorts</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Sampling cohort `tmp_028_sampled`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:04:00]</span> - Cohort diagnostics - matched cohorts</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Sampling cohort `tmp_036_sampled`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Returning entry cohort as the size of the cohorts to be sampled is equal or</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> smaller than `n`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Generating an age and sex matched cohort for warfarin</span></span>
@@ -258,7 +243,7 @@ observation_period table will be used for the latter.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Binding cohorts</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Done</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Getting cohorts and indexes</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-01 16:48:11]</span> - Cohort diagnostics - cohort characteristics</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:04:12]</span> - Cohort diagnostics - cohort characteristics</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> adding demographics columns</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> adding tableIntersectCount 1/1</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> window names casted to snake_case:</span>
@@ -268,14 +253,14 @@ observation_period table will be used for the latter.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising cohort <span style="color: #0000BB;">warfarin_sampled</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising cohort <span style="color: #0000BB;">warfarin_matched</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> summariseCharacteristics finished!</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-01 16:48:16]</span> - Cohort diagnostics - age density</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:04:16]</span> - Cohort diagnostics - age density</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The following estimates will be calculated:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> age: density</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   the database side</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-01 16:48:17.381949</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-01 16:48:17.515095</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-01 16:48:17]</span> - Cohort diagnostics - large scale characteristics</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-09 10:04:17.274607</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-09 10:04:17.406386</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:04:17]</span> - Cohort diagnostics - large scale characteristics</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising large scale characteristics </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
@@ -334,7 +319,7 @@ observation_period table will be used for the latter.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window 31 and …</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window 366 and…</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Formatting result</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 472 estimates dropped as frequency less than 1%</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 517 estimates dropped as frequency less than 1%</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summarising large scale characteristics</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising large scale characteristics </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7)</span>
@@ -394,14 +379,14 @@ observation_period table will be used for the latter.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window 31 and …</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window 366 and…</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Formatting result</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 472 estimates dropped as frequency less than 1%</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 517 estimates dropped as frequency less than 1%</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summarising large scale characteristics</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `cohort_sample` and `matched_sample` casted to character.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-01 16:49:18]</span> - Population diagnosics - denominator cohort</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-01 16:49:18]</span> - Population diagnosics - sampling person table to1e+05</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:05:16]</span> - Population diagnosics - denominator cohort</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:05:16]</span> - Population diagnosics - sampling person table to1e+05</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Creating denominator cohorts</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Cohorts created in 0 min and 5 sec</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-01 16:49:24]</span> - Population diagnosics - incidence</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:05:22]</span> - Population diagnosics - incidence</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 1 of 7</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 2 of 7</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 3 of 7</span>
@@ -410,7 +395,7 @@ observation_period table will be used for the latter.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 6 of 7</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 7 of 7</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Overall time taken: 0 mins and 9 secs</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-01 16:49:34]</span> - Population diagnosics - prevalence</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:05:32]</span> - Population diagnosics - prevalence</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 1 of 7</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 2 of 7</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 3 of 7</span>
@@ -418,13 +403,810 @@ observation_period table will be used for the latter.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 5 of 7</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 6 of 7</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 7 of 7</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Time taken: 0 mins and 6 secs</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Time taken: 0 mins and 5 secs</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `populationDateStart`, `populationDateEnd`, and `populationSample` casted to</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> character.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `populationDateStart` and `populationDateEnd` eliminated from settings as all</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> elements are NA.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-01 16:49:40]</span> - Phenotype diagnostics - exporting results</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-01 16:49:40]</span> - Exporting log file</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:05:38]</span> - Phenotype diagnostics - exporting results</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:05:38]</span> - Exporting log file</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Notice that the previous line of code will give the same results as typing manually</span></span></span>
+<span class="r-in"><span><span class="co"># all the default values:</span></span></span>
+<span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">phenotypeDiagnostics</span><span class="op">(</span><span class="va">cdm</span><span class="op">$</span><span class="va">warfarin</span>,</span></span>
+<span class="r-in"><span>                               databaseDiagnostics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>                                 <span class="st">"diagnostics"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"snapshot"</span>, <span class="st">"personTableSummary"</span>,</span></span>
+<span class="r-in"><span>                                 <span class="st">"observationPeriodsSummary"</span>, <span class="st">"clinicalRecordsSummary"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                               <span class="op">)</span>,</span></span>
+<span class="r-in"><span>                               codelistDiagnostics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>                                 <span class="st">"diagnostics"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"achillesCodeUse"</span>, <span class="st">"orphanCodeUse"</span>,</span></span>
+<span class="r-in"><span>                                                   <span class="st">"cohortCodeUse"</span>, <span class="st">"drugDiagnostics"</span>,</span></span>
+<span class="r-in"><span>                                                   <span class="st">"measurementDiagnostics"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                                 <span class="st">"measurementDiagnosticsSample"</span> <span class="op">=</span> <span class="fl">20000</span>,</span></span>
+<span class="r-in"><span>                                 <span class="st">"drugDiagnosticsSample"</span> <span class="op">=</span> <span class="fl">20000</span></span></span>
+<span class="r-in"><span>                               <span class="op">)</span>,</span></span>
+<span class="r-in"><span>                               cohortDiagnostics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>                                 <span class="st">"diagnostics"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cohortCount"</span>, <span class="st">"cohortCharacteristics"</span>,</span></span>
+<span class="r-in"><span>                                                   <span class="st">"largeScaleCharacteristics"</span>,</span></span>
+<span class="r-in"><span>                                                   <span class="st">"compareCohorts"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                                 <span class="st">"cohortSample"</span> <span class="op">=</span> <span class="fl">20000</span>,</span></span>
+<span class="r-in"><span>                                 <span class="st">"matchedSample"</span> <span class="op">=</span> <span class="fl">1000</span></span></span>
+<span class="r-in"><span>                               <span class="op">)</span>,</span></span>
+<span class="r-in"><span>                               populationDiagnostics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>                                 <span class="st">"diagnostics"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"incidence"</span>, <span class="st">"periodPrevalence"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                                 <span class="st">"populationSample"</span> <span class="op">=</span> <span class="fl">100000</span>,</span></span>
+<span class="r-in"><span>                                 <span class="st">"populationDateRange"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>,<span class="cn">NA</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                               <span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Creating log file:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   <span style="color: #0000BB;">/tmp/Rtmpv9Qvve/phenotypeDiagnostics_log_2026_04_09_10_05_381cb4681a33f6.txt</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:05:38]</span> - Log file created</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:05:38]</span> - Database diagnostics - getting CDM Snapshot</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:05:39]</span> - Database diagnostics - summarising person table</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The following estimates will be calculated:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> date_of_birth: density</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   the database side</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-09 10:05:43.324528</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-09 10:05:43.386178</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:05:43]</span> - Database diagnostics - summarising observation period</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> retrieving cdm object from <span style="font-style: italic;">cdm_table</span>.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span><span style="color: #BBBB00;">!</span> There are 2649 individuals not included in the person table.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The following estimates will be calculated:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> observation_period_start_date: density</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> observation_period_end_date: density</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   the database side</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-09 10:05:46.561032</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-09 10:05:46.626256</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:05:47]</span> - Database diagnostics - summarising clinical tables -</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> summary</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Adding variables of interest to <span style="color: #0000BB;">drug_exposure</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising records per person in <span style="color: #0000BB;">drug_exposure</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising subjects not in person table in <span style="color: #0000BB;">drug_exposure</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising records in observation in <span style="color: #0000BB;">drug_exposure</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising records with start before birth date in <span style="color: #0000BB;">drug_exposure</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising records with end date before start date in <span style="color: #0000BB;">drug_exposure</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising domains in <span style="color: #0000BB;">drug_exposure</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising standard concepts in <span style="color: #0000BB;">drug_exposure</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising source vocabularies in <span style="color: #0000BB;">drug_exposure</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising concept types in <span style="color: #0000BB;">drug_exposure</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising concept class in <span style="color: #0000BB;">drug_exposure</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising missing data in <span style="color: #0000BB;">drug_exposure</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:05:50]</span> - Database diagnostics - summarising clinical tables -</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> trends</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:05:51]</span> - Codelist diagnostics - index event breakdown</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Getting counts of warfarin codes for cohort warfarin</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:05:53]</span> - Codelist diagnostics - drug diagnostics</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Returning entry cohort as the size of the cohorts to be sampled is equal or</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> smaller than `n`.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The following estimates will be calculated:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> exposure_duration: min, q01, q05, q25, median, q75, q95, q99, max,</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   percentage_missing</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> quantity: min, q01, q05, q25, median, q75, q95, q99, max, percentage_missing</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   the database side</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-09 10:05:55.116428</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-09 10:05:55.95771</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The following estimates will be calculated:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> days_to_next_record: min, q01, q05, q25, median, q75, q95, q99, max,</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   percentage_missing</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   the database side</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-09 10:05:56.616506</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-09 10:05:56.776588</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> No common ingredient found for codelist: `warfarin`.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Change ingredient threshold with options(PhenotypeR_ingredient_threshold),</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   threshold = 0.8.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The CDM reference containing the cohort must also contain achilles tables.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> Returning only index event breakdown.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:06:00]</span> - Cohort diagnostics - cohort attrition</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:06:00]</span> - Cohort diagnostics - cohort count</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising data</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising cohort <span style="color: #0000BB;">warfarin</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> summariseCharacteristics finished!</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Skipping cohort sampling as all cohorts have less than 20000 individuals.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:06:01]</span> - Cohort diagnostics - matched cohorts</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Sampling cohort `tmp_056_sampled`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Returning entry cohort as the size of the cohorts to be sampled is equal or</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> smaller than `n`.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Generating an age and sex matched cohort for warfarin</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Starting matching</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Creating copy of target cohort.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> 1 cohort to be matched.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Creating controls cohorts.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Excluding cases from controls</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Matching by gender_concept_id and year_of_birth</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Removing controls that were not in observation at index date</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Excluding target records whose pair is not in observation</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Adjusting ratio</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Binding cohorts</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Done</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Getting cohorts and indexes</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:06:12]</span> - Cohort diagnostics - cohort characteristics</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> adding demographics columns</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> adding tableIntersectCount 1/1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> window names casted to snake_case:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> `-365 to -1` -&gt; `365_to_1`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising data</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising cohort <span style="color: #0000BB;">warfarin</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising cohort <span style="color: #0000BB;">warfarin_sampled</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising cohort <span style="color: #0000BB;">warfarin_matched</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> summariseCharacteristics finished!</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:06:17]</span> - Cohort diagnostics - age density</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The following estimates will be calculated:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> age: density</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   the database side</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-09 10:06:18.237323</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-09 10:06:18.360837</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:06:18]</span> - Cohort diagnostics - large scale characteristics</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising large scale characteristics </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7) for time window…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7) for time window…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7) for time window…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7) for time window…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7) for time window…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7) for time window…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7) for time window…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7) for time window -Inf…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7) for time window -365…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7) for time window -30 …</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7) for time window 0 an…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7) for time window 1 an…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7) for time window 31 a…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7) for time window 366 …</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7) for time window -Inf…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7) for time window -365…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7) for time window -30 …</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7) for time window 0 an…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7) for time window 1 an…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7) for time window 31 a…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7) for time window 366 …</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7) for time window -I…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7) for time window -3…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7) for time window -3…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7) for time window 0 …</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7) for time window 1 …</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7) for time window 31…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7) for time window 36…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window -Inf an…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window -365 an…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window -30 and…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window 0 and 0</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window 1 and 30</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window 31 and …</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window 366 and…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Formatting result</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 397 estimates dropped as frequency less than 1%</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summarising large scale characteristics</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising large scale characteristics </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7) for time window…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7) for time window…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7) for time window…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7) for time window…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7) for time window…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7) for time window…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7) for time window…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7) for time window -Inf…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7) for time window -365…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7) for time window -30 …</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7) for time window 0 an…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7) for time window 1 an…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7) for time window 31 a…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7) for time window 366 …</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7) for time window -Inf…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7) for time window -365…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7) for time window -30 …</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7) for time window 0 an…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7) for time window 1 an…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7) for time window 31 a…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7) for time window 366 …</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7) for time window -I…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7) for time window -3…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7) for time window -3…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7) for time window 0 …</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7) for time window 1 …</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7) for time window 31…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7) for time window 36…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window -Inf an…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window -365 an…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window -30 and…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window 0 and 0</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window 1 and 30</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window 31 and …</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window 366 and…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Formatting result</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 397 estimates dropped as frequency less than 1%</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summarising large scale characteristics</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> `cohort_sample` and `matched_sample` casted to character.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:07:18]</span> - Population diagnosics - denominator cohort</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:07:18]</span> - Population diagnosics - sampling person table to1e+05</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Creating denominator cohorts</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Cohorts created in 0 min and 5 sec</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:07:24]</span> - Population diagnosics - incidence</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 1 of 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 2 of 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 3 of 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 4 of 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 5 of 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 6 of 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 7 of 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Overall time taken: 0 mins and 9 secs</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:07:34]</span> - Population diagnosics - prevalence</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 1 of 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 2 of 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 3 of 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 4 of 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 5 of 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 6 of 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 7 of 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Time taken: 0 mins and 5 secs</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> `populationDateStart`, `populationDateEnd`, and `populationSample` casted to</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> character.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> `populationDateStart` and `populationDateEnd` eliminated from settings as all</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> elements are NA.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:07:40]</span> - Phenotype diagnostics - exporting results</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:07:40]</span> - Exporting log file</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># By default, cohortSurvival analysis will not be run. If you want to run it, please use:</span></span></span>
+<span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">phenotypeDiagnostics</span><span class="op">(</span><span class="va">cdm</span><span class="op">$</span><span class="va">warfarin</span>,</span></span>
+<span class="r-in"><span>                               cohortDiagnostics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>                               <span class="st">"diagnostics"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cohortCount"</span>, <span class="st">"cohortCharacteristics"</span>,</span></span>
+<span class="r-in"><span>                                                 <span class="st">"largeScaleCharacteristics"</span>,</span></span>
+<span class="r-in"><span>                                                 <span class="st">"compareCohorts"</span>, <span class="st">"cohortSurvival"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Creating log file:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   <span style="color: #0000BB;">/tmp/Rtmpv9Qvve/phenotypeDiagnostics_log_2026_04_09_10_07_411cb4f173487.txt</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:07:41]</span> - Log file created</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:07:41]</span> - Database diagnostics - getting CDM Snapshot</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:07:41]</span> - Database diagnostics - summarising person table</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The following estimates will be calculated:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> date_of_birth: density</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   the database side</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-09 10:07:45.620135</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-09 10:07:45.684073</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:07:45]</span> - Database diagnostics - summarising observation period</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> retrieving cdm object from <span style="font-style: italic;">cdm_table</span>.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span><span style="color: #BBBB00;">!</span> There are 2649 individuals not included in the person table.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The following estimates will be calculated:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> observation_period_start_date: density</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> observation_period_end_date: density</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   the database side</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-09 10:07:48.833408</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-09 10:07:48.897724</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:07:49]</span> - Database diagnostics - summarising clinical tables -</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> summary</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Adding variables of interest to <span style="color: #0000BB;">drug_exposure</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising records per person in <span style="color: #0000BB;">drug_exposure</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising subjects not in person table in <span style="color: #0000BB;">drug_exposure</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising records in observation in <span style="color: #0000BB;">drug_exposure</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising records with start before birth date in <span style="color: #0000BB;">drug_exposure</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising records with end date before start date in <span style="color: #0000BB;">drug_exposure</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising domains in <span style="color: #0000BB;">drug_exposure</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising standard concepts in <span style="color: #0000BB;">drug_exposure</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising source vocabularies in <span style="color: #0000BB;">drug_exposure</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising concept types in <span style="color: #0000BB;">drug_exposure</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising concept class in <span style="color: #0000BB;">drug_exposure</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising missing data in <span style="color: #0000BB;">drug_exposure</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:07:53]</span> - Database diagnostics - summarising clinical tables -</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> trends</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:07:54]</span> - Codelist diagnostics - index event breakdown</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Getting counts of warfarin codes for cohort warfarin</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:07:55]</span> - Codelist diagnostics - drug diagnostics</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Returning entry cohort as the size of the cohorts to be sampled is equal or</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> smaller than `n`.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The following estimates will be calculated:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> exposure_duration: min, q01, q05, q25, median, q75, q95, q99, max,</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   percentage_missing</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> quantity: min, q01, q05, q25, median, q75, q95, q99, max, percentage_missing</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   the database side</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-09 10:07:57.244801</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-09 10:07:58.087908</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The following estimates will be calculated:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> days_to_next_record: min, q01, q05, q25, median, q75, q95, q99, max,</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   percentage_missing</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   the database side</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-09 10:07:58.737909</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-09 10:07:58.897783</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> No common ingredient found for codelist: `warfarin`.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Change ingredient threshold with options(PhenotypeR_ingredient_threshold),</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   threshold = 0.8.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The CDM reference containing the cohort must also contain achilles tables.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> Returning only index event breakdown.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:08:02]</span> - Cohort diagnostics - cohort attrition</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:08:02]</span> - Cohort diagnostics - cohort count</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising data</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising cohort <span style="color: #0000BB;">warfarin</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> summariseCharacteristics finished!</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Skipping cohort sampling as all cohorts have less than 20000 individuals.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:08:03]</span> - Cohort diagnostics - matched cohorts</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Sampling cohort `tmp_076_sampled`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Returning entry cohort as the size of the cohorts to be sampled is equal or</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> smaller than `n`.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Generating an age and sex matched cohort for warfarin</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Starting matching</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Creating copy of target cohort.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> 1 cohort to be matched.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Creating controls cohorts.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Excluding cases from controls</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Matching by gender_concept_id and year_of_birth</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Removing controls that were not in observation at index date</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Excluding target records whose pair is not in observation</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Adjusting ratio</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Binding cohorts</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Done</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Getting cohorts and indexes</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:08:15]</span> - Cohort diagnostics - cohort characteristics</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> adding demographics columns</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> adding tableIntersectCount 1/1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> window names casted to snake_case:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> `-365 to -1` -&gt; `365_to_1`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising data</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising cohort <span style="color: #0000BB;">warfarin</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising cohort <span style="color: #0000BB;">warfarin_sampled</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising cohort <span style="color: #0000BB;">warfarin_matched</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> summariseCharacteristics finished!</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:08:20]</span> - Cohort diagnostics - age density</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The following estimates will be calculated:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> age: density</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   the database side</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-09 10:08:20.928671</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-09 10:08:21.052652</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:08:21]</span> - Cohort diagnostics - large scale characteristics</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising large scale characteristics </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7) for time window…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7) for time window…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7) for time window…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7) for time window…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7) for time window…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7) for time window…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7) for time window…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7) for time window -Inf…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7) for time window -365…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7) for time window -30 …</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7) for time window 0 an…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7) for time window 1 an…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7) for time window 31 a…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7) for time window 366 …</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7) for time window -Inf…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7) for time window -365…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7) for time window -30 …</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7) for time window 0 an…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7) for time window 1 an…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7) for time window 31 a…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7) for time window 366 …</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7) for time window -I…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7) for time window -3…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7) for time window -3…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7) for time window 0 …</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7) for time window 1 …</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7) for time window 31…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7) for time window 36…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window -Inf an…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window -365 an…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window -30 and…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window 0 and 0</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window 1 and 30</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window 31 and …</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window 366 and…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Formatting result</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 456 estimates dropped as frequency less than 1%</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summarising large scale characteristics</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising large scale characteristics </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7) for time window…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7) for time window…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7) for time window…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7) for time window…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7) for time window…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7) for time window…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7) for time window…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7) for time window -Inf…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7) for time window -365…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7) for time window -30 …</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7) for time window 0 an…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7) for time window 1 an…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7) for time window 31 a…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7) for time window 366 …</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7) for time window -Inf…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7) for time window -365…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7) for time window -30 …</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7) for time window 0 an…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7) for time window 1 an…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7) for time window 31 a…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7) for time window 366 …</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7) for time window -I…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7) for time window -3…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7) for time window -3…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7) for time window 0 …</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7) for time window 1 …</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7) for time window 31…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7) for time window 36…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window -Inf an…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window -365 an…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window -30 and…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window 0 and 0</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window 1 and 30</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window 31 and …</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window 366 and…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Formatting result</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 456 estimates dropped as frequency less than 1%</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summarising large scale characteristics</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:09:20]</span> - Cohort diagnostics - death cohorts</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Death table is empty. Skipping survival analysis</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> `cohort_sample` and `matched_sample` casted to character.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:09:20]</span> - Population diagnosics - denominator cohort</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:09:20]</span> - Population diagnosics - sampling person table to1e+05</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Creating denominator cohorts</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Cohorts created in 0 min and 5 sec</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:09:26]</span> - Population diagnosics - incidence</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 1 of 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 2 of 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 3 of 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 4 of 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 5 of 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 6 of 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 7 of 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Overall time taken: 0 mins and 9 secs</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:09:35]</span> - Population diagnosics - prevalence</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 1 of 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 2 of 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 3 of 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 4 of 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 5 of 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 6 of 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 7 of 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Time taken: 0 mins and 5 secs</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> `populationDateStart`, `populationDateEnd`, and `populationSample` casted to</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> character.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> `populationDateStart` and `populationDateEnd` eliminated from settings as all</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> elements are NA.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:09:41]</span> - Phenotype diagnostics - exporting results</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:09:41]</span> - Exporting log file</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Run PhenotypeR with the default values, except for populationSample:</span></span></span>
+<span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">phenotypeDiagnostics</span><span class="op">(</span><span class="va">cdm</span><span class="op">$</span><span class="va">warfarin</span>,</span></span>
+<span class="r-in"><span>                               populationDiagnostics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"populationSample"</span> <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Creating log file:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   <span style="color: #0000BB;">/tmp/Rtmpv9Qvve/phenotypeDiagnostics_log_2026_04_09_10_09_421cb41b46c16b.txt</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:09:42]</span> - Log file created</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:09:42]</span> - Database diagnostics - getting CDM Snapshot</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:09:42]</span> - Database diagnostics - summarising person table</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The following estimates will be calculated:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> date_of_birth: density</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   the database side</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-09 10:09:46.547575</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-09 10:09:46.621166</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:09:46]</span> - Database diagnostics - summarising observation period</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> retrieving cdm object from <span style="font-style: italic;">cdm_table</span>.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span><span style="color: #BBBB00;">!</span> There are 2649 individuals not included in the person table.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The following estimates will be calculated:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> observation_period_start_date: density</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> observation_period_end_date: density</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   the database side</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-09 10:09:49.769239</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-09 10:09:49.846054</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:09:50]</span> - Database diagnostics - summarising clinical tables -</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> summary</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Adding variables of interest to <span style="color: #0000BB;">drug_exposure</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising records per person in <span style="color: #0000BB;">drug_exposure</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising subjects not in person table in <span style="color: #0000BB;">drug_exposure</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising records in observation in <span style="color: #0000BB;">drug_exposure</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising records with start before birth date in <span style="color: #0000BB;">drug_exposure</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising records with end date before start date in <span style="color: #0000BB;">drug_exposure</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising domains in <span style="color: #0000BB;">drug_exposure</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising standard concepts in <span style="color: #0000BB;">drug_exposure</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising source vocabularies in <span style="color: #0000BB;">drug_exposure</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising concept types in <span style="color: #0000BB;">drug_exposure</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising concept class in <span style="color: #0000BB;">drug_exposure</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising missing data in <span style="color: #0000BB;">drug_exposure</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:09:54]</span> - Database diagnostics - summarising clinical tables -</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> trends</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:09:55]</span> - Codelist diagnostics - index event breakdown</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Getting counts of warfarin codes for cohort warfarin</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:09:56]</span> - Codelist diagnostics - drug diagnostics</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Returning entry cohort as the size of the cohorts to be sampled is equal or</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> smaller than `n`.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The following estimates will be calculated:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> exposure_duration: min, q01, q05, q25, median, q75, q95, q99, max,</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   percentage_missing</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> quantity: min, q01, q05, q25, median, q75, q95, q99, max, percentage_missing</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   the database side</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-09 10:09:58.096172</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-09 10:09:58.890128</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The following estimates will be calculated:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> days_to_next_record: min, q01, q05, q25, median, q75, q95, q99, max,</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   percentage_missing</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   the database side</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-09 10:09:59.509757</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-09 10:09:59.6645</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> No common ingredient found for codelist: `warfarin`.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Change ingredient threshold with options(PhenotypeR_ingredient_threshold),</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   threshold = 0.8.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The CDM reference containing the cohort must also contain achilles tables.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> Returning only index event breakdown.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:10:03]</span> - Cohort diagnostics - cohort attrition</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:10:03]</span> - Cohort diagnostics - cohort count</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising data</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising cohort <span style="color: #0000BB;">warfarin</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> summariseCharacteristics finished!</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Skipping cohort sampling as all cohorts have less than 20000 individuals.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:10:04]</span> - Cohort diagnostics - matched cohorts</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Sampling cohort `tmp_096_sampled`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Returning entry cohort as the size of the cohorts to be sampled is equal or</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> smaller than `n`.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Generating an age and sex matched cohort for warfarin</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Starting matching</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Creating copy of target cohort.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> 1 cohort to be matched.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Creating controls cohorts.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Excluding cases from controls</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Matching by gender_concept_id and year_of_birth</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Removing controls that were not in observation at index date</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Excluding target records whose pair is not in observation</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Adjusting ratio</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Binding cohorts</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Done</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Getting cohorts and indexes</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:10:15]</span> - Cohort diagnostics - cohort characteristics</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> adding demographics columns</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> adding tableIntersectCount 1/1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> window names casted to snake_case:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> `-365 to -1` -&gt; `365_to_1`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising data</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising cohort <span style="color: #0000BB;">warfarin</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising cohort <span style="color: #0000BB;">warfarin_sampled</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising cohort <span style="color: #0000BB;">warfarin_matched</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> summariseCharacteristics finished!</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:10:20]</span> - Cohort diagnostics - age density</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The following estimates will be calculated:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> age: density</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   the database side</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-09 10:10:20.627074</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-09 10:10:20.749264</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:10:21]</span> - Cohort diagnostics - large scale characteristics</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising large scale characteristics </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7) for time window…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7) for time window…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7) for time window…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7) for time window…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7) for time window…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7) for time window…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7) for time window…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7) for time window -Inf…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7) for time window -365…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7) for time window -30 …</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7) for time window 0 an…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7) for time window 1 an…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7) for time window 31 a…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7) for time window 366 …</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7) for time window -Inf…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7) for time window -365…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7) for time window -30 …</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7) for time window 0 an…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7) for time window 1 an…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7) for time window 31 a…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7) for time window 366 …</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7) for time window -I…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7) for time window -3…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7) for time window -3…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7) for time window 0 …</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7) for time window 1 …</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7) for time window 31…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7) for time window 36…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window -Inf an…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window -365 an…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window -30 and…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window 0 and 0</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window 1 and 30</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window 31 and …</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window 366 and…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Formatting result</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 473 estimates dropped as frequency less than 1%</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summarising large scale characteristics</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising large scale characteristics </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7) for time window…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7) for time window…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7) for time window…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7) for time window…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7) for time window…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7) for time window…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">visit_occurrence</span> (2 of 7) for time window…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7) for time window -Inf…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7) for time window -365…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7) for time window -30 …</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7) for time window 0 an…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7) for time window 1 an…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7) for time window 31 a…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">measurement</span> (3 of 7) for time window 366 …</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">procedure_occurrence</span> (4 of 7) for time wi…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7) for time window -Inf…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7) for time window -365…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7) for time window -30 …</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7) for time window 0 an…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7) for time window 1 an…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7) for time window 31 a…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">observation</span> (5 of 7) for time window 366 …</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7) for time window -I…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7) for time window -3…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7) for time window -3…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7) for time window 0 …</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7) for time window 1 …</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7) for time window 31…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_exposure</span> (6 of 7) for time window 36…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window -Inf an…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window -365 an…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window -30 and…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window 0 and 0</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window 1 and 30</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window 31 and …</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window 366 and…</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Formatting result</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 473 estimates dropped as frequency less than 1%</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summarising large scale characteristics</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> `cohort_sample` and `matched_sample` casted to character.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:11:19]</span> - Population diagnosics - denominator cohort</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:11:19]</span> - Population diagnosics - sampling person table to1000</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Creating denominator cohorts</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Cohorts created in 0 min and 5 sec</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:11:24]</span> - Population diagnosics - incidence</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 1 of 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 2 of 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 3 of 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 4 of 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 5 of 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 6 of 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 7 of 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Overall time taken: 0 mins and 9 secs</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:11:34]</span> - Population diagnosics - prevalence</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 1 of 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 2 of 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 3 of 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 4 of 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 5 of 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 6 of 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 7 of 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Time taken: 0 mins and 5 secs</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> `populationDateStart`, `populationDateEnd`, and `populationSample` casted to</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> character.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> `populationDateStart` and `populationDateEnd` eliminated from settings as all</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> elements are NA.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:11:40]</span> - Phenotype diagnostics - exporting results</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-09 10:11:40]</span> - Exporting log file</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

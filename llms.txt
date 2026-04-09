@@ -108,7 +108,7 @@ diagnostics**, **codelist diagnostics**, **cohort diagnostics**, and
 [`phenotypeDiagnostics()`](https://ohdsi.github.io/PhenotypeR/reference/phenotypeDiagnostics.md):
 
 ``` r
-result <- phenotypeDiagnostics(cdm$my_cohort, survival = TRUE)
+result <- phenotypeDiagnostics(cdm$my_cohort)
 ```
 
 You can also create a table with the expected results, so you can

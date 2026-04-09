@@ -32,9 +32,8 @@ A Word document with the template of the clinical description.
 ``` r
 # \donttest{
 library(PhenotypeR)
-library(here)
 
-downloadDatabaseDescriptionTemplate(directory = here(),
+downloadDatabaseDescriptionTemplate(directory = tempdir(),
                                     name = "GiBleed")
 #> ✔ Database description template download correctly!
 

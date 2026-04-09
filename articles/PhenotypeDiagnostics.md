@@ -71,19 +71,20 @@ run the following analyses:
   vignette](https://ohdsi.github.io/PhenotypeR/articles/a07_PopulationDiagnostics.html)
   for further details.
 
-We can specify which analysis we want to perform by setting to TRUE or
-FALSE each one of the corresponding arguments:
+We can specify which analysis we want to perform:
 
 ``` r
 result <- phenotypeDiagnostics(
   cohort = cdm$my_cohort, 
-  diagnostics = c("databaseDiagnostics", "codelistDiagnostics", 
-                  "cohortDiagnostics", "populationDiagnostics"),
-  cohortSample = 20000,
-  matchedSample = 1000,
-  populationSample = 1e+06,
-  populationDateRange = as.Date(c(NA, NA))
+  cohortDiagnostics = list(
+    "cohortSample" = 20000,
+    "matchedSample" = 1000
+  ),
+  populationSample = list(
+    "populationSample" = 1e+06,
+    "populationDateRange" = as.Date(c(NA, NA))
   )
+  
 result |> glimpse()
 ```
 

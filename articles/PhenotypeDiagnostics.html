@@ -137,19 +137,19 @@ our study cohorts in the database in terms of their incidence rates and
 prevalence. See <a href="https://ohdsi.github.io/PhenotypeR/articles/a07_PopulationDiagnostics.html">Population
 diagnostics vignette</a> for further details.</li>
 </ul>
-<p>We can specify which analysis we want to perform by setting to TRUE
-or FALSE each one of the corresponding arguments:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/phenotypeDiagnostics.html">phenotypeDiagnostics</a></span><span class="op">(</span></span>
-<span>  cohort <span class="op">=</span> <span class="va">cdm</span><span class="op">$</span><span class="va">my_cohort</span>, </span>
-<span>  diagnostics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"databaseDiagnostics"</span>, <span class="st">"codelistDiagnostics"</span>, </span>
-<span>                  <span class="st">"cohortDiagnostics"</span>, <span class="st">"populationDiagnostics"</span><span class="op">)</span>,</span>
-<span>  cohortSample <span class="op">=</span> <span class="fl">20000</span>,</span>
-<span>  matchedSample <span class="op">=</span> <span class="fl">1000</span>,</span>
-<span>  populationSample <span class="op">=</span> <span class="fl">1e+06</span>,</span>
-<span>  populationDateRange <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="va">result</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>We can specify which analysis we want to perform:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">phenotypeDiagnostics</span>(</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  <span class="at">cohort =</span> cdm<span class="sc">$</span>my_cohort, </span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  <span class="at">cohortDiagnostics =</span> <span class="fu">list</span>(</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>    <span class="st">"cohortSample"</span> <span class="ot">=</span> <span class="dv">20000</span>,</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>    <span class="st">"matchedSample"</span> <span class="ot">=</span> <span class="dv">1000</span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>  ),</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>  <span class="at">populationSample =</span> <span class="fu">list</span>(</span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>    <span class="st">"populationSample"</span> <span class="ot">=</span> <span class="fl">1e+06</span>,</span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>    <span class="st">"populationDateRange"</span> <span class="ot">=</span> <span class="fu">as.Date</span>(<span class="fu">c</span>(<span class="cn">NA</span>, <span class="cn">NA</span>))</span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>  )</span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a>  </span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a>result <span class="sc">|&gt;</span> <span class="fu">glimpse</span>()</span></code></pre></div>
 <p>Notice that we have three additional arguments:</p>
 <ul>
 <li>

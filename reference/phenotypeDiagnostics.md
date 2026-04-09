@@ -14,16 +14,10 @@ diagnostics on the cohort_codelist attribute of the cohort via
 ``` r
 phenotypeDiagnostics(
   cohort,
-  diagnostics = c("databaseDiagnostics", "codelistDiagnostics", "cohortDiagnostics",
-    "populationDiagnostics"),
-  clinicalTableSample = NULL,
-  measurementSample = 20000,
-  drugExposureSample = 20000,
-  survival = FALSE,
-  cohortSample = 20000,
-  matchedSample = 1000,
-  populationSample = 1e+06,
-  populationDateRange = as.Date(c(NA, NA))
+  databaseDiagnostics = list(),
+  codelistDiagnostics = list(),
+  cohortDiagnostics = list(),
+  populationDiagnostics = list()
 )
 ```
 
@@ -33,61 +27,37 @@ phenotypeDiagnostics(
 
   Cohort table in a cdm reference
 
-- diagnostics:
+- databaseDiagnostics:
 
-  Vector indicating which diagnostics to perform. Options include:
-  \`databaseDiagnostics\`, \`codelistDiagnostics\`,
-  \`cohortDiagnostics\`, and \`populationDiagnostics\`.
+  A list of arguments that uses \`databaseDiagnostics\`. If the list is
+  empty, the default values will be used. Example: \*databaseDiagnostics
+  = list( "diagnostics" = c("snapshot", "personTableSummary",
+  "observationPeriodsSummary", "clinicalRecordsSummary") )\*
 
-- clinicalTableSample:
+- codelistDiagnostics:
 
-  The number of records to take a random sample for database
-  diagnostics. If \`clinicalTableSample = NULL\`, no sampling will be
-  performed. If \`clinicalTableSample = 0\` clinical table summaries
-  will not be run.
+  A list of arguments that uses \`codelistDiagnostics\`. If the list is
+  empty, the default values will be used. Example: \*codelistDiagnostics
+  = list( "diagnostics" = c("achillesCodeUse", "orphanCodeUse",
+  "cohortCodeUse", "drugDiagnostics", "measurementDiagnostics"),
+  "measurementDiagnosticsSample" = 20000, "drugDiagnosticsSample" =
+  20000 )\*
 
-- measurementSample:
+- cohortDiagnostics:
 
-  The number of people to take a random sample for measurement
-  diagnostics. If \`measurementSample = NULL\`, no sampling will be
-  performed. If \`measurementSample = 0\` measurement diagnostics will
-  not be run.
+  A list of arguments that uses \`cohortDiagnostics\`. If the list is
+  empty, the default values will be used. Example: \*cohortDiagnostics =
+  list( "diagnostics" = c("cohortCount", "cohortCharacteristics",
+  "largeScaleCharacteristics", "compareCohorts", "cohortSurvival),
+  "cohortSample" = 20000, "matchedSample" = 1000 )\*
 
-- drugExposureSample:
+- populationDiagnostics:
 
-  The number of people to take a random sample for drug diagnostics. If
-  \`drugExposureSample = NULL\`, no sampling will be performed. If
-  \`drugExposureSample = 0\` drug diagnostics will not be run.
-
-- survival:
-
-  TRUE or FALSE. Whether to conduct survival analysis (TRUE) or not
-  (FALSE).
-
-- cohortSample:
-
-  The number of people to take a random sample for cohortDiagnostics. If
-  \`cohortSample = NULL\`, no sampling will be performed.
-
-- matchedSample:
-
-  The number of people to take a random sample for matching. If
-  \`matchedSample = NULL\`, no sampling will be performed. If
-  \`matchedSample = 0\`, no matched cohorts will be created.
-
-- populationSample:
-
-  Number of people from the cdm to sample. If NULL no sampling will be
-  performed. Sample will be within populationDateRange if specified.
-
-- populationDateRange:
-
-  Two dates. The first indicating the earliest cohort start date and the
-  second indicating the latest possible cohort end date. If NULL or the
-  first date is set as missing, the earliest observation_start_date in
-  the observation_period table will be used for the former. If NULL or
-  the second date is set as missing, the latest observation_end_date in
-  the observation_period table will be used for the latter.
+  A list of arguments that uses \`populationDiagnostics\`. If the list
+  is empty, the default values will be used. Example:
+  \*populationDiagnostics = list( "diagnostics" = c("incidence",
+  "periodPrevalence"), "populationSample" = 100000,
+  "populationDateRange" = as.Date(c(NA,NA)) )\*
 
 ## Value
 
@@ -117,19 +87,22 @@ cdm$warfarin <- conceptCohort(cdm,
 #> ℹ Merging overlapping records.
 #> ✔ Cohort warfarin created.
 
-result <- phenotypeDiagnostics(cdm$warfarin, populationSample = 100000)
+# Run PhenotypeR with the default values. If you want to check which are the
+# default values, use:
+# `formals(populationDiagnostics)`
+result <- phenotypeDiagnostics(cdm$warfarin)
 #> ℹ Creating log file:
-#>   /tmp/RtmphC4rnn/phenotypeDiagnostics_log_2026_04_01_16_47_361e4d61be867.txt.
-#> [2026-04-01 16:47:36] - Log file created
-#> [2026-04-01 16:47:36] - Database diagnostics - getting CDM Snapshot
-#> [2026-04-01 16:47:37] - Database diagnostics - summarising person table
+#>   /tmp/Rtmpv9Qvve/phenotypeDiagnostics_log_2026_04_09_10_03_381cb422620f6e.txt.
+#> [2026-04-09 10:03:38] - Log file created
+#> [2026-04-09 10:03:38] - Database diagnostics - getting CDM Snapshot
+#> [2026-04-09 10:03:38] - Database diagnostics - summarising person table
 #> ℹ The following estimates will be calculated:
 #> • date_of_birth: density
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side
-#> → Start summary of data, at 2026-04-01 16:47:41.605431
-#> ✔ Summary finished, at 2026-04-01 16:47:41.663314
-#> [2026-04-01 16:47:41] - Database diagnostics - summarising observation period
+#> → Start summary of data, at 2026-04-09 10:03:42.504051
+#> ✔ Summary finished, at 2026-04-09 10:03:42.570116
+#> [2026-04-09 10:03:42] - Database diagnostics - summarising observation period
 #> ℹ retrieving cdm object from cdm_table.
 #> Warning: ! There are 2649 individuals not included in the person table.
 #> ℹ The following estimates will be calculated:
@@ -137,9 +110,9 @@ result <- phenotypeDiagnostics(cdm$warfarin, populationSample = 100000)
 #> • observation_period_end_date: density
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side
-#> → Start summary of data, at 2026-04-01 16:47:44.852181
-#> ✔ Summary finished, at 2026-04-01 16:47:44.918425
-#> [2026-04-01 16:47:45] - Database diagnostics - summarising clinical tables -
+#> → Start summary of data, at 2026-04-09 10:03:45.855033
+#> ✔ Summary finished, at 2026-04-09 10:03:45.927857
+#> [2026-04-09 10:03:46] - Database diagnostics - summarising clinical tables -
 #> summary
 #> ℹ Adding variables of interest to drug_exposure.
 #> ℹ Summarising records per person in drug_exposure.
@@ -153,11 +126,11 @@ result <- phenotypeDiagnostics(cdm$warfarin, populationSample = 100000)
 #> ℹ Summarising concept types in drug_exposure.
 #> ℹ Summarising concept class in drug_exposure.
 #> ℹ Summarising missing data in drug_exposure.
-#> [2026-04-01 16:47:49] - Database diagnostics - summarising clinical tables -
+#> [2026-04-09 10:03:50] - Database diagnostics - summarising clinical tables -
 #> trends
-#> [2026-04-01 16:47:50] - Codelist diagnostics - index event breakdown
+#> [2026-04-09 10:03:50] - Codelist diagnostics - index event breakdown
 #> Getting counts of warfarin codes for cohort warfarin
-#> [2026-04-01 16:47:51] - Codelist diagnostics - drug diagnostics
+#> [2026-04-09 10:03:52] - Codelist diagnostics - drug diagnostics
 #> Returning entry cohort as the size of the cohorts to be sampled is equal or
 #> smaller than `n`.
 #> ℹ The following estimates will be calculated:
@@ -166,28 +139,28 @@ result <- phenotypeDiagnostics(cdm$warfarin, populationSample = 100000)
 #> • quantity: min, q01, q05, q25, median, q75, q95, q99, max, percentage_missing
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side
-#> → Start summary of data, at 2026-04-01 16:47:53.41562
-#> ✔ Summary finished, at 2026-04-01 16:47:54.243913
+#> → Start summary of data, at 2026-04-09 10:03:54.109144
+#> ✔ Summary finished, at 2026-04-09 10:03:54.938788
 #> ℹ The following estimates will be calculated:
 #> • days_to_next_record: min, q01, q05, q25, median, q75, q95, q99, max,
 #>   percentage_missing
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side
-#> → Start summary of data, at 2026-04-01 16:47:54.901304
-#> ✔ Summary finished, at 2026-04-01 16:47:55.063667
+#> → Start summary of data, at 2026-04-09 10:03:55.577006
+#> ✔ Summary finished, at 2026-04-09 10:03:55.734149
 #> ! No common ingredient found for codelist: `warfarin`.
 #> ℹ Change ingredient threshold with options(PhenotypeR_ingredient_threshold),
 #>   threshold = 0.8.
 #> Warning: The CDM reference containing the cohort must also contain achilles tables.
 #> Returning only index event breakdown.
-#> [2026-04-01 16:47:58] - Cohort diagnostics - cohort attrition
-#> [2026-04-01 16:47:59] - Cohort diagnostics - cohort count
+#> [2026-04-09 10:03:59] - Cohort diagnostics - cohort attrition
+#> [2026-04-09 10:03:59] - Cohort diagnostics - cohort count
 #> ℹ summarising data
 #> ℹ summarising cohort warfarin
 #> ✔ summariseCharacteristics finished!
 #> → Skipping cohort sampling as all cohorts have less than 20000 individuals.
-#> [2026-04-01 16:48:00] - Cohort diagnostics - matched cohorts
-#> → Sampling cohort `tmp_028_sampled`
+#> [2026-04-09 10:04:00] - Cohort diagnostics - matched cohorts
+#> → Sampling cohort `tmp_036_sampled`
 #> Returning entry cohort as the size of the cohorts to be sampled is equal or
 #> smaller than `n`.
 #> • Generating an age and sex matched cohort for warfarin
@@ -203,7 +176,7 @@ result <- phenotypeDiagnostics(cdm$warfarin, populationSample = 100000)
 #> Binding cohorts
 #> ✔ Done
 #> → Getting cohorts and indexes
-#> [2026-04-01 16:48:11] - Cohort diagnostics - cohort characteristics
+#> [2026-04-09 10:04:12] - Cohort diagnostics - cohort characteristics
 #> ℹ adding demographics columns
 #> ℹ adding tableIntersectCount 1/1
 #> window names casted to snake_case:
@@ -213,14 +186,14 @@ result <- phenotypeDiagnostics(cdm$warfarin, populationSample = 100000)
 #> ℹ summarising cohort warfarin_sampled
 #> ℹ summarising cohort warfarin_matched
 #> ✔ summariseCharacteristics finished!
-#> [2026-04-01 16:48:16] - Cohort diagnostics - age density
+#> [2026-04-09 10:04:16] - Cohort diagnostics - age density
 #> ℹ The following estimates will be calculated:
 #> • age: density
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side
-#> → Start summary of data, at 2026-04-01 16:48:17.381949
-#> ✔ Summary finished, at 2026-04-01 16:48:17.515095
-#> [2026-04-01 16:48:17] - Cohort diagnostics - large scale characteristics
+#> → Start summary of data, at 2026-04-09 10:04:17.274607
+#> ✔ Summary finished, at 2026-04-09 10:04:17.406386
+#> [2026-04-09 10:04:17] - Cohort diagnostics - large scale characteristics
 #> ℹ Summarising large scale characteristics 
 #>  - getting characteristics from table condition_occurrence (1 of 7)
 #>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
@@ -279,7 +252,7 @@ result <- phenotypeDiagnostics(cdm$warfarin, populationSample = 100000)
 #>  - getting characteristics from table drug_era (7 of 7) for time window 31 and …
 #>  - getting characteristics from table drug_era (7 of 7) for time window 366 and…
 #> Formatting result
-#> 472 estimates dropped as frequency less than 1%
+#> 517 estimates dropped as frequency less than 1%
 #> ✔ Summarising large scale characteristics
 #> ℹ Summarising large scale characteristics 
 #>  - getting characteristics from table condition_occurrence (1 of 7)
@@ -339,14 +312,14 @@ result <- phenotypeDiagnostics(cdm$warfarin, populationSample = 100000)
 #>  - getting characteristics from table drug_era (7 of 7) for time window 31 and …
 #>  - getting characteristics from table drug_era (7 of 7) for time window 366 and…
 #> Formatting result
-#> 472 estimates dropped as frequency less than 1%
+#> 517 estimates dropped as frequency less than 1%
 #> ✔ Summarising large scale characteristics
 #> `cohort_sample` and `matched_sample` casted to character.
-#> [2026-04-01 16:49:18] - Population diagnosics - denominator cohort
-#> [2026-04-01 16:49:18] - Population diagnosics - sampling person table to1e+05
+#> [2026-04-09 10:05:16] - Population diagnosics - denominator cohort
+#> [2026-04-09 10:05:16] - Population diagnosics - sampling person table to1e+05
 #> ℹ Creating denominator cohorts
 #> ✔ Cohorts created in 0 min and 5 sec
-#> [2026-04-01 16:49:24] - Population diagnosics - incidence
+#> [2026-04-09 10:05:22] - Population diagnosics - incidence
 #> ℹ Getting incidence for analysis 1 of 7
 #> ℹ Getting incidence for analysis 2 of 7
 #> ℹ Getting incidence for analysis 3 of 7
@@ -355,7 +328,7 @@ result <- phenotypeDiagnostics(cdm$warfarin, populationSample = 100000)
 #> ℹ Getting incidence for analysis 6 of 7
 #> ℹ Getting incidence for analysis 7 of 7
 #> ✔ Overall time taken: 0 mins and 9 secs
-#> [2026-04-01 16:49:34] - Population diagnosics - prevalence
+#> [2026-04-09 10:05:32] - Population diagnosics - prevalence
 #> ℹ Getting prevalence for analysis 1 of 7
 #> ℹ Getting prevalence for analysis 2 of 7
 #> ℹ Getting prevalence for analysis 3 of 7
@@ -363,12 +336,809 @@ result <- phenotypeDiagnostics(cdm$warfarin, populationSample = 100000)
 #> ℹ Getting prevalence for analysis 5 of 7
 #> ℹ Getting prevalence for analysis 6 of 7
 #> ℹ Getting prevalence for analysis 7 of 7
-#> ✔ Time taken: 0 mins and 6 secs
+#> ✔ Time taken: 0 mins and 5 secs
 #> `populationDateStart`, `populationDateEnd`, and `populationSample` casted to
 #> character.
 #> `populationDateStart` and `populationDateEnd` eliminated from settings as all
 #> elements are NA.
-#> [2026-04-01 16:49:40] - Phenotype diagnostics - exporting results
-#> [2026-04-01 16:49:40] - Exporting log file
+#> [2026-04-09 10:05:38] - Phenotype diagnostics - exporting results
+#> [2026-04-09 10:05:38] - Exporting log file
+
+# Notice that the previous line of code will give the same results as typing manually
+# all the default values:
+result <- phenotypeDiagnostics(cdm$warfarin,
+                               databaseDiagnostics = list(
+                                 "diagnostics" = c("snapshot", "personTableSummary",
+                                 "observationPeriodsSummary", "clinicalRecordsSummary")
+                               ),
+                               codelistDiagnostics = list(
+                                 "diagnostics" = c("achillesCodeUse", "orphanCodeUse",
+                                                   "cohortCodeUse", "drugDiagnostics",
+                                                   "measurementDiagnostics"),
+                                 "measurementDiagnosticsSample" = 20000,
+                                 "drugDiagnosticsSample" = 20000
+                               ),
+                               cohortDiagnostics = list(
+                                 "diagnostics" = c("cohortCount", "cohortCharacteristics",
+                                                   "largeScaleCharacteristics",
+                                                   "compareCohorts"),
+                                 "cohortSample" = 20000,
+                                 "matchedSample" = 1000
+                               ),
+                               populationDiagnostics = list(
+                                 "diagnostics" = c("incidence", "periodPrevalence"),
+                                 "populationSample" = 100000,
+                                 "populationDateRange" = as.Date(c(NA,NA))
+                               ))
+#> ℹ Creating log file:
+#>   /tmp/Rtmpv9Qvve/phenotypeDiagnostics_log_2026_04_09_10_05_381cb4681a33f6.txt.
+#> [2026-04-09 10:05:38] - Log file created
+#> [2026-04-09 10:05:38] - Database diagnostics - getting CDM Snapshot
+#> [2026-04-09 10:05:39] - Database diagnostics - summarising person table
+#> ℹ The following estimates will be calculated:
+#> • date_of_birth: density
+#> ! Table is collected to memory as not all requested estimates are supported on
+#>   the database side
+#> → Start summary of data, at 2026-04-09 10:05:43.324528
+#> ✔ Summary finished, at 2026-04-09 10:05:43.386178
+#> [2026-04-09 10:05:43] - Database diagnostics - summarising observation period
+#> ℹ retrieving cdm object from cdm_table.
+#> Warning: ! There are 2649 individuals not included in the person table.
+#> ℹ The following estimates will be calculated:
+#> • observation_period_start_date: density
+#> • observation_period_end_date: density
+#> ! Table is collected to memory as not all requested estimates are supported on
+#>   the database side
+#> → Start summary of data, at 2026-04-09 10:05:46.561032
+#> ✔ Summary finished, at 2026-04-09 10:05:46.626256
+#> [2026-04-09 10:05:47] - Database diagnostics - summarising clinical tables -
+#> summary
+#> ℹ Adding variables of interest to drug_exposure.
+#> ℹ Summarising records per person in drug_exposure.
+#> ℹ Summarising subjects not in person table in drug_exposure.
+#> ℹ Summarising records in observation in drug_exposure.
+#> ℹ Summarising records with start before birth date in drug_exposure.
+#> ℹ Summarising records with end date before start date in drug_exposure.
+#> ℹ Summarising domains in drug_exposure.
+#> ℹ Summarising standard concepts in drug_exposure.
+#> ℹ Summarising source vocabularies in drug_exposure.
+#> ℹ Summarising concept types in drug_exposure.
+#> ℹ Summarising concept class in drug_exposure.
+#> ℹ Summarising missing data in drug_exposure.
+#> [2026-04-09 10:05:50] - Database diagnostics - summarising clinical tables -
+#> trends
+#> [2026-04-09 10:05:51] - Codelist diagnostics - index event breakdown
+#> Getting counts of warfarin codes for cohort warfarin
+#> [2026-04-09 10:05:53] - Codelist diagnostics - drug diagnostics
+#> Returning entry cohort as the size of the cohorts to be sampled is equal or
+#> smaller than `n`.
+#> ℹ The following estimates will be calculated:
+#> • exposure_duration: min, q01, q05, q25, median, q75, q95, q99, max,
+#>   percentage_missing
+#> • quantity: min, q01, q05, q25, median, q75, q95, q99, max, percentage_missing
+#> ! Table is collected to memory as not all requested estimates are supported on
+#>   the database side
+#> → Start summary of data, at 2026-04-09 10:05:55.116428
+#> ✔ Summary finished, at 2026-04-09 10:05:55.95771
+#> ℹ The following estimates will be calculated:
+#> • days_to_next_record: min, q01, q05, q25, median, q75, q95, q99, max,
+#>   percentage_missing
+#> ! Table is collected to memory as not all requested estimates are supported on
+#>   the database side
+#> → Start summary of data, at 2026-04-09 10:05:56.616506
+#> ✔ Summary finished, at 2026-04-09 10:05:56.776588
+#> ! No common ingredient found for codelist: `warfarin`.
+#> ℹ Change ingredient threshold with options(PhenotypeR_ingredient_threshold),
+#>   threshold = 0.8.
+#> Warning: The CDM reference containing the cohort must also contain achilles tables.
+#> Returning only index event breakdown.
+#> [2026-04-09 10:06:00] - Cohort diagnostics - cohort attrition
+#> [2026-04-09 10:06:00] - Cohort diagnostics - cohort count
+#> ℹ summarising data
+#> ℹ summarising cohort warfarin
+#> ✔ summariseCharacteristics finished!
+#> → Skipping cohort sampling as all cohorts have less than 20000 individuals.
+#> [2026-04-09 10:06:01] - Cohort diagnostics - matched cohorts
+#> → Sampling cohort `tmp_056_sampled`
+#> Returning entry cohort as the size of the cohorts to be sampled is equal or
+#> smaller than `n`.
+#> • Generating an age and sex matched cohort for warfarin
+#> Starting matching
+#> ℹ Creating copy of target cohort.
+#> • 1 cohort to be matched.
+#> ℹ Creating controls cohorts.
+#> ℹ Excluding cases from controls
+#> • Matching by gender_concept_id and year_of_birth
+#> • Removing controls that were not in observation at index date
+#> • Excluding target records whose pair is not in observation
+#> • Adjusting ratio
+#> Binding cohorts
+#> ✔ Done
+#> → Getting cohorts and indexes
+#> [2026-04-09 10:06:12] - Cohort diagnostics - cohort characteristics
+#> ℹ adding demographics columns
+#> ℹ adding tableIntersectCount 1/1
+#> window names casted to snake_case:
+#> • `-365 to -1` -> `365_to_1`
+#> ℹ summarising data
+#> ℹ summarising cohort warfarin
+#> ℹ summarising cohort warfarin_sampled
+#> ℹ summarising cohort warfarin_matched
+#> ✔ summariseCharacteristics finished!
+#> [2026-04-09 10:06:17] - Cohort diagnostics - age density
+#> ℹ The following estimates will be calculated:
+#> • age: density
+#> ! Table is collected to memory as not all requested estimates are supported on
+#>   the database side
+#> → Start summary of data, at 2026-04-09 10:06:18.237323
+#> ✔ Summary finished, at 2026-04-09 10:06:18.360837
+#> [2026-04-09 10:06:18] - Cohort diagnostics - large scale characteristics
+#> ℹ Summarising large scale characteristics 
+#>  - getting characteristics from table condition_occurrence (1 of 7)
+#>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
+#>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
+#>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
+#>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
+#>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
+#>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
+#>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
+#>  - getting characteristics from table visit_occurrence (2 of 7)
+#>  - getting characteristics from table visit_occurrence (2 of 7) for time window…
+#>  - getting characteristics from table visit_occurrence (2 of 7) for time window…
+#>  - getting characteristics from table visit_occurrence (2 of 7) for time window…
+#>  - getting characteristics from table visit_occurrence (2 of 7) for time window…
+#>  - getting characteristics from table visit_occurrence (2 of 7) for time window…
+#>  - getting characteristics from table visit_occurrence (2 of 7) for time window…
+#>  - getting characteristics from table visit_occurrence (2 of 7) for time window…
+#>  - getting characteristics from table measurement (3 of 7)
+#>  - getting characteristics from table measurement (3 of 7) for time window -Inf…
+#>  - getting characteristics from table measurement (3 of 7) for time window -365…
+#>  - getting characteristics from table measurement (3 of 7) for time window -30 …
+#>  - getting characteristics from table measurement (3 of 7) for time window 0 an…
+#>  - getting characteristics from table measurement (3 of 7) for time window 1 an…
+#>  - getting characteristics from table measurement (3 of 7) for time window 31 a…
+#>  - getting characteristics from table measurement (3 of 7) for time window 366 …
+#>  - getting characteristics from table procedure_occurrence (4 of 7)
+#>  - getting characteristics from table procedure_occurrence (4 of 7) for time wi…
+#>  - getting characteristics from table procedure_occurrence (4 of 7) for time wi…
+#>  - getting characteristics from table procedure_occurrence (4 of 7) for time wi…
+#>  - getting characteristics from table procedure_occurrence (4 of 7) for time wi…
+#>  - getting characteristics from table procedure_occurrence (4 of 7) for time wi…
+#>  - getting characteristics from table procedure_occurrence (4 of 7) for time wi…
+#>  - getting characteristics from table procedure_occurrence (4 of 7) for time wi…
+#>  - getting characteristics from table observation (5 of 7)
+#>  - getting characteristics from table observation (5 of 7) for time window -Inf…
+#>  - getting characteristics from table observation (5 of 7) for time window -365…
+#>  - getting characteristics from table observation (5 of 7) for time window -30 …
+#>  - getting characteristics from table observation (5 of 7) for time window 0 an…
+#>  - getting characteristics from table observation (5 of 7) for time window 1 an…
+#>  - getting characteristics from table observation (5 of 7) for time window 31 a…
+#>  - getting characteristics from table observation (5 of 7) for time window 366 …
+#>  - getting characteristics from table drug_exposure (6 of 7)
+#>  - getting characteristics from table drug_exposure (6 of 7) for time window -I…
+#>  - getting characteristics from table drug_exposure (6 of 7) for time window -3…
+#>  - getting characteristics from table drug_exposure (6 of 7) for time window -3…
+#>  - getting characteristics from table drug_exposure (6 of 7) for time window 0 …
+#>  - getting characteristics from table drug_exposure (6 of 7) for time window 1 …
+#>  - getting characteristics from table drug_exposure (6 of 7) for time window 31…
+#>  - getting characteristics from table drug_exposure (6 of 7) for time window 36…
+#>  - getting characteristics from table drug_era (7 of 7)
+#>  - getting characteristics from table drug_era (7 of 7) for time window -Inf an…
+#>  - getting characteristics from table drug_era (7 of 7) for time window -365 an…
+#>  - getting characteristics from table drug_era (7 of 7) for time window -30 and…
+#>  - getting characteristics from table drug_era (7 of 7) for time window 0 and 0
+#>  - getting characteristics from table drug_era (7 of 7) for time window 1 and 30
+#>  - getting characteristics from table drug_era (7 of 7) for time window 31 and …
+#>  - getting characteristics from table drug_era (7 of 7) for time window 366 and…
+#> Formatting result
+#> 397 estimates dropped as frequency less than 1%
+#> ✔ Summarising large scale characteristics
+#> ℹ Summarising large scale characteristics 
+#>  - getting characteristics from table condition_occurrence (1 of 7)
+#>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
+#>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
+#>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
+#>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
+#>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
+#>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
+#>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
+#>  - getting characteristics from table visit_occurrence (2 of 7)
+#>  - getting characteristics from table visit_occurrence (2 of 7) for time window…
+#>  - getting characteristics from table visit_occurrence (2 of 7) for time window…
+#>  - getting characteristics from table visit_occurrence (2 of 7) for time window…
+#>  - getting characteristics from table visit_occurrence (2 of 7) for time window…
+#>  - getting characteristics from table visit_occurrence (2 of 7) for time window…
+#>  - getting characteristics from table visit_occurrence (2 of 7) for time window…
+#>  - getting characteristics from table visit_occurrence (2 of 7) for time window…
+#>  - getting characteristics from table measurement (3 of 7)
+#>  - getting characteristics from table measurement (3 of 7) for time window -Inf…
+#>  - getting characteristics from table measurement (3 of 7) for time window -365…
+#>  - getting characteristics from table measurement (3 of 7) for time window -30 …
+#>  - getting characteristics from table measurement (3 of 7) for time window 0 an…
+#>  - getting characteristics from table measurement (3 of 7) for time window 1 an…
+#>  - getting characteristics from table measurement (3 of 7) for time window 31 a…
+#>  - getting characteristics from table measurement (3 of 7) for time window 366 …
+#>  - getting characteristics from table procedure_occurrence (4 of 7)
+#>  - getting characteristics from table procedure_occurrence (4 of 7) for time wi…
+#>  - getting characteristics from table procedure_occurrence (4 of 7) for time wi…
+#>  - getting characteristics from table procedure_occurrence (4 of 7) for time wi…
+#>  - getting characteristics from table procedure_occurrence (4 of 7) for time wi…
+#>  - getting characteristics from table procedure_occurrence (4 of 7) for time wi…
+#>  - getting characteristics from table procedure_occurrence (4 of 7) for time wi…
+#>  - getting characteristics from table procedure_occurrence (4 of 7) for time wi…
+#>  - getting characteristics from table observation (5 of 7)
+#>  - getting characteristics from table observation (5 of 7) for time window -Inf…
+#>  - getting characteristics from table observation (5 of 7) for time window -365…
+#>  - getting characteristics from table observation (5 of 7) for time window -30 …
+#>  - getting characteristics from table observation (5 of 7) for time window 0 an…
+#>  - getting characteristics from table observation (5 of 7) for time window 1 an…
+#>  - getting characteristics from table observation (5 of 7) for time window 31 a…
+#>  - getting characteristics from table observation (5 of 7) for time window 366 …
+#>  - getting characteristics from table drug_exposure (6 of 7)
+#>  - getting characteristics from table drug_exposure (6 of 7) for time window -I…
+#>  - getting characteristics from table drug_exposure (6 of 7) for time window -3…
+#>  - getting characteristics from table drug_exposure (6 of 7) for time window -3…
+#>  - getting characteristics from table drug_exposure (6 of 7) for time window 0 …
+#>  - getting characteristics from table drug_exposure (6 of 7) for time window 1 …
+#>  - getting characteristics from table drug_exposure (6 of 7) for time window 31…
+#>  - getting characteristics from table drug_exposure (6 of 7) for time window 36…
+#>  - getting characteristics from table drug_era (7 of 7)
+#>  - getting characteristics from table drug_era (7 of 7) for time window -Inf an…
+#>  - getting characteristics from table drug_era (7 of 7) for time window -365 an…
+#>  - getting characteristics from table drug_era (7 of 7) for time window -30 and…
+#>  - getting characteristics from table drug_era (7 of 7) for time window 0 and 0
+#>  - getting characteristics from table drug_era (7 of 7) for time window 1 and 30
+#>  - getting characteristics from table drug_era (7 of 7) for time window 31 and …
+#>  - getting characteristics from table drug_era (7 of 7) for time window 366 and…
+#> Formatting result
+#> 397 estimates dropped as frequency less than 1%
+#> ✔ Summarising large scale characteristics
+#> `cohort_sample` and `matched_sample` casted to character.
+#> [2026-04-09 10:07:18] - Population diagnosics - denominator cohort
+#> [2026-04-09 10:07:18] - Population diagnosics - sampling person table to1e+05
+#> ℹ Creating denominator cohorts
+#> ✔ Cohorts created in 0 min and 5 sec
+#> [2026-04-09 10:07:24] - Population diagnosics - incidence
+#> ℹ Getting incidence for analysis 1 of 7
+#> ℹ Getting incidence for analysis 2 of 7
+#> ℹ Getting incidence for analysis 3 of 7
+#> ℹ Getting incidence for analysis 4 of 7
+#> ℹ Getting incidence for analysis 5 of 7
+#> ℹ Getting incidence for analysis 6 of 7
+#> ℹ Getting incidence for analysis 7 of 7
+#> ✔ Overall time taken: 0 mins and 9 secs
+#> [2026-04-09 10:07:34] - Population diagnosics - prevalence
+#> ℹ Getting prevalence for analysis 1 of 7
+#> ℹ Getting prevalence for analysis 2 of 7
+#> ℹ Getting prevalence for analysis 3 of 7
+#> ℹ Getting prevalence for analysis 4 of 7
+#> ℹ Getting prevalence for analysis 5 of 7
+#> ℹ Getting prevalence for analysis 6 of 7
+#> ℹ Getting prevalence for analysis 7 of 7
+#> ✔ Time taken: 0 mins and 5 secs
+#> `populationDateStart`, `populationDateEnd`, and `populationSample` casted to
+#> character.
+#> `populationDateStart` and `populationDateEnd` eliminated from settings as all
+#> elements are NA.
+#> [2026-04-09 10:07:40] - Phenotype diagnostics - exporting results
+#> [2026-04-09 10:07:40] - Exporting log file
+
+# By default, cohortSurvival analysis will not be run. If you want to run it, please use:
+result <- phenotypeDiagnostics(cdm$warfarin,
+                               cohortDiagnostics = list(
+                               "diagnostics" = c("cohortCount", "cohortCharacteristics",
+                                                 "largeScaleCharacteristics",
+                                                 "compareCohorts", "cohortSurvival")))
+#> ℹ Creating log file:
+#>   /tmp/Rtmpv9Qvve/phenotypeDiagnostics_log_2026_04_09_10_07_411cb4f173487.txt.
+#> [2026-04-09 10:07:41] - Log file created
+#> [2026-04-09 10:07:41] - Database diagnostics - getting CDM Snapshot
+#> [2026-04-09 10:07:41] - Database diagnostics - summarising person table
+#> ℹ The following estimates will be calculated:
+#> • date_of_birth: density
+#> ! Table is collected to memory as not all requested estimates are supported on
+#>   the database side
+#> → Start summary of data, at 2026-04-09 10:07:45.620135
+#> ✔ Summary finished, at 2026-04-09 10:07:45.684073
+#> [2026-04-09 10:07:45] - Database diagnostics - summarising observation period
+#> ℹ retrieving cdm object from cdm_table.
+#> Warning: ! There are 2649 individuals not included in the person table.
+#> ℹ The following estimates will be calculated:
+#> • observation_period_start_date: density
+#> • observation_period_end_date: density
+#> ! Table is collected to memory as not all requested estimates are supported on
+#>   the database side
+#> → Start summary of data, at 2026-04-09 10:07:48.833408
+#> ✔ Summary finished, at 2026-04-09 10:07:48.897724
+#> [2026-04-09 10:07:49] - Database diagnostics - summarising clinical tables -
+#> summary
+#> ℹ Adding variables of interest to drug_exposure.
+#> ℹ Summarising records per person in drug_exposure.
+#> ℹ Summarising subjects not in person table in drug_exposure.
+#> ℹ Summarising records in observation in drug_exposure.
+#> ℹ Summarising records with start before birth date in drug_exposure.
+#> ℹ Summarising records with end date before start date in drug_exposure.
+#> ℹ Summarising domains in drug_exposure.
+#> ℹ Summarising standard concepts in drug_exposure.
+#> ℹ Summarising source vocabularies in drug_exposure.
+#> ℹ Summarising concept types in drug_exposure.
+#> ℹ Summarising concept class in drug_exposure.
+#> ℹ Summarising missing data in drug_exposure.
+#> [2026-04-09 10:07:53] - Database diagnostics - summarising clinical tables -
+#> trends
+#> [2026-04-09 10:07:54] - Codelist diagnostics - index event breakdown
+#> Getting counts of warfarin codes for cohort warfarin
+#> [2026-04-09 10:07:55] - Codelist diagnostics - drug diagnostics
+#> Returning entry cohort as the size of the cohorts to be sampled is equal or
+#> smaller than `n`.
+#> ℹ The following estimates will be calculated:
+#> • exposure_duration: min, q01, q05, q25, median, q75, q95, q99, max,
+#>   percentage_missing
+#> • quantity: min, q01, q05, q25, median, q75, q95, q99, max, percentage_missing
+#> ! Table is collected to memory as not all requested estimates are supported on
+#>   the database side
+#> → Start summary of data, at 2026-04-09 10:07:57.244801
+#> ✔ Summary finished, at 2026-04-09 10:07:58.087908
+#> ℹ The following estimates will be calculated:
+#> • days_to_next_record: min, q01, q05, q25, median, q75, q95, q99, max,
+#>   percentage_missing
+#> ! Table is collected to memory as not all requested estimates are supported on
+#>   the database side
+#> → Start summary of data, at 2026-04-09 10:07:58.737909
+#> ✔ Summary finished, at 2026-04-09 10:07:58.897783
+#> ! No common ingredient found for codelist: `warfarin`.
+#> ℹ Change ingredient threshold with options(PhenotypeR_ingredient_threshold),
+#>   threshold = 0.8.
+#> Warning: The CDM reference containing the cohort must also contain achilles tables.
+#> Returning only index event breakdown.
+#> [2026-04-09 10:08:02] - Cohort diagnostics - cohort attrition
+#> [2026-04-09 10:08:02] - Cohort diagnostics - cohort count
+#> ℹ summarising data
+#> ℹ summarising cohort warfarin
+#> ✔ summariseCharacteristics finished!
+#> → Skipping cohort sampling as all cohorts have less than 20000 individuals.
+#> [2026-04-09 10:08:03] - Cohort diagnostics - matched cohorts
+#> → Sampling cohort `tmp_076_sampled`
+#> Returning entry cohort as the size of the cohorts to be sampled is equal or
+#> smaller than `n`.
+#> • Generating an age and sex matched cohort for warfarin
+#> Starting matching
+#> ℹ Creating copy of target cohort.
+#> • 1 cohort to be matched.
+#> ℹ Creating controls cohorts.
+#> ℹ Excluding cases from controls
+#> • Matching by gender_concept_id and year_of_birth
+#> • Removing controls that were not in observation at index date
+#> • Excluding target records whose pair is not in observation
+#> • Adjusting ratio
+#> Binding cohorts
+#> ✔ Done
+#> → Getting cohorts and indexes
+#> [2026-04-09 10:08:15] - Cohort diagnostics - cohort characteristics
+#> ℹ adding demographics columns
+#> ℹ adding tableIntersectCount 1/1
+#> window names casted to snake_case:
+#> • `-365 to -1` -> `365_to_1`
+#> ℹ summarising data
+#> ℹ summarising cohort warfarin
+#> ℹ summarising cohort warfarin_sampled
+#> ℹ summarising cohort warfarin_matched
+#> ✔ summariseCharacteristics finished!
+#> [2026-04-09 10:08:20] - Cohort diagnostics - age density
+#> ℹ The following estimates will be calculated:
+#> • age: density
+#> ! Table is collected to memory as not all requested estimates are supported on
+#>   the database side
+#> → Start summary of data, at 2026-04-09 10:08:20.928671
+#> ✔ Summary finished, at 2026-04-09 10:08:21.052652
+#> [2026-04-09 10:08:21] - Cohort diagnostics - large scale characteristics
+#> ℹ Summarising large scale characteristics 
+#>  - getting characteristics from table condition_occurrence (1 of 7)
+#>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
+#>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
+#>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
+#>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
+#>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
+#>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
+#>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
+#>  - getting characteristics from table visit_occurrence (2 of 7)
+#>  - getting characteristics from table visit_occurrence (2 of 7) for time window…
+#>  - getting characteristics from table visit_occurrence (2 of 7) for time window…
+#>  - getting characteristics from table visit_occurrence (2 of 7) for time window…
+#>  - getting characteristics from table visit_occurrence (2 of 7) for time window…
+#>  - getting characteristics from table visit_occurrence (2 of 7) for time window…
+#>  - getting characteristics from table visit_occurrence (2 of 7) for time window…
+#>  - getting characteristics from table visit_occurrence (2 of 7) for time window…
+#>  - getting characteristics from table measurement (3 of 7)
+#>  - getting characteristics from table measurement (3 of 7) for time window -Inf…
+#>  - getting characteristics from table measurement (3 of 7) for time window -365…
+#>  - getting characteristics from table measurement (3 of 7) for time window -30 …
+#>  - getting characteristics from table measurement (3 of 7) for time window 0 an…
+#>  - getting characteristics from table measurement (3 of 7) for time window 1 an…
+#>  - getting characteristics from table measurement (3 of 7) for time window 31 a…
+#>  - getting characteristics from table measurement (3 of 7) for time window 366 …
+#>  - getting characteristics from table procedure_occurrence (4 of 7)
+#>  - getting characteristics from table procedure_occurrence (4 of 7) for time wi…
+#>  - getting characteristics from table procedure_occurrence (4 of 7) for time wi…
+#>  - getting characteristics from table procedure_occurrence (4 of 7) for time wi…
+#>  - getting characteristics from table procedure_occurrence (4 of 7) for time wi…
+#>  - getting characteristics from table procedure_occurrence (4 of 7) for time wi…
+#>  - getting characteristics from table procedure_occurrence (4 of 7) for time wi…
+#>  - getting characteristics from table procedure_occurrence (4 of 7) for time wi…
+#>  - getting characteristics from table observation (5 of 7)
+#>  - getting characteristics from table observation (5 of 7) for time window -Inf…
+#>  - getting characteristics from table observation (5 of 7) for time window -365…
+#>  - getting characteristics from table observation (5 of 7) for time window -30 …
+#>  - getting characteristics from table observation (5 of 7) for time window 0 an…
+#>  - getting characteristics from table observation (5 of 7) for time window 1 an…
+#>  - getting characteristics from table observation (5 of 7) for time window 31 a…
+#>  - getting characteristics from table observation (5 of 7) for time window 366 …
+#>  - getting characteristics from table drug_exposure (6 of 7)
+#>  - getting characteristics from table drug_exposure (6 of 7) for time window -I…
+#>  - getting characteristics from table drug_exposure (6 of 7) for time window -3…
+#>  - getting characteristics from table drug_exposure (6 of 7) for time window -3…
+#>  - getting characteristics from table drug_exposure (6 of 7) for time window 0 …
+#>  - getting characteristics from table drug_exposure (6 of 7) for time window 1 …
+#>  - getting characteristics from table drug_exposure (6 of 7) for time window 31…
+#>  - getting characteristics from table drug_exposure (6 of 7) for time window 36…
+#>  - getting characteristics from table drug_era (7 of 7)
+#>  - getting characteristics from table drug_era (7 of 7) for time window -Inf an…
+#>  - getting characteristics from table drug_era (7 of 7) for time window -365 an…
+#>  - getting characteristics from table drug_era (7 of 7) for time window -30 and…
+#>  - getting characteristics from table drug_era (7 of 7) for time window 0 and 0
+#>  - getting characteristics from table drug_era (7 of 7) for time window 1 and 30
+#>  - getting characteristics from table drug_era (7 of 7) for time window 31 and …
+#>  - getting characteristics from table drug_era (7 of 7) for time window 366 and…
+#> Formatting result
+#> 456 estimates dropped as frequency less than 1%
+#> ✔ Summarising large scale characteristics
+#> ℹ Summarising large scale characteristics 
+#>  - getting characteristics from table condition_occurrence (1 of 7)
+#>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
+#>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
+#>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
+#>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
+#>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
+#>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
+#>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
+#>  - getting characteristics from table visit_occurrence (2 of 7)
+#>  - getting characteristics from table visit_occurrence (2 of 7) for time window…
+#>  - getting characteristics from table visit_occurrence (2 of 7) for time window…
+#>  - getting characteristics from table visit_occurrence (2 of 7) for time window…
+#>  - getting characteristics from table visit_occurrence (2 of 7) for time window…
+#>  - getting characteristics from table visit_occurrence (2 of 7) for time window…
+#>  - getting characteristics from table visit_occurrence (2 of 7) for time window…
+#>  - getting characteristics from table visit_occurrence (2 of 7) for time window…
+#>  - getting characteristics from table measurement (3 of 7)
+#>  - getting characteristics from table measurement (3 of 7) for time window -Inf…
+#>  - getting characteristics from table measurement (3 of 7) for time window -365…
+#>  - getting characteristics from table measurement (3 of 7) for time window -30 …
+#>  - getting characteristics from table measurement (3 of 7) for time window 0 an…
+#>  - getting characteristics from table measurement (3 of 7) for time window 1 an…
+#>  - getting characteristics from table measurement (3 of 7) for time window 31 a…
+#>  - getting characteristics from table measurement (3 of 7) for time window 366 …
+#>  - getting characteristics from table procedure_occurrence (4 of 7)
+#>  - getting characteristics from table procedure_occurrence (4 of 7) for time wi…
+#>  - getting characteristics from table procedure_occurrence (4 of 7) for time wi…
+#>  - getting characteristics from table procedure_occurrence (4 of 7) for time wi…
+#>  - getting characteristics from table procedure_occurrence (4 of 7) for time wi…
+#>  - getting characteristics from table procedure_occurrence (4 of 7) for time wi…
+#>  - getting characteristics from table procedure_occurrence (4 of 7) for time wi…
+#>  - getting characteristics from table procedure_occurrence (4 of 7) for time wi…
+#>  - getting characteristics from table observation (5 of 7)
+#>  - getting characteristics from table observation (5 of 7) for time window -Inf…
+#>  - getting characteristics from table observation (5 of 7) for time window -365…
+#>  - getting characteristics from table observation (5 of 7) for time window -30 …
+#>  - getting characteristics from table observation (5 of 7) for time window 0 an…
+#>  - getting characteristics from table observation (5 of 7) for time window 1 an…
+#>  - getting characteristics from table observation (5 of 7) for time window 31 a…
+#>  - getting characteristics from table observation (5 of 7) for time window 366 …
+#>  - getting characteristics from table drug_exposure (6 of 7)
+#>  - getting characteristics from table drug_exposure (6 of 7) for time window -I…
+#>  - getting characteristics from table drug_exposure (6 of 7) for time window -3…
+#>  - getting characteristics from table drug_exposure (6 of 7) for time window -3…
+#>  - getting characteristics from table drug_exposure (6 of 7) for time window 0 …
+#>  - getting characteristics from table drug_exposure (6 of 7) for time window 1 …
+#>  - getting characteristics from table drug_exposure (6 of 7) for time window 31…
+#>  - getting characteristics from table drug_exposure (6 of 7) for time window 36…
+#>  - getting characteristics from table drug_era (7 of 7)
+#>  - getting characteristics from table drug_era (7 of 7) for time window -Inf an…
+#>  - getting characteristics from table drug_era (7 of 7) for time window -365 an…
+#>  - getting characteristics from table drug_era (7 of 7) for time window -30 and…
+#>  - getting characteristics from table drug_era (7 of 7) for time window 0 and 0
+#>  - getting characteristics from table drug_era (7 of 7) for time window 1 and 30
+#>  - getting characteristics from table drug_era (7 of 7) for time window 31 and …
+#>  - getting characteristics from table drug_era (7 of 7) for time window 366 and…
+#> Formatting result
+#> 456 estimates dropped as frequency less than 1%
+#> ✔ Summarising large scale characteristics
+#> [2026-04-09 10:09:20] - Cohort diagnostics - death cohorts
+#> Warning: Death table is empty. Skipping survival analysis
+#> `cohort_sample` and `matched_sample` casted to character.
+#> [2026-04-09 10:09:20] - Population diagnosics - denominator cohort
+#> [2026-04-09 10:09:20] - Population diagnosics - sampling person table to1e+05
+#> ℹ Creating denominator cohorts
+#> ✔ Cohorts created in 0 min and 5 sec
+#> [2026-04-09 10:09:26] - Population diagnosics - incidence
+#> ℹ Getting incidence for analysis 1 of 7
+#> ℹ Getting incidence for analysis 2 of 7
+#> ℹ Getting incidence for analysis 3 of 7
+#> ℹ Getting incidence for analysis 4 of 7
+#> ℹ Getting incidence for analysis 5 of 7
+#> ℹ Getting incidence for analysis 6 of 7
+#> ℹ Getting incidence for analysis 7 of 7
+#> ✔ Overall time taken: 0 mins and 9 secs
+#> [2026-04-09 10:09:35] - Population diagnosics - prevalence
+#> ℹ Getting prevalence for analysis 1 of 7
+#> ℹ Getting prevalence for analysis 2 of 7
+#> ℹ Getting prevalence for analysis 3 of 7
+#> ℹ Getting prevalence for analysis 4 of 7
+#> ℹ Getting prevalence for analysis 5 of 7
+#> ℹ Getting prevalence for analysis 6 of 7
+#> ℹ Getting prevalence for analysis 7 of 7
+#> ✔ Time taken: 0 mins and 5 secs
+#> `populationDateStart`, `populationDateEnd`, and `populationSample` casted to
+#> character.
+#> `populationDateStart` and `populationDateEnd` eliminated from settings as all
+#> elements are NA.
+#> [2026-04-09 10:09:41] - Phenotype diagnostics - exporting results
+#> [2026-04-09 10:09:41] - Exporting log file
+
+
+# Run PhenotypeR with the default values, except for populationSample:
+result <- phenotypeDiagnostics(cdm$warfarin,
+                               populationDiagnostics = list("populationSample" = 1000))
+#> ℹ Creating log file:
+#>   /tmp/Rtmpv9Qvve/phenotypeDiagnostics_log_2026_04_09_10_09_421cb41b46c16b.txt.
+#> [2026-04-09 10:09:42] - Log file created
+#> [2026-04-09 10:09:42] - Database diagnostics - getting CDM Snapshot
+#> [2026-04-09 10:09:42] - Database diagnostics - summarising person table
+#> ℹ The following estimates will be calculated:
+#> • date_of_birth: density
+#> ! Table is collected to memory as not all requested estimates are supported on
+#>   the database side
+#> → Start summary of data, at 2026-04-09 10:09:46.547575
+#> ✔ Summary finished, at 2026-04-09 10:09:46.621166
+#> [2026-04-09 10:09:46] - Database diagnostics - summarising observation period
+#> ℹ retrieving cdm object from cdm_table.
+#> Warning: ! There are 2649 individuals not included in the person table.
+#> ℹ The following estimates will be calculated:
+#> • observation_period_start_date: density
+#> • observation_period_end_date: density
+#> ! Table is collected to memory as not all requested estimates are supported on
+#>   the database side
+#> → Start summary of data, at 2026-04-09 10:09:49.769239
+#> ✔ Summary finished, at 2026-04-09 10:09:49.846054
+#> [2026-04-09 10:09:50] - Database diagnostics - summarising clinical tables -
+#> summary
+#> ℹ Adding variables of interest to drug_exposure.
+#> ℹ Summarising records per person in drug_exposure.
+#> ℹ Summarising subjects not in person table in drug_exposure.
+#> ℹ Summarising records in observation in drug_exposure.
+#> ℹ Summarising records with start before birth date in drug_exposure.
+#> ℹ Summarising records with end date before start date in drug_exposure.
+#> ℹ Summarising domains in drug_exposure.
+#> ℹ Summarising standard concepts in drug_exposure.
+#> ℹ Summarising source vocabularies in drug_exposure.
+#> ℹ Summarising concept types in drug_exposure.
+#> ℹ Summarising concept class in drug_exposure.
+#> ℹ Summarising missing data in drug_exposure.
+#> [2026-04-09 10:09:54] - Database diagnostics - summarising clinical tables -
+#> trends
+#> [2026-04-09 10:09:55] - Codelist diagnostics - index event breakdown
+#> Getting counts of warfarin codes for cohort warfarin
+#> [2026-04-09 10:09:56] - Codelist diagnostics - drug diagnostics
+#> Returning entry cohort as the size of the cohorts to be sampled is equal or
+#> smaller than `n`.
+#> ℹ The following estimates will be calculated:
+#> • exposure_duration: min, q01, q05, q25, median, q75, q95, q99, max,
+#>   percentage_missing
+#> • quantity: min, q01, q05, q25, median, q75, q95, q99, max, percentage_missing
+#> ! Table is collected to memory as not all requested estimates are supported on
+#>   the database side
+#> → Start summary of data, at 2026-04-09 10:09:58.096172
+#> ✔ Summary finished, at 2026-04-09 10:09:58.890128
+#> ℹ The following estimates will be calculated:
+#> • days_to_next_record: min, q01, q05, q25, median, q75, q95, q99, max,
+#>   percentage_missing
+#> ! Table is collected to memory as not all requested estimates are supported on
+#>   the database side
+#> → Start summary of data, at 2026-04-09 10:09:59.509757
+#> ✔ Summary finished, at 2026-04-09 10:09:59.6645
+#> ! No common ingredient found for codelist: `warfarin`.
+#> ℹ Change ingredient threshold with options(PhenotypeR_ingredient_threshold),
+#>   threshold = 0.8.
+#> Warning: The CDM reference containing the cohort must also contain achilles tables.
+#> Returning only index event breakdown.
+#> [2026-04-09 10:10:03] - Cohort diagnostics - cohort attrition
+#> [2026-04-09 10:10:03] - Cohort diagnostics - cohort count
+#> ℹ summarising data
+#> ℹ summarising cohort warfarin
+#> ✔ summariseCharacteristics finished!
+#> → Skipping cohort sampling as all cohorts have less than 20000 individuals.
+#> [2026-04-09 10:10:04] - Cohort diagnostics - matched cohorts
+#> → Sampling cohort `tmp_096_sampled`
+#> Returning entry cohort as the size of the cohorts to be sampled is equal or
+#> smaller than `n`.
+#> • Generating an age and sex matched cohort for warfarin
+#> Starting matching
+#> ℹ Creating copy of target cohort.
+#> • 1 cohort to be matched.
+#> ℹ Creating controls cohorts.
+#> ℹ Excluding cases from controls
+#> • Matching by gender_concept_id and year_of_birth
+#> • Removing controls that were not in observation at index date
+#> • Excluding target records whose pair is not in observation
+#> • Adjusting ratio
+#> Binding cohorts
+#> ✔ Done
+#> → Getting cohorts and indexes
+#> [2026-04-09 10:10:15] - Cohort diagnostics - cohort characteristics
+#> ℹ adding demographics columns
+#> ℹ adding tableIntersectCount 1/1
+#> window names casted to snake_case:
+#> • `-365 to -1` -> `365_to_1`
+#> ℹ summarising data
+#> ℹ summarising cohort warfarin
+#> ℹ summarising cohort warfarin_sampled
+#> ℹ summarising cohort warfarin_matched
+#> ✔ summariseCharacteristics finished!
+#> [2026-04-09 10:10:20] - Cohort diagnostics - age density
+#> ℹ The following estimates will be calculated:
+#> • age: density
+#> ! Table is collected to memory as not all requested estimates are supported on
+#>   the database side
+#> → Start summary of data, at 2026-04-09 10:10:20.627074
+#> ✔ Summary finished, at 2026-04-09 10:10:20.749264
+#> [2026-04-09 10:10:21] - Cohort diagnostics - large scale characteristics
+#> ℹ Summarising large scale characteristics 
+#>  - getting characteristics from table condition_occurrence (1 of 7)
+#>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
+#>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
+#>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
+#>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
+#>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
+#>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
+#>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
+#>  - getting characteristics from table visit_occurrence (2 of 7)
+#>  - getting characteristics from table visit_occurrence (2 of 7) for time window…
+#>  - getting characteristics from table visit_occurrence (2 of 7) for time window…
+#>  - getting characteristics from table visit_occurrence (2 of 7) for time window…
+#>  - getting characteristics from table visit_occurrence (2 of 7) for time window…
+#>  - getting characteristics from table visit_occurrence (2 of 7) for time window…
+#>  - getting characteristics from table visit_occurrence (2 of 7) for time window…
+#>  - getting characteristics from table visit_occurrence (2 of 7) for time window…
+#>  - getting characteristics from table measurement (3 of 7)
+#>  - getting characteristics from table measurement (3 of 7) for time window -Inf…
+#>  - getting characteristics from table measurement (3 of 7) for time window -365…
+#>  - getting characteristics from table measurement (3 of 7) for time window -30 …
+#>  - getting characteristics from table measurement (3 of 7) for time window 0 an…
+#>  - getting characteristics from table measurement (3 of 7) for time window 1 an…
+#>  - getting characteristics from table measurement (3 of 7) for time window 31 a…
+#>  - getting characteristics from table measurement (3 of 7) for time window 366 …
+#>  - getting characteristics from table procedure_occurrence (4 of 7)
+#>  - getting characteristics from table procedure_occurrence (4 of 7) for time wi…
+#>  - getting characteristics from table procedure_occurrence (4 of 7) for time wi…
+#>  - getting characteristics from table procedure_occurrence (4 of 7) for time wi…
+#>  - getting characteristics from table procedure_occurrence (4 of 7) for time wi…
+#>  - getting characteristics from table procedure_occurrence (4 of 7) for time wi…
+#>  - getting characteristics from table procedure_occurrence (4 of 7) for time wi…
+#>  - getting characteristics from table procedure_occurrence (4 of 7) for time wi…
+#>  - getting characteristics from table observation (5 of 7)
+#>  - getting characteristics from table observation (5 of 7) for time window -Inf…
+#>  - getting characteristics from table observation (5 of 7) for time window -365…
+#>  - getting characteristics from table observation (5 of 7) for time window -30 …
+#>  - getting characteristics from table observation (5 of 7) for time window 0 an…
+#>  - getting characteristics from table observation (5 of 7) for time window 1 an…
+#>  - getting characteristics from table observation (5 of 7) for time window 31 a…
+#>  - getting characteristics from table observation (5 of 7) for time window 366 …
+#>  - getting characteristics from table drug_exposure (6 of 7)
+#>  - getting characteristics from table drug_exposure (6 of 7) for time window -I…
+#>  - getting characteristics from table drug_exposure (6 of 7) for time window -3…
+#>  - getting characteristics from table drug_exposure (6 of 7) for time window -3…
+#>  - getting characteristics from table drug_exposure (6 of 7) for time window 0 …
+#>  - getting characteristics from table drug_exposure (6 of 7) for time window 1 …
+#>  - getting characteristics from table drug_exposure (6 of 7) for time window 31…
+#>  - getting characteristics from table drug_exposure (6 of 7) for time window 36…
+#>  - getting characteristics from table drug_era (7 of 7)
+#>  - getting characteristics from table drug_era (7 of 7) for time window -Inf an…
+#>  - getting characteristics from table drug_era (7 of 7) for time window -365 an…
+#>  - getting characteristics from table drug_era (7 of 7) for time window -30 and…
+#>  - getting characteristics from table drug_era (7 of 7) for time window 0 and 0
+#>  - getting characteristics from table drug_era (7 of 7) for time window 1 and 30
+#>  - getting characteristics from table drug_era (7 of 7) for time window 31 and …
+#>  - getting characteristics from table drug_era (7 of 7) for time window 366 and…
+#> Formatting result
+#> 473 estimates dropped as frequency less than 1%
+#> ✔ Summarising large scale characteristics
+#> ℹ Summarising large scale characteristics 
+#>  - getting characteristics from table condition_occurrence (1 of 7)
+#>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
+#>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
+#>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
+#>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
+#>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
+#>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
+#>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
+#>  - getting characteristics from table visit_occurrence (2 of 7)
+#>  - getting characteristics from table visit_occurrence (2 of 7) for time window…
+#>  - getting characteristics from table visit_occurrence (2 of 7) for time window…
+#>  - getting characteristics from table visit_occurrence (2 of 7) for time window…
+#>  - getting characteristics from table visit_occurrence (2 of 7) for time window…
+#>  - getting characteristics from table visit_occurrence (2 of 7) for time window…
+#>  - getting characteristics from table visit_occurrence (2 of 7) for time window…
+#>  - getting characteristics from table visit_occurrence (2 of 7) for time window…
+#>  - getting characteristics from table measurement (3 of 7)
+#>  - getting characteristics from table measurement (3 of 7) for time window -Inf…
+#>  - getting characteristics from table measurement (3 of 7) for time window -365…
+#>  - getting characteristics from table measurement (3 of 7) for time window -30 …
+#>  - getting characteristics from table measurement (3 of 7) for time window 0 an…
+#>  - getting characteristics from table measurement (3 of 7) for time window 1 an…
+#>  - getting characteristics from table measurement (3 of 7) for time window 31 a…
+#>  - getting characteristics from table measurement (3 of 7) for time window 366 …
+#>  - getting characteristics from table procedure_occurrence (4 of 7)
+#>  - getting characteristics from table procedure_occurrence (4 of 7) for time wi…
+#>  - getting characteristics from table procedure_occurrence (4 of 7) for time wi…
+#>  - getting characteristics from table procedure_occurrence (4 of 7) for time wi…
+#>  - getting characteristics from table procedure_occurrence (4 of 7) for time wi…
+#>  - getting characteristics from table procedure_occurrence (4 of 7) for time wi…
+#>  - getting characteristics from table procedure_occurrence (4 of 7) for time wi…
+#>  - getting characteristics from table procedure_occurrence (4 of 7) for time wi…
+#>  - getting characteristics from table observation (5 of 7)
+#>  - getting characteristics from table observation (5 of 7) for time window -Inf…
+#>  - getting characteristics from table observation (5 of 7) for time window -365…
+#>  - getting characteristics from table observation (5 of 7) for time window -30 …
+#>  - getting characteristics from table observation (5 of 7) for time window 0 an…
+#>  - getting characteristics from table observation (5 of 7) for time window 1 an…
+#>  - getting characteristics from table observation (5 of 7) for time window 31 a…
+#>  - getting characteristics from table observation (5 of 7) for time window 366 …
+#>  - getting characteristics from table drug_exposure (6 of 7)
+#>  - getting characteristics from table drug_exposure (6 of 7) for time window -I…
+#>  - getting characteristics from table drug_exposure (6 of 7) for time window -3…
+#>  - getting characteristics from table drug_exposure (6 of 7) for time window -3…
+#>  - getting characteristics from table drug_exposure (6 of 7) for time window 0 …
+#>  - getting characteristics from table drug_exposure (6 of 7) for time window 1 …
+#>  - getting characteristics from table drug_exposure (6 of 7) for time window 31…
+#>  - getting characteristics from table drug_exposure (6 of 7) for time window 36…
+#>  - getting characteristics from table drug_era (7 of 7)
+#>  - getting characteristics from table drug_era (7 of 7) for time window -Inf an…
+#>  - getting characteristics from table drug_era (7 of 7) for time window -365 an…
+#>  - getting characteristics from table drug_era (7 of 7) for time window -30 and…
+#>  - getting characteristics from table drug_era (7 of 7) for time window 0 and 0
+#>  - getting characteristics from table drug_era (7 of 7) for time window 1 and 30
+#>  - getting characteristics from table drug_era (7 of 7) for time window 31 and …
+#>  - getting characteristics from table drug_era (7 of 7) for time window 366 and…
+#> Formatting result
+#> 473 estimates dropped as frequency less than 1%
+#> ✔ Summarising large scale characteristics
+#> `cohort_sample` and `matched_sample` casted to character.
+#> [2026-04-09 10:11:19] - Population diagnosics - denominator cohort
+#> [2026-04-09 10:11:19] - Population diagnosics - sampling person table to1000
+#> ℹ Creating denominator cohorts
+#> ✔ Cohorts created in 0 min and 5 sec
+#> [2026-04-09 10:11:24] - Population diagnosics - incidence
+#> ℹ Getting incidence for analysis 1 of 7
+#> ℹ Getting incidence for analysis 2 of 7
+#> ℹ Getting incidence for analysis 3 of 7
+#> ℹ Getting incidence for analysis 4 of 7
+#> ℹ Getting incidence for analysis 5 of 7
+#> ℹ Getting incidence for analysis 6 of 7
+#> ℹ Getting incidence for analysis 7 of 7
+#> ✔ Overall time taken: 0 mins and 9 secs
+#> [2026-04-09 10:11:34] - Population diagnosics - prevalence
+#> ℹ Getting prevalence for analysis 1 of 7
+#> ℹ Getting prevalence for analysis 2 of 7
+#> ℹ Getting prevalence for analysis 3 of 7
+#> ℹ Getting prevalence for analysis 4 of 7
+#> ℹ Getting prevalence for analysis 5 of 7
+#> ℹ Getting prevalence for analysis 6 of 7
+#> ℹ Getting prevalence for analysis 7 of 7
+#> ✔ Time taken: 0 mins and 5 secs
+#> `populationDateStart`, `populationDateEnd`, and `populationSample` casted to
+#> character.
+#> `populationDateStart` and `populationDateEnd` eliminated from settings as all
+#> elements are NA.
+#> [2026-04-09 10:11:40] - Phenotype diagnostics - exporting results
+#> [2026-04-09 10:11:40] - Exporting log file
 # }
 ```

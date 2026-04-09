@@ -13,7 +13,6 @@
 <url><loc>https://ohdsi.github.io/PhenotypeR/index.html</loc></url>
 <url><loc>https://ohdsi.github.io/PhenotypeR/reference/PhenotypeR-package.html</loc></url>
 <url><loc>https://ohdsi.github.io/PhenotypeR/reference/addCodelistAttribute.html</loc></url>
-<url><loc>https://ohdsi.github.io/PhenotypeR/reference/clinicalTableSample.html</loc></url>
 <url><loc>https://ohdsi.github.io/PhenotypeR/reference/codelistDiagnostics.html</loc></url>
 <url><loc>https://ohdsi.github.io/PhenotypeR/reference/cohortDiagnostics.html</loc></url>
 <url><loc>https://ohdsi.github.io/PhenotypeR/reference/cohortDoc.html</loc></url>
@@ -22,12 +21,12 @@
 <url><loc>https://ohdsi.github.io/PhenotypeR/reference/directoryDoc.html</loc></url>
 <url><loc>https://ohdsi.github.io/PhenotypeR/reference/downloadClinicalDescriptionTemplate.html</loc></url>
 <url><loc>https://ohdsi.github.io/PhenotypeR/reference/downloadDatabaseDescriptionTemplate.html</loc></url>
-<url><loc>https://ohdsi.github.io/PhenotypeR/reference/drugExposureSampleDoc.html</loc></url>
+<url><loc>https://ohdsi.github.io/PhenotypeR/reference/drugDiagnosticsSampleDoc.html</loc></url>
 <url><loc>https://ohdsi.github.io/PhenotypeR/reference/expectationsDoc.html</loc></url>
 <url><loc>https://ohdsi.github.io/PhenotypeR/reference/getCohortExpectations.html</loc></url>
 <url><loc>https://ohdsi.github.io/PhenotypeR/reference/index.html</loc></url>
 <url><loc>https://ohdsi.github.io/PhenotypeR/reference/matchedDoc.html</loc></url>
-<url><loc>https://ohdsi.github.io/PhenotypeR/reference/measurementSampleDoc.html</loc></url>
+<url><loc>https://ohdsi.github.io/PhenotypeR/reference/measurementDiagnosticsSampleDoc.html</loc></url>
 <url><loc>https://ohdsi.github.io/PhenotypeR/reference/phenotypeDiagnostics.html</loc></url>
 <url><loc>https://ohdsi.github.io/PhenotypeR/reference/populationDiagnostics.html</loc></url>
 <url><loc>https://ohdsi.github.io/PhenotypeR/reference/populationSampleDoc.html</loc></url>

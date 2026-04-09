@@ -36,10 +36,10 @@ We can run cohort diagnostics analyses for each of our overall cohorts
 like so:
 
 ``` r
-cohort_diag <- cohortDiagnostics(cdm$injuries, 
+cohort_diag <- cohortDiagnostics(cdm$injuries,
+                                 cohortSurvival = TRUE, 
                                  cohortSample = NULL,
-                                 matchedSample = NULL,
-                                 survival = TRUE)
+                                 matchedSample = NULL)
 ```
 
 Cohort diagnostics builds on
@@ -72,9 +72,8 @@ packages to perform the following analyses on our cohorts:
 - **Cohort timing:** If there is more than one cohort in the cohort
   table supplied, summarises the timing between them using
   [summariseCohortTiming()](https://darwin-eu.github.io/CohortCharacteristics/reference/summariseCohortTiming.html).
-- **Cohort survival:** If `survival = TRUE`, summarises the survival
-  until the event of death (if death table is present in the cdm)
-  using  
+- **Cohort survival:** Smmarises the survival until the event of death
+  (if death table is present in the cdm) using  
   [estimateSingleEventSurvival()](https://darwin-eu-dev.github.io/CohortSurvival/reference/estimateSingleEventSurvival.html).
 
 The analyses **cohort characteristics**, **cohort age distribution**,

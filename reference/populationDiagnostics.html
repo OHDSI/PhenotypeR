@@ -60,7 +60,9 @@ population. Diagnostics include:</p>
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">populationDiagnostics</span><span class="op">(</span></span>
 <span>  <span class="va">cohort</span>,</span>
-<span>  populationSample <span class="op">=</span> <span class="fl">1e+06</span>,</span>
+<span>  incidence <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  periodPrevalence <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  populationSample <span class="op">=</span> <span class="fl">1e+05</span>,</span>
 <span>  populationDateRange <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -71,6 +73,16 @@ population. Diagnostics include:</p>
 
 <dl><dt id="arg-cohort">cohort<a class="anchor" aria-label="anchor" href="#arg-cohort"></a></dt>
 <dd><p>Cohort table in a cdm reference</p></dd>
+
+
+<dt id="arg-incidence">incidence<a class="anchor" aria-label="anchor" href="#arg-incidence"></a></dt>
+<dd><p>Whether to run `IncidencePrevalence::estimateIncidence()` (TRUE)
+or not (FALSE).</p></dd>
+
+
+<dt id="arg-periodprevalence">periodPrevalence<a class="anchor" aria-label="anchor" href="#arg-periodprevalence"></a></dt>
+<dd><p>Whether to run `IncidencePrevalence::estimatePeriodPrevalence()` (TRUE)
+or not (FALSE).</p></dd>
 
 
 <dt id="arg-populationsample">populationSample<a class="anchor" aria-label="anchor" href="#arg-populationsample"></a></dt>
@@ -127,7 +139,7 @@ observation_period table will be used for the latter.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 5 of 7</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 6 of 7</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 7 of 7</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Overall time taken: 0 mins and 10 secs</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Overall time taken: 0 mins and 9 secs</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 1 of 7</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 2 of 7</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 3 of 7</span>

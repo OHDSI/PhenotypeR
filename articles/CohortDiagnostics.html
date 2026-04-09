@@ -106,10 +106,10 @@ fracture, or a hip fracture using the Eunomia synthetic data.</p>
 <p>We can run cohort diagnostics analyses for each of our overall
 cohorts like so:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">cohort_diag</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cohortDiagnostics.html">cohortDiagnostics</a></span><span class="op">(</span><span class="va">cdm</span><span class="op">$</span><span class="va">injuries</span>, </span>
+<code class="sourceCode R"><span><span class="va">cohort_diag</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cohortDiagnostics.html">cohortDiagnostics</a></span><span class="op">(</span><span class="va">cdm</span><span class="op">$</span><span class="va">injuries</span>,</span>
+<span>                                 cohortSurvival <span class="op">=</span> <span class="cn">TRUE</span>, </span>
 <span>                                 cohortSample <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>                                 matchedSample <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>                                 survival <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<span>                                 matchedSample <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
 <p>Cohort diagnostics builds on <a href="https://darwin-eu.github.io/CohortCharacteristics/" class="external-link">CohortCharacteristics</a>
 and <a href="https://darwin-eu-dev.github.io/CohortSurvival/" class="external-link">CohortSurvival</a>
 R packages to perform the following analyses on our cohorts:</p>
@@ -140,9 +140,8 @@ the cohort table supplied, summarises the overlap between them using <a href="ht
 <strong>Cohort timing:</strong> If there is more than one cohort in
 the cohort table supplied, summarises the timing between them using <a href="https://darwin-eu.github.io/CohortCharacteristics/reference/summariseCohortTiming.html" class="external-link">summariseCohortTiming()</a>.</li>
 <li>
-<strong>Cohort survival:</strong> If <code>survival = TRUE</code>,
-summarises the survival until the event of death (if death table is
-present in the cdm) using<br><a href="https://darwin-eu-dev.github.io/CohortSurvival/reference/estimateSingleEventSurvival.html" class="external-link">estimateSingleEventSurvival()</a>.</li>
+<strong>Cohort survival:</strong> Smmarises the survival until the
+event of death (if death table is present in the cdm) using<br><a href="https://darwin-eu-dev.github.io/CohortSurvival/reference/estimateSingleEventSurvival.html" class="external-link">estimateSingleEventSurvival()</a>.</li>
 </ul>
 <p>The analyses <strong>cohort characteristics</strong>, <strong>cohort
 age distribution</strong>, <strong>cohort large scale
@@ -2153,7 +2152,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">2010-04-30 to 2010-12-31</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">2010-12-31 to 2010-12-31</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -2263,7 +2262,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">72.22 (15.01)</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">72.19 (14.79)</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -2318,7 +2317,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">27 to 98</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">28 to 98</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -2648,7 +2647,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">598 [311 - 794]</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">598 [316 - 794]</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -2703,7 +2702,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">576.48 (312.69)</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">591.19 (301.59)</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -2758,7 +2757,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">38 to 1,086</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">109 to 1,086</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -2813,7 +2812,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">599 [312 - 794]</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">599 [317 - 794]</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -2868,7 +2867,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">577.48 (312.69)</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">592.19 (301.59)</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -2923,7 +2922,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">39 to 1,087</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">110 to 1,087</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -3143,7 +3142,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">12.00 [0.00 - 29.00]</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">14.00 [1.50 - 24.50]</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -3198,7 +3197,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">16.70 (18.51)</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">18.30 (19.60)</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -3253,7 +3252,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">0.00 to 62.00</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">0.00 to 75.00</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -3693,7 +3692,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">47.50 (15.76)</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">48.00 (15.51)</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -3748,7 +3747,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">27 to 63</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">28 to 63</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -4573,7 +4572,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">5.00 [0.75 - 16.25]</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">3.00 [0.75 - 16.75]</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -4628,7 +4627,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">12.00 (17.80)</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">14.50 (25.09)</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -4683,7 +4682,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">0.00 to 38.00</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">0.00 to 52.00</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -5013,7 +5012,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">2010-04-30 to 2010-12-31</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">2010-12-31 to 2010-12-31</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -5068,7 +5067,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">75 [68 - 82]</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">74 [68 - 81]</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -5123,7 +5122,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">76.52 (10.09)</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">76.39 (10.04)</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -5508,7 +5507,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">607 [369 - 794]</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">636 [369 - 794]</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -5563,7 +5562,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">591.65 (302.99)</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">608.91 (288.36)</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -5618,7 +5617,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">38 to 1,086</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">109 to 1,086</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -5673,7 +5672,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">608 [370 - 794]</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">637 [370 - 794]</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -5728,7 +5727,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">592.65 (302.99)</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">609.91 (288.36)</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -5783,7 +5782,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">39 to 1,087</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">110 to 1,087</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -6003,7 +6002,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">14.00 [0.00 - 29.00]</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">18.00 [3.50 - 24.50]</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -6058,7 +6057,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">17.52 (18.89)</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">18.96 (19.10)</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -6113,7 +6112,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">0.00 to 62.00</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">0.00 to 75.00</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -6443,7 +6442,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">2010-04-30 to 2010-12-31</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">2010-12-31 to 2010-12-31</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -6498,7 +6497,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">70 [67 - 75]</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">70 [68 - 74]</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -6553,7 +6552,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">72.80 (8.82)</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">72.80 (8.70)</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -6883,7 +6882,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">770 [562 - 1,007]</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">778 [596 - 1,007]</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -6938,7 +6937,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">716.50 (354.18)</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">756.20 (303.79)</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -6993,7 +6992,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">38 to 1,086</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">273 to 1,086</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -7048,7 +7047,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">770 [563 - 1,008]</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">779 [597 - 1,008]</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -7103,7 +7102,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">717.50 (354.18)</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">757.20 (303.79)</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -7158,7 +7157,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">39 to 1,087</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">274 to 1,087</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -7378,7 +7377,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">8.00 [1.25 - 20.50]</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">14.50 [2.75 - 23.00]</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -7433,7 +7432,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">13.70 (15.76)</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">14.50 (12.70)</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -7488,7 +7487,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">0.00 to 42.00</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">0.00 to 38.00</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -7873,7 +7872,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">75 [66 - 80]</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">75 [66 - 79]</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -7928,7 +7927,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">71.88 (17.94)</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">71.82 (17.68)</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -7983,7 +7982,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">27 to 98</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">28 to 98</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -8753,7 +8752,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">14.00 [0.00 - 30.00]</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">14.00 [1.00 - 25.00]</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -8808,7 +8807,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">18.47 (20.19)</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">20.53 (22.78)</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -8863,7 +8862,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">0.00 to 62.00</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">0.00 to 75.00</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -10430,11 +10429,11 @@ R packages packages.</p>
 <td headers="[header_name]Estimate name
 [header_level]Number records" class="gt_row gt_right" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">27</td>
 <td headers="[header_name]Estimate name
-[header_level]Number events" class="gt_row gt_right" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">1</td>
+[header_level]Number events" class="gt_row gt_right" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">0</td>
 <td headers="[header_name]Estimate name
 [header_level]Median survival (95% CI)" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">–</td>
 <td headers="[header_name]Estimate name
-[header_level]Restricted mean survival (95% CI)" class="gt_row gt_right" style="text-align: right; font-family: Arial; font-size: 10; background-color: rgba(255,255,255,0); border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8;">1,049.00 (980.00, 1,119.00)</td>
+[header_level]Restricted mean survival (95% CI)" class="gt_row gt_right" style="text-align: right; font-family: Arial; font-size: 10; background-color: rgba(255,255,255,0); border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8;">1,086.00 (1,086.00, 1,086.00)</td>
 </tr>
 </tbody>
 </table>

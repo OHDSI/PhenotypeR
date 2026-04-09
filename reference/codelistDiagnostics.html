@@ -66,8 +66,13 @@ the cdm so that concept counts could be derived.</p>
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">codelistDiagnostics</span><span class="op">(</span></span>
 <span>  <span class="va">cohort</span>,</span>
-<span>  measurementSample <span class="op">=</span> <span class="fl">20000</span>,</span>
-<span>  drugExposureSample <span class="op">=</span> <span class="fl">20000</span></span>
+<span>  achillesCodeUse <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  orphanCodeUse <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  cohortCodeUse <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  drugDiagnostics <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  measurementDiagnostics <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  measurementDiagnosticsSample <span class="op">=</span> <span class="fl">20000</span>,</span>
+<span>  drugDiagnosticsSample <span class="op">=</span> <span class="fl">20000</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -81,17 +86,39 @@ attribute must be populated. The cdm reference must contain achilles
 tables as these will be used for deriving concept counts.</p></dd>
 
 
-<dt id="arg-measurementsample">measurementSample<a class="anchor" aria-label="anchor" href="#arg-measurementsample"></a></dt>
+<dt id="arg-achillescodeuse">achillesCodeUse<a class="anchor" aria-label="anchor" href="#arg-achillescodeuse"></a></dt>
+<dd><p>Whether to run `CodelistGenerator::summariseAchillesCodeUse()` (TRUE) or not (FALSE).</p></dd>
+
+
+<dt id="arg-orphancodeuse">orphanCodeUse<a class="anchor" aria-label="anchor" href="#arg-orphancodeuse"></a></dt>
+<dd><p>Whether to run `CodelistGenerator::summariseOrphanCodeUse()` (TRUE) or not (FALSE).</p></dd>
+
+
+<dt id="arg-cohortcodeuse">cohortCodeUse<a class="anchor" aria-label="anchor" href="#arg-cohortcodeuse"></a></dt>
+<dd><p>Whether to run `CodelistGenerator::summariseCohortCodeUse()` (TRUE) or not (FALSE).</p></dd>
+
+
+<dt id="arg-drugdiagnostics">drugDiagnostics<a class="anchor" aria-label="anchor" href="#arg-drugdiagnostics"></a></dt>
+<dd><p>Whether to run drug diagnostics (TRUE) or not (FALSE). Note that, if set to TRUE, the
+diagnostics will only run if the cohort code list contains drug codes.</p></dd>
+
+
+<dt id="arg-measurementdiagnostics">measurementDiagnostics<a class="anchor" aria-label="anchor" href="#arg-measurementdiagnostics"></a></dt>
+<dd><p>Whether to run measurement diagnostics (TRUE) or not (FALSE). Note that, if set to TRUE, the
+diagnostics will only run if the cohort code list contains measurement codes.</p></dd>
+
+
+<dt id="arg-measurementdiagnosticssample">measurementDiagnosticsSample<a class="anchor" aria-label="anchor" href="#arg-measurementdiagnosticssample"></a></dt>
 <dd><p>The number of people to take a random sample for
-measurement diagnostics. If `measurementSample = NULL`, no sampling will be
-performed. If `measurementSample = 0` measurement diagnostics will not be
+measurement diagnostics. If `measurementDiagnosticsSample = NULL`, no sampling will be
+performed. If `measurementDiagnosticsSample = 0` measurement diagnostics will not be
 run.</p></dd>
 
 
-<dt id="arg-drugexposuresample">drugExposureSample<a class="anchor" aria-label="anchor" href="#arg-drugexposuresample"></a></dt>
+<dt id="arg-drugdiagnosticssample">drugDiagnosticsSample<a class="anchor" aria-label="anchor" href="#arg-drugdiagnosticssample"></a></dt>
 <dd><p>The number of people to take a random sample for
-drug diagnostics. If `drugExposureSample = NULL`, no sampling will be
-performed. If `drugExposureSample = 0` drug diagnostics will not be
+drug diagnostics. If `drugDiagnosticsSample = NULL`, no sampling will be
+performed. If `drugDiagnosticsSample = 0` drug diagnostics will not be
 run.</p></dd>
 
 </dl></div>
@@ -132,15 +159,15 @@ run.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> quantity: min, q01, q05, q25, median, q75, q95, q99, max, percentage_missing</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   the database side</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-01 16:45:39.398535</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-01 16:45:40.277341</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-09 10:01:28.744096</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-09 10:01:29.615626</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The following estimates will be calculated:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> days_to_next_record: min, q01, q05, q25, median, q75, q95, q99, max,</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   percentage_missing</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   the database side</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-01 16:45:40.958868</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-01 16:45:41.129721</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-09 10:01:30.291495</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-09 10:01:30.460017</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> No common ingredient found for codelist: `warfarin`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Change ingredient threshold with options(PhenotypeR_ingredient_threshold),</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   threshold = 0.8.</span>
