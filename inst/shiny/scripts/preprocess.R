@@ -323,10 +323,12 @@ for(i in seq_along(docs)){
   name <- names(docs)[[i]]
   
   if(length(docs[[i]]) == 0){
-    clinical_descriptions[[name]] <- NULL
+    clinical_descriptions[[name]] <- dplyr::tibble(
+      "phenotype" = name
+    )
   }else{
     path_docx <- here::here(docs[[i]])
-
+    
     text <- parse_docx_runs(path_docx, folder = "clinical_descriptions")
     
     clinical_descriptions[[name]] <- tibble::tibble(
@@ -339,6 +341,8 @@ for(i in seq_along(docs)){
     )
   }
 }
+
+clinical_descriptions <- dplyr::bind_rows(clinical_descriptions, .id = "phenotype")
 
 # Load database description ----
 docs <- purrr::imap(
@@ -357,18 +361,22 @@ if(length(other)) {
   cli::cli_warn("A docx file ({other}) was found in 'data/raw/database_descriptions' that does not match any database name. This file will be ignored. Please note that database description documents must be named exactly the same as their corresponding database.")
 }
 
+
 # Read database descriptions
 database_descriptions <- list()
 for(i in seq_along(docs)){
   name <- names(docs)[[i]]
   
   if(length(docs[[i]]) == 0){
-    database_descriptions[[name]] <- NULL
+    database_descriptions[[name]] <- dplyr::tibble(
+      "database" = name,
+      "description" = list("item" = "No database description for this database.")
+      )
   }else{
     path_docx <- here::here(docs[[i]])
     text <- parse_docx_runs(path_docx, folder = "database_descriptions")
     
-    database_descriptions[[name]] <- tibble::tibble(
+    database_descriptions[[name]] <- dplyr::tibble(
       "database" = find_info_in_the_line(text, "database name:"),
       "author" = find_info_in_the_line(text, "author:"),
       "date" = find_info_in_the_line(text, "Date:"),
@@ -378,14 +386,13 @@ for(i in seq_along(docs)){
   }
 }
 
+database_descriptions <- dplyr::bind_rows(database_descriptions, .id = "database")
+
 clinical_descriptions <- purrr::compact(clinical_descriptions)
-database_descriptions <- purrr::compact(database_descriptions)
 selected$summarise_clinical_description_cohort_name <- selected$shared_cohort_names
 choices$summarise_clinical_description_cohort_name <- choices$shared_cohort_names
 selected$summarise_database_description_cdm_name <- selected$shared_cdm_names
 choices$summarise_database_description_cdm_name <- choices$shared_cdm_names
-
-selected$shared_cohort_names <- selected$shared_cohort_names[[1]]
 
 cli::cli_inform("Saving data for shiny")
 qs2::qs_savem(dataFiltered,
