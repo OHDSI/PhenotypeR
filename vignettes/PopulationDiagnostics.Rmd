@@ -51,20 +51,34 @@ cdm$injuries <- conceptCohort(cdm = cdm,
 
 We can get the incidence and prevalence of our study cohort using `populationDiagnostics()`:
 ```{r}
-pop_diag <- populationDiagnostics(cdm$injuries, 
-                                  populationSample = 10000)
+pop_diag <- populationDiagnostics(cdm$injuries)
 ```
 
 This function builds on [IncidencePrevalence](https://darwin-eu.github.io/IncidencePrevalence/index.html) R package to perform the following analyses:
 
 -   **Incidence:** It estimates the incidence of our cohort using [estimateIncidence()](https://darwin-eu.github.io/IncidencePrevalence/reference/estimateIncidence.html).
--   **Prevalence:** It estimates the prevalence of our cohort on a year basis using [estimatePeriodPrevalence()](https://darwin-eu.github.io/IncidencePrevalence/reference/estimatePeriodPrevalence.html).
+-   **Period Prevalence:** It estimates the period prevalence of our cohort on a year basis using [estimatePeriodPrevalence()](https://darwin-eu.github.io/IncidencePrevalence/reference/estimatePeriodPrevalence.html).
+
+We can deactivate any of the analysis turning the following arguments into FALSE:
+
+```{r}
+pop_diag2 <- populationDiagnostics(cdm$injuries, 
+                                  incidence = TRUE, 
+                                  periodPrevalence = TRUE)
+```
 
 All analyses are performed for:
 
 -   Overall and stratified by age groups: 0 to 17, 18 to 64, 65 to 150. Age groups cannot be modified.
 -   Overall and stratified by sex (Female, Male).
--   Restricting the denominator population to those with 0 and 365 of days of prior observation.
+-   Restricting the denominator population to those with 0 and 365 of days of prior observation. Prior observation values cannot be modified.
+
+As calculating the incidence and prevalence of our cohorts can be computationally expensive, specially when working with large databases, we can subset our diagnostics to a subset of people using `populationSample`, and restrict the study period to specific dates using `populationDateRange`:
+```{r}
+pop_diag3 <- populationDiagnostics(cdm$injuries, populationSample = 1000, 
+                                  populationDateRange = as.Date(c("2012-01-01", NA)))
+```
+
 
 ## Visualising the results
 We can use  [IncidencePrevalence](https://darwin-eu.github.io/IncidencePrevalence/index.html) package to visualise the results obtained.
@@ -79,6 +93,7 @@ tableIncidence(pop_diag,
                          "denominator_days_prior_observation",
                          "outcome_cohort_name"))
 ```
+
 ```{r}
 results <- pop_diag |> 
   omopgenerics::filterSettings(result_type == "incidence") |>
