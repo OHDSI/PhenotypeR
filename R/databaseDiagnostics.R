@@ -11,9 +11,9 @@
 #'
 #' @inheritParams cohortDoc
 #' @param snapshot Whether to run `OmopSketch::summariseOmopSnapshot()` (TRUE) or not (FALSE).
-#' @param person Whether to run `OmopSketch::summarisePerson()` (TRUE) or not (FALSE).
-#' @param observationPeriods Whether to run `OmopSketch::summariseObservationPeriod()` (TRUE) or not (FALSE).
-#' @param clinicalRecords Whether to run `OmopSketch::summariseClinicalRecords()` on those clinical
+#' @param personTableSummary Whether to run `OmopSketch::summarisePerson()` (TRUE) or not (FALSE).
+#' @param observationPeriodsSummary Whether to run `OmopSketch::summariseObservationPeriod()` (TRUE) or not (FALSE).
+#' @param clinicalRecordsSummary Whether to run `OmopSketch::summariseClinicalRecords()` on those clinical
 #' tables where the codes associated with your cohort are found (TRUE) or not (FALSE).
 #'
 #' @return A summarised result
@@ -37,16 +37,16 @@
 #' }
 databaseDiagnostics <- function(cohort,
                                 snapshot = TRUE,
-                                person = TRUE,
-                                observationPeriods = TRUE,
-                                clinicalRecords = TRUE){
+                                personTableSummary = TRUE,
+                                observationPeriodsSummary = TRUE,
+                                clinicalRecordsSummary = TRUE){
 
   # Initial checks
   omopgenerics::validateCohortArgument(cohort)
   omopgenerics::assertLogical(snapshot, length = 1)
-  omopgenerics::assertLogical(person, length = 1)
-  omopgenerics::assertLogical(observationPeriods, length = 1)
-  omopgenerics::assertLogical(clinicalRecords, length = 1)
+  omopgenerics::assertLogical(personTableSummary, length = 1)
+  omopgenerics::assertLogical(observationPeriodsSummary, length = 1)
+  omopgenerics::assertLogical(clinicalRecordsSummary, length = 1)
 
   # Variables
   cdm <- omopgenerics::cdmReference(cohort)
@@ -66,11 +66,11 @@ databaseDiagnostics <- function(cohort,
   }
 
   # Person table ----
-  if(isTRUE(person)) {
+  if(isTRUE(personTableSummary)) {
     if (!is.null(getOption("omopgenerics.logFile"))) {
       omopgenerics::logMessage("Database diagnostics - summarising person table")
     }
-    results[["person"]] <- OmopSketch::summarisePerson(cdm)
+    results[["personTableSummary"]] <- OmopSketch::summarisePerson(cdm)
     results[["dob_density"]] <- cdm$person |>
       PatientProfiles::addDemographics(age = FALSE,
                                        sex = TRUE,
@@ -89,7 +89,7 @@ databaseDiagnostics <- function(cohort,
   }
 
   # Observation period ----
-  if(isTRUE(observationPeriods)) {
+  if(isTRUE(observationPeriodsSummary)) {
     if (!is.null(getOption("omopgenerics.logFile"))) {
       omopgenerics::logMessage("Database diagnostics - summarising observation period")
     }
@@ -108,7 +108,7 @@ databaseDiagnostics <- function(cohort,
   }
 
   # Summarising omop tables - Empty cohort codelist ----
-  if(isTRUE(clinicalRecords)) {
+  if(isTRUE(clinicalRecordsSummary)) {
     emptyCodelist <- checkEmptyCodelists(cdm = cdm, cohortName = cohortName)
 
     if(isFALSE(emptyCodelist)){

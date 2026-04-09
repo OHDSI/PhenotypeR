@@ -14,7 +14,7 @@
 #'  If the list is empty, the default values will be used.
 #'  Example:
 #'  *databaseDiagnostics = list(
-#'  "diagnostics" = c("snapshot", "person", "observationPeriods", "clinicalRecords")
+#'  "diagnostics" = c("snapshot", "personTableSummary", "observationPeriodsSummary", "clinicalRecordsSummary")
 #'   )*
 #' @param codelistDiagnostics A list of arguments that uses `codelistDiagnostics`.
 #' If the list is empty, the default values will be used.
@@ -68,8 +68,8 @@
 #' # all the default values:
 #' result <- phenotypeDiagnostics(cdm$warfarin,
 #'                                databaseDiagnostics = list(
-#'                                  "diagnostics" = c("snapshot", "person",
-#'                                  "observationPeriods", "clinicalRecords")
+#'                                  "diagnostics" = c("snapshot", "personTableSummary",
+#'                                  "observationPeriodsSummary", "clinicalRecordsSummary")
 #'                                ),
 #'                                codelistDiagnostics = list(
 #'                                  "diagnostics" = c("achillesCodeUse", "orphanCodeUse",
@@ -134,9 +134,9 @@ phenotypeDiagnostics <- function(cohort,
   if (!is.null(databaseDiagnostics)) {
     results[["db_diag"]] <- databaseDiagnostics(cohort,
                                                 snapshot = databaseDiagnostics$snapshot,
-                                                person = databaseDiagnostics$person,
-                                                observationPeriods = databaseDiagnostics$observationPeriods,
-                                                clinicalRecords = databaseDiagnostics$clinicalRecords)
+                                                personTableSummary = databaseDiagnostics$personTableSummary,
+                                                observationPeriodsSummary = databaseDiagnostics$observationPeriodsSummary,
+                                                clinicalRecordsSummary = databaseDiagnostics$clinicalRecordsSummary)
     if(!is.null(incrementalResultPath)){
       if (dir.exists(incrementalResultPath)) {
         exportSummarisedResult(results[["db_diag"]] ,

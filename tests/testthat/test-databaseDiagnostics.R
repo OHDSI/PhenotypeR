@@ -52,7 +52,7 @@ test_that("db diagnostics", {
 
   # skip clinical table summary
   expect_no_error(db_diag_no_clinical_summary <- databaseDiagnostics(cdm$my_cohort,
-                                                                     clinicalRecords = FALSE))
+                                                                     clinicalRecordsSummary = FALSE))
   expect_false("summarise_clinical_records" %in%
                  (omopgenerics::settings(db_diag_no_clinical_summary) |>
                     dplyr::pull("result_type")))

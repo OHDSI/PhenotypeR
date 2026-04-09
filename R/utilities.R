@@ -8,7 +8,7 @@ hasRows <- function(tbl){
 checkDatabaseDiagnosticsInput <- function(databaseDiagnostics, call = parent.frame()) {
   omopgenerics::assertList(databaseDiagnostics, null = TRUE, call = call)
 
-  diagnostics <- c("snapshot", "person", "observationPeriods", "clinicalRecords")
+  diagnostics <- c("snapshot", "personTableSummary", "observationPeriodsSummary", "clinicalRecordsSummary")
 
   if(is.null(databaseDiagnostics)) {
     return(databaseDiagnostics)

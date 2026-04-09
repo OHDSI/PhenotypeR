@@ -19,7 +19,7 @@ phenotypeDiagnostics(
 If the list is empty, the default values will be used.
 Example:
 *databaseDiagnostics = list(
-"diagnostics" = c("snapshot", "person", "observationPeriods", "clinicalRecords")
+"diagnostics" = c("snapshot", "personTableSummary", "observationPeriodsSummary", "clinicalRecordsSummary")
  )*}
 
 \item{codelistDiagnostics}{A list of arguments that uses `codelistDiagnostics`.
@@ -85,8 +85,8 @@ result <- phenotypeDiagnostics(cdm$warfarin)
 # all the default values:
 result <- phenotypeDiagnostics(cdm$warfarin,
                                databaseDiagnostics = list(
-                                 "diagnostics" = c("snapshot", "person",
-                                 "observationPeriods", "clinicalRecords")
+                                 "diagnostics" = c("snapshot", "personTableSummary",
+                                 "observationPeriodsSummary", "clinicalRecordsSummary")
                                ),
                                codelistDiagnostics = list(
                                  "diagnostics" = c("achillesCodeUse", "orphanCodeUse",

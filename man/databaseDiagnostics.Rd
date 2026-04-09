@@ -7,9 +7,9 @@
 databaseDiagnostics(
   cohort,
   snapshot = TRUE,
-  person = TRUE,
-  observationPeriods = TRUE,
-  clinicalRecords = TRUE
+  personTableSummary = TRUE,
+  observationPeriodsSummary = TRUE,
+  clinicalRecordsSummary = TRUE
 )
 }
 \arguments{
@@ -17,11 +17,11 @@ databaseDiagnostics(
 
 \item{snapshot}{Whether to run `OmopSketch::summariseOmopSnapshot()` (TRUE) or not (FALSE).}
 
-\item{person}{Whether to run `OmopSketch::summarisePerson()` (TRUE) or not (FALSE).}
+\item{personTableSummary}{Whether to run `OmopSketch::summarisePerson()` (TRUE) or not (FALSE).}
 
-\item{observationPeriods}{Whether to run `OmopSketch::summariseObservationPeriod()` (TRUE) or not (FALSE).}
+\item{observationPeriodsSummary}{Whether to run `OmopSketch::summariseObservationPeriod()` (TRUE) or not (FALSE).}
 
-\item{clinicalRecords}{Whether to run `OmopSketch::summariseClinicalRecords()` on those clinical
+\item{clinicalRecordsSummary}{Whether to run `OmopSketch::summariseClinicalRecords()` on those clinical
 tables where the codes associated with your cohort are found (TRUE) or not (FALSE).}
 }
 \value{
