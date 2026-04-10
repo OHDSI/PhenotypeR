@@ -241,7 +241,7 @@ ui <- fluidPage(
                 #     value = 300
                 #   ),
                 #   shiny::downloadButton(outputId = "plot_age_pyramid_download", label = "Download")
-                # ),
+                 ),
                 # class = "text-end",
             bslib::layout_sidebar(
               sidebar = bslib::sidebar(width = 400, open = "closed",
@@ -256,7 +256,6 @@ ui <- fluidPage(
                                        position = "right"
               ),
               shiny::plotOutput("dobPlot")
-            )
           )
             )
         )
@@ -339,7 +338,7 @@ ui <- fluidPage(
                 #     value = 300
                 #   ),
                 #   shiny::downloadButton(outputId = "plot_age_pyramid_download", label = "Download")
-                # ),
+                 ),
                 # class = "text-end",
             bslib::layout_sidebar(
               sidebar = bslib::sidebar(width = 400, open = "closed",
@@ -354,7 +353,6 @@ ui <- fluidPage(
                                        position = "right"
               ),
             plotOutput("obsPlot")
-            )
           )
         )
           )

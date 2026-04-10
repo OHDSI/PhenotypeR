@@ -18,7 +18,11 @@ result <- list()
 for(i in seq_along(datasets)){
 working_dataset <- datasets[i]
 cdm <- omock::mockCdmFromDataset(datasetName = working_dataset, source = "duckdb")
-cdm <- OmopConstructor::buildAchillesTables(cdm)
+cdm <- OmopConstructor::buildAchillesTables(cdm,
+                                            achillesId = c(
+                                              401L,701L,801L,1801L,201L,601L,2101L,
+                                              425L,725L,825L,1825L,225L,625L,2125L))
+
 cdm$my_cohort <- CohortConstructor::conceptCohort(
   cdm = cdm,
   conceptSet = codes,
