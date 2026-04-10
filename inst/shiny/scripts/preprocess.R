@@ -105,32 +105,32 @@ values <- values[!stringr::str_detect(names(values), "survival_attrition")]
 
 # Pre-define some selected
 if("summarise_dob_density" %in% names(dataFiltered)){
-  minDob <- dataFiltered$summarise_dob_density |> 
-    omopgenerics::tidy() |> 
-    dplyr::summarise(min_dob = min(density_x, na.rm = TRUE)) |> 
-    dplyr::pull("min_dob") |> 
+  minDob <- dataFiltered$summarise_dob_density |>
+    omopgenerics::tidy() |>
+    dplyr::summarise(min_dob = min(density_x, na.rm = TRUE)) |>
+    dplyr::pull("min_dob") |>
     lubridate::floor_date(unit = "years")
-  
-  maxDob <- dataFiltered$summarise_dob_density |> 
-    omopgenerics::tidy() |> 
-    dplyr::summarise(max_dob = max(density_x, na.rm = TRUE)) |> 
-    dplyr::pull("max_dob") |> 
+
+  maxDob <- dataFiltered$summarise_dob_density |>
+    omopgenerics::tidy() |>
+    dplyr::summarise(max_dob = max(density_x, na.rm = TRUE)) |>
+    dplyr::pull("max_dob") |>
     lubridate::ceiling_date(unit = "years")
 } else {
   minDob <- as.Date(NA)
   maxDob <- as.Date(NA)
-} 
+}
 
 if("summarise_dob_density" %in% names(dataFiltered)){
-  minObs <- dataFiltered$summarise_obs_density |> 
-    omopgenerics::tidy() |> 
-    dplyr::summarise(min_obs = min(density_x, na.rm = TRUE)) |> 
-    dplyr::pull("min_obs") |> 
+  minObs <- dataFiltered$summarise_obs_density |>
+    omopgenerics::tidy() |>
+    dplyr::summarise(min_obs = min(density_x, na.rm = TRUE)) |>
+    dplyr::pull("min_obs") |>
     lubridate::floor_date(unit = "years")
-  maxObs <- dataFiltered$summarise_dob_density |> 
-    omopgenerics::tidy() |> 
-    dplyr::summarise(max_obs = max(density_x, na.rm = TRUE)) |> 
-    dplyr::pull("max_obs") |> 
+  maxObs <- dataFiltered$summarise_dob_density |>
+    omopgenerics::tidy() |>
+    dplyr::summarise(max_obs = max(density_x, na.rm = TRUE)) |>
+    dplyr::pull("max_obs") |>
     lubridate::ceiling_date(unit = "years")
 } else {
   minObs <- as.Date(NA)
@@ -138,19 +138,19 @@ if("summarise_dob_density" %in% names(dataFiltered)){
 }
 
 if("summarise_trend" %in% names(dataFiltered)){
-  minRecords <- dataFiltered$summarise_trend |> 
-    omopgenerics::tidy() |> 
-    dplyr::mutate(time = stringr::str_split_i(time_interval, " to", 1)) |> 
-    dplyr::mutate(time = as.Date(time)) |> 
-    dplyr::summarise(min_records = min(time, na.rm = TRUE)) |> 
-    dplyr::pull("min_records") |> 
+  minRecords <- dataFiltered$summarise_trend |>
+    omopgenerics::tidy() |>
+    dplyr::mutate(time = stringr::str_split_i(time_interval, " to", 1)) |>
+    dplyr::mutate(time = as.Date(time)) |>
+    dplyr::summarise(min_records = min(time, na.rm = TRUE)) |>
+    dplyr::pull("min_records") |>
     lubridate::floor_date(unit = "years")
-  maxRecords <- dataFiltered$summarise_trend |> 
-    omopgenerics::tidy() |> 
-    dplyr::mutate(time = stringr::str_split_i(time_interval, " to", 1)) |> 
-    dplyr::mutate(time = as.Date(time)) |> 
-    dplyr::summarise(max_records = max(time, na.rm = TRUE)) |> 
-    dplyr::pull("max_records") |> 
+  maxRecords <- dataFiltered$summarise_trend |>
+    omopgenerics::tidy() |>
+    dplyr::mutate(time = stringr::str_split_i(time_interval, " to", 1)) |>
+    dplyr::mutate(time = as.Date(time)) |>
+    dplyr::summarise(max_records = max(time, na.rm = TRUE)) |>
+    dplyr::pull("max_records") |>
     lubridate::ceiling_date(unit = "years")
 } else {
   minRecords <- as.Date(NA)
@@ -172,20 +172,20 @@ if("cohortDiagnostics" %in% diagnostics){
   values_subset$compare_large_scale_characteristics_cohort_compare <- values$shared_cohort_names
   values_subset$compare_large_scale_characteristics_variable_level <- c("-inf to -366", "-365 to -31", "-30 to -1", "0 to 0", "1 to 30", "31 to 365", "366 to inf")
   values <- append(values, values_subset)
-  
+
   values$summarise_large_scale_characteristics_variable_level <-c("-inf to -366", "-365 to -31", "-30 to -1", "0 to 0", "1 to 30", "31 to 365", "366 to inf")
-  
+
   if("summarise_cohort_overlap" %in% names(dataFiltered)){
     values$summarise_cohort_overlap_cohort_comparator <- values$summarise_cohort_overlap_cohort_name_comparator
     values <- values[!stringr::str_detect(names(values), "summarise_cohort_overlap_cohort_name_comparator")]
   }
-  
+
   if("survival_probability" %in% names(dataFiltered)){
     # survival
     values$survival_probability_cohort_name <- values$survival_probability_target_cohort
     values <- values[!stringr::str_detect(names(values), "survival_probability_target_cohort")]
   }
-  
+
 }
 
 choices <- values
@@ -201,7 +201,7 @@ if("summarise_drug_use" %in% names(dataFiltered)){
   choices$summarise_drug_use_route <- choices$summarise_drug_use_route[order(
     choices$summarise_drug_use_route != "overall",
     choices$summarise_drug_use_route)]
-  
+
   selected$summarise_drug_use_drug_type <- "overall"
   selected$summarise_drug_use_route <- "overall"
 }
@@ -216,9 +216,9 @@ if("cohortDiagnostics" %in% diagnostics){
   if("survival_probability" %in% names(dataFiltered)){
     selected$survival_probability_cohort_name <- c(paste0(gsub("_matched|sampled", "", selected$survival_probability_cohort_name[1]),"_sampled"),
                                                    paste0(gsub("_matched|sampled", "", selected$survival_probability_cohort_name[1]),"_matched"))
-    
+
   }
-  
+
   typeCohort <- "original"
   if("cohort_sample" %in% (omopgenerics::settings(result) |> colnames())){
     cohort_sample <- as.numeric(omopgenerics::settings(dataFiltered$summarise_large_scale_characteristics) |> dplyr::pull("cohort_sample") |> unique())
@@ -226,7 +226,7 @@ if("cohortDiagnostics" %in% diagnostics){
     msgCohortSample <- glue::glue("Cohorts were jointly sampled to up to {cohort_sample} participants")
     typeCohort <- "sampled"
   }
-  
+
   if("matched_sample" %in% (omopgenerics::settings(result) |> colnames())){
     matched_sample <- as.numeric(omopgenerics::settings(dataFiltered$summarise_large_scale_characteristics) |> dplyr::pull("matched_sample") |> unique())
     if(all(matched_sample != 0)){
@@ -244,30 +244,30 @@ if("populationDiagnostics" %in% diagnostics){
   selected$incidence_denominator_age_group <- "0 to 150"
   selected$incidence_denominator_sex <- "Both"
   selected$incidence_denominator_days_prior_observation <- "0"
-  
+
   selected$prevalence_analysis_interval <- "years"
   selected$prevalence_denominator_age_group <- "0 to 150"
   selected$prevalence_denominator_sex <- "Both"
   selected$prevalence_denominator_days_prior_observation <- "0"
-  
+
   if("populationDateStart" %in% (omopgenerics::settings(dataFiltered$incidence) |> colnames())){
     min_incidence_start <- as.Date(omopgenerics::settings(dataFiltered$incidence) |> tidyr::drop_na() |> dplyr::pull("populationDateStart") |> unique())
     msgPopulationDiag <- paste0("Incidence is calculated using data from ", format(as.Date(min_incidence_start), "%B %d, %Y")," onwards. ")
   }else{
     min_incidence_start <- as.Date(NA)
   }
-  
+
   if("populationDateEnd" %in% (omopgenerics::settings(dataFiltered$incidence) |> colnames())){
     max_incidence_end <- as.Date(omopgenerics::settings(dataFiltered$incidence) |> tidyr::drop_na() |> dplyr::pull("populationDateEnd") |> unique())
     msgPopulationDiag <- paste0("Incidence is calculated up to ", format(as.Date(max_incidence_end), "%B %d, %Y"),". ")
   }else{
     max_incidence_end <- as.Date(NA)
   }
-  
+
   if(!is.na(min_incidence_start) && !is.na(max_incidence_end)){
     msgPopulationDiag <- paste0("Incidence is calculated from ", format(as.Date(min_incidence_start), "%B %d, %Y"), " until ", format(as.Date(max_incidence_end), "%B %d, %Y"),". ")
   }
-  
+
   if("populationSample" %in% (omopgenerics::settings(dataFiltered$incidence) |> colnames())){
     populationSample <- as.numeric(omopgenerics::settings(dataFiltered$incidence) |> dplyr::pull("populationSample") |> unique())
     populationSample <- formatC(populationSample, format = "f", digits = 0, big.mark = ",")
@@ -300,37 +300,26 @@ if(length(phenotyper_version)>1){
   phenotyper_version <- paste0(phenotyper_version, collapse = "; ")
 }
 
-# Load clinical description ----
-docs <- purrr::imap(
-  rlang::set_names(values$shared_cohort_names),
-  \(x, name) {
-    path <- file.path("data", "raw", "clinical_descriptions", paste0(name, ".docx"))
-    if (!file.exists(path)) return(NULL)
-    path
-  })
-
-# Check for other docx files in the folder
-other <- list.files(path = file.path("data","raw","clinical_descriptions"), pattern = "\\.docx$")
-other <- gsub(".docx","",other)
-other <- setdiff(other, names(docs))
-if(length(other)) {
-  cli::cli_warn("A docx file ({other}) was found in 'data/raw/clinical_descriptions' that does not match any cohort name. This file will be ignored. Please note that clinical description documents must be named exactly the same as their corresponding cohort.")
-}
 
 # Read clinical descriptions
 clinical_descriptions <- list()
 for(i in seq_along(docs)){
   name <- names(docs)[[i]]
-  
+
   if(length(docs[[i]]) == 0){
     clinical_descriptions[[name]] <- dplyr::tibble(
-      "phenotype" = name
+      "phenotype" = name,
+      "author" = NA_character_,
+      "key_sources" = NA_character_,
+      "date" = NA_character_,
+      "background" = list("item" = ""),
+      "phenotyping_plan" = list("item" = "")
     )
   }else{
     path_docx <- here::here(docs[[i]])
-    
+
     text <- parse_docx_runs(path_docx, folder = "clinical_descriptions")
-    
+
     clinical_descriptions[[name]] <- tibble::tibble(
       "phenotype" = find_info_in_the_line(text, "Phenotype name:"),
       "author" = find_info_in_the_line(text, "author:"),
@@ -366,16 +355,19 @@ if(length(other)) {
 database_descriptions <- list()
 for(i in seq_along(docs)){
   name <- names(docs)[[i]]
-  
+
   if(length(docs[[i]]) == 0){
     database_descriptions[[name]] <- dplyr::tibble(
       "database" = name,
+      "author" = NA_character_,
+      "key_sources" = NA_character_,
+      "date" = NA_character_,
       "description" = list("item" = "No database description for this database.")
-      )
+    )
   }else{
     path_docx <- here::here(docs[[i]])
     text <- parse_docx_runs(path_docx, folder = "database_descriptions")
-    
+
     database_descriptions[[name]] <- dplyr::tibble(
       "database" = find_info_in_the_line(text, "database name:"),
       "author" = find_info_in_the_line(text, "author:"),
@@ -398,7 +390,7 @@ cli::cli_inform("Saving data for shiny")
 qs2::qs_savem(dataFiltered,
               selected,
               choices,
-              minDob, 
+              minDob,
               maxDob,
               minObs,
               maxObs,
