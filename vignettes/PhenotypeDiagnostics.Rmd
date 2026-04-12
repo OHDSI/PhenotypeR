@@ -76,33 +76,96 @@ Now we will proceed to run `phenotypeDiagnotics()`. This function will run the f
 -   **Cohort diagnostics**: This summarises the characteristics of our cohorts, as well as comparing them to age and sex matched controls from the database.. See [Cohort diagnostics vignette](https://ohdsi.github.io/PhenotypeR/articles/a05_CohortDiagnostics.html) for further details.
 -   **Population diagnostics**: Calculates the frequency of our study cohorts in the database in terms of their incidence rates and prevalence. See [Population diagnostics vignette](https://ohdsi.github.io/PhenotypeR/articles/a07_PopulationDiagnostics.html) for further details.
 
-We can specify which analysis we want to perform:
+### Default arguments
+If we do not provide any specification, the default values of the functions will be used. That means, the following
+two scripts provide the same summarised result:
+
 ```{r, eval=FALSE}
-result <- phenotypeDiagnostics(
-  cohort = cdm$my_cohort, 
-  cohortDiagnostics = list(
-    "cohortSample" = 20000,
-    "matchedSample" = 1000
-  ),
-  populationSample = list(
-    "populationSample" = 1e+06,
-    "populationDateRange" = as.Date(c(NA, NA))
-  )
-  
-result |> glimpse()
+result1 <- phenotypeDiagnostics(cdm$warfarin,
+                                databaseDiagnostics = list(),
+                                codelistDiagnostics = list(),
+                                cohortDiagnostics = list(),
+                                populationDiagnostics = list())
+
+result2 <- phenotypeDiagnostics(cdm$warfarin,
+                                databaseDiagnostics = list(
+                                  "diagnostics" = c("snapshot", "personTableSummary",
+                                  "observationPeriodsSummary", "clinicalRecordsSummary")
+                                ),
+                                codelistDiagnostics = list(
+                                  "diagnostics" = c("achillesCodeUse", "orphanCodeUse",
+                                                    "cohortCodeUse", "drugDiagnostics",
+                                                    "measurementDiagnostics"),
+                                  "measurementDiagnosticsSample" = 20000,
+                                  "drugDiagnosticsSample" = 20000
+                                ),
+                                cohortDiagnostics = list(
+                                  "diagnostics" = c("cohortCount", "cohortCharacteristics",
+                                                    "largeScaleCharacteristics",
+                                                    "compareCohorts"),
+                                  "cohortSample" = 20000,
+                                  "matchedSample" = 1000
+                                ),
+                                populationDiagnostics = list(
+                                  "diagnostics" = c("incidence", "periodPrevalence"),
+                                  "populationSample" = 100000,
+                                  "populationDateRange" = as.Date(c(NA,NA))
+                                ))
+```
+Notice that the default values do not include running 'cohortSurvival' analysis in CohortDiagnostics. 
+If we want to add it, we just need to add the analysis in the CohortDiagnostics "diagnostics" argument:
+
+```{r, eval=FALSE}
+result3 <- phenotypeDiagnostics(cdm$warfarin,
+                               databaseDiagnostics = list(
+                                 "diagnostics" = c("snapshot", "personTableSummary",
+                                                   "observationPeriodsSummary", "clinicalRecordsSummary")
+                               ),
+                               codelistDiagnostics = list(
+                                 "diagnostics" = c("achillesCodeUse", "orphanCodeUse",
+                                                   "cohortCodeUse", "drugDiagnostics",
+                                                   "measurementDiagnostics"),
+                                 "measurementDiagnosticsSample" = 20000,
+                                 "drugDiagnosticsSample" = 20000
+                               ),
+                               cohortDiagnostics = list(
+                                 "diagnostics" = c("cohortCount", "cohortCharacteristics",
+                                                   "largeScaleCharacteristics",
+                                                   "compareCohorts", "cohortSurvival"),
+                                 "cohortSample" = 20000,
+                                 "matchedSample" = 1000
+                               ),
+                               populationDiagnostics = list(
+                                 "diagnostics" = c("incidence", "periodPrevalence"),
+                                 "populationSample" = 100000,
+                                 "populationDateRange" = as.Date(c(NA,NA))
+                               ))
 ```
 
-Notice that we have three additional arguments:
+### Skipping diagnostics or sub-analysis
+To skip a diagnostics, we just need to specify that one as NULL. For instance, in
+the following example, **databaseDiagnostics** will not be run:
 
--   `populationSample`: It allows to specify a number of people that randomly will be extracted from the CDM to perform the **Population diagnostics** analysis. If NULL, all the participants in the CDM will be included. It helps to reduce the computational time. This is particularly useful when outcomes of interest are relatively common, but when they are rarer we may wish to maximise statistical power and calculate estimates for the dataset as a whole in which case we would set this argument to NULL.
--   `populationDateRange`: We can use it to specify the time period when we want to perform our **Population diagnostics** analysis.
--   `cohortSample`: This argument will subset a random sample of people from our cohort and performs the cohortDiagnostics on this sample (notice that the attrition and the cohort counts will be calculated from the original cohorts, not the sampled ones). If the sample specified is bigger than the number of individuals in the cohort, no sampling will be performed. We recommend to use this option when there are cohorts bigger than 20,000 individuals.
--   `matchedSample`: Similar to populationSample, this arguments subsets a random sample of people from our cohort and performs the matched analysis on this sample. If the sample specified is bigger than the size of the cohort, no sampling will be performed. If we have specified a cohortSample, the sampling will be performed on top of the sampled cohorts. If we do not want to create matched cohorts, we can define `matchedSample = 0`. 
+```{r, eval=FALSE}
+result4 <- phenotypeDiagnostics(
+  cohort = cdm$my_cohort, 
+  databaseDiagnostics = NULL)
+```
+
+Or, if for instance, we would like to run **databaseDiagnostics** but only run the
+*snapshot* analysis, we can specify it like this:
+```{r, eval=FALSE}
+result4 <- phenotypeDiagnostics(
+  cohort = cdm$my_cohort, 
+  databaseDiagnostics = list(
+    "diagnostics" = "snapshot"
+  ))
+```
 
 ## Save the results
 To save the results, we can use [exportSummarisedResult](https://darwin-eu.github.io/omopgenerics/reference/exportSummarisedResult.html) function from [omopgenerics](https://darwin-eu.github.io/omopgenerics/index.html) R Package:
 ```{r, eval=FALSE}
-exportSummarisedResult(result, path = here::here(), minCellCount = 5)
+exportSummarisedResult(result3, path = here::here(), minCellCount = 5)
 ```
 
 ## Visualisation of the results

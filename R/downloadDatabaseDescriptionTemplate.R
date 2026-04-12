@@ -45,9 +45,9 @@ internalDescriptionTemplates <- function(type, directory, name, call = parent.fr
   to <- file.path(paste0(directory, "/", name, ".docx"))
 
   if(type == "clinical description"){
-    from <- system.file("shiny/data/raw/clinical_descriptions/template.docx", package = "PhenotypeR")
+    from <- system.file("shiny", "data", "raw", "clinical_descriptions", "template", "template.docx", package = "PhenotypeR")
   } else if (type == "database description") {
-    from <- system.file("shiny/data/raw/database_descriptions/template.docx", package = "PhenotypeR")
+    from <- system.file("shiny", "data", "raw", "database_descriptions", "template", "template.docx", package = "PhenotypeR")
   }
 
   invisible(file.copy(from = from, to = to))
