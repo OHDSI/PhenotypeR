@@ -177,7 +177,12 @@ the package vignettes.
 - [`shinyDiagnostics()`](https://ohdsi.github.io/PhenotypeR/reference/shinyDiagnostics.md)
   : Create a shiny app summarising your phenotyping results
 
-### Create expectations to compare results against
+### Clinical descriptions for event of interest
+
+- [`getClinicalDescription()`](https://ohdsi.github.io/PhenotypeR/reference/getClinicalDescription.md)
+  : Get clinical descriptions using an LLM
+
+### Expectations for phenotyping results
 
 - [`getCohortExpectations()`](https://ohdsi.github.io/PhenotypeR/reference/getCohortExpectations.md)
   : Get cohort expectations using an LLM
