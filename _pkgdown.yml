@@ -48,7 +48,10 @@ reference:
 - subtitle: Visualise results
 - contents:
   - shinyDiagnostics
-- subtitle: Create expectations to compare results against
+- subtitle: Clinical descriptions for event of interest
+- contents:
+  - getClinicalDescription
+- subtitle: Expectations for phenotyping results
 - contents:
   - getCohortExpectations
   - tableCohortExpectations
