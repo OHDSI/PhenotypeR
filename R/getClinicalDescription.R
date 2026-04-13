@@ -14,6 +14,8 @@ getClinicalDescription <- function(chat, name, outputDir){
   rlang::check_installed("officer")
   rlang::check_installed("fs")
 
+  model_name <- chat$get_model()
+
   omopgenerics::assertCharacter(name)
   if (!dir.exists(outputDir)) {
     cli::cli_abort("{outputDir} does not exist")
@@ -26,7 +28,7 @@ getClinicalDescription <- function(chat, name, outputDir){
                                            name = working_name)
     if(!is.null(outputDir)){
       descriptions[working_name] |>
-        exportClinicalDescription(modelName = chat$get_model(),
+        exportClinicalDescription(modelName = model_name,
                                   outputDir = outputDir)
     }
   }

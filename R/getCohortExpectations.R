@@ -44,7 +44,7 @@ getCohortExpectations <- function(chat, phenotypes, outputDir){
     dplyr::mutate("source" = chat$get_model())
 
   expectations |>
-    exportClinicalDescription(names = phenotypes, outputDir = outputDir)
+    exportCohortExpectations(names = phenotypes, outputDir = outputDir)
 
   return(invisible(expectations))
 }
@@ -228,7 +228,7 @@ chat_output
 
 }
 
-exportClinicalDescription <- function(expectations, names, outputDir) {
+exportCohortExpectations <- function(expectations, names, outputDir) {
 
   cli::cli_inform("Exporting CSV with expectations for {names}")
 

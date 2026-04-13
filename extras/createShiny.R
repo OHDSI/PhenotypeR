@@ -9,8 +9,10 @@ codes <- list(
   "measurement_of_prostate_specific_antigen_level" = c(2617206L),
   "hospitalised_inpatient" = c(9201L)
 )
-expectations <- readr::read_csv(here::here("extras", "shiny_expectations.csv"),
-                                show_col_types = FALSE)
+
+expectations_path <- here::here("extras", "expectations")
+clinical_descriptions_path <- here::here("extras", "clinical_descriptions")
+database_descriptions_path  <- here::here("extras", "database_descriptions")
 
 # run against different omock datasets
 datasets <- c("GiBleed", "synpuf-1k_5.3", "synthea-covid19-200k")
@@ -45,5 +47,9 @@ result[[working_dataset]] <- PhenotypeR::phenotypeDiagnostics(cohort = cdm$my_co
 result <- omopgenerics::bind(result)
 
 PhenotypeR::shinyDiagnostics(result = result,
-                             expectations = expectations,
-                             minCellCount = 2, directory = getwd(), open = FALSE)
+                             expectationsDir = expectations_path,
+                             clinicalDescriptionsDir = clinical_descriptions_path,
+                             databaseDescriptionsDir = database_descriptions_path,
+                             minCellCount = 2,
+                             directory = getwd(),
+                             open = FALSE)
