@@ -102,7 +102,7 @@ test_that("overall diagnostics function", {
                                             databaseDiagnostics = NULL,
                                             codelistDiagnostics = NULL,
                                             populationDiagnostics = NULL,
-                                            cohortDiagnostics = list("matchedSample" = 0))
+                                            cohortDiagnostics = list("matchedSample" = 100))
 
   expect_identical(
     c("summarise_characteristics",
