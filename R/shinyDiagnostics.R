@@ -154,7 +154,19 @@ shinyDiagnostics <- function(result,
   return(invisible())
 }
 
+checkDirectory <- function(directory) {
+  # create directory if it does not exit
+  if (!dir.exists(directory)) {
+    cli::cli_inform(c("i" = "Provided directory does not exist, it will be created."))
+    dir.create(path = directory, recursive = TRUE)
+    cli::cli_inform(c("v" = "directory created: {.pkg {directory}}"))
+  }
+
+  return(directory)
+}
+
 validateDirectory <- function(directory, folderName) {
+
   # create directory if it does not exit
   if (!dir.exists(directory)) {
     cli::cli_inform(c("i" = "Provided directory does not exist, it will be created."))

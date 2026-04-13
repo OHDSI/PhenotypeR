@@ -43,6 +43,7 @@
 #'  "populationSample" = 100000,
 #'  "populationDateRange" = as.Date(c(NA,NA))
 #'  )*
+#'  @param stagingDirectory Path to folder to save incremental results and log file
 #'
 #' @return A summarised result
 #' @export
@@ -107,7 +108,8 @@ phenotypeDiagnostics <- function(cohort,
                                  databaseDiagnostics = list(),
                                  codelistDiagnostics = list(),
                                  cohortDiagnostics = list(),
-                                 populationDiagnostics = list()) {
+                                 populationDiagnostics = list(),
+                                 stagingDirectory = NULL) {
   # Get arguments
   cohort <- omopgenerics::validateCohortArgument(cohort = cohort)
   databaseDiagnostics <- checkDatabaseDiagnosticsInput(databaseDiagnostics)
@@ -115,14 +117,10 @@ phenotypeDiagnostics <- function(cohort,
   cohortDiagnostics   <- checkCohortDiagnosticsInput(cohortDiagnostics)
   populationDiagnostics <- checkPopulationDiagnosticsInput(populationDiagnostics)
 
-  # Check if a log file exists
-  oldLogFile <- getOption(x = "omopgenerics.logFile", default = NULL)
+  if(!is.null(stagingDirectory)) {
+    checkDirectory(stagingDirectory)
+    omopgenerics::createLogFile(logFile = file.path(stagingDirectory, "phenotypeDiagnostics_log_{date}_{time}"))
 
-  if (is.null(oldLogFile)) {
-    # If no log file exists, create a new temporary one
-    log_file <- tempfile(pattern = "phenotypeDiagnostics_log_{date}_{time}", fileext = ".txt")
-    omopgenerics::createLogFile(logFile = log_file)
-    on.exit(options("omopgenerics.logFile" = NULL))
   }
 
   incrementalResultPath <- getOption(x = "PhenotypeR.incremenatl_save_path")

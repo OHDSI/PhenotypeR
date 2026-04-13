@@ -9,7 +9,8 @@ phenotypeDiagnostics(
   databaseDiagnostics = list(),
   codelistDiagnostics = list(),
   cohortDiagnostics = list(),
-  populationDiagnostics = list()
+  populationDiagnostics = list(),
+  stagingDirectory = NULL
 )
 }
 \arguments{
@@ -50,7 +51,8 @@ Example:
  "diagnostics" = c("incidence", "periodPrevalence"),
  "populationSample" = 100000,
  "populationDateRange" = as.Date(c(NA,NA))
- )*}
+ )*
+ @param stagingDirectory Path to folder to save incremental results and log file}
 }
 \value{
 A summarised result
