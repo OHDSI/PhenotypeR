@@ -7,17 +7,17 @@ test_that("getting cohort expectations from ellmer", {
   chat <- ellmer::chat("google_gemini")
 
   # specific diagnosis
-  expect_no_error(getCohortExpectations(chat, "prostate cancer"))
-  expect_no_error(getCohortExpectations(chat, "lung cancer"))
+  expect_no_error(getCohortExpectations(chat, "prostate cancer", outputDir = tempdir()))
+  expect_no_error(getCohortExpectations(chat, "lung cancer", outputDir = tempdir()))
   # can pass multiple
-  expect_no_error(getCohortExpectations(chat, c("asthma", "copd")))
+  expect_no_error(getCohortExpectations(chat, c("asthma", "copd"), outputDir = tempdir()))
 
   # drugs
-  expect_no_error(getCohortExpectations(chat, "metformin"))
+  expect_no_error(getCohortExpectations(chat, "metformin", outputDir = tempdir()))
 
   # more examples
-  expect_no_error(getCohortExpectations(chat, "knee osteoarthritis"))
-  expect_no_error(getCohortExpectations(chat, "knee replacement"))
+  expect_no_error(getCohortExpectations(chat, "knee osteoarthritis", outputDir = tempdir()))
+  expect_no_error(getCohortExpectations(chat, "knee replacement", outputDir = tempdir()))
 
 
 })
@@ -51,7 +51,7 @@ test_that("getting cohort expectations from ellmer - using results object", {
 
   res <- phenotypeDiagnostics(cdm$my_cohort)
 
- expect_no_error(expectations <- getCohortExpectations(chat, res))
+ expect_no_error(expectations <- getCohortExpectations(chat, res, outputDir = tempdir()))
 
  expect_no_error(tableCohortExpectations(expectations, type = "reactable"))
 

@@ -4,13 +4,15 @@
 #' @param chat An ellmer chat
 #' @param phenotypes Either a vector of phenotype names or results from
 #' PhenotypeR.
+#' @param outputDir Folder to save expectations.
 #'
 #' @returns A tibble with expectations about the cohort.
 #' @export
 #'
-getCohortExpectations <- function(chat, phenotypes){
+getCohortExpectations <- function(chat, phenotypes, outputDir){
 
   rlang::check_installed("ellmer")
+  rlang::check_installed("readr")
 
   # if summarised result, pull out cohort names
   if(isTRUE(inherits(phenotypes, "summarised_result"))){
@@ -33,12 +35,18 @@ getCohortExpectations <- function(chat, phenotypes){
     expectations[[i]] <- fetchExpectations(chat = chat,
                                            name = phenotypes[[i]],
                                            others = other_phenotype)
+
   }
 
-  expectations |>
+  expectations <- expectations |>
     dplyr::bind_rows() |>
     dplyr::rename("cohort_name" = "name") |>
     dplyr::mutate("source" = chat$get_model())
+
+  expectations |>
+    exportClinicalDescription(names = phenotypes, outputDir = outputDir)
+
+  return(invisible(expectations))
 }
 
 # go and get expectations cohort by cohort
@@ -220,6 +228,16 @@ chat_output
 
 }
 
+exportClinicalDescription <- function(expectations, names, outputDir) {
+
+  cli::cli_inform("Exporting CSV with expectations for {names}")
+
+  path <- file.path(outputDir, paste0("expectations", ".csv"))
+  expectations |>
+    readr::write_csv(file = path)
+
+  cli::cli_alert_success("Exported as {path}")
+}
 
 #' Create a table summarising cohort expectations
 #'
