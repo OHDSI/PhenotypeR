@@ -7,6 +7,5 @@ rsconnect::setAccountInfo(
 rsconnect::deployApp(
   appDir = file.path(getwd(), "PhenotypeRShiny"),
   appName = appName,
-  forceUpdate = TRUE,
-  logLevel = "verbose"
+  forceUpdate = TRUE
 )
