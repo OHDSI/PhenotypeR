@@ -12,6 +12,7 @@ getClinicalDescription <- function(chat, name, outputDir){
 
   rlang::check_installed("ellmer")
   rlang::check_installed("officer")
+  rlang::check_installed("fs")
 
   omopgenerics::assertCharacter(name)
   if (!dir.exists(outputDir)) {

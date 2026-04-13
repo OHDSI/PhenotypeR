@@ -63,6 +63,7 @@ Suggests:
     lubridate,
     systemfonts,
     officer,
+    fs,
     OmopConstructor
 Config/testthat/edition: 3
 RoxygenNote: 7.3.3
