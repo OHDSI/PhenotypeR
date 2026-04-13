@@ -5,7 +5,7 @@
 #' @param name Clinical event of interest
 #' @param outputDir Folder to save clinical descriptions.
 #'
-#' @returns A list with each item containing the clinical description.
+#' @returns Creates a word document with a clinical description for each event.
 #' @export
 #'
 getClinicalDescription <- function(chat, name, outputDir){
@@ -30,7 +30,7 @@ getClinicalDescription <- function(chat, name, outputDir){
     }
   }
 
-  return(invisible(NULL))
+  return(invisible(descriptions))
 
 }
 
@@ -38,32 +38,46 @@ fetchClinicalDescription <- function(chat, name){
 
   cli::cli_inform("Getting clinical description for {name}")
 
-  systemPrompt <- "You are a terse assistant helping a user (with equivalent medical knowledge to that of a well-informed member of the lay public) working with real-world health care data to write a
-clinical definition that will be used to assess that the study cohorts they create are reliable."
-  systemPrompt <- paste0(systemPrompt,
-                          "Study cohorts can include, but not limited to, people with a particular diagnosis, people having a routine lab test, people having a procedure, and people who are users of a medication. ")
-  systemPrompt <- paste0(systemPrompt,
-                          "Unless specified, real world data being used may be drawn from different settings (such as primary care and hospital care) and types (such as electronic healthcare records or insurance data). ")
-  systemPrompt <- paste0(systemPrompt,
-                          "For medications, use ATC classifications where appropriate, but otherwise use drug ingredient names, and avoid abbreviations. ")
-  systemPrompt <- paste0(systemPrompt,
-                          "Use British spelling. Keep responses factual, straightforward, circumspect, and do not exaggerate or use flowery or euphuistic language.")
+  systemPrompt <- "You are a factual assistant helping a user working with real-world health care data. Assume the user has medical knowledge equivalent to a well-informed member of the public. Your goal is to write a clinical definition to assess the reliability of study cohorts identified in real-world data.
+
+  Context and Rules:
+  - Study cohorts may include people with specific diagnoses, lab tests, procedures, or medication users.
+  - This output is strictly for data scientists and epidemiologists. Do NOT include patient-facing warnings, disclaimers, or advice to consult a healthcare professional.
+  - If a diagnostic threshold or treatment protocol varies significantly by region or over recent time, state that it varies and provide the typical range rather than declaring a single absolute value.
+  - Use generic drug ingredient names when explaining medicines. Avoid abbreviations where possible; if an abbreviation is necessary, you must spell it out on first use.
+  - Keep responses strictly factual, straightforward, circumspect, and highly specific.
+  - Do not exaggerate or use flowery/euphemistic/ cliched language.
+  - Use British spelling.
+  - Write full sentences. No bullet points, no lists, no bold, no italics, and no other special formatting.
+
+  Tone Example:
+  - GOOD: 'Type 2 diabetes mellitus is characterised by hyperglycaemia (high blood sugar levels)'
+  - GOOD: 'When diagnosing hypertension, the main consideration is to differentiate primary (essential) hypertension from secondary hypertension, which is caused by an underlying condition.'
+  - GOOD: 'Common symptoms experienced in the lead up to diagnosis include polyuria (frequent urination), polydipsia (increased thirst), and polyphagia (increased hunger).'
+  - GOOD: 'For venous thromboembolism, major risk factors include recent surgery (especially orthopaedic), major trauma, immobility, active cancer, pregnancy, and inherited or acquired thrombophilias (clotting disorders).'
+  - BAD: 'Hypertension is often referred to as a silent killer' - cliched language
+  - BAD: 'Diet low in sodium (such as the DASH diet)' - acronym not explained
+  - BAD: 'The cornerstone of management is paracetamol' - cliched language
+  - BAD: 'The search for a secondary cause is particularly important in younger patients' - too flowery
+  - BAD: 'Certain medications and substances can also induce or exacerbate hypertension' - too vague
+  "
 
   # start from a clean slate
   chat <- chat$clone()$set_turns(list())
   chat <- chat$set_system_prompt(value = systemPrompt)
 
-  userPrompt <- "Provide a paragraph with a high-level clinical description of {{name}}, including commonly used synonyms in the medical literature, medical professionals, and the general public.
-           Write two paragraphs summarising the typical clinical presentation of {{name}} and associated symptoms patients experience in the lead up to being diagnosed,
-           Give a three paragraph summary of the epidemiogy of {{name}}. Focus on how prevalence and/or incidence vary by patient characteristics (such as age and sex) in the first paragraph (don't report specific numbers), associated risk factors in the second paragraph, and typical comorbidities (that may come before or afterwards) seen among patients in the third paragraph.
-           Explain in two paragraphs how patients are typically assessed by doctors and other medical professionals when presenting with {{name}}, and how the diagnosis is made (including the typical tests and measurements used to inform diagnosis if relevant).
-           Provide two paragraphs of the typical therapeutic/ treatment plan for {{name}}. Focus in the first paragraph on the initial treatments patients are likely to receive, and in the second paragraph on medicines received later on (explaining how they depend on if initial treamtent was succesful or not if relevant).
-           Write two paragraphs. In the first summarise common complications seen among people diagnosed with {{name}}. In the second describe short, medium, and longer term prognosis for patients.
-           Write a paragraph describing disqualifiers/ differential diagnoses related to {{name}} that medical professionals must consider. Comment on temporality if relevant, whether differential or more specific diagnoses are consider at the same time or later on after initial diagnosis."
+  userPrompt <- "Provide a comprehensive clinical profile for {{name}}. Structure your response to map exactly to the following requested sections:
+
+  - introduction_synonyms: Provide a concise high-level clinical description of {{name}}, including commonly used synonyms in the medical literature and by medical professionals.
+  - clinical_presentation_and_symptoms: Summarise the typical clinical presentation of {{name}} and associated symptoms patients experience in the lead up to being diagnosed,
+  - epidemiology: Summarise the known epidemiology of {{name}}. Focus first on how prevalence and/or incidence vary by patient characteristics (such as age and sex), but don't report specific numbers. Then summarise associated modifiable and non-modifiable risk factors. Then summarise typical comorbidities (that may come before or afterwards) seen among patients.
+  - assessment_diagnosis: Explain how patients are typically assessed by doctors and other medical professionals when presenting with {{name}}, and how the diagnosis is made (including the typical tests and measurements used to inform diagnosis if relevant).
+  - therapeutic_plan_treatment: Describe the typical therapeutic/ treatment plan for {{name}}. Focus in the first on the initial treatments patients are likely to receive. Then describe medicines received later on, explaining how they depend on if initial treatment was successful or not if relevant.
+  - complications_prognosis: Summarise common complications seen among people diagnosed with {{name}}. Then describe short, medium, and longer term prognosis for patients.
+  - disqualifiers: Explain the disqualifiers/ differential diagnoses related to {{name}} that medical professionals must consider. Comment on temporality if relevant, whether differential or more specific diagnoses are considered at the same time or later on after initial diagnosis."
 
 
-  type_my_df <- ellmer::type_array(
-    items = ellmer::type_object(
+  type_my_df <- ellmer::type_object(
       introduction_synonyms = ellmer::type_string(),
       clinical_presentation_and_symptoms = ellmer::type_string(),
       epidemiology = ellmer::type_string(),
@@ -72,7 +86,6 @@ clinical definition that will be used to assess that the study cohorts they crea
       complications_prognosis = ellmer::type_string(),
       disqualifiers = ellmer::type_string()
     )
-  )
 
   chat_output <- chat$chat_structured(
     ellmer::interpolate(userPrompt),
@@ -101,12 +114,14 @@ clinical definition that will be used to assess that the study cohorts they crea
 
 }
 
-exportClinicalDescription <- function(clinicalDescription, systemPrompt, userPrompt, modelName, outputDir) {
+exportClinicalDescription <- function(clinicalDescription, modelName, outputDir) {
 
   for (i in seq_along(clinicalDescription)) {
 
     name <- names(clinicalDescription)[i]
-    path <- file.path(outputDir, paste0(name, ".docx"))
+    file_safe_name <- fs::path_sanitize(name)
+    path <- file.path(outputDir, paste0(file_safe_name, ".docx"))
+
 
     cli::cli_inform("Exporting word document for clinical description of {name}")
 
