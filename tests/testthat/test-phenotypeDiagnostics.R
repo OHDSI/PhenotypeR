@@ -102,7 +102,7 @@ test_that("overall diagnostics function", {
                                             databaseDiagnostics = NULL,
                                             codelistDiagnostics = NULL,
                                             populationDiagnostics = NULL,
-                                            cohortDiagnostics = list("matchedSample" = 0))
+                                            cohortDiagnostics = list("matchedSample" = 100))
 
   expect_identical(
     c("summarise_characteristics",
@@ -125,8 +125,14 @@ test_that("overall diagnostics function", {
       dplyr::pull(group_level) |>
       unique() |>
       sort()),
-      c("cohort_1", "cohort_1 &&& cohort_2",
-        "cohort_2", "cohort_2 &&& cohort_1")
+      c("cohort_1",
+        "cohort_1_matched",
+        "cohort_1_sampled",
+        "cohort_1 &&& cohort_2",
+        "cohort_2",
+        "cohort_2_matched",
+        "cohort_2_sampled",
+        "cohort_2 &&& cohort_1") |> sort()
   )
 
   cohort_pop_diag_only <-  phenotypeDiagnostics(cdm$my_cohort,
