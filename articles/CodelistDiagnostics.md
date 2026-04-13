@@ -33,11 +33,11 @@ cdm$injuries |>
   glimpse()
 #> Rows: ??
 #> Columns: 4
-#> Database: DuckDB 1.5.1 [unknown@Linux 6.17.0-1010-azure:R 4.5.3//tmp/RtmpFGqRBc/file1f746fccf91f.duckdb]
-#> $ cohort_definition_id <int> 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 2, 5, 5…
-#> $ subject_id           <int> 481, 527, 511, 753, 781, 174, 251, 828, 58, 242, …
-#> $ cohort_start_date    <date> 2009-11-14, 2009-12-29, 2009-07-10, 2009-05-31, …
-#> $ cohort_end_date      <date> 2009-11-14, 2009-12-29, 2009-07-10, 2009-05-31, …
+#> Database: DuckDB 1.5.1 [unknown@Linux 6.17.0-1010-azure:R 4.5.3//tmp/RtmpNFUCC1/file1f8c331e5278.duckdb]
+#> $ cohort_definition_id <int> 5, 5, 5, 5, 2, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5…
+#> $ subject_id           <int> 174, 251, 828, 58, 623, 242, 862, 172, 486, 168, …
+#> $ cohort_start_date    <date> 2008-05-31, 2009-05-22, 2009-08-11, 2008-04-20, …
+#> $ cohort_end_date      <date> 2008-05-31, 2009-05-22, 2009-08-11, 2008-04-20, …
 ```
 
 ## Summarising code use
@@ -71,8 +71,32 @@ R packages to perform the following analyses:
 - **Measurement diagnostics:** If any of the concepts used in our
   codelist is a measurement, it summarises its code use using
   [summariseCohortMeasurementUse()](https://ohdsi.github.io/MeasurementDiagnostics/reference/summariseCohortMeasurementUse.html).
+- **Drug diagnostics:** If any of the concepts used in our codelist is a
+  drug, it summarises its code use, including a summry of the exposure
+  duration, the days between records, the daily dose, and the quantity.
 
-The output of a function is a summarised result table.
+We can activate or deactivate each analysis by setting to FALSE the
+following arguments:
+
+``` r
+code_diag1 <- codelistDiagnostics(cdm$injuries, 
+                                 achillesCodeUse = TRUE, 
+                                 orphanCodeUse = TRUE, 
+                                 cohortCodeUse = TRUE, 
+                                 drugDiagnostics = TRUE, 
+                                 measurementDiagnostics = TRUE)
+```
+
+Or subset the cohort to perform the drug diagnostics or the measurement
+diagnostics. For instance, in the example below we will create a subset
+of 1,000 participants of our cohort to perform the measurement
+diagnostics and the drug diagnostics. Subsets will be independent.
+
+``` r
+code_diag2 <- codelistDiagnostics(cdm$injuries, 
+                                 measurementDiagnosticsSample = 1000, 
+                                 drugDiagnosticsSample = 1000)
+```
 
 ### Add codelist attribute
 
@@ -147,7 +171,7 @@ tableMeasurementSummary(code_diag)
 plotMeasurementSummary(code_diag)
 ```
 
-![](CodelistDiagnostics_files/figure-html/unnamed-chunk-10-1.png)
+![](CodelistDiagnostics_files/figure-html/unnamed-chunk-12-1.png)
 
 ### Measurement value as concept
 
@@ -174,7 +198,7 @@ tableMeasurementValueAsConcept(code_diag)
 plotMeasurementValueAsConcept(code_diag)
 ```
 
-![](CodelistDiagnostics_files/figure-html/unnamed-chunk-12-1.png)
+![](CodelistDiagnostics_files/figure-html/unnamed-chunk-14-1.png)
 
 ### Measurement value as numeric
 
@@ -256,4 +280,4 @@ tableMeasurementValueAsNumber(code_diag)
 plotMeasurementValueAsNumber(code_diag)
 ```
 
-![](CodelistDiagnostics_files/figure-html/unnamed-chunk-14-1.png)
+![](CodelistDiagnostics_files/figure-html/unnamed-chunk-16-1.png)

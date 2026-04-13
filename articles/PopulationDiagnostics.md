@@ -26,8 +26,7 @@ We can get the incidence and prevalence of our study cohort using
 [`populationDiagnostics()`](https://ohdsi.github.io/PhenotypeR/reference/populationDiagnostics.md):
 
 ``` r
-pop_diag <- populationDiagnostics(cdm$injuries, 
-                                  populationSample = 10000)
+pop_diag <- populationDiagnostics(cdm$injuries)
 ```
 
 This function builds on
@@ -36,9 +35,18 @@ R package to perform the following analyses:
 
 - **Incidence:** It estimates the incidence of our cohort using
   [estimateIncidence()](https://darwin-eu.github.io/IncidencePrevalence/reference/estimateIncidence.html).
-- **Prevalence:** It estimates the prevalence of our cohort on a year
-  basis using
+- **Period Prevalence:** It estimates the period prevalence of our
+  cohort on a year basis using
   [estimatePeriodPrevalence()](https://darwin-eu.github.io/IncidencePrevalence/reference/estimatePeriodPrevalence.html).
+
+We can deactivate any of the analysis turning the following arguments
+into FALSE:
+
+``` r
+pop_diag2 <- populationDiagnostics(cdm$injuries, 
+                                  incidence = TRUE, 
+                                  periodPrevalence = TRUE)
+```
 
 All analyses are performed for:
 
@@ -46,7 +54,19 @@ All analyses are performed for:
   Age groups cannot be modified.
 - Overall and stratified by sex (Female, Male).
 - Restricting the denominator population to those with 0 and 365 of days
-  of prior observation.
+  of prior observation. Prior observation values cannot be modified.
+
+As calculating the incidence and prevalence of our cohorts can be
+computationally expensive, specially when working with large databases,
+we can subset our diagnostics to a subset of people using
+`populationSample`, and restrict the study period to specific dates
+using `populationDateRange`:
+
+``` r
+pop_diag3 <- populationDiagnostics(cdm$injuries, 
+                                   populationSample = 1000, 
+                                   populationDateRange = as.Date(c("1960-01-01", NA)))
+```
 
 ## Visualising the results
 
@@ -61,9 +81,9 @@ tableIncidence(pop_diag,
                groupColumn = c("cdm_name", "outcome_cohort_name"),
                hide = "denominator_cohort_name",
                settingsColumn = c("denominator_age_group",
-                         "denominator_sex",
-                         "denominator_days_prior_observation",
-                         "outcome_cohort_name"))
+                                  "denominator_sex",
+                                  "denominator_days_prior_observation",
+                                  "outcome_cohort_name"))
 ```
 
 [TABLE]
@@ -77,18 +97,18 @@ plotIncidence(results,
               facet = c("denominator_sex", "denominator_days_prior_observation"))
 ```
 
-![](PopulationDiagnostics_files/figure-html/unnamed-chunk-6-1.png)
+![](PopulationDiagnostics_files/figure-html/unnamed-chunk-8-1.png)
 
 ### Prevalence
 
 ``` r
 tablePrevalence(pop_diag,     
-               groupColumn = c("cdm_name", "outcome_cohort_name"),
-               hide = "denominator_cohort_name",
-               settingsColumn = c("denominator_age_group",
-                         "denominator_sex",
-                         "denominator_days_prior_observation",
-                         "outcome_cohort_name"))
+                groupColumn = c("cdm_name", "outcome_cohort_name"),
+                hide = "denominator_cohort_name",
+                settingsColumn = c("denominator_age_group",
+                                   "denominator_sex",
+                                   "denominator_days_prior_observation",
+                                   "outcome_cohort_name"))
 ```
 
 [TABLE]
@@ -102,4 +122,4 @@ plotPrevalence(results,
                facet = c("denominator_sex", "denominator_days_prior_observation"))
 ```
 
-![](PopulationDiagnostics_files/figure-html/unnamed-chunk-8-1.png)
+![](PopulationDiagnostics_files/figure-html/unnamed-chunk-10-1.png)

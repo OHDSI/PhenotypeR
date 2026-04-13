@@ -62,7 +62,7 @@ cohort <- addCodelistAttribute(cohort = cdm$warfarin,
 #> Warning: Overwriting codelist for cohort warfarin
 attr(cohort, "cohort_codelist")
 #> # Source:   table<results.test_warfarin_codelist> [?? x 4]
-#> # Database: DuckDB 1.5.1 [unknown@Linux 6.17.0-1010-azure:R 4.5.3//tmp/Rtmpm5Ep3e/file1c8b5005b4d5.duckdb]
+#> # Database: DuckDB 1.5.1 [unknown@Linux 6.17.0-1010-azure:R 4.5.3//tmp/RtmpU81iBE/file1c9e787acbe8.duckdb]
 #>   cohort_definition_id codelist_name concept_id codelist_type
 #>                  <int> <chr>              <int> <chr>        
 #> 1                    1 warfarin         1310149 index event  

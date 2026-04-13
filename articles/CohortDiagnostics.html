@@ -104,22 +104,19 @@ fracture, or a hip fracture using the Eunomia synthetic data.</p>
 <h2 id="cohort-diagnostics">Cohort diagnostics<a class="anchor" aria-label="anchor" href="#cohort-diagnostics"></a>
 </h2>
 <p>We can run cohort diagnostics analyses for each of our overall
-cohorts like so:</p>
+cohorts like so (notice that, by default, survival analysis is not
+performed, and that is why we have set it to TRUE):</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cohort_diag</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cohortDiagnostics.html">cohortDiagnostics</a></span><span class="op">(</span><span class="va">cdm</span><span class="op">$</span><span class="va">injuries</span>,</span>
-<span>                                 cohortSurvival <span class="op">=</span> <span class="cn">TRUE</span>, </span>
-<span>                                 cohortSample <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>                                 matchedSample <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+<span>                                 cohortSurvival <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>Cohort diagnostics builds on <a href="https://darwin-eu.github.io/CohortCharacteristics/" class="external-link">CohortCharacteristics</a>
 and <a href="https://darwin-eu-dev.github.io/CohortSurvival/" class="external-link">CohortSurvival</a>
 R packages to perform the following analyses on our cohorts:</p>
 <ul>
 <li>
 <strong>Cohort count:</strong> Summarises the number of records and
-persons in each one of the cohorts using <a href="https://darwin-eu.github.io/CohortCharacteristics/reference/summariseCohortCount.html" class="external-link">summariseCohortCount()</a>.</li>
-<li>
-<strong>Cohort attrition:</strong> Summarises the attrition
-associated with the cohorts using <a href="https://darwin-eu.github.io/CohortCharacteristics/reference/summariseCohortAttrition.html" class="external-link">summariseCohortAttrition()</a>.</li>
+persons in each one of the cohorts using <a href="https://darwin-eu.github.io/CohortCharacteristics/reference/summariseCohortCount.html" class="external-link">summariseCohortCount()</a>
+and summarises the attrition associated with the cohorts using <a href="https://darwin-eu.github.io/CohortCharacteristics/reference/summariseCohortAttrition.html" class="external-link">summariseCohortAttrition()</a>.</li>
 <li>
 <strong>Cohort characteristics:</strong> Summarises cohort baseline
 characteristics using <a href="https://darwin-eu.github.io/CohortCharacteristics/reference/summariseCharacteristics.html" class="external-link">summariseCharacteristics()</a>.
@@ -134,32 +131,51 @@ Results are stratified by sex and by age group (0 to 17, 18 to 64, 65 to
 and 1 to Inf. The analysis is perform at standard and source code
 level.</li>
 <li>
-<strong>Cohort overlap:</strong> If there is more than one cohort in
-the cohort table supplied, summarises the overlap between them using <a href="https://darwin-eu.github.io/CohortCharacteristics/reference/summariseCohortOverlap.html" class="external-link">summariseCohortOverlap()</a>.</li>
-<li>
-<strong>Cohort timing:</strong> If there is more than one cohort in
-the cohort table supplied, summarises the timing between them using <a href="https://darwin-eu.github.io/CohortCharacteristics/reference/summariseCohortTiming.html" class="external-link">summariseCohortTiming()</a>.</li>
+<strong>Compare cohort:</strong> If there is more than one cohort in
+the cohort table supplied, it summarises the overlap between them using
+<a href="https://darwin-eu.github.io/CohortCharacteristics/reference/summariseCohortOverlap.html" class="external-link">summariseCohortOverlap()</a>
+and the timing between them <a href="https://darwin-eu.github.io/CohortCharacteristics/reference/summariseCohortTiming.html" class="external-link">summariseCohortTiming()</a>.</li>
 <li>
 <strong>Cohort survival:</strong> Smmarises the survival until the
 event of death (if death table is present in the cdm) using<br><a href="https://darwin-eu-dev.github.io/CohortSurvival/reference/estimateSingleEventSurvival.html" class="external-link">estimateSingleEventSurvival()</a>.</li>
 </ul>
+<p>We can activate or deactivate each analysis by setting to FALSE the
+following arguments:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">cohort_diag2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cohortDiagnostics.html">cohortDiagnostics</a></span><span class="op">(</span><span class="va">cdm</span><span class="op">$</span><span class="va">injuries</span>,cohortCount <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                                 cohortCharacteristics <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                                 largeScaleCharacteristics <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                                 compareCohorts <span class="op">=</span> <span class="cn">TRUE</span>, </span>
+<span>                                 cohortSurvival <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>The analyses <strong>cohort characteristics</strong>, <strong>cohort
-age distribution</strong>, <strong>cohort large scale
-characteristics</strong>, and <strong>cohort survival</strong> will also
-be performed (by default) in a matched cohort. The matched cohort will
-be created based on year of birth and sex (see <a href="https://ohdsi.github.io/CohortConstructor/reference/matchCohorts.html" class="external-link">matchCohorts()</a>
+large scale characteristics</strong>, and <strong>cohort
+survival</strong> will also be performed (by default) in a matched
+cohort. The matched cohort will be created based on year of birth and
+sex (see <a href="https://ohdsi.github.io/CohortConstructor/reference/matchCohorts.html" class="external-link">matchCohorts()</a>
 function in CohortConstructor package). This can help us to compare the
 results in our cohorts to those obtain in the matched cohort,
 representing the general population. Notice that the analysis will be
 performed in: (1) the original cohort, (2) individuals in the original
 cohorts that have a match (named the sampled cohort), and (3) the
 matched cohort.</p>
-<p>As the matched process can be computationally expensive, specially
-when the cohorts are very big, we can reduce the matching analysis to a
-subset of participants from the original cohort using the
-<code>matchedSample</code> parameter. Alternatively, if we do not want
-to create the matched cohorts, we can use
-<code>matchedSample = 0</code>.</p>
+<p>As these analysis can be computationally expensive, specially when
+the cohorts are big, we can create a subset of our cohort using
+<code>cohortSample</code> parameter. If we don’t want to perform any
+sampling, we can set this argument to NULL
+(<code>cohortSample = NULL</code>). By default, a subsample of 20,000
+will be used.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">cohort_diag3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cohortDiagnostics.html">cohortDiagnostics</a></span><span class="op">(</span><span class="va">cdm</span><span class="op">$</span><span class="va">injuries</span>,</span>
+<span>                                 cohortSample <span class="op">=</span> <span class="fl">20000</span><span class="op">)</span></span></code></pre></div>
+<p>We have a similar option for the matched process. We can reduce the
+matching analysis to a subset of participants from the original cohort
+using the <code>matchedSample</code> parameter. Alternatively, if we do
+not want to create the matched cohorts, we can use
+<code>matchedSample = 0</code>. If we don’t want to perform any
+sampling, we can also use <code>matchedSample = NULL</code>.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">cohort_diag4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cohortDiagnostics.html">cohortDiagnostics</a></span><span class="op">(</span><span class="va">cdm</span><span class="op">$</span><span class="va">injuries</span>,</span>
+<span>                                 matchedSample <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span></span></code></pre></div>
 <p>The output of <code><a href="../reference/cohortDiagnostics.html">cohortDiagnostics()</a></code> will be a summarised
 result table.</p>
 </div>
@@ -173,25 +189,25 @@ R packages packages.</p>
 <div class="section level3">
 <h3 id="cohort-counts">Cohort counts<a class="anchor" aria-label="anchor" href="#cohort-counts"></a>
 </h3>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://darwin-eu.github.io/CohortCharacteristics/reference/tableCohortCount.html" class="external-link">tableCohortCount</a></span><span class="op">(</span><span class="va">cohort_diag</span><span class="op">)</span></span></code></pre></div>
-<div id="nzejrrmfuy" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#nzejrrmfuy table {
+<div id="frayszwccx" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#frayszwccx table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#nzejrrmfuy thead, #nzejrrmfuy tbody, #nzejrrmfuy tfoot, #nzejrrmfuy tr, #nzejrrmfuy td, #nzejrrmfuy th {
+#frayszwccx thead, #frayszwccx tbody, #frayszwccx tfoot, #frayszwccx tr, #frayszwccx td, #frayszwccx th {
   border-style: none;
 }
 
-#nzejrrmfuy p {
+#frayszwccx p {
   margin: 0;
   padding: 0;
 }
 
-#nzejrrmfuy .gt_table {
+#frayszwccx .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -217,12 +233,12 @@ R packages packages.</p>
   border-left-color: #D9D9D9;
 }
 
-#nzejrrmfuy .gt_caption {
+#frayszwccx .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#nzejrrmfuy .gt_title {
+#frayszwccx .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -234,7 +250,7 @@ R packages packages.</p>
   border-bottom-width: 0;
 }
 
-#nzejrrmfuy .gt_subtitle {
+#frayszwccx .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -246,7 +262,7 @@ R packages packages.</p>
   border-top-width: 0;
 }
 
-#nzejrrmfuy .gt_heading {
+#frayszwccx .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -258,13 +274,13 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#nzejrrmfuy .gt_bottom_border {
+#frayszwccx .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#nzejrrmfuy .gt_col_headings {
+#frayszwccx .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -279,7 +295,7 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#nzejrrmfuy .gt_col_heading {
+#frayszwccx .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -299,7 +315,7 @@ R packages packages.</p>
   overflow-x: hidden;
 }
 
-#nzejrrmfuy .gt_column_spanner_outer {
+#frayszwccx .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -311,15 +327,15 @@ R packages packages.</p>
   padding-right: 4px;
 }
 
-#nzejrrmfuy .gt_column_spanner_outer:first-child {
+#frayszwccx .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#nzejrrmfuy .gt_column_spanner_outer:last-child {
+#frayszwccx .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#nzejrrmfuy .gt_column_spanner {
+#frayszwccx .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -331,11 +347,11 @@ R packages packages.</p>
   width: 100%;
 }
 
-#nzejrrmfuy .gt_spanner_row {
+#frayszwccx .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#nzejrrmfuy .gt_group_heading {
+#frayszwccx .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -361,7 +377,7 @@ R packages packages.</p>
   text-align: left;
 }
 
-#nzejrrmfuy .gt_empty_group_heading {
+#frayszwccx .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -376,15 +392,15 @@ R packages packages.</p>
   vertical-align: middle;
 }
 
-#nzejrrmfuy .gt_from_md > :first-child {
+#frayszwccx .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#nzejrrmfuy .gt_from_md > :last-child {
+#frayszwccx .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#nzejrrmfuy .gt_row {
+#frayszwccx .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -403,7 +419,7 @@ R packages packages.</p>
   overflow-x: hidden;
 }
 
-#nzejrrmfuy .gt_stub {
+#frayszwccx .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -416,7 +432,7 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#nzejrrmfuy .gt_stub_row_group {
+#frayszwccx .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -430,15 +446,15 @@ R packages packages.</p>
   vertical-align: top;
 }
 
-#nzejrrmfuy .gt_row_group_first td {
+#frayszwccx .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#nzejrrmfuy .gt_row_group_first th {
+#frayszwccx .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#nzejrrmfuy .gt_summary_row {
+#frayszwccx .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -448,16 +464,16 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#nzejrrmfuy .gt_first_summary_row {
+#frayszwccx .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#nzejrrmfuy .gt_first_summary_row.thick {
+#frayszwccx .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#nzejrrmfuy .gt_last_summary_row {
+#frayszwccx .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -467,7 +483,7 @@ R packages packages.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#nzejrrmfuy .gt_grand_summary_row {
+#frayszwccx .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -477,7 +493,7 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#nzejrrmfuy .gt_first_grand_summary_row {
+#frayszwccx .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -487,7 +503,7 @@ R packages packages.</p>
   border-top-color: #D3D3D3;
 }
 
-#nzejrrmfuy .gt_last_grand_summary_row_top {
+#frayszwccx .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -497,11 +513,11 @@ R packages packages.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#nzejrrmfuy .gt_striped {
+#frayszwccx .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#nzejrrmfuy .gt_table_body {
+#frayszwccx .gt_table_body {
   border-top-style: solid;
   border-top-width: 3px;
   border-top-color: #D9D9D9;
@@ -510,7 +526,7 @@ R packages packages.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#nzejrrmfuy .gt_footnotes {
+#frayszwccx .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -524,7 +540,7 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#nzejrrmfuy .gt_footnote {
+#frayszwccx .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -533,7 +549,7 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#nzejrrmfuy .gt_sourcenotes {
+#frayszwccx .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -547,7 +563,7 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#nzejrrmfuy .gt_sourcenote {
+#frayszwccx .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -555,72 +571,72 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#nzejrrmfuy .gt_left {
+#frayszwccx .gt_left {
   text-align: left;
 }
 
-#nzejrrmfuy .gt_center {
+#frayszwccx .gt_center {
   text-align: center;
 }
 
-#nzejrrmfuy .gt_right {
+#frayszwccx .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#nzejrrmfuy .gt_font_normal {
+#frayszwccx .gt_font_normal {
   font-weight: normal;
 }
 
-#nzejrrmfuy .gt_font_bold {
+#frayszwccx .gt_font_bold {
   font-weight: bold;
 }
 
-#nzejrrmfuy .gt_font_italic {
+#frayszwccx .gt_font_italic {
   font-style: italic;
 }
 
-#nzejrrmfuy .gt_super {
+#frayszwccx .gt_super {
   font-size: 65%;
 }
 
-#nzejrrmfuy .gt_footnote_marks {
+#frayszwccx .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#nzejrrmfuy .gt_asterisk {
+#frayszwccx .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#nzejrrmfuy .gt_indent_1 {
+#frayszwccx .gt_indent_1 {
   text-indent: 5px;
 }
 
-#nzejrrmfuy .gt_indent_2 {
+#frayszwccx .gt_indent_2 {
   text-indent: 10px;
 }
 
-#nzejrrmfuy .gt_indent_3 {
+#frayszwccx .gt_indent_3 {
   text-indent: 15px;
 }
 
-#nzejrrmfuy .gt_indent_4 {
+#frayszwccx .gt_indent_4 {
   text-indent: 20px;
 }
 
-#nzejrrmfuy .gt_indent_5 {
+#frayszwccx .gt_indent_5 {
   text-indent: 25px;
 }
 
-#nzejrrmfuy .katex-display {
+#frayszwccx .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#nzejrrmfuy div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#frayszwccx div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -676,25 +692,25 @@ R packages packages.</p>
 <div class="section level3">
 <h3 id="cohort-attrition">Cohort attrition<a class="anchor" aria-label="anchor" href="#cohort-attrition"></a>
 </h3>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://darwin-eu.github.io/CohortCharacteristics/reference/tableCohortAttrition.html" class="external-link">tableCohortAttrition</a></span><span class="op">(</span><span class="va">cohort_diag</span><span class="op">)</span></span></code></pre></div>
-<div id="sqbwsfukji" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#sqbwsfukji table {
+<div id="crttswbgif" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#crttswbgif table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#sqbwsfukji thead, #sqbwsfukji tbody, #sqbwsfukji tfoot, #sqbwsfukji tr, #sqbwsfukji td, #sqbwsfukji th {
+#crttswbgif thead, #crttswbgif tbody, #crttswbgif tfoot, #crttswbgif tr, #crttswbgif td, #crttswbgif th {
   border-style: none;
 }
 
-#sqbwsfukji p {
+#crttswbgif p {
   margin: 0;
   padding: 0;
 }
 
-#sqbwsfukji .gt_table {
+#crttswbgif .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -720,12 +736,12 @@ R packages packages.</p>
   border-left-color: #D9D9D9;
 }
 
-#sqbwsfukji .gt_caption {
+#crttswbgif .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#sqbwsfukji .gt_title {
+#crttswbgif .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -737,7 +753,7 @@ R packages packages.</p>
   border-bottom-width: 0;
 }
 
-#sqbwsfukji .gt_subtitle {
+#crttswbgif .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -749,7 +765,7 @@ R packages packages.</p>
   border-top-width: 0;
 }
 
-#sqbwsfukji .gt_heading {
+#crttswbgif .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -761,13 +777,13 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#sqbwsfukji .gt_bottom_border {
+#crttswbgif .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#sqbwsfukji .gt_col_headings {
+#crttswbgif .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -782,7 +798,7 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#sqbwsfukji .gt_col_heading {
+#crttswbgif .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -802,7 +818,7 @@ R packages packages.</p>
   overflow-x: hidden;
 }
 
-#sqbwsfukji .gt_column_spanner_outer {
+#crttswbgif .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -814,15 +830,15 @@ R packages packages.</p>
   padding-right: 4px;
 }
 
-#sqbwsfukji .gt_column_spanner_outer:first-child {
+#crttswbgif .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#sqbwsfukji .gt_column_spanner_outer:last-child {
+#crttswbgif .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#sqbwsfukji .gt_column_spanner {
+#crttswbgif .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -834,11 +850,11 @@ R packages packages.</p>
   width: 100%;
 }
 
-#sqbwsfukji .gt_spanner_row {
+#crttswbgif .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#sqbwsfukji .gt_group_heading {
+#crttswbgif .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -864,7 +880,7 @@ R packages packages.</p>
   text-align: left;
 }
 
-#sqbwsfukji .gt_empty_group_heading {
+#crttswbgif .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -879,15 +895,15 @@ R packages packages.</p>
   vertical-align: middle;
 }
 
-#sqbwsfukji .gt_from_md > :first-child {
+#crttswbgif .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#sqbwsfukji .gt_from_md > :last-child {
+#crttswbgif .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#sqbwsfukji .gt_row {
+#crttswbgif .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -906,7 +922,7 @@ R packages packages.</p>
   overflow-x: hidden;
 }
 
-#sqbwsfukji .gt_stub {
+#crttswbgif .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -919,7 +935,7 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#sqbwsfukji .gt_stub_row_group {
+#crttswbgif .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -933,15 +949,15 @@ R packages packages.</p>
   vertical-align: top;
 }
 
-#sqbwsfukji .gt_row_group_first td {
+#crttswbgif .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#sqbwsfukji .gt_row_group_first th {
+#crttswbgif .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#sqbwsfukji .gt_summary_row {
+#crttswbgif .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -951,16 +967,16 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#sqbwsfukji .gt_first_summary_row {
+#crttswbgif .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#sqbwsfukji .gt_first_summary_row.thick {
+#crttswbgif .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#sqbwsfukji .gt_last_summary_row {
+#crttswbgif .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -970,7 +986,7 @@ R packages packages.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#sqbwsfukji .gt_grand_summary_row {
+#crttswbgif .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -980,7 +996,7 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#sqbwsfukji .gt_first_grand_summary_row {
+#crttswbgif .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -990,7 +1006,7 @@ R packages packages.</p>
   border-top-color: #D3D3D3;
 }
 
-#sqbwsfukji .gt_last_grand_summary_row_top {
+#crttswbgif .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1000,11 +1016,11 @@ R packages packages.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#sqbwsfukji .gt_striped {
+#crttswbgif .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#sqbwsfukji .gt_table_body {
+#crttswbgif .gt_table_body {
   border-top-style: solid;
   border-top-width: 3px;
   border-top-color: #D9D9D9;
@@ -1013,7 +1029,7 @@ R packages packages.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#sqbwsfukji .gt_footnotes {
+#crttswbgif .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1027,7 +1043,7 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#sqbwsfukji .gt_footnote {
+#crttswbgif .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1036,7 +1052,7 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#sqbwsfukji .gt_sourcenotes {
+#crttswbgif .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1050,7 +1066,7 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#sqbwsfukji .gt_sourcenote {
+#crttswbgif .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1058,72 +1074,72 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#sqbwsfukji .gt_left {
+#crttswbgif .gt_left {
   text-align: left;
 }
 
-#sqbwsfukji .gt_center {
+#crttswbgif .gt_center {
   text-align: center;
 }
 
-#sqbwsfukji .gt_right {
+#crttswbgif .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#sqbwsfukji .gt_font_normal {
+#crttswbgif .gt_font_normal {
   font-weight: normal;
 }
 
-#sqbwsfukji .gt_font_bold {
+#crttswbgif .gt_font_bold {
   font-weight: bold;
 }
 
-#sqbwsfukji .gt_font_italic {
+#crttswbgif .gt_font_italic {
   font-style: italic;
 }
 
-#sqbwsfukji .gt_super {
+#crttswbgif .gt_super {
   font-size: 65%;
 }
 
-#sqbwsfukji .gt_footnote_marks {
+#crttswbgif .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#sqbwsfukji .gt_asterisk {
+#crttswbgif .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#sqbwsfukji .gt_indent_1 {
+#crttswbgif .gt_indent_1 {
   text-indent: 5px;
 }
 
-#sqbwsfukji .gt_indent_2 {
+#crttswbgif .gt_indent_2 {
   text-indent: 10px;
 }
 
-#sqbwsfukji .gt_indent_3 {
+#crttswbgif .gt_indent_3 {
   text-indent: 15px;
 }
 
-#sqbwsfukji .gt_indent_4 {
+#crttswbgif .gt_indent_4 {
   text-indent: 20px;
 }
 
-#sqbwsfukji .gt_indent_5 {
+#crttswbgif .gt_indent_5 {
   text-indent: 25px;
 }
 
-#sqbwsfukji .katex-display {
+#crttswbgif .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#sqbwsfukji div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#crttswbgif div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1335,7 +1351,7 @@ R packages packages.</p>
 </tbody>
 </table>
 </div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://darwin-eu.github.io/CohortCharacteristics/reference/plotCohortAttrition.html" class="external-link">plotCohortAttrition</a></span><span class="op">(</span><span class="va">cohort_diag</span><span class="op">)</span></span></code></pre></div>
 <div class="grViz html-widget html-fill-item" id="htmlwidget-ac96cb3ee4656e2e9ec3" style="width:672px;height:432.632880098888px;"></div>
 <script type="application/json" data-for="htmlwidget-ac96cb3ee4656e2e9ec3">{"x":{"diagram":"digraph {\n\ngraph [layout = \"neato\",\n       outputorder = \"edgesfirst\",\n       bgcolor = \"white\"]\n\nnode [fontname = \"Helvetica\",\n      fontsize = \"10\",\n      shape = \"circle\",\n      fixedsize = \"true\",\n      width = \"0.5\",\n      style = \"filled\",\n      fillcolor = \"aliceblue\",\n      color = \"gray70\",\n      fontcolor = \"gray50\"]\n\nedge [fontname = \"Helvetica\",\n     fontsize = \"8\",\n     len = \"1.5\",\n     color = \"gray80\",\n     arrowsize = \"0.5\"]\n\n  \"1\" [label = \"Database: synpuf-1k\nCohort name: ankle_fracture\", shape = \"box\", color = \"#FFFFFF\", fillcolor = \"#FFFFFF\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.26\", width = \"1\", pos = \"0,0!\"] \n  \"2\" [label = \"N subjects = 0\nN records = 0\", shape = \"box\", color = \"#000000\", fillcolor = \"#FFFFFF\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.39\", width = \"1.2\", pos = \"0,-0.885!\"] \n  \"3\" [label = \"N subjects = 0\nN records = 0\", shape = \"box\", color = \"#000000\", fillcolor = \"#FFFFFF\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.39\", width = \"1.2\", pos = \"0,-1.835!\"] \n  \"4\" [label = \"N subjects = 0\nN records = 0\", shape = \"box\", color = \"#000000\", fillcolor = \"#FFFFFF\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.39\", width = \"1.2\", pos = \"0,-2.785!\"] \n  \"5\" [label = \"N subjects = 0\nN records = 0\", shape = \"box\", color = \"#000000\", fillcolor = \"#FFFFFF\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.39\", width = \"1.2\", pos = \"0,-3.735!\"] \n  \"6\" [label = \"Initial qualifying events\", shape = \"box\", color = \"#000000\", fillcolor = \"#F0F8FF\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.26\", width = \"2\", pos = \"0,-0.41!\"] \n  \"7\" [label = \"Record in observation\", shape = \"box\", color = \"#000000\", fillcolor = \"#F0F8FF\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.26\", width = \"2\", pos = \"0,-1.36!\"] \n  \"8\" [label = \"N subjects = 0\nN records = 0\", shape = \"box\", color = \"#000000\", fillcolor = \"#F8F8F8\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.39\", width = \"1.2\", pos = \"1.95,-1.36!\"] \n  \"9\" [label = \"Not missing record date\", shape = \"box\", color = \"#000000\", fillcolor = \"#F0F8FF\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.26\", width = \"2\", pos = \"0,-2.31!\"] \n  \"10\" [label = \"N subjects = 0\nN records = 0\", shape = \"box\", color = \"#000000\", fillcolor = \"#F8F8F8\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.39\", width = \"1.2\", pos = \"1.95,-2.31!\"] \n  \"11\" [label = \"Merge overlapping records\", shape = \"box\", color = \"#000000\", fillcolor = \"#F0F8FF\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.26\", width = \"2\", pos = \"0,-3.26!\"] \n  \"12\" [label = \"N subjects = 0\nN records = 0\", shape = \"box\", color = \"#000000\", fillcolor = \"#F8F8F8\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.39\", width = \"1.2\", pos = \"1.95,-3.26!\"] \n  \"13\" [label = \"Database: synpuf-1k\nCohort name: ankle_sprain\", shape = \"box\", color = \"#FFFFFF\", fillcolor = \"#FFFFFF\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.26\", width = \"1\", pos = \"4,0!\"] \n  \"14\" [label = \"N subjects = 27\nN records = 31\", shape = \"box\", color = \"#000000\", fillcolor = \"#FFFFFF\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.39\", width = \"1.2\", pos = \"4,-0.885!\"] \n  \"15\" [label = \"N subjects = 27\nN records = 31\", shape = \"box\", color = \"#000000\", fillcolor = \"#FFFFFF\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.39\", width = \"1.2\", pos = \"4,-1.835!\"] \n  \"16\" [label = \"N subjects = 27\nN records = 31\", shape = \"box\", color = \"#000000\", fillcolor = \"#FFFFFF\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.39\", width = \"1.2\", pos = \"4,-2.785!\"] \n  \"17\" [label = \"N subjects = 27\nN records = 28\", shape = \"box\", color = \"#000000\", fillcolor = \"#FFFFFF\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.39\", width = \"1.2\", pos = \"4,-3.735!\"] \n  \"18\" [label = \"Initial qualifying events\", shape = \"box\", color = \"#000000\", fillcolor = \"#F0F8FF\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.26\", width = \"2\", pos = \"4,-0.41!\"] \n  \"19\" [label = \"Record in observation\", shape = \"box\", color = \"#000000\", fillcolor = \"#F0F8FF\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.26\", width = \"2\", pos = \"4,-1.36!\"] \n  \"20\" [label = \"N subjects = 0\nN records = 0\", shape = \"box\", color = \"#000000\", fillcolor = \"#F8F8F8\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.39\", width = \"1.2\", pos = \"5.95,-1.36!\"] \n  \"21\" [label = \"Not missing record date\", shape = \"box\", color = \"#000000\", fillcolor = \"#F0F8FF\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.26\", width = \"2\", pos = \"4,-2.31!\"] \n  \"22\" [label = \"N subjects = 0\nN records = 0\", shape = \"box\", color = \"#000000\", fillcolor = \"#F8F8F8\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.39\", width = \"1.2\", pos = \"5.95,-2.31!\"] \n  \"23\" [label = \"Merge overlapping records\", shape = \"box\", color = \"#000000\", fillcolor = \"#F0F8FF\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.26\", width = \"2\", pos = \"4,-3.26!\"] \n  \"24\" [label = \"N subjects = 0\nN records = 3\", shape = \"box\", color = \"#000000\", fillcolor = \"#F8F8F8\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.39\", width = \"1.2\", pos = \"5.95,-3.26!\"] \n  \"25\" [label = \"Database: synpuf-1k\nCohort name: forearm_fracture\", shape = \"box\", color = \"#FFFFFF\", fillcolor = \"#FFFFFF\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.26\", width = \"1\", pos = \"8,0!\"] \n  \"26\" [label = \"N subjects = 0\nN records = 0\", shape = \"box\", color = \"#000000\", fillcolor = \"#FFFFFF\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.39\", width = \"1.2\", pos = \"8,-0.885!\"] \n  \"27\" [label = \"N subjects = 0\nN records = 0\", shape = \"box\", color = \"#000000\", fillcolor = \"#FFFFFF\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.39\", width = \"1.2\", pos = \"8,-1.835!\"] \n  \"28\" [label = \"N subjects = 0\nN records = 0\", shape = \"box\", color = \"#000000\", fillcolor = \"#FFFFFF\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.39\", width = \"1.2\", pos = \"8,-2.785!\"] \n  \"29\" [label = \"N subjects = 0\nN records = 0\", shape = \"box\", color = \"#000000\", fillcolor = \"#FFFFFF\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.39\", width = \"1.2\", pos = \"8,-3.735!\"] \n  \"30\" [label = \"Initial qualifying events\", shape = \"box\", color = \"#000000\", fillcolor = \"#F0F8FF\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.26\", width = \"2\", pos = \"8,-0.41!\"] \n  \"31\" [label = \"Record in observation\", shape = \"box\", color = \"#000000\", fillcolor = \"#F0F8FF\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.26\", width = \"2\", pos = \"8,-1.36!\"] \n  \"32\" [label = \"N subjects = 0\nN records = 0\", shape = \"box\", color = \"#000000\", fillcolor = \"#F8F8F8\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.39\", width = \"1.2\", pos = \"9.95,-1.36!\"] \n  \"33\" [label = \"Not missing record date\", shape = \"box\", color = \"#000000\", fillcolor = \"#F0F8FF\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.26\", width = \"2\", pos = \"8,-2.31!\"] \n  \"34\" [label = \"N subjects = 0\nN records = 0\", shape = \"box\", color = \"#000000\", fillcolor = \"#F8F8F8\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.39\", width = \"1.2\", pos = \"9.95,-2.31!\"] \n  \"35\" [label = \"Merge overlapping records\", shape = \"box\", color = \"#000000\", fillcolor = \"#F0F8FF\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.26\", width = \"2\", pos = \"8,-3.26!\"] \n  \"36\" [label = \"N subjects = 0\nN records = 0\", shape = \"box\", color = \"#000000\", fillcolor = \"#F8F8F8\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.39\", width = \"1.2\", pos = \"9.95,-3.26!\"] \n  \"37\" [label = \"Database: synpuf-1k\nCohort name: hip_fracture\", shape = \"box\", color = \"#FFFFFF\", fillcolor = \"#FFFFFF\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.26\", width = \"1\", pos = \"12,0!\"] \n  \"38\" [label = \"N subjects = 0\nN records = 0\", shape = \"box\", color = \"#000000\", fillcolor = \"#FFFFFF\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.39\", width = \"1.2\", pos = \"12,-0.885!\"] \n  \"39\" [label = \"N subjects = 0\nN records = 0\", shape = \"box\", color = \"#000000\", fillcolor = \"#FFFFFF\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.39\", width = \"1.2\", pos = \"12,-1.835!\"] \n  \"40\" [label = \"N subjects = 0\nN records = 0\", shape = \"box\", color = \"#000000\", fillcolor = \"#FFFFFF\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.39\", width = \"1.2\", pos = \"12,-2.785!\"] \n  \"41\" [label = \"N subjects = 0\nN records = 0\", shape = \"box\", color = \"#000000\", fillcolor = \"#FFFFFF\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.39\", width = \"1.2\", pos = \"12,-3.735!\"] \n  \"42\" [label = \"Initial qualifying events\", shape = \"box\", color = \"#000000\", fillcolor = \"#F0F8FF\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.26\", width = \"2\", pos = \"12,-0.41!\"] \n  \"43\" [label = \"Record in observation\", shape = \"box\", color = \"#000000\", fillcolor = \"#F0F8FF\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.26\", width = \"2\", pos = \"12,-1.36!\"] \n  \"44\" [label = \"N subjects = 0\nN records = 0\", shape = \"box\", color = \"#000000\", fillcolor = \"#F8F8F8\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.39\", width = \"1.2\", pos = \"13.95,-1.36!\"] \n  \"45\" [label = \"Not missing record date\", shape = \"box\", color = \"#000000\", fillcolor = \"#F0F8FF\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.26\", width = \"2\", pos = \"12,-2.31!\"] \n  \"46\" [label = \"N subjects = 0\nN records = 0\", shape = \"box\", color = \"#000000\", fillcolor = \"#F8F8F8\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.39\", width = \"1.2\", pos = \"13.95,-2.31!\"] \n  \"47\" [label = \"Merge overlapping records\", shape = \"box\", color = \"#000000\", fillcolor = \"#F0F8FF\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.26\", width = \"2\", pos = \"12,-3.26!\"] \n  \"48\" [label = \"N subjects = 0\nN records = 0\", shape = \"box\", color = \"#000000\", fillcolor = \"#F8F8F8\", fontname = \"Calibri\", fontsize = \"8\", fontcolor = \"#000000\", height = \"0.39\", width = \"1.2\", pos = \"13.95,-3.26!\"] \n\"2\"->\"3\" [color = \"#000000\"] \n\"3\"->\"4\" [color = \"#000000\"] \n\"4\"->\"5\" [color = \"#000000\"] \n\"7\"->\"8\" [color = \"#000000\"] \n\"9\"->\"10\" [color = \"#000000\"] \n\"11\"->\"12\" [color = \"#000000\"] \n\"14\"->\"15\" [color = \"#000000\"] \n\"15\"->\"16\" [color = \"#000000\"] \n\"16\"->\"17\" [color = \"#000000\"] \n\"19\"->\"20\" [color = \"#000000\"] \n\"21\"->\"22\" [color = \"#000000\"] \n\"23\"->\"24\" [color = \"#000000\"] \n\"26\"->\"27\" [color = \"#000000\"] \n\"27\"->\"28\" [color = \"#000000\"] \n\"28\"->\"29\" [color = \"#000000\"] \n\"31\"->\"32\" [color = \"#000000\"] \n\"33\"->\"34\" [color = \"#000000\"] \n\"35\"->\"36\" [color = \"#000000\"] \n\"38\"->\"39\" [color = \"#000000\"] \n\"39\"->\"40\" [color = \"#000000\"] \n\"40\"->\"41\" [color = \"#000000\"] \n\"43\"->\"44\" [color = \"#000000\"] \n\"45\"->\"46\" [color = \"#000000\"] \n\"47\"->\"48\" [color = \"#000000\"] \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
@@ -1343,25 +1359,25 @@ R packages packages.</p>
 <div class="section level3">
 <h3 id="cohort-characteristics">Cohort characteristics<a class="anchor" aria-label="anchor" href="#cohort-characteristics"></a>
 </h3>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://darwin-eu.github.io/CohortCharacteristics/reference/tableCharacteristics.html" class="external-link">tableCharacteristics</a></span><span class="op">(</span><span class="va">cohort_diag</span><span class="op">)</span></span></code></pre></div>
-<div id="gufhzogdap" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#gufhzogdap table {
+<div id="gcsorjcgzi" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#gcsorjcgzi table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#gufhzogdap thead, #gufhzogdap tbody, #gufhzogdap tfoot, #gufhzogdap tr, #gufhzogdap td, #gufhzogdap th {
+#gcsorjcgzi thead, #gcsorjcgzi tbody, #gcsorjcgzi tfoot, #gcsorjcgzi tr, #gcsorjcgzi td, #gcsorjcgzi th {
   border-style: none;
 }
 
-#gufhzogdap p {
+#gcsorjcgzi p {
   margin: 0;
   padding: 0;
 }
 
-#gufhzogdap .gt_table {
+#gcsorjcgzi .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1387,12 +1403,12 @@ R packages packages.</p>
   border-left-color: #D9D9D9;
 }
 
-#gufhzogdap .gt_caption {
+#gcsorjcgzi .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#gufhzogdap .gt_title {
+#gcsorjcgzi .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1404,7 +1420,7 @@ R packages packages.</p>
   border-bottom-width: 0;
 }
 
-#gufhzogdap .gt_subtitle {
+#gcsorjcgzi .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1416,7 +1432,7 @@ R packages packages.</p>
   border-top-width: 0;
 }
 
-#gufhzogdap .gt_heading {
+#gcsorjcgzi .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1428,13 +1444,13 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#gufhzogdap .gt_bottom_border {
+#gcsorjcgzi .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#gufhzogdap .gt_col_headings {
+#gcsorjcgzi .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1449,7 +1465,7 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#gufhzogdap .gt_col_heading {
+#gcsorjcgzi .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1469,7 +1485,7 @@ R packages packages.</p>
   overflow-x: hidden;
 }
 
-#gufhzogdap .gt_column_spanner_outer {
+#gcsorjcgzi .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1481,15 +1497,15 @@ R packages packages.</p>
   padding-right: 4px;
 }
 
-#gufhzogdap .gt_column_spanner_outer:first-child {
+#gcsorjcgzi .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#gufhzogdap .gt_column_spanner_outer:last-child {
+#gcsorjcgzi .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#gufhzogdap .gt_column_spanner {
+#gcsorjcgzi .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1501,11 +1517,11 @@ R packages packages.</p>
   width: 100%;
 }
 
-#gufhzogdap .gt_spanner_row {
+#gcsorjcgzi .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#gufhzogdap .gt_group_heading {
+#gcsorjcgzi .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1531,7 +1547,7 @@ R packages packages.</p>
   text-align: left;
 }
 
-#gufhzogdap .gt_empty_group_heading {
+#gcsorjcgzi .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1546,15 +1562,15 @@ R packages packages.</p>
   vertical-align: middle;
 }
 
-#gufhzogdap .gt_from_md > :first-child {
+#gcsorjcgzi .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#gufhzogdap .gt_from_md > :last-child {
+#gcsorjcgzi .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#gufhzogdap .gt_row {
+#gcsorjcgzi .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1573,7 +1589,7 @@ R packages packages.</p>
   overflow-x: hidden;
 }
 
-#gufhzogdap .gt_stub {
+#gcsorjcgzi .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1586,7 +1602,7 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#gufhzogdap .gt_stub_row_group {
+#gcsorjcgzi .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1600,15 +1616,15 @@ R packages packages.</p>
   vertical-align: top;
 }
 
-#gufhzogdap .gt_row_group_first td {
+#gcsorjcgzi .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#gufhzogdap .gt_row_group_first th {
+#gcsorjcgzi .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#gufhzogdap .gt_summary_row {
+#gcsorjcgzi .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1618,16 +1634,16 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#gufhzogdap .gt_first_summary_row {
+#gcsorjcgzi .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#gufhzogdap .gt_first_summary_row.thick {
+#gcsorjcgzi .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#gufhzogdap .gt_last_summary_row {
+#gcsorjcgzi .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1637,7 +1653,7 @@ R packages packages.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#gufhzogdap .gt_grand_summary_row {
+#gcsorjcgzi .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1647,7 +1663,7 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#gufhzogdap .gt_first_grand_summary_row {
+#gcsorjcgzi .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1657,7 +1673,7 @@ R packages packages.</p>
   border-top-color: #D3D3D3;
 }
 
-#gufhzogdap .gt_last_grand_summary_row_top {
+#gcsorjcgzi .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1667,11 +1683,11 @@ R packages packages.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#gufhzogdap .gt_striped {
+#gcsorjcgzi .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#gufhzogdap .gt_table_body {
+#gcsorjcgzi .gt_table_body {
   border-top-style: solid;
   border-top-width: 3px;
   border-top-color: #D9D9D9;
@@ -1680,7 +1696,7 @@ R packages packages.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#gufhzogdap .gt_footnotes {
+#gcsorjcgzi .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1694,7 +1710,7 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#gufhzogdap .gt_footnote {
+#gcsorjcgzi .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1703,7 +1719,7 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#gufhzogdap .gt_sourcenotes {
+#gcsorjcgzi .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1717,7 +1733,7 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#gufhzogdap .gt_sourcenote {
+#gcsorjcgzi .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1725,72 +1741,72 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#gufhzogdap .gt_left {
+#gcsorjcgzi .gt_left {
   text-align: left;
 }
 
-#gufhzogdap .gt_center {
+#gcsorjcgzi .gt_center {
   text-align: center;
 }
 
-#gufhzogdap .gt_right {
+#gcsorjcgzi .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#gufhzogdap .gt_font_normal {
+#gcsorjcgzi .gt_font_normal {
   font-weight: normal;
 }
 
-#gufhzogdap .gt_font_bold {
+#gcsorjcgzi .gt_font_bold {
   font-weight: bold;
 }
 
-#gufhzogdap .gt_font_italic {
+#gcsorjcgzi .gt_font_italic {
   font-style: italic;
 }
 
-#gufhzogdap .gt_super {
+#gcsorjcgzi .gt_super {
   font-size: 65%;
 }
 
-#gufhzogdap .gt_footnote_marks {
+#gcsorjcgzi .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#gufhzogdap .gt_asterisk {
+#gcsorjcgzi .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#gufhzogdap .gt_indent_1 {
+#gcsorjcgzi .gt_indent_1 {
   text-indent: 5px;
 }
 
-#gufhzogdap .gt_indent_2 {
+#gcsorjcgzi .gt_indent_2 {
   text-indent: 10px;
 }
 
-#gufhzogdap .gt_indent_3 {
+#gcsorjcgzi .gt_indent_3 {
   text-indent: 15px;
 }
 
-#gufhzogdap .gt_indent_4 {
+#gcsorjcgzi .gt_indent_4 {
   text-indent: 20px;
 }
 
-#gufhzogdap .gt_indent_5 {
+#gcsorjcgzi .gt_indent_5 {
   text-indent: 25px;
 }
 
-#gufhzogdap .katex-display {
+#gcsorjcgzi .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#gufhzogdap div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#gcsorjcgzi div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -2152,7 +2168,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">2010-12-31 to 2010-12-31</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">2009-04-01 to 2010-12-31</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -2262,7 +2278,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">72.19 (14.94)</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">72.15 (14.96)</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -2482,7 +2498,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">459 [292 - 779]</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">497 [302 - 779]</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -2537,7 +2553,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">490.26 (307.69)</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">503.81 (301.59)</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -2647,7 +2663,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">598 [316 - 794]</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">547 [278 - 778]</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -2702,7 +2718,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">591.19 (301.59)</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">567.52 (310.33)</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -2812,7 +2828,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">599 [317 - 794]</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">548 [279 - 780]</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -2867,7 +2883,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">592.19 (301.59)</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">568.52 (310.33)</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -3142,7 +3158,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">10.00 [3.00 - 19.00]</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">14.00 [1.00 - 35.00]</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -3197,7 +3213,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">15.37 (16.27)</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">18.30 (19.87)</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -3692,7 +3708,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">47.50 (15.76)</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">47.75 (16.09)</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -3747,7 +3763,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">27 to 63</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">27 to 64</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -4572,7 +4588,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">5.00 [0.75 - 16.25]</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">4.50 [0.00 - 16.25]</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -4627,7 +4643,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">12.00 (17.80)</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">11.75 (18.01)</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -5012,7 +5028,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">2010-12-31 to 2010-12-31</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">2009-04-01 to 2010-12-31</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -5067,7 +5083,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">74 [68 - 81]</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">75 [68 - 81]</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -5122,7 +5138,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">76.48 (10.00)</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">76.39 (10.10)</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -5177,7 +5193,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">65 to 98</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">66 to 98</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -5342,7 +5358,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">368 [292 - 726]</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">459 [302 - 726]</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -5397,7 +5413,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">470.17 (294.82)</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">486.09 (288.36)</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -5507,7 +5523,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">636 [369 - 794]</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">598 [316 - 778]</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -5562,7 +5578,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">608.91 (288.36)</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">581.13 (300.64)</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -5672,7 +5688,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">637 [370 - 794]</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">599 [317 - 780]</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -5727,7 +5743,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">609.91 (288.36)</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">582.13 (300.64)</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -6002,7 +6018,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">12.00 [4.50 - 19.00]</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">14.00 [2.50 - 35.00]</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -6057,7 +6073,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">15.96 (16.35)</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">19.43 (20.33)</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -6497,7 +6513,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">70 [68 - 74]</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">70 [67 - 75]</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -6552,7 +6568,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">72.80 (8.69)</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">72.80 (8.73)</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -6607,7 +6623,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">63 to 92</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">64 to 92</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -6717,7 +6733,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">240 [88 - 349]</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">317 [88 - 499]</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -6772,7 +6788,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">302.20 (297.78)</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">338.80 (303.79)</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -7377,7 +7393,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">5.50 [1.25 - 17.00]</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">16.00 [1.25 - 30.00]</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -7432,7 +7448,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">13.00 (16.10)</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">17.30 (16.19)</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -7487,7 +7503,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">0.00 to 44.00</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">0.00 to 42.00</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -7817,7 +7833,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">2010-12-31 to 2010-12-31</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">2009-04-01 to 2010-12-31</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -7927,7 +7943,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">71.82 (17.89)</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">71.76 (17.90)</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -8257,7 +8273,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">449 [258 - 727]</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">401 [221 - 636]</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -8312,7 +8328,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">494.12 (262.41)</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">456.53 (263.15)</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -8422,7 +8438,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">450 [259 - 728]</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">402 [222 - 637]</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -8477,7 +8493,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">495.12 (262.41)</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">457.53 (263.15)</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -8752,7 +8768,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">12.00 [5.00 - 21.00]</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">9.00 [2.00 - 38.00]</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -8807,7 +8823,7 @@ R packages packages.</p>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
-[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">16.76 (16.69)</td>
+[header_level]ankle_sprain_matched" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">18.88 (22.21)</td>
 <td headers="[header_name]CDM name
 [header_level]synpuf-1k
 [header_name]Cohort name
@@ -8887,7 +8903,7 @@ R packages packages.</p>
 <div class="section level3">
 <h3 id="cohort-large-scale-characteristics">Cohort large scale characteristics<a class="anchor" aria-label="anchor" href="#cohort-large-scale-characteristics"></a>
 </h3>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://darwin-eu.github.io/CohortCharacteristics/reference/tableLargeScaleCharacteristics.html" class="external-link">tableLargeScaleCharacteristics</a></span><span class="op">(</span><span class="va">cohort_diag</span>, hide <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="reactable html-widget html-fill-item" id="htmlwidget-e5c8c404fe174e4c81bd" style="width:auto;height:auto;"></div>
 <script type="application/json" data-for="htmlwidget-e5c8c404fe174e4c81bd">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"cdm_name":[],"window":[],"concept_name":[]},"columns":[{"id":"cdm_name","name":"cdm_name","type":"character"},{"id":"window","name":"window","type":"character"},{"id":"concept_name","name":"concept_name","type":"character"}],"dataKey":"c6da6c04f6f332e516a14a4cfa4fd93e"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
@@ -8895,25 +8911,25 @@ R packages packages.</p>
 <div class="section level3">
 <h3 id="cohort-overlap">Cohort overlap<a class="anchor" aria-label="anchor" href="#cohort-overlap"></a>
 </h3>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://darwin-eu.github.io/CohortCharacteristics/reference/tableCohortOverlap.html" class="external-link">tableCohortOverlap</a></span><span class="op">(</span><span class="va">cohort_diag</span><span class="op">)</span></span></code></pre></div>
-<div id="bgfdikdnjc" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#bgfdikdnjc table {
+<div id="xuoqelkjnq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#xuoqelkjnq table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#bgfdikdnjc thead, #bgfdikdnjc tbody, #bgfdikdnjc tfoot, #bgfdikdnjc tr, #bgfdikdnjc td, #bgfdikdnjc th {
+#xuoqelkjnq thead, #xuoqelkjnq tbody, #xuoqelkjnq tfoot, #xuoqelkjnq tr, #xuoqelkjnq td, #xuoqelkjnq th {
   border-style: none;
 }
 
-#bgfdikdnjc p {
+#xuoqelkjnq p {
   margin: 0;
   padding: 0;
 }
 
-#bgfdikdnjc .gt_table {
+#xuoqelkjnq .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -8939,12 +8955,12 @@ R packages packages.</p>
   border-left-color: #D9D9D9;
 }
 
-#bgfdikdnjc .gt_caption {
+#xuoqelkjnq .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#bgfdikdnjc .gt_title {
+#xuoqelkjnq .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -8956,7 +8972,7 @@ R packages packages.</p>
   border-bottom-width: 0;
 }
 
-#bgfdikdnjc .gt_subtitle {
+#xuoqelkjnq .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -8968,7 +8984,7 @@ R packages packages.</p>
   border-top-width: 0;
 }
 
-#bgfdikdnjc .gt_heading {
+#xuoqelkjnq .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -8980,13 +8996,13 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#bgfdikdnjc .gt_bottom_border {
+#xuoqelkjnq .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#bgfdikdnjc .gt_col_headings {
+#xuoqelkjnq .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -9001,7 +9017,7 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#bgfdikdnjc .gt_col_heading {
+#xuoqelkjnq .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -9021,7 +9037,7 @@ R packages packages.</p>
   overflow-x: hidden;
 }
 
-#bgfdikdnjc .gt_column_spanner_outer {
+#xuoqelkjnq .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -9033,15 +9049,15 @@ R packages packages.</p>
   padding-right: 4px;
 }
 
-#bgfdikdnjc .gt_column_spanner_outer:first-child {
+#xuoqelkjnq .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#bgfdikdnjc .gt_column_spanner_outer:last-child {
+#xuoqelkjnq .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#bgfdikdnjc .gt_column_spanner {
+#xuoqelkjnq .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -9053,11 +9069,11 @@ R packages packages.</p>
   width: 100%;
 }
 
-#bgfdikdnjc .gt_spanner_row {
+#xuoqelkjnq .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#bgfdikdnjc .gt_group_heading {
+#xuoqelkjnq .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -9083,7 +9099,7 @@ R packages packages.</p>
   text-align: left;
 }
 
-#bgfdikdnjc .gt_empty_group_heading {
+#xuoqelkjnq .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -9098,15 +9114,15 @@ R packages packages.</p>
   vertical-align: middle;
 }
 
-#bgfdikdnjc .gt_from_md > :first-child {
+#xuoqelkjnq .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#bgfdikdnjc .gt_from_md > :last-child {
+#xuoqelkjnq .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#bgfdikdnjc .gt_row {
+#xuoqelkjnq .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -9125,7 +9141,7 @@ R packages packages.</p>
   overflow-x: hidden;
 }
 
-#bgfdikdnjc .gt_stub {
+#xuoqelkjnq .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -9138,7 +9154,7 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#bgfdikdnjc .gt_stub_row_group {
+#xuoqelkjnq .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -9152,15 +9168,15 @@ R packages packages.</p>
   vertical-align: top;
 }
 
-#bgfdikdnjc .gt_row_group_first td {
+#xuoqelkjnq .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#bgfdikdnjc .gt_row_group_first th {
+#xuoqelkjnq .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#bgfdikdnjc .gt_summary_row {
+#xuoqelkjnq .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -9170,16 +9186,16 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#bgfdikdnjc .gt_first_summary_row {
+#xuoqelkjnq .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#bgfdikdnjc .gt_first_summary_row.thick {
+#xuoqelkjnq .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#bgfdikdnjc .gt_last_summary_row {
+#xuoqelkjnq .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -9189,7 +9205,7 @@ R packages packages.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#bgfdikdnjc .gt_grand_summary_row {
+#xuoqelkjnq .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -9199,7 +9215,7 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#bgfdikdnjc .gt_first_grand_summary_row {
+#xuoqelkjnq .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -9209,7 +9225,7 @@ R packages packages.</p>
   border-top-color: #D3D3D3;
 }
 
-#bgfdikdnjc .gt_last_grand_summary_row_top {
+#xuoqelkjnq .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -9219,11 +9235,11 @@ R packages packages.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#bgfdikdnjc .gt_striped {
+#xuoqelkjnq .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#bgfdikdnjc .gt_table_body {
+#xuoqelkjnq .gt_table_body {
   border-top-style: solid;
   border-top-width: 3px;
   border-top-color: #D9D9D9;
@@ -9232,7 +9248,7 @@ R packages packages.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#bgfdikdnjc .gt_footnotes {
+#xuoqelkjnq .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -9246,7 +9262,7 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#bgfdikdnjc .gt_footnote {
+#xuoqelkjnq .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -9255,7 +9271,7 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#bgfdikdnjc .gt_sourcenotes {
+#xuoqelkjnq .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -9269,7 +9285,7 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#bgfdikdnjc .gt_sourcenote {
+#xuoqelkjnq .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -9277,72 +9293,72 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#bgfdikdnjc .gt_left {
+#xuoqelkjnq .gt_left {
   text-align: left;
 }
 
-#bgfdikdnjc .gt_center {
+#xuoqelkjnq .gt_center {
   text-align: center;
 }
 
-#bgfdikdnjc .gt_right {
+#xuoqelkjnq .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#bgfdikdnjc .gt_font_normal {
+#xuoqelkjnq .gt_font_normal {
   font-weight: normal;
 }
 
-#bgfdikdnjc .gt_font_bold {
+#xuoqelkjnq .gt_font_bold {
   font-weight: bold;
 }
 
-#bgfdikdnjc .gt_font_italic {
+#xuoqelkjnq .gt_font_italic {
   font-style: italic;
 }
 
-#bgfdikdnjc .gt_super {
+#xuoqelkjnq .gt_super {
   font-size: 65%;
 }
 
-#bgfdikdnjc .gt_footnote_marks {
+#xuoqelkjnq .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#bgfdikdnjc .gt_asterisk {
+#xuoqelkjnq .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#bgfdikdnjc .gt_indent_1 {
+#xuoqelkjnq .gt_indent_1 {
   text-indent: 5px;
 }
 
-#bgfdikdnjc .gt_indent_2 {
+#xuoqelkjnq .gt_indent_2 {
   text-indent: 10px;
 }
 
-#bgfdikdnjc .gt_indent_3 {
+#xuoqelkjnq .gt_indent_3 {
   text-indent: 15px;
 }
 
-#bgfdikdnjc .gt_indent_4 {
+#xuoqelkjnq .gt_indent_4 {
   text-indent: 20px;
 }
 
-#bgfdikdnjc .gt_indent_5 {
+#xuoqelkjnq .gt_indent_5 {
   text-indent: 25px;
 }
 
-#bgfdikdnjc .katex-display {
+#xuoqelkjnq .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#bgfdikdnjc div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#xuoqelkjnq div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -9436,32 +9452,32 @@ R packages packages.</p>
 </tbody>
 </table>
 </div>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://darwin-eu.github.io/CohortCharacteristics/reference/plotCohortOverlap.html" class="external-link">plotCohortOverlap</a></span><span class="op">(</span><span class="va">cohort_diag</span><span class="op">)</span></span></code></pre></div>
-<p><img src="CohortDiagnostics_files/figure-html/unnamed-chunk-11-1.png" class="r-plt" alt="" width="672"></p>
+<p><img src="CohortDiagnostics_files/figure-html/unnamed-chunk-14-1.png" class="r-plt" alt="" width="672"></p>
 </div>
 <div class="section level3">
 <h3 id="cohort-timing">Cohort timing<a class="anchor" aria-label="anchor" href="#cohort-timing"></a>
 </h3>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://darwin-eu.github.io/CohortCharacteristics/reference/tableCohortTiming.html" class="external-link">tableCohortTiming</a></span><span class="op">(</span><span class="va">cohort_diag</span><span class="op">)</span></span></code></pre></div>
-<div id="qkvpgcyksh" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#qkvpgcyksh table {
+<div id="inkbgnzjri" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#inkbgnzjri table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#qkvpgcyksh thead, #qkvpgcyksh tbody, #qkvpgcyksh tfoot, #qkvpgcyksh tr, #qkvpgcyksh td, #qkvpgcyksh th {
+#inkbgnzjri thead, #inkbgnzjri tbody, #inkbgnzjri tfoot, #inkbgnzjri tr, #inkbgnzjri td, #inkbgnzjri th {
   border-style: none;
 }
 
-#qkvpgcyksh p {
+#inkbgnzjri p {
   margin: 0;
   padding: 0;
 }
 
-#qkvpgcyksh .gt_table {
+#inkbgnzjri .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -9487,12 +9503,12 @@ R packages packages.</p>
   border-left-color: #D3D3D3;
 }
 
-#qkvpgcyksh .gt_caption {
+#inkbgnzjri .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#qkvpgcyksh .gt_title {
+#inkbgnzjri .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -9504,7 +9520,7 @@ R packages packages.</p>
   border-bottom-width: 0;
 }
 
-#qkvpgcyksh .gt_subtitle {
+#inkbgnzjri .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -9516,7 +9532,7 @@ R packages packages.</p>
   border-top-width: 0;
 }
 
-#qkvpgcyksh .gt_heading {
+#inkbgnzjri .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -9528,13 +9544,13 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#qkvpgcyksh .gt_bottom_border {
+#inkbgnzjri .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#qkvpgcyksh .gt_col_headings {
+#inkbgnzjri .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -9549,7 +9565,7 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#qkvpgcyksh .gt_col_heading {
+#inkbgnzjri .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -9569,7 +9585,7 @@ R packages packages.</p>
   overflow-x: hidden;
 }
 
-#qkvpgcyksh .gt_column_spanner_outer {
+#inkbgnzjri .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -9581,15 +9597,15 @@ R packages packages.</p>
   padding-right: 4px;
 }
 
-#qkvpgcyksh .gt_column_spanner_outer:first-child {
+#inkbgnzjri .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#qkvpgcyksh .gt_column_spanner_outer:last-child {
+#inkbgnzjri .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#qkvpgcyksh .gt_column_spanner {
+#inkbgnzjri .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -9601,11 +9617,11 @@ R packages packages.</p>
   width: 100%;
 }
 
-#qkvpgcyksh .gt_spanner_row {
+#inkbgnzjri .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#qkvpgcyksh .gt_group_heading {
+#inkbgnzjri .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -9631,7 +9647,7 @@ R packages packages.</p>
   text-align: left;
 }
 
-#qkvpgcyksh .gt_empty_group_heading {
+#inkbgnzjri .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -9646,15 +9662,15 @@ R packages packages.</p>
   vertical-align: middle;
 }
 
-#qkvpgcyksh .gt_from_md > :first-child {
+#inkbgnzjri .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#qkvpgcyksh .gt_from_md > :last-child {
+#inkbgnzjri .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#qkvpgcyksh .gt_row {
+#inkbgnzjri .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -9673,7 +9689,7 @@ R packages packages.</p>
   overflow-x: hidden;
 }
 
-#qkvpgcyksh .gt_stub {
+#inkbgnzjri .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -9686,7 +9702,7 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#qkvpgcyksh .gt_stub_row_group {
+#inkbgnzjri .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -9700,15 +9716,15 @@ R packages packages.</p>
   vertical-align: top;
 }
 
-#qkvpgcyksh .gt_row_group_first td {
+#inkbgnzjri .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#qkvpgcyksh .gt_row_group_first th {
+#inkbgnzjri .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#qkvpgcyksh .gt_summary_row {
+#inkbgnzjri .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -9718,16 +9734,16 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#qkvpgcyksh .gt_first_summary_row {
+#inkbgnzjri .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#qkvpgcyksh .gt_first_summary_row.thick {
+#inkbgnzjri .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#qkvpgcyksh .gt_last_summary_row {
+#inkbgnzjri .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -9737,7 +9753,7 @@ R packages packages.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#qkvpgcyksh .gt_grand_summary_row {
+#inkbgnzjri .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -9747,7 +9763,7 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#qkvpgcyksh .gt_first_grand_summary_row {
+#inkbgnzjri .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -9757,7 +9773,7 @@ R packages packages.</p>
   border-top-color: #D3D3D3;
 }
 
-#qkvpgcyksh .gt_last_grand_summary_row_top {
+#inkbgnzjri .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -9767,11 +9783,11 @@ R packages packages.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#qkvpgcyksh .gt_striped {
+#inkbgnzjri .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#qkvpgcyksh .gt_table_body {
+#inkbgnzjri .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -9780,7 +9796,7 @@ R packages packages.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#qkvpgcyksh .gt_footnotes {
+#inkbgnzjri .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -9794,7 +9810,7 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#qkvpgcyksh .gt_footnote {
+#inkbgnzjri .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -9803,7 +9819,7 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#qkvpgcyksh .gt_sourcenotes {
+#inkbgnzjri .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -9817,7 +9833,7 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#qkvpgcyksh .gt_sourcenote {
+#inkbgnzjri .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -9825,72 +9841,72 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#qkvpgcyksh .gt_left {
+#inkbgnzjri .gt_left {
   text-align: left;
 }
 
-#qkvpgcyksh .gt_center {
+#inkbgnzjri .gt_center {
   text-align: center;
 }
 
-#qkvpgcyksh .gt_right {
+#inkbgnzjri .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#qkvpgcyksh .gt_font_normal {
+#inkbgnzjri .gt_font_normal {
   font-weight: normal;
 }
 
-#qkvpgcyksh .gt_font_bold {
+#inkbgnzjri .gt_font_bold {
   font-weight: bold;
 }
 
-#qkvpgcyksh .gt_font_italic {
+#inkbgnzjri .gt_font_italic {
   font-style: italic;
 }
 
-#qkvpgcyksh .gt_super {
+#inkbgnzjri .gt_super {
   font-size: 65%;
 }
 
-#qkvpgcyksh .gt_footnote_marks {
+#inkbgnzjri .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#qkvpgcyksh .gt_asterisk {
+#inkbgnzjri .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#qkvpgcyksh .gt_indent_1 {
+#inkbgnzjri .gt_indent_1 {
   text-indent: 5px;
 }
 
-#qkvpgcyksh .gt_indent_2 {
+#inkbgnzjri .gt_indent_2 {
   text-indent: 10px;
 }
 
-#qkvpgcyksh .gt_indent_3 {
+#inkbgnzjri .gt_indent_3 {
   text-indent: 15px;
 }
 
-#qkvpgcyksh .gt_indent_4 {
+#inkbgnzjri .gt_indent_4 {
   text-indent: 20px;
 }
 
-#qkvpgcyksh .gt_indent_5 {
+#inkbgnzjri .gt_indent_5 {
   text-indent: 25px;
 }
 
-#qkvpgcyksh .katex-display {
+#inkbgnzjri .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#qkvpgcyksh div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#inkbgnzjri div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -9899,32 +9915,32 @@ R packages packages.</p>
 <tbody class="gt_table_body"><tr><td headers="no_data" class="gt_row gt_center">Table has no data</td></tr></tbody>
 </table>
 </div>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://darwin-eu.github.io/CohortCharacteristics/reference/plotCohortTiming.html" class="external-link">plotCohortTiming</a></span><span class="op">(</span><span class="va">cohort_diag</span><span class="op">)</span></span></code></pre></div>
-<p><img src="CohortDiagnostics_files/figure-html/unnamed-chunk-13-1.png" class="r-plt" alt="" width="672"></p>
+<p><img src="CohortDiagnostics_files/figure-html/unnamed-chunk-16-1.png" class="r-plt" alt="" width="672"></p>
 </div>
 <div class="section level3">
 <h3 id="cohort-survival">Cohort survival<a class="anchor" aria-label="anchor" href="#cohort-survival"></a>
 </h3>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://darwin-eu.github.io/CohortSurvival/reference/tableSurvival.html" class="external-link">tableSurvival</a></span><span class="op">(</span><span class="va">cohort_diag</span>, header <span class="op">=</span> <span class="st">"estimate_name"</span><span class="op">)</span></span></code></pre></div>
-<div id="mhzugnmtpz" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#mhzugnmtpz table {
+<div id="xfzkzmjgzt" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#xfzkzmjgzt table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#mhzugnmtpz thead, #mhzugnmtpz tbody, #mhzugnmtpz tfoot, #mhzugnmtpz tr, #mhzugnmtpz td, #mhzugnmtpz th {
+#xfzkzmjgzt thead, #xfzkzmjgzt tbody, #xfzkzmjgzt tfoot, #xfzkzmjgzt tr, #xfzkzmjgzt td, #xfzkzmjgzt th {
   border-style: none;
 }
 
-#mhzugnmtpz p {
+#xfzkzmjgzt p {
   margin: 0;
   padding: 0;
 }
 
-#mhzugnmtpz .gt_table {
+#xfzkzmjgzt .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -9950,12 +9966,12 @@ R packages packages.</p>
   border-left-color: #D9D9D9;
 }
 
-#mhzugnmtpz .gt_caption {
+#xfzkzmjgzt .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#mhzugnmtpz .gt_title {
+#xfzkzmjgzt .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -9967,7 +9983,7 @@ R packages packages.</p>
   border-bottom-width: 0;
 }
 
-#mhzugnmtpz .gt_subtitle {
+#xfzkzmjgzt .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -9979,7 +9995,7 @@ R packages packages.</p>
   border-top-width: 0;
 }
 
-#mhzugnmtpz .gt_heading {
+#xfzkzmjgzt .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -9991,13 +10007,13 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#mhzugnmtpz .gt_bottom_border {
+#xfzkzmjgzt .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#mhzugnmtpz .gt_col_headings {
+#xfzkzmjgzt .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -10012,7 +10028,7 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#mhzugnmtpz .gt_col_heading {
+#xfzkzmjgzt .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -10032,7 +10048,7 @@ R packages packages.</p>
   overflow-x: hidden;
 }
 
-#mhzugnmtpz .gt_column_spanner_outer {
+#xfzkzmjgzt .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -10044,15 +10060,15 @@ R packages packages.</p>
   padding-right: 4px;
 }
 
-#mhzugnmtpz .gt_column_spanner_outer:first-child {
+#xfzkzmjgzt .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#mhzugnmtpz .gt_column_spanner_outer:last-child {
+#xfzkzmjgzt .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#mhzugnmtpz .gt_column_spanner {
+#xfzkzmjgzt .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -10064,11 +10080,11 @@ R packages packages.</p>
   width: 100%;
 }
 
-#mhzugnmtpz .gt_spanner_row {
+#xfzkzmjgzt .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#mhzugnmtpz .gt_group_heading {
+#xfzkzmjgzt .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -10094,7 +10110,7 @@ R packages packages.</p>
   text-align: left;
 }
 
-#mhzugnmtpz .gt_empty_group_heading {
+#xfzkzmjgzt .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -10109,15 +10125,15 @@ R packages packages.</p>
   vertical-align: middle;
 }
 
-#mhzugnmtpz .gt_from_md > :first-child {
+#xfzkzmjgzt .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#mhzugnmtpz .gt_from_md > :last-child {
+#xfzkzmjgzt .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#mhzugnmtpz .gt_row {
+#xfzkzmjgzt .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -10136,7 +10152,7 @@ R packages packages.</p>
   overflow-x: hidden;
 }
 
-#mhzugnmtpz .gt_stub {
+#xfzkzmjgzt .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -10149,7 +10165,7 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#mhzugnmtpz .gt_stub_row_group {
+#xfzkzmjgzt .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -10163,15 +10179,15 @@ R packages packages.</p>
   vertical-align: top;
 }
 
-#mhzugnmtpz .gt_row_group_first td {
+#xfzkzmjgzt .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#mhzugnmtpz .gt_row_group_first th {
+#xfzkzmjgzt .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#mhzugnmtpz .gt_summary_row {
+#xfzkzmjgzt .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -10181,16 +10197,16 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#mhzugnmtpz .gt_first_summary_row {
+#xfzkzmjgzt .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#mhzugnmtpz .gt_first_summary_row.thick {
+#xfzkzmjgzt .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#mhzugnmtpz .gt_last_summary_row {
+#xfzkzmjgzt .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -10200,7 +10216,7 @@ R packages packages.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#mhzugnmtpz .gt_grand_summary_row {
+#xfzkzmjgzt .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -10210,7 +10226,7 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#mhzugnmtpz .gt_first_grand_summary_row {
+#xfzkzmjgzt .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -10220,7 +10236,7 @@ R packages packages.</p>
   border-top-color: #D3D3D3;
 }
 
-#mhzugnmtpz .gt_last_grand_summary_row_top {
+#xfzkzmjgzt .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -10230,11 +10246,11 @@ R packages packages.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#mhzugnmtpz .gt_striped {
+#xfzkzmjgzt .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#mhzugnmtpz .gt_table_body {
+#xfzkzmjgzt .gt_table_body {
   border-top-style: solid;
   border-top-width: 3px;
   border-top-color: #D9D9D9;
@@ -10243,7 +10259,7 @@ R packages packages.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#mhzugnmtpz .gt_footnotes {
+#xfzkzmjgzt .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -10257,7 +10273,7 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#mhzugnmtpz .gt_footnote {
+#xfzkzmjgzt .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -10266,7 +10282,7 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#mhzugnmtpz .gt_sourcenotes {
+#xfzkzmjgzt .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -10280,7 +10296,7 @@ R packages packages.</p>
   border-right-color: #D3D3D3;
 }
 
-#mhzugnmtpz .gt_sourcenote {
+#xfzkzmjgzt .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -10288,72 +10304,72 @@ R packages packages.</p>
   padding-right: 5px;
 }
 
-#mhzugnmtpz .gt_left {
+#xfzkzmjgzt .gt_left {
   text-align: left;
 }
 
-#mhzugnmtpz .gt_center {
+#xfzkzmjgzt .gt_center {
   text-align: center;
 }
 
-#mhzugnmtpz .gt_right {
+#xfzkzmjgzt .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#mhzugnmtpz .gt_font_normal {
+#xfzkzmjgzt .gt_font_normal {
   font-weight: normal;
 }
 
-#mhzugnmtpz .gt_font_bold {
+#xfzkzmjgzt .gt_font_bold {
   font-weight: bold;
 }
 
-#mhzugnmtpz .gt_font_italic {
+#xfzkzmjgzt .gt_font_italic {
   font-style: italic;
 }
 
-#mhzugnmtpz .gt_super {
+#xfzkzmjgzt .gt_super {
   font-size: 65%;
 }
 
-#mhzugnmtpz .gt_footnote_marks {
+#xfzkzmjgzt .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#mhzugnmtpz .gt_asterisk {
+#xfzkzmjgzt .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#mhzugnmtpz .gt_indent_1 {
+#xfzkzmjgzt .gt_indent_1 {
   text-indent: 5px;
 }
 
-#mhzugnmtpz .gt_indent_2 {
+#xfzkzmjgzt .gt_indent_2 {
   text-indent: 10px;
 }
 
-#mhzugnmtpz .gt_indent_3 {
+#xfzkzmjgzt .gt_indent_3 {
   text-indent: 15px;
 }
 
-#mhzugnmtpz .gt_indent_4 {
+#xfzkzmjgzt .gt_indent_4 {
   text-indent: 20px;
 }
 
-#mhzugnmtpz .gt_indent_5 {
+#xfzkzmjgzt .gt_indent_5 {
   text-indent: 25px;
 }
 
-#mhzugnmtpz .katex-display {
+#xfzkzmjgzt .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#mhzugnmtpz div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#xfzkzmjgzt div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -10433,14 +10449,14 @@ R packages packages.</p>
 <td headers="[header_name]Estimate name
 [header_level]Median survival (95% CI)" class="gt_row gt_left" style="text-align: right; font-family: Arial; font-size: 10; border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8; background-color: rgba(255,255,255,0);">–</td>
 <td headers="[header_name]Estimate name
-[header_level]Restricted mean survival (95% CI)" class="gt_row gt_right" style="text-align: right; font-family: Arial; font-size: 10; background-color: rgba(255,255,255,0); border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8;">1,048.00 (976.00, 1,120.00)</td>
+[header_level]Restricted mean survival (95% CI)" class="gt_row gt_right" style="text-align: right; font-family: Arial; font-size: 10; background-color: rgba(255,255,255,0); border-left-width: 1px; border-left-style: solid; border-left-color: #c8c8c8; border-right-width: 1px; border-right-style: solid; border-right-color: #c8c8c8; border-top-width: 1px; border-top-style: solid; border-top-color: #c8c8c8; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #c8c8c8;">1,050.00 (981.00, 1,119.00)</td>
 </tr>
 </tbody>
 </table>
 </div>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://darwin-eu.github.io/CohortSurvival/reference/plotSurvival.html" class="external-link">plotSurvival</a></span><span class="op">(</span><span class="va">cohort_diag</span>, colour <span class="op">=</span> <span class="st">"target_cohort"</span>, facet <span class="op">=</span> <span class="st">"cdm_name"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="CohortDiagnostics_files/figure-html/unnamed-chunk-15-1.png" class="r-plt" alt="" width="672"></p>
+<p><img src="CohortDiagnostics_files/figure-html/unnamed-chunk-18-1.png" class="r-plt" alt="" width="672"></p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

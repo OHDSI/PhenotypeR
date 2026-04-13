@@ -137,51 +137,93 @@ our study cohorts in the database in terms of their incidence rates and
 prevalence. See <a href="https://ohdsi.github.io/PhenotypeR/articles/a07_PopulationDiagnostics.html">Population
 diagnostics vignette</a> for further details.</li>
 </ul>
-<p>We can specify which analysis we want to perform:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">phenotypeDiagnostics</span>(</span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  <span class="at">cohort =</span> cdm<span class="sc">$</span>my_cohort, </span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  <span class="at">cohortDiagnostics =</span> <span class="fu">list</span>(</span>
-<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>    <span class="st">"cohortSample"</span> <span class="ot">=</span> <span class="dv">20000</span>,</span>
-<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>    <span class="st">"matchedSample"</span> <span class="ot">=</span> <span class="dv">1000</span></span>
-<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>  ),</span>
-<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>  <span class="at">populationSample =</span> <span class="fu">list</span>(</span>
-<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>    <span class="st">"populationSample"</span> <span class="ot">=</span> <span class="fl">1e+06</span>,</span>
-<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>    <span class="st">"populationDateRange"</span> <span class="ot">=</span> <span class="fu">as.Date</span>(<span class="fu">c</span>(<span class="cn">NA</span>, <span class="cn">NA</span>))</span>
-<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>  )</span>
-<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a>  </span>
-<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a>result <span class="sc">|&gt;</span> <span class="fu">glimpse</span>()</span></code></pre></div>
-<p>Notice that we have three additional arguments:</p>
-<ul>
-<li>
-<code>populationSample</code>: It allows to specify a number of
-people that randomly will be extracted from the CDM to perform the
-<strong>Population diagnostics</strong> analysis. If NULL, all the
-participants in the CDM will be included. It helps to reduce the
-computational time. This is particularly useful when outcomes of
-interest are relatively common, but when they are rarer we may wish to
-maximise statistical power and calculate estimates for the dataset as a
-whole in which case we would set this argument to NULL.</li>
-<li>
-<code>populationDateRange</code>: We can use it to specify the time
-period when we want to perform our <strong>Population
-diagnostics</strong> analysis.</li>
-<li>
-<code>cohortSample</code>: This argument will subset a random sample
-of people from our cohort and performs the cohortDiagnostics on this
-sample (notice that the attrition and the cohort counts will be
-calculated from the original cohorts, not the sampled ones). If the
-sample specified is bigger than the number of individuals in the cohort,
-no sampling will be performed. We recommend to use this option when
-there are cohorts bigger than 20,000 individuals.</li>
-<li>
-<code>matchedSample</code>: Similar to populationSample, this
-arguments subsets a random sample of people from our cohort and performs
-the matched analysis on this sample. If the sample specified is bigger
-than the size of the cohort, no sampling will be performed. If we have
-specified a cohortSample, the sampling will be performed on top of the
-sampled cohorts. If we do not want to create matched cohorts, we can
-define <code>matchedSample = 0</code>.</li>
-</ul>
+<div class="section level3">
+<h3 id="default-arguments">Default arguments<a class="anchor" aria-label="anchor" href="#default-arguments"></a>
+</h3>
+<p>If we do not provide any specification, the default values of the
+functions will be used. That means, the following two scripts provide
+the same summarised result:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">result1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/phenotypeDiagnostics.html">phenotypeDiagnostics</a></span><span class="op">(</span><span class="va">cdm</span><span class="op">$</span><span class="va">warfarin</span>,</span>
+<span>                                databaseDiagnostics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>                                codelistDiagnostics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>                                cohortDiagnostics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>                                populationDiagnostics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">result2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/phenotypeDiagnostics.html">phenotypeDiagnostics</a></span><span class="op">(</span><span class="va">cdm</span><span class="op">$</span><span class="va">warfarin</span>,</span>
+<span>                                databaseDiagnostics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>                                  <span class="st">"diagnostics"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"snapshot"</span>, <span class="st">"personTableSummary"</span>,</span>
+<span>                                  <span class="st">"observationPeriodsSummary"</span>, <span class="st">"clinicalRecordsSummary"</span><span class="op">)</span></span>
+<span>                                <span class="op">)</span>,</span>
+<span>                                codelistDiagnostics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>                                  <span class="st">"diagnostics"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"achillesCodeUse"</span>, <span class="st">"orphanCodeUse"</span>,</span>
+<span>                                                    <span class="st">"cohortCodeUse"</span>, <span class="st">"drugDiagnostics"</span>,</span>
+<span>                                                    <span class="st">"measurementDiagnostics"</span><span class="op">)</span>,</span>
+<span>                                  <span class="st">"measurementDiagnosticsSample"</span> <span class="op">=</span> <span class="fl">20000</span>,</span>
+<span>                                  <span class="st">"drugDiagnosticsSample"</span> <span class="op">=</span> <span class="fl">20000</span></span>
+<span>                                <span class="op">)</span>,</span>
+<span>                                cohortDiagnostics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>                                  <span class="st">"diagnostics"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cohortCount"</span>, <span class="st">"cohortCharacteristics"</span>,</span>
+<span>                                                    <span class="st">"largeScaleCharacteristics"</span>,</span>
+<span>                                                    <span class="st">"compareCohorts"</span><span class="op">)</span>,</span>
+<span>                                  <span class="st">"cohortSample"</span> <span class="op">=</span> <span class="fl">20000</span>,</span>
+<span>                                  <span class="st">"matchedSample"</span> <span class="op">=</span> <span class="fl">1000</span></span>
+<span>                                <span class="op">)</span>,</span>
+<span>                                populationDiagnostics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>                                  <span class="st">"diagnostics"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"incidence"</span>, <span class="st">"periodPrevalence"</span><span class="op">)</span>,</span>
+<span>                                  <span class="st">"populationSample"</span> <span class="op">=</span> <span class="fl">100000</span>,</span>
+<span>                                  <span class="st">"populationDateRange"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>,<span class="cn">NA</span><span class="op">)</span><span class="op">)</span></span>
+<span>                                <span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>Notice that the default values do not include running
+‘cohortSurvival’ analysis in CohortDiagnostics. If we want to add it, we
+just need to add the analysis in the CohortDiagnostics “diagnostics”
+argument:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">result3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/phenotypeDiagnostics.html">phenotypeDiagnostics</a></span><span class="op">(</span><span class="va">cdm</span><span class="op">$</span><span class="va">warfarin</span>,</span>
+<span>                               databaseDiagnostics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>                                 <span class="st">"diagnostics"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"snapshot"</span>, <span class="st">"personTableSummary"</span>,</span>
+<span>                                                   <span class="st">"observationPeriodsSummary"</span>, <span class="st">"clinicalRecordsSummary"</span><span class="op">)</span></span>
+<span>                               <span class="op">)</span>,</span>
+<span>                               codelistDiagnostics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>                                 <span class="st">"diagnostics"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"achillesCodeUse"</span>, <span class="st">"orphanCodeUse"</span>,</span>
+<span>                                                   <span class="st">"cohortCodeUse"</span>, <span class="st">"drugDiagnostics"</span>,</span>
+<span>                                                   <span class="st">"measurementDiagnostics"</span><span class="op">)</span>,</span>
+<span>                                 <span class="st">"measurementDiagnosticsSample"</span> <span class="op">=</span> <span class="fl">20000</span>,</span>
+<span>                                 <span class="st">"drugDiagnosticsSample"</span> <span class="op">=</span> <span class="fl">20000</span></span>
+<span>                               <span class="op">)</span>,</span>
+<span>                               cohortDiagnostics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>                                 <span class="st">"diagnostics"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cohortCount"</span>, <span class="st">"cohortCharacteristics"</span>,</span>
+<span>                                                   <span class="st">"largeScaleCharacteristics"</span>,</span>
+<span>                                                   <span class="st">"compareCohorts"</span>, <span class="st">"cohortSurvival"</span><span class="op">)</span>,</span>
+<span>                                 <span class="st">"cohortSample"</span> <span class="op">=</span> <span class="fl">20000</span>,</span>
+<span>                                 <span class="st">"matchedSample"</span> <span class="op">=</span> <span class="fl">1000</span></span>
+<span>                               <span class="op">)</span>,</span>
+<span>                               populationDiagnostics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>                                 <span class="st">"diagnostics"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"incidence"</span>, <span class="st">"periodPrevalence"</span><span class="op">)</span>,</span>
+<span>                                 <span class="st">"populationSample"</span> <span class="op">=</span> <span class="fl">100000</span>,</span>
+<span>                                 <span class="st">"populationDateRange"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>,<span class="cn">NA</span><span class="op">)</span><span class="op">)</span></span>
+<span>                               <span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="skipping-diagnostics-or-sub-analysis">Skipping diagnostics or sub-analysis<a class="anchor" aria-label="anchor" href="#skipping-diagnostics-or-sub-analysis"></a>
+</h3>
+<p>To skip a diagnostics, we just need to specify that one as NULL. For
+instance, in the following example, <strong>databaseDiagnostics</strong>
+will not be run:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">result4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/phenotypeDiagnostics.html">phenotypeDiagnostics</a></span><span class="op">(</span></span>
+<span>  cohort <span class="op">=</span> <span class="va">cdm</span><span class="op">$</span><span class="va">my_cohort</span>, </span>
+<span>  databaseDiagnostics <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+<p>Or, if for instance, we would like to run
+<strong>databaseDiagnostics</strong> but only run the <em>snapshot</em>
+analysis, we can specify it like this:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">result4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/phenotypeDiagnostics.html">phenotypeDiagnostics</a></span><span class="op">(</span></span>
+<span>  cohort <span class="op">=</span> <span class="va">cdm</span><span class="op">$</span><span class="va">my_cohort</span>, </span>
+<span>  databaseDiagnostics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>    <span class="st">"diagnostics"</span> <span class="op">=</span> <span class="st">"snapshot"</span></span>
+<span>  <span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
 </div>
 <div class="section level2">
 <h2 id="save-the-results">Save the results<a class="anchor" aria-label="anchor" href="#save-the-results"></a>
@@ -189,8 +231,8 @@ define <code>matchedSample = 0</code>.</li>
 <p>To save the results, we can use <a href="https://darwin-eu.github.io/omopgenerics/reference/exportSummarisedResult.html" class="external-link">exportSummarisedResult</a>
 function from <a href="https://darwin-eu.github.io/omopgenerics/index.html" class="external-link">omopgenerics</a>
 R Package:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://darwin-eu.github.io/omopgenerics/reference/exportSummarisedResult.html" class="external-link">exportSummarisedResult</a></span><span class="op">(</span><span class="va">result</span>, path <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org/reference/here.html" class="external-link">here</a></span><span class="op">(</span><span class="op">)</span>, minCellCount <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://darwin-eu.github.io/omopgenerics/reference/exportSummarisedResult.html" class="external-link">exportSummarisedResult</a></span><span class="op">(</span><span class="va">result3</span>, path <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org/reference/here.html" class="external-link">here</a></span><span class="op">(</span><span class="op">)</span>, minCellCount <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="visualisation-of-the-results">Visualisation of the results<a class="anchor" aria-label="anchor" href="#visualisation-of-the-results"></a>
@@ -198,7 +240,7 @@ R Package:</p>
 <p>Once we get our <strong>Phenotype diagnostics</strong> result, we can
 use <code>shinyDiagnostics</code> to easily create a shiny app and
 visualise our results:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/shinyDiagnostics.html">shinyDiagnostics</a></span><span class="op">(</span><span class="va">result</span>,</span>
 <span>                 directory <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>                 minCellCount <span class="op">=</span> <span class="fl">5</span>, </span>

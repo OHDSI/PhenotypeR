@@ -63,6 +63,17 @@ perform the following analyses:
 
 The output is a summarised result object.
 
+By default, all analysis will be run. However, you can deactivate some
+of the analysis by turning to false the following arguments:
+
+``` r
+db_diagnostics1 <- databaseDiagnostics(cdm$injuries, 
+                                       snapshot = TRUE, 
+                                       personTableSummary = TRUE, 
+                                       observationPeriodsSummary = TRUE, 
+                                       clinicalRecordsSummary = TRUE)
+```
+
 ## Visualise the results
 
 We can use [OmopSketch](https://ohdsi.github.io/OmopSketch/index.html)

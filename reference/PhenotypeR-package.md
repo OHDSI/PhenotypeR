@@ -20,7 +20,7 @@ Useful links:
 
 Authors:
 
-- Martí Català <marti.catalasabate@ndorms.ox.ac.uk>
+- Mart\<U+00ED\> Catal\<U+00E0\> <marti.catalasabate@ndorms.ox.ac.uk>
   ([ORCID](https://orcid.org/0000-0003-3308-9905))
 
 - Xihang Chen <xihang.chen@ndorms.ox.ac.uk>
