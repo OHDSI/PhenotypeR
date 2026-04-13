@@ -70,8 +70,27 @@ Codelist diagnostics builds on [CodelistGenerator](https://darwin-eu.github.io/C
 -   **Orphan code use:** Orphan codes refer to codes that we did not include in our cohort definition, but that have any relationship with the codes in our codelist. So, although many can be false positives, we may identify some codes that we may want to use in our cohort definitions. This analysis uses [summariseOrphanCodes()](https://darwin-eu.github.io/CodelistGenerator/reference/summariseOrphanCodes.html).
 -   **Cohort code use:** Summarises the cohort code use in our cohort using [summariseCohortCodeUse()](https://darwin-eu.github.io/CodelistGenerator/reference/summariseCohortCodeUse.html).
 -   **Measurement diagnostics:** If any of the concepts used in our codelist is a measurement, it summarises its code use using [summariseCohortMeasurementUse()](https://ohdsi.github.io/MeasurementDiagnostics/reference/summariseCohortMeasurementUse.html).
+-   **Drug diagnostics:** If any of the concepts used in our codelist is a drug, it summarises its code use, including a summry of
+the exposure duration, the days between records, the daily dose, and the quantity.
 
-The output of a function is a summarised result table.
+We can activate or deactivate each analysis by setting to FALSE the following arguments:
+```{r}
+code_diag1 <- codelistDiagnostics(cdm$injuries, 
+                                 achillesCodeUse = TRUE, 
+                                 orphanCodeUse = TRUE, 
+                                 cohortCodeUse = TRUE, 
+                                 drugDiagnostics = TRUE, 
+                                 measurementDiagnostics = TRUE)
+```
+
+Or subset the cohort to perform the drug diagnostics or the measurement diagnostics. For instance,
+in the example below we will create a subset of 1,000 participants of our cohort to perform the measurement 
+diagnostics and the drug diagnostics. Subsets will be independent.
+```{r}
+code_diag2 <- codelistDiagnostics(cdm$injuries, 
+                                 measurementDiagnosticsSample = 1000, 
+                                 drugDiagnosticsSample = 1000)
+```
 
 ### Add codelist attribute
 Some cohorts that may be created manually may not have the codelists recorded in the `cohort_codelist` attribute. The package has a utility function to record a codelist in a `cohort_table` object:

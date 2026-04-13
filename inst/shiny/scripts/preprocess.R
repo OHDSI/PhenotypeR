@@ -324,7 +324,12 @@ for(i in seq_along(docs)){
   
   if(length(docs[[i]]) == 0){
     clinical_descriptions[[name]] <- dplyr::tibble(
-      "phenotype" = name
+      "phenotype" = name,
+      "author" = NA_character_,
+      "key_sources" = NA_character_,
+      "date" = NA_character_,
+      "background" = list("item" = ""),
+      "phenotyping_plan" = list("item" = "")
     )
   }else{
     path_docx <- here::here(docs[[i]])
@@ -370,8 +375,11 @@ for(i in seq_along(docs)){
   if(length(docs[[i]]) == 0){
     database_descriptions[[name]] <- dplyr::tibble(
       "database" = name,
+      "author" = NA_character_,
+      "key_sources" = NA_character_,
+      "date" = NA_character_,
       "description" = list("item" = "No database description for this database.")
-      )
+    )
   }else{
     path_docx <- here::here(docs[[i]])
     text <- parse_docx_runs(path_docx, folder = "database_descriptions")

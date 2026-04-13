@@ -58,32 +58,49 @@ cdm$injuries <- conceptCohort(cdm = cdm,
 
 ## Cohort diagnostics
 
-We can run cohort diagnostics analyses for each of our overall cohorts like so:
+We can run cohort diagnostics analyses for each of our overall cohorts like so (notice that,
+by default, survival analysis is not performed, and that is why we have set it to TRUE):
 ```{r}
 cohort_diag <- cohortDiagnostics(cdm$injuries,
-                                 cohortSurvival = TRUE, 
-                                 cohortSample = NULL,
-                                 matchedSample = NULL)
+                                 cohortSurvival = TRUE)
 ```
 
 Cohort diagnostics builds on [CohortCharacteristics](https://darwin-eu.github.io/CohortCharacteristics/) and [CohortSurvival](https://darwin-eu-dev.github.io/CohortSurvival/) R packages to perform the following analyses on our cohorts:
 
--   **Cohort count:** Summarises the number of records and persons in each one of the cohorts using  [summariseCohortCount()](https://darwin-eu.github.io/CohortCharacteristics/reference/summariseCohortCount.html).
--   **Cohort attrition:** Summarises the attrition associated with the cohorts using  [summariseCohortAttrition()](https://darwin-eu.github.io/CohortCharacteristics/reference/summariseCohortAttrition.html).
+-   **Cohort count:** Summarises the number of records and persons in each one of the cohorts using  [summariseCohortCount()](https://darwin-eu.github.io/CohortCharacteristics/reference/summariseCohortCount.html) and summarises the attrition associated with the cohorts using  [summariseCohortAttrition()](https://darwin-eu.github.io/CohortCharacteristics/reference/summariseCohortAttrition.html).
 -   **Cohort characteristics:** Summarises cohort baseline characteristics using 
 [summariseCharacteristics()](https://darwin-eu.github.io/CohortCharacteristics/reference/summariseCharacteristics.html). Results are stratified by sex and by age group (0 to 17, 18 to 64, 65 to 150). Age groups cannot be modified.
 -   **Cohort large scale characteristics:** Summarises cohort large scale characteristics using 
 [summariseLargeScaleCharacteristics()](https://darwin-eu.github.io/CohortCharacteristics/reference/summariseLargeScaleCharacteristics.html). Results are stratified by sex and by age group (0 to 17, 18 to 64, 65 to 150). Time windows (relative to cohort entry) included are: -Inf to -1, -Inf to -366, -365 to -31, -30 to -1, 0, 1 to 30, 31 to 365, 366 to Inf, and 1 to Inf. The analysis is perform at standard and source code level.
--   **Cohort overlap:** If there is more than one cohort in the cohort table supplied, summarises the overlap between them using 
-[summariseCohortOverlap()](https://darwin-eu.github.io/CohortCharacteristics/reference/summariseCohortOverlap.html).
--   **Cohort timing:** If there is more than one cohort in the cohort table supplied, summarises the timing between them using 
+-   **Compare cohort:** If there is more than one cohort in the cohort table supplied, it summarises the overlap between them using 
+[summariseCohortOverlap()](https://darwin-eu.github.io/CohortCharacteristics/reference/summariseCohortOverlap.html) and the timing between them
 [summariseCohortTiming()](https://darwin-eu.github.io/CohortCharacteristics/reference/summariseCohortTiming.html).
 -   **Cohort survival:** Smmarises the survival until the event of death (if death table is present in the cdm) using  
 [estimateSingleEventSurvival()](https://darwin-eu-dev.github.io/CohortSurvival/reference/estimateSingleEventSurvival.html). 
 
-The analyses **cohort characteristics**, **cohort age distribution**, **cohort large scale characteristics**, and **cohort survival** will also be performed (by default) in a matched cohort. The matched cohort will be created based on year of birth and sex (see [matchCohorts()](https://ohdsi.github.io/CohortConstructor/reference/matchCohorts.html) function in CohortConstructor package). This can help us to compare the results in our cohorts to those obtain in the matched cohort, representing the general population. Notice that the analysis will be performed in: (1) the original cohort, (2) individuals in the original cohorts that have a match (named the sampled cohort), and (3) the matched cohort. 
+We can activate or deactivate each analysis by setting to FALSE the following arguments:
+```{r}
+cohort_diag2 <- cohortDiagnostics(cdm$injuries,cohortCount = TRUE,
+                                 cohortCharacteristics = TRUE,
+                                 largeScaleCharacteristics = TRUE,
+                                 compareCohorts = TRUE, 
+                                 cohortSurvival = TRUE)
+```
 
-As the matched process can be computationally expensive, specially when the cohorts are very big, we can reduce the matching analysis to a subset of participants from the original cohort using the `matchedSample` parameter. Alternatively, if we do not want to create the matched cohorts, we can use `matchedSample = 0`.
+The analyses **cohort characteristics**, **cohort large scale characteristics**, and **cohort survival** will also be performed (by default) in a matched cohort. The matched cohort will be created based on year of birth and sex (see [matchCohorts()](https://ohdsi.github.io/CohortConstructor/reference/matchCohorts.html) function in CohortConstructor package). This can help us to compare the results in our cohorts to those obtain in the matched cohort, representing the general population. Notice that the analysis will be performed in: (1) the original cohort, (2) individuals in the original cohorts that have a match (named the sampled cohort), and (3) the matched cohort. 
+
+As these analysis can be computationally expensive, specially when the cohorts are big, we can create a subset of our cohort using `cohortSample` parameter. If we don't want to perform any sampling, we can set this argument to NULL (`cohortSample = NULL`). By default, a subsample of 20,000 will be used.
+```{r}
+cohort_diag3 <- cohortDiagnostics(cdm$injuries,
+                                 cohortSample = 20000)
+```
+
+We have a similar option for the matched process. We can reduce the matching analysis to a subset of participants from the original cohort using the `matchedSample` parameter. Alternatively, if we do not want to create the matched cohorts, we can use `matchedSample = 0`. If we don't want to perform any sampling, we can also use `matchedSample = NULL`. 
+
+```{r}
+cohort_diag4 <- cohortDiagnostics(cdm$injuries,
+                                 matchedSample = 1000)
+```
 
 The output of `cohortDiagnostics()` will be a summarised result table.
 
