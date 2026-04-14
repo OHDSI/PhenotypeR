@@ -117,13 +117,28 @@ phenotypeDiagnostics <- function(cohort,
   cohortDiagnostics   <- checkCohortDiagnosticsInput(cohortDiagnostics)
   populationDiagnostics <- checkPopulationDiagnosticsInput(populationDiagnostics)
 
-  if(!is.null(stagingDirectory)) {
-    checkDirectory(stagingDirectory)
-    omopgenerics::createLogFile(logFile = file.path(stagingDirectory, "phenotypeDiagnostics_log_{date}_{time}"))
+  existingLogFile <- getOption(x = "omopgenerics.logFile", default = NULL)
+  if(!is.null(existingLogFile)){
+  options("omopgenerics.logFile" = NULL)
+  }
 
+  if(!is.null(stagingDirectory)){
+    checkDirectory(stagingDirectory)
+    phenotyperLogFile <- file.path(stagingDirectory, "phenotypeDiagnostics_log_{date}_{time}")
+  } else {
+    phenotyperLogFile <- tempfile(pattern = "phenotypeDiagnostics_log_{date}_{time}",
+                                 fileext = ".txt")
+  }
+
+  if(!is.null(phenotyperLogFile)) {
+    cli::cli_inform("Logging PhenotypeR progress in {phenotyperLogFile}")
+    omopgenerics::createLogFile(logFile = phenotyperLogFile)
   }
 
   incrementalResultPath <- getOption(x = "PhenotypeR.incremenatl_save_path")
+  if(!is.null(stagingDirectory)) {
+    incrementalResultPath <- stagingDirectory
+  }
 
   # Run phenotypeR diagnostics
   cdm <- omopgenerics::cdmReference(cohort)
@@ -136,11 +151,11 @@ phenotypeDiagnostics <- function(cohort,
                                                 observationPeriodsSummary = databaseDiagnostics$observationPeriodsSummary,
                                                 clinicalRecordsSummary = databaseDiagnostics$clinicalRecordsSummary)
     if(!is.null(incrementalResultPath)){
-      if (dir.exists(incrementalResultPath)) {
+      if (dir.exists(incrementalResultPath))
+        cli::cli_inform("Savining database diagnostics results in {incrementalResultPath}")
         exportSummarisedResult(results[["db_diag"]] ,
                                fileName = "incremental_database_diagnostics.csv",
                                path = incrementalResultPath)
-      }
     }
   }
 
@@ -155,6 +170,7 @@ phenotypeDiagnostics <- function(cohort,
                                                   drugDiagnosticsSample = codelistDiagnostics$drugDiagnosticsSample)
     if(!is.null(incrementalResultPath)){
       if (dir.exists(incrementalResultPath)) {
+        cli::cli_inform("Savining codelist diagnostics results in {incrementalResultPath}")
         exportSummarisedResult(results[["code_diag"]],
                                fileName = "incremental_codelist_diagnostics.csv",
                                path = incrementalResultPath)
@@ -173,6 +189,7 @@ phenotypeDiagnostics <- function(cohort,
                                                   matchedSample = cohortDiagnostics$matchedSample)
     if(!is.null(incrementalResultPath)){
       if (dir.exists(incrementalResultPath)) {
+        cli::cli_inform("Savining cohort diagnostics results in {incrementalResultPath}")
         exportSummarisedResult(results[["cohort_diag"]] ,
                                fileName = "incremental_cohort_diagnostics.csv",
                                path = incrementalResultPath)
@@ -187,6 +204,7 @@ phenotypeDiagnostics <- function(cohort,
                                                    populationDateRange = populationDiagnostics$populationDateRange)
     if(!is.null(incrementalResultPath)){
       if (dir.exists(incrementalResultPath)) {
+        cli::cli_inform("Savining population diagnostics results in {incrementalResultPath}")
         exportSummarisedResult(results[["pop_diag"]] ,
                                fileName = "incremental_population_diagnostics.csv",
                                path = incrementalResultPath)
@@ -194,7 +212,6 @@ phenotypeDiagnostics <- function(cohort,
     }
   }
 
-  omopgenerics::logMessage("Phenotype diagnostics - exporting results")
   results[["log"]] <- omopgenerics::summariseLogFile(
     cdmName = omopgenerics::cdmName(cdm)
   )
@@ -211,6 +228,15 @@ phenotypeDiagnostics <- function(cohort,
 
   if (is.null(results)) {
     results <- omopgenerics::emptySummarisedResult()
+  }
+
+  # if log file existed at the start, copy back to original location
+  if (!is.null(existingLogFile)) {
+    file.copy(from = getOption(x = "omopgenerics.logFile", default = NULL),
+              to = existingLogFile,
+              overwrite = TRUE) |>
+      invisible()
+    options("omopgenerics.logFile" = existingLogFile)
   }
 
   return(results)
