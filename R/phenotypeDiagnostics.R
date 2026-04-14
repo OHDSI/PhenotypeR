@@ -3,11 +3,12 @@
 #' @description
 #' This comprises all the diagnostics that are being offered in this package,
 #' this includes:
-#'
-#' * A diagnostics on the database via `databaseDiagnostics`.
-#' * A diagnostics on the cohort_codelist attribute of the cohort via `codelistDiagnostics`.
-#' * A diagnostics on the cohort via `cohortDiagnostics`.
-#' * A diagnostics on the population via `populationDiagnostics`.
+#' \itemize{
+#'   \item A diagnostic on the OMOP CDM dataset as a whole via \code{databaseDiagnostics}.
+#'   \item A diagnostic on the codelists associated with cohorts via \code{codelistDiagnostics}.
+#'   \item A diagnostic on the cohort itself via \code{cohortDiagnostics}.
+#'   \item A diagnostic on the frequency of the cohort in the dataset population via \code{populationDiagnostics}.
+#' }
 #'
 #' @inheritParams cohortDoc
 #' @param databaseDiagnostics A list of arguments that uses `databaseDiagnostics`.
@@ -15,7 +16,7 @@
 #'  Example:
 #'  *databaseDiagnostics = list(
 #'  "diagnostics" = c("snapshot", "personTableSummary", "observationPeriodsSummary", "clinicalRecordsSummary")
-#'   )*
+#'   )
 #' @param codelistDiagnostics A list of arguments that uses `codelistDiagnostics`.
 #' If the list is empty, the default values will be used.
 #' Example:
@@ -24,7 +25,7 @@
 #'  "drugDiagnostics", "measurementDiagnostics"),
 #'  "measurementDiagnosticsSample" = 20000,
 #'  "drugDiagnosticsSample" = 20000
-#'   )*
+#'   )
 #' @param cohortDiagnostics A list of arguments that uses `cohortDiagnostics`.
 #' If the list is empty,
 #' the default values will be used.
@@ -34,7 +35,7 @@
 #'                    "compareCohorts", "cohortSurvival),
 #'  "cohortSample" = 20000,
 #'  "matchedSample" = 1000
-#'  )*
+#'  )
 #' @param populationDiagnostics A list of arguments that uses `populationDiagnostics`.
 #' If the list is empty, the default values will be used.
 #' Example:
@@ -42,7 +43,7 @@
 #'  "diagnostics" = c("incidence", "periodPrevalence"),
 #'  "populationSample" = 100000,
 #'  "populationDateRange" = as.Date(c(NA,NA))
-#'  )*
+#'  )
 #'  @param stagingDirectory Path to folder to save incremental results and log file
 #'
 #' @return A summarised result
