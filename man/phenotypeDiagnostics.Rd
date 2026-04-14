@@ -20,17 +20,15 @@ phenotypeDiagnostics(
 If the list is empty, the default values will be used.
 Example:
 *databaseDiagnostics = list(
-"diagnostics" = c("snapshot", "personTableSummary", "observationPeriodsSummary", "clinicalRecordsSummary")
+"personTableSummary" = TRUE
  )}
 
 \item{codelistDiagnostics}{A list of arguments that uses `codelistDiagnostics`.
 If the list is empty, the default values will be used.
 Example:
 *codelistDiagnostics = list(
- "diagnostics" = c("achillesCodeUse", "orphanCodeUse", "cohortCodeUse",
- "drugDiagnostics", "measurementDiagnostics"),
- "measurementDiagnosticsSample" = 20000,
- "drugDiagnosticsSample" = 20000
+ "measurementDiagnosticsSample" = 0,
+ "drugDiagnosticsSample" = 0
   )}
 
 \item{cohortDiagnostics}{A list of arguments that uses `cohortDiagnostics`.
@@ -38,19 +36,14 @@ If the list is empty,
 the default values will be used.
 Example:
 *cohortDiagnostics = list(
- "diagnostics" = c("cohortCount", "cohortCharacteristics", "largeScaleCharacteristics",
-                   "compareCohorts", "cohortSurvival"),
- "cohortSample" = 20000,
- "matchedSample" = 1000
+ "cohortSurvival" = TRUE
  )}
 
 \item{populationDiagnostics}{A list of arguments that uses `populationDiagnostics`.
 If the list is empty, the default values will be used.
 Example:
 *populationDiagnostics = list(
- "diagnostics" = c("incidence", "periodPrevalence"),
- "populationSample" = 100000,
- "populationDateRange" = as.Date(c(NA,NA))
+ "populationSample" = 100000
  )
  @param stagingDirectory Path to folder to save incremental results and log file}
 }
@@ -78,49 +71,7 @@ cdm$warfarin <- conceptCohort(cdm,
                               conceptSet =  list(warfarin = c(1310149L,
                                                               40163554L)),
                               name = "warfarin")
-
-# Run PhenotypeR with the default values. If you want to check which are the
-# default values, use:
-# `formals(populationDiagnostics)`
 result <- phenotypeDiagnostics(cdm$warfarin)
 
-# Notice that the previous line of code will give the same results as typing manually
-# all the default values:
-result <- phenotypeDiagnostics(cdm$warfarin,
-                               databaseDiagnostics = list(
-                                 "diagnostics" = c("snapshot", "personTableSummary",
-                                 "observationPeriodsSummary", "clinicalRecordsSummary")
-                               ),
-                               codelistDiagnostics = list(
-                                 "diagnostics" = c("achillesCodeUse", "orphanCodeUse",
-                                                   "cohortCodeUse", "drugDiagnostics",
-                                                   "measurementDiagnostics"),
-                                 "measurementDiagnosticsSample" = 20000,
-                                 "drugDiagnosticsSample" = 20000
-                               ),
-                               cohortDiagnostics = list(
-                                 "diagnostics" = c("cohortCount", "cohortCharacteristics",
-                                                   "largeScaleCharacteristics",
-                                                   "compareCohorts"),
-                                 "cohortSample" = 20000,
-                                 "matchedSample" = 1000
-                               ),
-                               populationDiagnostics = list(
-                                 "diagnostics" = c("incidence", "periodPrevalence"),
-                                 "populationSample" = 100000,
-                                 "populationDateRange" = as.Date(c(NA,NA))
-                               ))
-
-# By default, cohortSurvival analysis will not be run. If you want to run it, please use:
-result <- phenotypeDiagnostics(cdm$warfarin,
-                               cohortDiagnostics = list(
-                               "diagnostics" = c("cohortCount", "cohortCharacteristics",
-                                                 "largeScaleCharacteristics",
-                                                 "compareCohorts", "cohortSurvival")))
-
-
-# Run PhenotypeR with the default values, except for populationSample:
-result <- phenotypeDiagnostics(cdm$warfarin,
-                               populationDiagnostics = list("populationSample" = 1000))
 }
 }

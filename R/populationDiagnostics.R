@@ -56,7 +56,7 @@ populationDiagnostics <- function(cohort,
   # add population sampling
   if(!is.null(populationSample)){
     if (!is.null(getOption("omopgenerics.logFile"))) {
-      omopgenerics::logMessage(paste0("Population diagnosics - sampling person table to", populationSample))
+      omopgenerics::logMessage(paste0("Population diagnosics - sampling person table to ", populationSample, " people"))
     }
     if(is.na(populationDateRange[[1]]) && is.na(populationDateRange[[2]])){
       cdm$person <- cdm$person |>
@@ -139,11 +139,11 @@ populationDiagnostics <- function(cohort,
       interval = c("years", "overall"),
       completeDatabaseIntervals = TRUE,
       fullContribution = FALSE)
+  }
 
     results <- results |>
       vctrs::list_drop_empty() |>
       omopgenerics::bind()
-  }
 
   newSettings <- results |>
     omopgenerics::settings() |>

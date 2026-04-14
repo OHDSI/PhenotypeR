@@ -54,3 +54,14 @@ internalDescriptionTemplates <- function(type, directory, name, call = parent.fr
 
   cli::cli_inform(c("v" = "{stringr::str_to_sentence(type)} template download correctly!"))
 }
+
+yesno <- function(msg, .envir = parent.frame()) {
+  yeses <- c("Yes", "Definitely", "For sure", "Yup", "Yeah", "Of course", "Absolutely")
+  nos <- c("No way", "Not yet", "I forget", "No", "Nope", "Uhhhh... Maybe?")
+
+  cli::cli_inform(msg, .envir = .envir)
+  qs <- c(sample(yeses, 1), sample(nos, 2))
+  rand <- sample(length(qs))
+
+  utils::menu(qs[rand]) != which(rand == 1)
+}
