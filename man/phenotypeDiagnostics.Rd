@@ -44,8 +44,9 @@ If the list is empty, the default values will be used.
 Example:
 *populationDiagnostics = list(
  "populationSample" = 100000
- )
- @param stagingDirectory Path to folder to save incremental results and log file}
+ )}
+
+\item{stagingDirectory}{Path to folder to save incremental results and log file}
 }
 \value{
 A summarised result

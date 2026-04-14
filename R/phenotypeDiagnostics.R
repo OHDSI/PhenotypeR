@@ -37,7 +37,7 @@
 #' *populationDiagnostics = list(
 #'  "populationSample" = 100000
 #'  )
-#'  @param stagingDirectory Path to folder to save incremental results and log file
+#' @param stagingDirectory Path to folder to save incremental results and log file
 #'
 #' @return A summarised result
 #' @export
