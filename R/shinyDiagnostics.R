@@ -98,10 +98,7 @@ shinyDiagnostics <- function(result,
   if(!is.null(expectationsDir)){
     invisible(copyDirectory(from = expectationsDir, to = file.path(to, "data","raw", "expectations")))
   }else{
-    dplyr::tibble("cohort_name" = NA_character_,
-                  "value" = NA_character_,
-                  "estimate" = NA_character_,
-                  "source" = NA_character_) |>
+    emptyExpectations() |>
       readr::write_csv(file = file.path(to, "data", "raw", "expectations", "expectations.csv"))
   }
   # copy clinical descriptions directory
@@ -282,7 +279,11 @@ removeDiagnostics <- function(ui, result, to_remove){
 
 removeExpectations <- function(ui, expectationsPath, to_remove) {
 
+  if(file.exists(expectationsPath)){
   expectations <- readr::read_csv(expectationsPath, show_col_types = FALSE)
+  } else {
+    expectations <- emptyExpectations()
+  }
 
   all_exp <- c("cohort_count", "cohort_characteristics", "large_scale_characteristics",
                "compare_large_scale_characteristics", "compare_cohorts", "cohort_survival")
@@ -308,4 +309,9 @@ removeExpectations <- function(ui, expectationsPath, to_remove) {
 }
 
 
-
+emptyExpectations <- function(){
+  dplyr::tibble("cohort_name" = NA_character_,
+                "value" = NA_character_,
+                "estimate" = NA_character_,
+                "source" = NA_character_)
+}
