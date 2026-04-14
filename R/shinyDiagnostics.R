@@ -118,7 +118,9 @@ shinyDiagnostics <- function(result,
     ui <- readLines(con = file.path(to,"ui.R"))
     diag_to_remove <- checkWhichDiagnostics(result)
     ui <- removeDiagnostics(ui, result, diag_to_remove)
-    ui <- removeExpectations(ui, expectations, diag_to_remove)
+    ui <- removeExpectations(ui,
+                             expectationsPath = file.path(to, "data", "raw", "expectations", "expectations.csv"),
+                             to_remove = diag_to_remove)
     writeLines(ui, file.path(to,"ui.R"))
   }
 
@@ -278,7 +280,9 @@ removeDiagnostics <- function(ui, result, to_remove){
   return(ui)
 }
 
-removeExpectations <- function(ui, expectations, to_remove) {
+removeExpectations <- function(ui, expectationsPath, to_remove) {
+
+  expectations <- readr::read_csv(expectationsPath, show_col_types = FALSE)
 
   all_exp <- c("cohort_count", "cohort_characteristics", "large_scale_characteristics",
                "compare_large_scale_characteristics", "compare_cohorts", "cohort_survival")

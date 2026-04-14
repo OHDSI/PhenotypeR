@@ -32,7 +32,7 @@ test_that("basic working example with one cohort", {
 
   expect_error(shinyDiagnostics(my_result_cohort_diag,
                directory = tempdir(),
-               expectations = 0))
+               expectationsDir = 0))
 
   my_results1 <- omopgenerics::newSummarisedResult(my_result_cohort_diag,
                                                    settings = my_result_cohort_diag |>
