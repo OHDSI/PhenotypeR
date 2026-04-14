@@ -69,13 +69,42 @@ test_that("overall diagnostics function", {
   cdm <- CDMConnector::copyCdmTo(con = db, cdm = cdm_local,
                                  schema ="main", overwrite = TRUE)
 
+  original_log_path  <- file.path(tempdir(), omopgenerics::uniqueTableName())
+  dir.create(original_log_path, showWarnings = FALSE)
+  options("omopgenerics.logFile" = original_log_path)
+  omopgenerics::createLogFile(logFile = file.path(original_log_path, "log.txt"))
+  omopgenerics::logMessage("start test")
+
+  staging_path <- file.path(tempdir(), omopgenerics::uniqueTableName())
+  dir.create(staging_path, showWarnings = FALSE)
+
   # running diagnostics should leave the original cohort unchanged
   cohort_pre <- cdm$my_cohort |>
     dplyr::collect()
+  original_log_summary_pre <- omopgenerics::summariseLogFile(logFile = file.path(original_log_path, "log.txt"))
+  logs_pre <- list.files(staging_path, pattern = ".txt")
+  results_pre <- list.files(staging_path, pattern = ".csv")
   expect_no_error(my_result <- phenotypeDiagnostics(cdm$my_cohort,
-                                                    populationDiagnostics = list("populationSample" = 10000)))
+                                                    populationDiagnostics = list("populationSample" = 10000),
+                                                    stagingDirectory = staging_path))
   cohort_post <- cdm$my_cohort |>
     dplyr::collect()
+  logs_post <- list.files(staging_path, pattern = ".txt")
+  results_post <- list.files(staging_path, pattern = ".csv")
+  original_log_summary_post <- omopgenerics::summariseLogFile(logFile = file.path(original_log_path, "log.txt"))
+
+  expect_identical(cohort_pre, cohort_post)
+  expect_true(length(logs_post) > length(logs_pre))
+  # we have incremental
+  expect_true(length(results_post) > length(results_pre))
+  expect_true("incremental_codelist_diagnostics.csv" %in% results_post)
+  expect_true("incremental_cohort_diagnostics.csv" %in% results_post)
+  expect_true("incremental_database_diagnostics.csv" %in% results_post)
+  expect_true("incremental_population_diagnostics.csv" %in% results_post)
+  # we have updated the original log
+  expect_true(nrow(original_log_summary_post) >
+                nrow(original_log_summary_pre))
+
 
   # Only database diagnostics
   dd_only <- phenotypeDiagnostics(cdm$my_cohort,
@@ -151,42 +180,4 @@ test_that("overall diagnostics function", {
   log_types <- settings(all_diag) |>
     dplyr::pull("result_type")
   expect_true("summarise_log_file" %in% log_types)
-})
-
-test_that("incremental save", {
-
-  skip_on_cran()
-
-  cdm_local <- omock::mockCdmReference() |>
-    omock::mockPerson(nPerson = 100) |>
-    omock::mockObservationPeriod() |>
-    omock::mockConditionOccurrence() |>
-    omock::mockDrugExposure() |>
-    omock::mockObservation() |>
-    omock::mockMeasurement() |>
-    omock::mockVisitOccurrence() |>
-    omock::mockProcedureOccurrence() |>
-    omock::mockCohort(name = "my_cohort",
-                      numberCohorts = 2)
-
-  db <- DBI::dbConnect(duckdb::duckdb())
-  cdm <- CDMConnector::copyCdmTo(con = db, cdm = cdm_local,
-                                 schema ="main", overwrite = TRUE)
-
-
-  pathToSave <- tempdir()
-  options("PhenotypeR.incremenatl_save_path" = pathToSave)
-  diag <- phenotypeDiagnostics(cdm$my_cohort,
-                               populationDiagnostics = list("populationSample" = 10000))
-  end_files <- list.files(pathToSave)
-  expect_true("incremental_codelist_diagnostics.csv" %in% end_files)
-  expect_true("incremental_cohort_diagnostics.csv" %in% end_files)
-  expect_true("incremental_database_diagnostics.csv" %in% end_files)
-  expect_true("incremental_population_diagnostics.csv" %in% end_files)
-
-  # no error if file doesn't exist
-  options("PhenotypeR.incremenatl_save_path" = "not_a_path")
-  expect_no_error(phenotypeDiagnostics(cdm$my_cohort,
-                                       populationDiagnostics = list("populationSample" = 10000)))
-
 })
