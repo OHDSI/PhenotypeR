@@ -67,13 +67,17 @@ if we have many cohorts and start considering the many different
 estimates from phenotype diagnostics.
 
 To speed up the process we can use an LLM to help us draft our
-expectations. We could use this to create a custom set. Here for example
-we’ll use Google Gemini to populate our expectations.
+expectations. To help us create a consistent set of phenotype
+expectations from LLMs, PhenotypeR provides the
+[`getCohortExpectations()`](https://ohdsi.github.io/PhenotypeR/reference/getCohortExpectations.md).
+This function will generate a set of expectations that are associated
+with the various cohort diagnostic function results.
 
-Notice that you may need first to create a Gemini API to run the
-example. You can do that following this link:
-<https://aistudio.google.com/app/apikey>. And then add the API in your R
-environment:
+Notice that you may need first to create a Gemini API to run the below
+example (or if using a different model see ellmer documentation for
+creating the chat object for different providers). You can do that
+following this link: <https://aistudio.google.com/app/apikey>. And then
+add the API in your R environment:
 
 ``` r
 usethis::edit_r_environ()
@@ -88,23 +92,6 @@ GEMINI_API_KEY = "your API"
 library(ellmer)
 
 chat <- chat("google_gemini")
-llm_expectation <- chat$chat(
-    interpolate("What are the typical characteristics we can expect to see in our real-world data for a cohort of people with an ankle sprain (average age, proportion male vs female, subsequent medications, etc)? Be brief and provide summar with a few sentences.")) 
-
-tibble(cohort_name = "diagnosis_of_ankle_sprain",
-       estimate = "General summary",
-       value = llm_expectation,
-       source = "llm") |> 
-  tableCohortExpectations()
-```
-
-To help us create a consistent set of phenotype expectations from LLMs,
-PhenotypeR provides the
-[`getCohortExpectations()`](https://ohdsi.github.io/PhenotypeR/reference/getCohortExpectations.md).
-This function will generate a set of expectations that are associated
-with the various cohort diagnostic function results.
-
-``` r
 getCohortExpectations(chat = chat, 
                       phenotypes = c("diagnosis_of_ankle_sprain", 
                                      "diagnosis_of_prostate_cancer", 

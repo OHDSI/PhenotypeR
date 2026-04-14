@@ -5,7 +5,7 @@ Get cohort expectations using an LLM
 ## Usage
 
 ``` r
-getCohortExpectations(chat, phenotypes)
+getCohortExpectations(chat, phenotypes, outputDir)
 ```
 
 ## Arguments
@@ -17,6 +17,10 @@ getCohortExpectations(chat, phenotypes)
 - phenotypes:
 
   Either a vector of phenotype names or results from PhenotypeR.
+
+- outputDir:
+
+  Folder to save expectations.
 
 ## Value
 
