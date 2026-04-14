@@ -4,13 +4,15 @@
 \alias{getCohortExpectations}
 \title{Get cohort expectations using an LLM}
 \usage{
-getCohortExpectations(chat, phenotypes)
+getCohortExpectations(chat, phenotypes, outputDir)
 }
 \arguments{
 \item{chat}{An ellmer chat}
 
 \item{phenotypes}{Either a vector of phenotype names or results from
 PhenotypeR.}
+
+\item{outputDir}{Folder to save expectations.}
 }
 \value{
 A tibble with expectations about the cohort.

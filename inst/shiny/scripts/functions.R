@@ -114,12 +114,16 @@ find_info_in_the_line <- function(doc_text, string) {
     dplyr::filter(stringr::str_detect(text, regex(pattern, ignore_case = TRUE))) |>
     dplyr::pull("paragraph_index")
 
-  doc_text <- doc_text |>
-    dplyr::filter(.data$paragraph_index == pi) |>
-    dplyr::pull("text") |>
-    paste0(collapse = "")
+  if(length(pi)>0){
+    doc_text <- doc_text |>
+      dplyr::filter(.data$paragraph_index == pi) |>
+      dplyr::pull("text") |>
+      paste0(collapse = "")
 
-  doc_text <- gsub(pattern, "", doc_text, ignore.case = TRUE)
+    doc_text <- gsub(pattern, "", doc_text, ignore.case = TRUE)
+  } else {
+    doc_text <- ""
+  }
 
   return(doc_text)
 }
@@ -131,17 +135,17 @@ find_info_in_the_paragraph <- function(doc_text, start, end, addStyle, removeFir
     cli::cli_warn(message = msg)
     return( msg )
   }
-  
+
   pi_start <- doc_text |>
     dplyr::filter(stringr::str_detect(text, regex(paste0("^", start), ignore_case = TRUE)) & run_index == 1) |>
     dplyr::pull("paragraph_index")
 
   if(removeFirstTitle){pi_start <- pi_start + 1}
-  
+
   pi_end <- c(doc_text |>
                 dplyr::filter(stringr::str_detect(text, regex(paste0("^", end), ignore_case = TRUE)) & run_index == 1) |>
                 dplyr::pull("paragraph_index")-1)
-  
+
   if(is.null(end) | length(pi_end) == 0){
     pi_end <- doc_text |> dplyr::filter(dplyr::row_number() == nrow(doc_text)) |>
       dplyr::pull("paragraph_index")

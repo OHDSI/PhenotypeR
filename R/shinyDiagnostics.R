@@ -16,9 +16,9 @@
 #' @param minCellCount Minimum cell count for suppression when exporting results.
 #' @param open If TRUE, the shiny app will be launched in a new session. If
 #' FALSE, the shiny app will be created but not launched.
-#' @inheritParams expectationsDoc
+#' @param expectationsDir Directory where to find the expectations CSV.
 #' @param clinicalDescriptionsDir Directory where to find the clinical descriptions word documents.
-#' @param databaseDescriptionsDir Directory where to find the clinical descriptions word documents.
+#' @param databaseDescriptionsDir Directory where to find the database descriptions word documents.
 #' @param removeEmptyTabs Whether to remove tabs of those diagnostics that have not been performed or that were insufficient counts to produce a result (TRUE) or not (FALSE)
 #'
 #' @return A shiny app
@@ -39,21 +39,8 @@
 #' result <- phenotypeDiagnostics(cdm$warfarin,
 #'                                populationDiagnostics = list("populationSample" = 100000))
 #'
-#' expectations <- dplyr::tibble("cohort_name" = "warfarin",
-#'                        "estimate" = c("Mean age",
-#'                                    "Male percentage",
-#'                                    "Frequently seen comorbidities"),
-#'                        "value" = c("32", "74%", "Atrial fibrillation,
-#'                                    heart failure, hypertension and ischaemic
-#'                                    heart disease"),
-#'                        "diagnostics" = c("cohort_characteristics",
-#'                                          "cohort_characteristics",
-#'                                          "compare_large_scale_characteristics"),
-#'                        "source" = c("AlbertAI"))
-#'
 #' shinyDiagnostics(result,
-#'                 tempdir(),
-#'                 expectations = expectations)
+#'                 tempdir())
 #'
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
@@ -61,14 +48,12 @@ shinyDiagnostics <- function(result,
                              directory,
                              minCellCount = 5,
                              open = rlang::is_interactive(),
-                             expectations = NULL,
+                             expectationsDir = NULL,
                              clinicalDescriptionsDir = NULL,
                              databaseDescriptionsDir = NULL,
                              removeEmptyTabs = TRUE){
+
   folderName <- "PhenotypeRShiny"
-  omopgenerics::assertTable(expectations,
-                            columns = c("cohort_name", "estimate", "value", "source"),
-                            allowExtraColumns = TRUE, null = TRUE)
 
   # Check phenotyper version
   if(nrow(result) != 0){
@@ -109,11 +94,17 @@ shinyDiagnostics <- function(result,
                                        fileName = "result.csv",
                                        path = file.path(to, "data", "raw"))
 
+  # copy expectations
+  if(!is.null(expectationsDir)){
+    invisible(copyDirectory(from = expectationsDir, to = file.path(to, "data","raw", "expectations")))
+  }else{
+    emptyExpectations() |>
+      readr::write_csv(file = file.path(to, "data", "raw", "expectations", "expectations.csv"))
+  }
   # copy clinical descriptions directory
   if(!is.null(clinicalDescriptionsDir)) {
       invisible(copyDirectory(from = clinicalDescriptionsDir, to = file.path(to, "data","raw","clinical_descriptions")))
   }
-
   # copy database descriptions directory
   if(!is.null(clinicalDescriptionsDir)) {
     invisible(copyDirectory(from = databaseDescriptionsDir, to = file.path(to, "data","raw","database_descriptions")))
@@ -124,19 +115,10 @@ shinyDiagnostics <- function(result,
     ui <- readLines(con = file.path(to,"ui.R"))
     diag_to_remove <- checkWhichDiagnostics(result)
     ui <- removeDiagnostics(ui, result, diag_to_remove)
-    ui <- removeExpectations(ui, expectations, diag_to_remove)
+    ui <- removeExpectations(ui,
+                             expectationsPath = file.path(to, "data", "raw", "expectations", "expectations.csv"),
+                             to_remove = diag_to_remove)
     writeLines(ui, file.path(to,"ui.R"))
-  }
-  # export expectations
-  dir.create(file.path(to,"data","raw","expectations"))
-  if(!is.null(expectations)){
-    readr::write_csv(expectations, file = file.path(to, "data", "raw", "expectations", "expectations.csv"))
-  }else{
-    dplyr::tibble("cohort_name" = NA_character_,
-                   "value" = NA_character_,
-                   "estimate" = NA_character_,
-                   "source" = NA_character_) |>
-      readr::write_csv(file = file.path(to, "data", "raw", "expectations", "expectations.csv"))
   }
 
   # open project
@@ -295,7 +277,13 @@ removeDiagnostics <- function(ui, result, to_remove){
   return(ui)
 }
 
-removeExpectations <- function(ui, expectations, to_remove) {
+removeExpectations <- function(ui, expectationsPath, to_remove) {
+
+  if(file.exists(expectationsPath)){
+  expectations <- readr::read_csv(expectationsPath, show_col_types = FALSE)
+  } else {
+    expectations <- emptyExpectations()
+  }
 
   all_exp <- c("cohort_count", "cohort_characteristics", "large_scale_characteristics",
                "compare_large_scale_characteristics", "compare_cohorts", "cohort_survival")
@@ -321,4 +309,9 @@ removeExpectations <- function(ui, expectations, to_remove) {
 }
 
 
-
+emptyExpectations <- function(){
+  dplyr::tibble("cohort_name" = NA_character_,
+                "value" = NA_character_,
+                "estimate" = NA_character_,
+                "source" = NA_character_)
+}

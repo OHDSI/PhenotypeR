@@ -14,7 +14,7 @@ getClinicalDescription(chat, name, outputDir)
 \item{outputDir}{Folder to save clinical descriptions.}
 }
 \value{
-A list with each item containing the clinical description.
+Creates a word document with a clinical description for each event.
 }
 \description{
 Get clinical descriptions using an LLM

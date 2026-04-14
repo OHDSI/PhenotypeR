@@ -9,7 +9,7 @@ shinyDiagnostics(
   directory,
   minCellCount = 5,
   open = rlang::is_interactive(),
-  expectations = NULL,
+  expectationsDir = NULL,
   clinicalDescriptionsDir = NULL,
   databaseDescriptionsDir = NULL,
   removeEmptyTabs = TRUE
@@ -25,11 +25,11 @@ shinyDiagnostics(
 \item{open}{If TRUE, the shiny app will be launched in a new session. If
 FALSE, the shiny app will be created but not launched.}
 
-\item{expectations}{Data frame or tibble with cohort expectations. It must contain the following columns: cohort_name, estimate, value, and source.}
+\item{expectationsDir}{Directory where to find the expectations CSV.}
 
 \item{clinicalDescriptionsDir}{Directory where to find the clinical descriptions word documents.}
 
-\item{databaseDescriptionsDir}{Directory where to find the clinical descriptions word documents.}
+\item{databaseDescriptionsDir}{Directory where to find the database descriptions word documents.}
 
 \item{removeEmptyTabs}{Whether to remove tabs of those diagnostics that have not been performed or that were insufficient counts to produce a result (TRUE) or not (FALSE)}
 }
@@ -61,21 +61,8 @@ cdm$warfarin <- conceptCohort(cdm,
 result <- phenotypeDiagnostics(cdm$warfarin,
                                populationDiagnostics = list("populationSample" = 100000))
 
-expectations <- dplyr::tibble("cohort_name" = "warfarin",
-                       "estimate" = c("Mean age",
-                                   "Male percentage",
-                                   "Frequently seen comorbidities"),
-                       "value" = c("32", "74\%", "Atrial fibrillation,
-                                   heart failure, hypertension and ischaemic
-                                   heart disease"),
-                       "diagnostics" = c("cohort_characteristics",
-                                         "cohort_characteristics",
-                                         "compare_large_scale_characteristics"),
-                       "source" = c("AlbertAI"))
-
 shinyDiagnostics(result,
-                tempdir(),
-                expectations = expectations)
+                tempdir())
 
 CDMConnector::cdmDisconnect(cdm = cdm)
 }
