@@ -39,7 +39,7 @@ the default values will be used.
 Example:
 *cohortDiagnostics = list(
  "diagnostics" = c("cohortCount", "cohortCharacteristics", "largeScaleCharacteristics",
-                   "compareCohorts", "cohortSurvival),
+                   "compareCohorts", "cohortSurvival"),
  "cohortSample" = 20000,
  "matchedSample" = 1000
  )}
