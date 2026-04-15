@@ -17,23 +17,12 @@ navbar:
     articles:
       text: Articles
       menu:
-      - text: "Main functionality"
       - text: PhenotypeDiagnostics
         href: articles/PhenotypeDiagnostics.html
       - text: PhenotypeExpectations
         href: articles/PhenotypeExpectations.html
       - text: ShinyDiagnostics
         href: articles/ShinyDiagnostics.html
-      - text: -------
-      - text: "Individual functions"
-      - text: DatabaseDiagnostics
-        href: articles/DatabaseDiagnostics.html
-      - text: CodelistDiagnostics
-        href: articles/CodelistDiagnostics.html
-      - text: CohortDiagnostics
-        href: articles/CohortDiagnostics.html
-      - text: PopulationDiagnostics
-        href: articles/PopulationDiagnostics.html
 
 reference:
 - subtitle: Run all diagnostics
