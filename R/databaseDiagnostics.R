@@ -10,7 +10,7 @@
 #' * Summarise the OMOP clinical tables where the codes associated with your cohort are found.
 #'
 #' @inheritParams cohortDoc
-#' @param cohortId. Specific cohort definition ID for which to run database
+#' @param cohortId Specific cohort definition ID for which to run database
 #' diagnostics. This will only affect the clinical tables summary results.
 #' @param snapshot Whether to run `OmopSketch::summariseOmopSnapshot()` (TRUE) or not (FALSE).
 #' @param personTableSummary Whether to run `OmopSketch::summarisePerson()` (TRUE) or not (FALSE).

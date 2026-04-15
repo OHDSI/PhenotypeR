@@ -6,6 +6,7 @@
 \usage{
 cohortDiagnostics(
   cohort,
+  cohortId = NULL,
   cohortCount = TRUE,
   cohortCharacteristics = TRUE,
   largeScaleCharacteristics = TRUE,
@@ -39,6 +40,9 @@ not (FALSE).}
 \item{matchedSample}{The number of people to take a random sample for
 matching. If `matchedSample = NULL`, no sampling will be performed. If `matchedSample = 0`, no
 matched cohorts will be created.}
+
+\item{cohortId.}{Specific cohort definition ID for which to run cohort
+diagnostics.}
 }
 \value{
 A summarised result

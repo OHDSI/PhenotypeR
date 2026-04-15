@@ -6,6 +6,7 @@
 \usage{
 codelistDiagnostics(
   cohort,
+  cohortId = NULL,
   achillesCodeUse = TRUE,
   orphanCodeUse = TRUE,
   cohortCodeUse = TRUE,
@@ -41,6 +42,9 @@ run.}
 drug diagnostics. If `drugDiagnosticsSample = NULL`, no sampling will be
 performed. If `drugDiagnosticsSample = 0` drug diagnostics will not be
 run.}
+
+\item{cohortId.}{Specific cohort definition ID for which to run codelist
+diagnostics.}
 }
 \value{
 A summarised result
