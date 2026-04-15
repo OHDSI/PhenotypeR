@@ -25,6 +25,7 @@ jobs:
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
+      OMOP_DATA_FOLDER: ${{ github.workspace }}/omop_data
 
     steps:
       - uses: actions/checkout@v4
@@ -37,10 +38,30 @@ jobs:
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
 
+      - name: Install binary DuckDB
+        run: |
+          codename <- system("lsb_release -c -s", intern = TRUE)
+          rspm_url <- paste0("https://packagemanager.posit.co/cran/__linux__/", codename, "/latest")
+          options(repos = c(RSPM = rspm_url))
+          install.packages("duckdb")
+        shell: Rscript {0}
+
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::rcmdcheck
+          extra-packages: |
+             any::rcmdcheck
+             any::omock
           needs: check
+
+      - name: Download Mock Dataset
+        run: |
+          options(timeout = 600)
+          if (!dir.exists(Sys.getenv("OMOP_DATA_FOLDER"))) {
+            dir.create(Sys.getenv("OMOP_DATA_FOLDER"), recursive = TRUE)
+          }
+          omock::downloadMockDataset(datasetName = "GiBleed", path = Sys.getenv("OMOP_DATA_FOLDER"))
+          omock::downloadMockDataset(datasetName = "synpuf-1k_5.3", path = Sys.getenv("OMOP_DATA_FOLDER"))
+        shell: Rscript {0}
 
       - uses: r-lib/actions/check-r-package@v2
         with:
