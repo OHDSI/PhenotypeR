@@ -77,7 +77,8 @@ test_that("duplicated codelists", {
       codelist = list(b = 4L),
       cohortName = c("cohort_1")
     )
-  expect_error()
+  expect_error(codelistDiagnostics(cdm$cohort1))
+
 })
 
 test_that("measurementDiagnostics working", {
@@ -118,8 +119,7 @@ test_that("measurementDiagnostics working", {
                      unique(),
                    "codelistDiagnostics")
 
-
- # sampling
+  # sampling
   res_sampled <- PhenotypeR::codelistDiagnostics(cdm$measurement_cohort, measurementDiagnosticsSample = 5)
 
   expect_true(res_sampled |>
@@ -202,5 +202,40 @@ test_that("drugDiagnostics working", {
   # check ingredient work (dose checks)
 
 
+
+})
+
+
+
+test_that("cohortId working", {
+  skip_on_cran()
+
+  cdm_local <- omock::mockCdmReference() |>
+    omock::mockPerson(nPerson = 100) |>
+    omock::mockObservationPeriod() |>
+    omock::mockConditionOccurrence() |>
+    omock::mockDrugExposure() |>
+    omock::mockCohort(name = "my_cohort", numberCohorts = 2)
+
+  db <- DBI::dbConnect(duckdb::duckdb())
+  cdm <- CDMConnector::copyCdmTo(con = db, cdm = cdm_local,
+                                 schema ="main", overwrite = TRUE)
+  attr(cdm, "write_schema") <- "results"
+
+  cdm$my_cohort <- cdm$my_cohort |>
+    omopgenerics::newCohortTable() |>
+    addCodelistAttribute(
+      codelist = list(a = 37110496L, b = 1361364),
+      cohortName = c("cohort_1", "cohort_2")
+    )
+
+# specify cohort id
+res <- codelistDiagnostics(cdm$my_cohort, cohortId = 2)
+expect_true(res |>
+  dplyr::filter(stringr::str_detect(group_level, "cohort_1")) |>
+  nrow() == 0)
+expect_true(res |>
+  dplyr::filter(stringr::str_detect(group_level, "cohort_2")) |>
+  nrow() > 0)
 
 })

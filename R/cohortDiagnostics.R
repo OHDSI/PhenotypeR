@@ -10,6 +10,8 @@
 #' * Overlap between cohorts (if more than one cohort is being used).
 #'
 #' @inheritParams cohortDoc
+#' @param cohortId. Specific cohort definition ID for which to run cohort
+#' diagnostics.
 #' @param cohortCount Whether to run `CohortCharacteristics::summariseCohortCount()` and
 #'       `CohortCharacteristics::summariseCohortAttrition()` (TRUE) or not (FALSE).
 #' @param cohortCharacteristics Whether to run `CohortCharacteristics::summariseCharacteristics()` and
@@ -42,6 +44,7 @@
 #' result <- cohortDiagnostics(cdm$warfarin)
 #' }
 cohortDiagnostics <- function(cohort,
+                              cohortId = NULL,
                               cohortCount = TRUE,
                               cohortCharacteristics = TRUE,
                               largeScaleCharacteristics = TRUE,
@@ -52,6 +55,7 @@ cohortDiagnostics <- function(cohort,
 
   # Initial checks ----
   omopgenerics::validateCohortArgument(cohort)
+  cohortId <- omopgenerics::validateCohortIdArgument(cohortId = cohortId, cohort = cohort)
   omopgenerics::assertLogical(cohortCount, length = 1)
   omopgenerics::assertLogical(cohortCharacteristics, length = 1)
   omopgenerics::assertLogical(largeScaleCharacteristics, length = 1)
@@ -63,6 +67,7 @@ cohortDiagnostics <- function(cohort,
   cdm <- omopgenerics::cdmReference(cohort)
   cohortName <- omopgenerics::tableName(cohort)
   cohortIds <- omopgenerics::settings(cohort) |>
+    dplyr::filter(.data$cohort_definition_id %in% .env$cohortId) |>
     dplyr::select("cohort_definition_id") |>
     dplyr::pull()
 
@@ -76,33 +81,35 @@ cohortDiagnostics <- function(cohort,
       omopgenerics::logMessage("Cohort diagnostics - cohort attrition")
     }
     results[["cohort_attrition"]] <- cdm[[cohortName]] |>
-      CohortCharacteristics::summariseCohortAttrition()
+      CohortCharacteristics::summariseCohortAttrition(cohortId = cohortId)
 
     if (!is.null(getOption("omopgenerics.logFile"))) {
       omopgenerics::logMessage("Cohort diagnostics - cohort count")
     }
     results[["cohort_count"]] <- cdm[[cohortName]] |>
-      CohortCharacteristics::summariseCohortCount()
+      CohortCharacteristics::summariseCohortCount(cohortId = cohortId)
   }
 
   cohortNameSampled <- paste0(prefix, "sampled")
   if(is.null(cohortSample)){
-    cdm[[cohortNameSampled]] <- CohortConstructor::copyCohorts(cdm[[cohortName]], name = cohortNameSampled)
+    cdm[[cohortNameSampled]] <- CohortConstructor::copyCohorts(cdm[[cohortName]], cohortId = cohortId, name = cohortNameSampled)
   }else{
     # Check cohort sizes
     x <- cohort |>
       omopgenerics::cohortCount() |>
+      dplyr::filter(.data$cohort_definition_id %in% .env$cohortId) |>
       dplyr::filter(.data$number_subjects > !!cohortSample) |>
       dplyr::collect()
 
     if(nrow(x) == 0){
       cli::cli_bullets(c(">" = "Skipping cohort sampling as all cohorts have less than {cohortSample} individuals."))
-      cdm[[cohortNameSampled]] <- CohortConstructor::copyCohorts(cdm[[cohortName]], name = cohortNameSampled)
+      cdm[[cohortNameSampled]] <- CohortConstructor::copyCohorts(cdm[[cohortName]], cohortId = cohortId, name = cohortNameSampled)
     }else{
       if (!is.null(getOption("omopgenerics.logFile"))) {
         omopgenerics::logMessage(paste0("Cohort diagnostics - sampling cohorts to up to ", cohortSample, " individuals"))
       }
       cdm[[cohortNameSampled]] <- CohortConstructor::sampleCohorts(cdm[[cohortName]],
+                                                                   cohortId = cohortId,
                                                                    independent = FALSE,
                                                                    n = cohortSample,
                                                                    name = cohortNameSampled)

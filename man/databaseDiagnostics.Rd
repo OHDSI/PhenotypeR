@@ -6,6 +6,7 @@
 \usage{
 databaseDiagnostics(
   cohort,
+  cohortId = NULL,
   snapshot = TRUE,
   personTableSummary = TRUE,
   observationPeriodsSummary = TRUE,
@@ -23,6 +24,9 @@ databaseDiagnostics(
 
 \item{clinicalRecordsSummary}{Whether to run `OmopSketch::summariseClinicalRecords()` on those clinical
 tables where the codes associated with your cohort are found (TRUE) or not (FALSE).}
+
+\item{cohortId.}{Specific cohort definition ID for which to run database
+diagnostics. This will only affect the clinical tables summary results.}
 }
 \value{
 A summarised result

@@ -100,6 +100,18 @@ test_that("overall diagnostics function", {
     dplyr::pull("result_type")
   expect_true("summarise_log_file" %in% log_types)
 
+
+  expect_no_error(my_result_2 <- phenotypeDiagnostics(cdm$my_cohort,
+                                                      databaseDiagnostics = NULL,
+                                                      codelistDiagnostics = NULL,
+                                                      cohortDiagnostics = list(cohortId = 1),
+                                                      populationDiagnostics = list(cohortId = 2)))
+  expect_error(my_result_2 <- phenotypeDiagnostics(cdm$my_cohort,
+                                                      databaseDiagnostics = NULL,
+                                                      codelistDiagnostics = NULL,
+                                                      cohortDiagnostics = NULL,
+                                                      populationDiagnostics = list(cohortId = 55)))
+
   # Only database diagnostics
   dd_only <- phenotypeDiagnostics(cdm$my_cohort,
                                   codelistDiagnostics = NULL,

@@ -12,6 +12,8 @@
 #' @param cohort A cohort table in a cdm reference. The cohort_codelist
 #' attribute must be populated. The cdm reference must contain achilles
 #' tables as these will be used for deriving concept counts.
+#' @param cohortId. Specific cohort definition ID for which to run codelist
+#' diagnostics.
 #' @param achillesCodeUse Whether to run `CodelistGenerator::summariseAchillesCodeUse()` (TRUE) or not (FALSE).
 #' @param orphanCodeUse Whether to run `CodelistGenerator::summariseOrphanCodeUse()` (TRUE) or not (FALSE).
 #' @param cohortCodeUse Whether to run `CodelistGenerator::summariseCohortCodeUse()` (TRUE) or not (FALSE).
@@ -41,6 +43,7 @@
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
 codelistDiagnostics <- function(cohort,
+                                cohortId = NULL,
                                 achillesCodeUse = TRUE,
                                 orphanCodeUse = TRUE,
                                 cohortCodeUse = TRUE,
@@ -50,6 +53,7 @@ codelistDiagnostics <- function(cohort,
                                 drugDiagnosticsSample = 20000){
 
   cohort <- omopgenerics::validateCohortArgument(cohort = cohort)
+  cohortId <- omopgenerics::validateCohortIdArgument(cohortId = cohortId, cohort = cohort)
   omopgenerics::assertLogical(achillesCodeUse, length = 1)
   omopgenerics::assertLogical(orphanCodeUse, length = 1)
   omopgenerics::assertLogical(cohortCodeUse, length = 1)
@@ -57,6 +61,7 @@ codelistDiagnostics <- function(cohort,
   cdm <- omopgenerics::cdmReference(cohort)
   cohortTable <- omopgenerics::tableName(cohort)
   cohortIds <- omopgenerics::settings(cohort) |>
+    dplyr::filter(.data$cohort_definition_id %in% .env$cohortId) |>
     dplyr::select("cohort_definition_id") |>
     dplyr::pull()
   measurementDiagnosticsSample <- omopgenerics::assertNumeric(measurementDiagnosticsSample,
@@ -107,6 +112,7 @@ codelistDiagnostics <- function(cohort,
 
   # Check empty cohorts
   ids <- omopgenerics::cohortCount(cdm[[cohortTable]]) |>
+    dplyr::filter(.data$cohort_definition_id %in% .env$cohortId) |>
     dplyr::filter(.data$number_subjects == 0) |>
     dplyr::pull("cohort_definition_id")
 
@@ -117,6 +123,7 @@ codelistDiagnostics <- function(cohort,
     results[["index_event_"]] <- CodelistGenerator::summariseCohortCodeUse(
       cdm = cdm,
       cohortTable = cohortTable,
+      cohortId = cohortId,
       timing = "entry",
       countBy = c("record", "person"))
   }
@@ -126,6 +133,7 @@ codelistDiagnostics <- function(cohort,
     dplyr::select(dplyr::all_of(c("concept_id", "domain_id"))) |>
     dplyr::inner_join(
       attr(cdm[[cohortTable]], "cohort_codelist") |>
+        dplyr::filter(.data$cohort_definition_id %in% .env$cohortId) |>
         dplyr::distinct(.data$cohort_definition_id, .data$codelist_name, .data$concept_id),
       by = "concept_id"
     ) |>
@@ -170,7 +178,8 @@ codelistDiagnostics <- function(cohort,
     dplyr::select(dplyr::all_of(c("concept_id", "domain_id"))) |>
     dplyr::inner_join(
       attr(cdm[[cohortTable]], "cohort_codelist") |>
-        dplyr::distinct(.data$cohort_definition_id, .data$codelist_name, .data$concept_id),
+      dplyr::filter(.data$cohort_definition_id %in% .env$cohortId) |>
+      dplyr::distinct(.data$cohort_definition_id, .data$codelist_name, .data$concept_id),
       by = "concept_id"
     ) |>
     dplyr::filter(tolower(.data$domain_id) %in% c("drug")) |>

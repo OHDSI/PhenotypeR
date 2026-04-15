@@ -110,6 +110,18 @@ test_that("run with multiple cohorts", {
     )
   )
 
+
+  result_cohort_2 <- cdm$my_cohort |>
+    cohortDiagnostics(cohortId = 2)
+  expect_true(result_cohort_2 |>
+                dplyr::filter(stringr::str_detect(group_level, "cohort_1")) |>
+                nrow() == 0)
+  expect_true(result_cohort_2 |>
+                dplyr::filter(stringr::str_detect(group_level, "cohort_2")) |>
+                nrow() > 0)
+
+
+
   # empty death tables
   cdm <- omopgenerics::emptyOmopTable(cdm, name = "death")
   expect_warning(cohortDiagnostics(cdm$my_cohort, cohortSurvival = TRUE))
@@ -171,23 +183,4 @@ test_that("run with multiple cohorts", {
 
 })
 
-test_that("check all expected analyses are present in results", {
-
-})
-
-test_that("check input validation", {
-
-})
-
-test_that("check edge cases", {
-  # check behaviour if cohort table has no records
-
-  # check behaviour if one cohort has no records but others do
-})
-
-test_that("check table and plotting functionality work", {
-  # check the functions do not throw errors
-  # (these tests don't check whether the plots look nice)
-
-})
 

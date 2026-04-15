@@ -12,14 +12,24 @@ test_that("eunomia", {
       "acetaminophen",
       "morphine",
       "warfarin"
-    )
+    ),
+    nameStyle = "{concept_name}"
   )
   cdm$meds <- CohortConstructor::conceptCohort(cdm = cdm,
                                conceptSet = meds_cs,
                                name = "meds")
   results <- phenotypeDiagnostics(cdm$meds)
   expect_no_error(shinyDiagnostics(result = results, directory = tempdir()))
-})
+
+   res_morphine <- populationDiagnostics(cdm$meds, cohortId = "morphine")
+   expect_true(res_morphine |>
+                 dplyr::filter(stringr::str_detect(group_level, "warfarin")) |>
+                 nrow() == 0)
+   expect_true(res_morphine |>
+                 dplyr::filter(stringr::str_detect(group_level, "morphine")) |>
+                 nrow() > 0)
+
+  })
 
 test_that("postgres test", {
   skip_on_cran()
