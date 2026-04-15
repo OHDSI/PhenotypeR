@@ -3,7 +3,7 @@
 Runs phenotypeR diagnostics on the cohort. The diganostics include: \*
 Age groups and sex summarised. \* A summary of visits of everyone in the
 cohort using visit_occurrence table. \* A summary of age and sex density
-of the cohort. \* Attritions of the cohorts. \* Overlap between cohorts
+of the cohort. \* Attrition of the cohorts. \* Overlap between cohorts
 (if more than one cohort is being used).
 
 ## Usage
@@ -129,8 +129,8 @@ result <- cohortDiagnostics(cdm$warfarin)
 #> • age: density
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side
-#> → Start summary of data, at 2026-04-14 16:17:20.949853
-#> ✔ Summary finished, at 2026-04-14 16:17:21.078375
+#> → Start summary of data, at 2026-04-15 09:08:44.505307
+#> ✔ Summary finished, at 2026-04-15 09:08:44.624233
 #> ℹ Summarising large scale characteristics 
 #>  - getting characteristics from table condition_occurrence (1 of 7)
 #>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
@@ -189,7 +189,7 @@ result <- cohortDiagnostics(cdm$warfarin)
 #>  - getting characteristics from table drug_era (7 of 7) for time window 31 and …
 #>  - getting characteristics from table drug_era (7 of 7) for time window 366 and…
 #> Formatting result
-#> 483 estimates dropped as frequency less than 1%
+#> 501 estimates dropped as frequency less than 1%
 #> ✔ Summarising large scale characteristics
 #> ℹ Summarising large scale characteristics 
 #>  - getting characteristics from table condition_occurrence (1 of 7)
@@ -249,7 +249,7 @@ result <- cohortDiagnostics(cdm$warfarin)
 #>  - getting characteristics from table drug_era (7 of 7) for time window 31 and …
 #>  - getting characteristics from table drug_era (7 of 7) for time window 366 and…
 #> Formatting result
-#> 483 estimates dropped as frequency less than 1%
+#> 501 estimates dropped as frequency less than 1%
 #> ✔ Summarising large scale characteristics
 #> `cohort_sample` and `matched_sample` casted to character.
 # }
