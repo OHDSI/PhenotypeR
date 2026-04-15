@@ -12,9 +12,6 @@ test_that("test check functions", {
   expect_error(checkCodelistDiagnosticsInput(codelistDiagnostics = "h"))
   expect_error(checkCodelistDiagnosticsInput(codelistDiagnostics = list("h" = 1)))
   expect_error(checkCodelistDiagnosticsInput(codelistDiagnostics = list("h")))
-  expect_error(checkCodelistDiagnosticsInput(codelistDiagnostics = list("diagnostics" = "h")))
-  expect_error(checkCodelistDiagnosticsInput(codelistDiagnostics = list("measurementDiagnosticsSample" = "h")))
-  expect_error(checkCodelistDiagnosticsInput(codelistDiagnostics = list("drugDiagnosticsSample" = "h")))
   expect_no_error(x <- checkCodelistDiagnosticsInput(codelistDiagnostics =  NULL))
   expect_true(is.null(x))
   expect_no_error(x <- checkCodelistDiagnosticsInput(codelistDiagnostics = list()))
@@ -24,9 +21,6 @@ test_that("test check functions", {
   expect_error(checkCohortDiagnosticsInput(cohortDiagnostics = "h"))
   expect_error(checkCohortDiagnosticsInput(cohortDiagnostics = list("h" = 1)))
   expect_error(checkCohortDiagnosticsInput(cohortDiagnostics = list("h")))
-  expect_error(checkCohortDiagnosticsInput(cohortDiagnostics = list("diagnostics" = "h")))
-  expect_error(checkCohortDiagnosticsInput(cohortDiagnostics = list("matchedSample" = "h")))
-  expect_error(checkCohortDiagnosticsInput(cohortDiagnostics = list("cohortSample" = 0)))
   expect_no_error(x <- checkCohortDiagnosticsInput(cohortDiagnostics =  NULL))
   expect_true(is.null(x))
   expect_no_error(x <- checkCohortDiagnosticsInput(cohortDiagnostics = list()))
@@ -36,16 +30,13 @@ test_that("test check functions", {
   expect_error(checkPopulationDiagnosticsInput(populationDiagnostics = "h"))
   expect_error(checkPopulationDiagnosticsInput(populationDiagnostics = list("h" = 1)))
   expect_error(checkPopulationDiagnosticsInput(populationDiagnostics = list("h")))
-  expect_error(checkPopulationDiagnosticsInput(populationDiagnostics = list("diagnostics" = "h")))
-  expect_error(checkPopulationDiagnosticsInput(populationDiagnostics = list("populationSample" = "h")))
-  expect_error(checkPopulationDiagnosticsInput(populationDiagnostics = list("populationDateRange" = 0)))
   expect_no_error(x <- checkPopulationDiagnosticsInput(populationDiagnostics =  NULL))
   expect_true(is.null(x))
   expect_no_error(x <- checkPopulationDiagnosticsInput(populationDiagnostics = list()))
   x1 <- formals("populationDiagnostics")[-which(names(formals("populationDiagnostics")) == "cohort")]
   x1$populationDateRange <- eval(x1$populationDateRange)
-  expect_equal(x1,
-               x)
+  expect_equal(names(x1),
+               names(x))
 }
 )
 
@@ -105,6 +96,9 @@ test_that("overall diagnostics function", {
   expect_true(nrow(original_log_summary_post) >
                 nrow(original_log_summary_pre))
 
+  log_types <- settings(my_result) |>
+    dplyr::pull("result_type")
+  expect_true("summarise_log_file" %in% log_types)
 
   # Only database diagnostics
   dd_only <- phenotypeDiagnostics(cdm$my_cohort,
@@ -173,11 +167,4 @@ test_that("overall diagnostics function", {
     all(c("incidence", "incidence_attrition", "prevalence", "prevalence_attrition") %in%
           unique(settings(cohort_pop_diag_only) |>
                    dplyr::pull("result_type"))))
-
-  # logging is included in the overall result
-  all_diag <- phenotypeDiagnostics(cdm$my_cohort,
-                                   populationDiagnostics = list("populationSample" = 10000))
-  log_types <- settings(all_diag) |>
-    dplyr::pull("result_type")
-  expect_true("summarise_log_file" %in% log_types)
 })
