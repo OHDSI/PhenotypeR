@@ -16,6 +16,9 @@ populationDiagnostics(
 \arguments{
 \item{cohort}{Cohort table in a cdm reference}
 
+\item{cohortId}{Specific cohort definition ID for which to run population
+diagnostics.}
+
 \item{incidence}{Whether to run `IncidencePrevalence::estimateIncidence()` (TRUE)
 or not (FALSE).}
 
@@ -32,9 +35,6 @@ NULL or the first date is set as missing, the earliest observation_start_date
 in the observation_period table will be used for the former. If  NULL or the
 second date is set as missing, the latest observation_end_date in the
 observation_period table will be used for the latter.}
-
-\item{cohortId.}{Specific cohort definition ID for which to run population
-diagnostics.}
 }
 \value{
 A summarised result

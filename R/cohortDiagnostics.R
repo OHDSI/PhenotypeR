@@ -10,7 +10,7 @@
 #' * Overlap between cohorts (if more than one cohort is being used).
 #'
 #' @inheritParams cohortDoc
-#' @param cohortId. Specific cohort definition ID for which to run cohort
+#' @param cohortId Specific cohort definition ID for which to run cohort
 #' diagnostics.
 #' @param cohortCount Whether to run `CohortCharacteristics::summariseCohortCount()` and
 #'       `CohortCharacteristics::summariseCohortAttrition()` (TRUE) or not (FALSE).

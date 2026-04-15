@@ -12,7 +12,7 @@
 #' @param cohort A cohort table in a cdm reference. The cohort_codelist
 #' attribute must be populated. The cdm reference must contain achilles
 #' tables as these will be used for deriving concept counts.
-#' @param cohortId. Specific cohort definition ID for which to run codelist
+#' @param cohortId Specific cohort definition ID for which to run codelist
 #' diagnostics.
 #' @param achillesCodeUse Whether to run `CodelistGenerator::summariseAchillesCodeUse()` (TRUE) or not (FALSE).
 #' @param orphanCodeUse Whether to run `CodelistGenerator::summariseOrphanCodeUse()` (TRUE) or not (FALSE).

@@ -8,7 +8,7 @@
 #' * Prevalence
 #'
 #' @inheritParams cohortDoc
-#' @param cohortId. Specific cohort definition ID for which to run population
+#' @param cohortId Specific cohort definition ID for which to run population
 #' diagnostics.
 #' @param incidence Whether to run `IncidencePrevalence::estimateIncidence()` (TRUE)
 #'        or not (FALSE).

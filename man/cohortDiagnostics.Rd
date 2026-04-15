@@ -19,6 +19,9 @@ cohortDiagnostics(
 \arguments{
 \item{cohort}{Cohort table in a cdm reference}
 
+\item{cohortId}{Specific cohort definition ID for which to run cohort
+diagnostics.}
+
 \item{cohortCount}{Whether to run `CohortCharacteristics::summariseCohortCount()` and
 `CohortCharacteristics::summariseCohortAttrition()` (TRUE) or not (FALSE).}
 
@@ -40,9 +43,6 @@ not (FALSE).}
 \item{matchedSample}{The number of people to take a random sample for
 matching. If `matchedSample = NULL`, no sampling will be performed. If `matchedSample = 0`, no
 matched cohorts will be created.}
-
-\item{cohortId.}{Specific cohort definition ID for which to run cohort
-diagnostics.}
 }
 \value{
 A summarised result

@@ -21,6 +21,9 @@ codelistDiagnostics(
 attribute must be populated. The cdm reference must contain achilles
 tables as these will be used for deriving concept counts.}
 
+\item{cohortId}{Specific cohort definition ID for which to run codelist
+diagnostics.}
+
 \item{achillesCodeUse}{Whether to run `CodelistGenerator::summariseAchillesCodeUse()` (TRUE) or not (FALSE).}
 
 \item{orphanCodeUse}{Whether to run `CodelistGenerator::summariseOrphanCodeUse()` (TRUE) or not (FALSE).}
@@ -42,9 +45,6 @@ run.}
 drug diagnostics. If `drugDiagnosticsSample = NULL`, no sampling will be
 performed. If `drugDiagnosticsSample = 0` drug diagnostics will not be
 run.}
-
-\item{cohortId.}{Specific cohort definition ID for which to run codelist
-diagnostics.}
 }
 \value{
 A summarised result
