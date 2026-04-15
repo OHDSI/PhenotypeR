@@ -1,5 +1,5 @@
 
-chat <- chat_google_gemini(model = "gemini-2.5-pro")
+chat <- ellmer::chat_google_gemini(model = "gemini-2.5-pro")
 expectations <- PhenotypeR::getCohortExpectations(chat = chat,
                       phenotypes = c("hypertension",
                                      "type_2_diabetes",
