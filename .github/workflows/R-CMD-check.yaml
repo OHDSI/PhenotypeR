@@ -38,6 +38,14 @@ jobs:
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
 
+      - name: Install binary DuckDB
+        run: |
+          codename <- system("lsb_release -c -s", intern = TRUE)
+          rspm_url <- paste0("https://packagemanager.posit.co/cran/__linux__/", codename, "/latest")
+          options(repos = c(RSPM = rspm_url))
+          install.packages("duckdb")
+        shell: Rscript {0}
+
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: |
