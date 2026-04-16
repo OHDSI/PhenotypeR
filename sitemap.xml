@@ -1,6 +1,7 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://ohdsi.github.io/PhenotypeR/404.html</loc></url>
 <url><loc>https://ohdsi.github.io/PhenotypeR/LICENSE.html</loc></url>
+<url><loc>https://ohdsi.github.io/PhenotypeR/articles/CreateDescriptions.html</loc></url>
 <url><loc>https://ohdsi.github.io/PhenotypeR/articles/PhenotypeDiagnostics.html</loc></url>
 <url><loc>https://ohdsi.github.io/PhenotypeR/articles/PhenotypeExpectations.html</loc></url>
 <url><loc>https://ohdsi.github.io/PhenotypeR/articles/ShinyDiagnostics.html</loc></url>

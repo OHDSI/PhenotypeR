@@ -35,6 +35,7 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/PhenotypeDiagnostics.html">PhenotypeDiagnostics</a></li>
     <li><a class="dropdown-item" href="../articles/PhenotypeExpectations.html">PhenotypeExpectations</a></li>
+    <li><a class="dropdown-item" href="../articles/CreateDescriptions.html">CreateDescriptions</a></li>
     <li><a class="dropdown-item" href="../articles/ShinyDiagnostics.html">ShinyDiagnostics</a></li>
   </ul>
 </li>
@@ -67,21 +68,26 @@
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <p>In this vignette, we are going to present how to run
-<code>PhenotypeDiagnostics()</code>. We are going to use the following
-packages and mock data:</p>
+<code>PhenotypeDiagnostics()</code>.</p>
+<p>We’ll use the following packages and mock data for example
+purposes:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ohdsi.github.io/CohortConstructor/" class="external-link">CohortConstructor</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://OHDSI.github.io/OmopSketch/" class="external-link">OmopSketch</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ohdsi.github.io/PhenotypeR/">PhenotypeR</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dbi.r-dbi.org" class="external-link">DBI</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r.duckdb.org/" class="external-link">duckdb</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://darwin-eu.github.io/CDMConnector/" class="external-link">CDMConnector</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">dbConnect</a></span><span class="op">(</span><span class="fu">duckdb</span><span class="fu">::</span><span class="fu"><a href="https://r.duckdb.org/reference/duckdb.html" class="external-link">duckdb</a></span><span class="op">(</span><span class="op">)</span>, </span>
-<span>                      <span class="fu">CDMConnector</span><span class="fu">::</span><span class="fu"><a href="https://darwin-eu.github.io/CDMConnector/reference/eunomiaDir.html" class="external-link">eunomiaDir</a></span><span class="op">(</span><span class="st">"synpuf-1k"</span>, <span class="st">"5.3"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">cdm</span> <span class="op">&lt;-</span> <span class="fu">CDMConnector</span><span class="fu">::</span><span class="fu"><a href="https://darwin-eu.github.io/CDMConnector/reference/cdmFromCon.html" class="external-link">cdmFromCon</a></span><span class="op">(</span>con <span class="op">=</span> <span class="va">con</span>, </span>
-<span>                                cdmName <span class="op">=</span> <span class="st">"Eunomia Synpuf"</span>,</span>
-<span>                                cdmSchema   <span class="op">=</span> <span class="st">"main"</span>,</span>
-<span>                                writeSchema <span class="op">=</span> <span class="st">"main"</span>, </span>
-<span>                                achillesSchema <span class="op">=</span> <span class="st">"main"</span><span class="op">)</span></span>
+<span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">dbConnect</a></span><span class="op">(</span><span class="fu"><a href="https://r.duckdb.org/reference/duckdb.html" class="external-link">duckdb</a></span><span class="op">(</span><span class="op">)</span>, </span>
+<span>                 <span class="fu"><a href="https://darwin-eu.github.io/CDMConnector/reference/eunomiaDir.html" class="external-link">eunomiaDir</a></span><span class="op">(</span><span class="st">"synpuf-1k"</span>, <span class="st">"5.3"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">cdm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://darwin-eu.github.io/CDMConnector/reference/cdmFromCon.html" class="external-link">cdmFromCon</a></span><span class="op">(</span>con <span class="op">=</span> <span class="va">con</span>, </span>
+<span>                  cdmName <span class="op">=</span> <span class="st">"Eunomia Synpuf"</span>,</span>
+<span>                  cdmSchema   <span class="op">=</span> <span class="st">"main"</span>,</span>
+<span>                  writeSchema <span class="op">=</span> <span class="st">"main"</span>, </span>
+<span>                  achillesSchema <span class="op">=</span> <span class="st">"main"</span><span class="op">)</span></span>
 <span><span class="va">cdm</span></span></code></pre></div>
 <p>Note that we have included <a href="https://github.com/OHDSI/Achilles" class="external-link">achilles tables</a> in our cdm
 reference, which will be used to speed up some of the analyses.</p>
@@ -105,9 +111,9 @@ to generate cohorts with users of <em>warfarin</em>,
 <div class="section level2">
 <h2 id="running-phenotypediagnostics">Running PhenotypeDiagnostics<a class="anchor" aria-label="anchor" href="#running-phenotypediagnostics"></a>
 </h2>
-<p>Now we have our cohort, we will use
+<p>Now that we have our cohort, we will use
 <code>phenotypeDiagnotics()</code> to assess them. This will run the
-following diagnostics which help us know whether are cohorts are ready
+following diagnostics which help us know whether our cohorts are ready
 to be used in research with the OMOP CDM dataset we’re using:</p>
 <ul>
 <li>
@@ -130,18 +136,22 @@ interest, these analyses can be run using
 <li>
 <strong>Population diagnostics</strong>: Calculates the frequency of
 our study cohorts in the database in terms of their incidence rates and
-prevalence. If only population diagnostics are of interest, these
+period prevalence. If only population diagnostics are of interest, these
 analyses can be run using <code>populationDiagnotics()</code>.</li>
 </ul>
 <p>If we do not provide any specifications, the default values of the
-functions will be used. That means, the following two scripts provide
-the same summarised result:</p>
+functions will be used. That means, the following script will run with
+the default values used in each individual diagnostics function.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">diagnostics</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/phenotypeDiagnostics.html">phenotypeDiagnostics</a></span><span class="op">(</span><span class="va">cdm</span><span class="op">$</span><span class="va">my_cohort</span>,</span>
 <span>                                databaseDiagnostics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>                                codelistDiagnostics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>                                cohortDiagnostics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>                                populationDiagnostics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>                                populationDiagnostics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>                                stagingDirectory <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+<p>Notice that we can specify the directory where to save a log file so
+we can keep track on which incremental results are being run at each
+time.</p>
 <p>If we don’t want to run one of the diagnostics we can switch it off
 by setting it to NULL.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
@@ -188,7 +198,7 @@ non-overlapping, observation periods and how long each observation
 period lasts on average.</li>
 <li>
 <strong>Clinical Records</strong>: The diagnostics will detect which
-domains appears to the codelist associated to your cohort (i.e., Drug),
+domains appear to the codelist associated to your cohort (i.e., Drug),
 and use <a href="https://ohdsi.github.io/OmopSketch/reference/summariseClinicalRecords.html" class="external-link">summariseClinicalRecords()</a>
 to summarise the associated clinical table (i.e., “drug_exposure”).</li>
 </ul>
@@ -202,13 +212,17 @@ R packages to perform the following analyses:</p>
 <ul>
 <li>
 <strong>Achilles code use:</strong> Which summarises the counts of
-our codes in our database based on achilles results using <a href="https://darwin-eu.github.io/CodelistGenerator/reference/summariseAchillesCodeUse.html" class="external-link">summariseAchillesCodeUse()</a>.</li>
+our codes in our database based on achilles results using <a href="https://darwin-eu.github.io/CodelistGenerator/reference/summariseAchillesCodeUse.html" class="external-link">summariseAchillesCodeUse()</a>.
+Notice that it will only run if ACHILLES tables are present in your
+CDM.</li>
 <li>
 <strong>Orphan code use:</strong> Orphan codes refer to codes that
 we did not include in our cohort definition, but that have any
 relationship with the codes in our codelist. So, although many can be
 false positives, we may identify some codes that we may want to use in
-our cohort definitions. This analysis uses <a href="https://darwin-eu.github.io/CodelistGenerator/reference/summariseOrphanCodes.html" class="external-link">summariseOrphanCodes()</a>.</li>
+our cohort definitions. This analysis uses <a href="https://darwin-eu.github.io/CodelistGenerator/reference/summariseOrphanCodes.html" class="external-link">summariseOrphanCodes()</a>.
+Notice that it will only run if ACHILLES tables are present in your
+CDM.</li>
 <li>
 <strong>Cohort code use:</strong> Summarises the cohort code use in
 our cohort using <a href="https://darwin-eu.github.io/CodelistGenerator/reference/summariseCohortCodeUse.html" class="external-link">summariseCohortCodeUse()</a>.</li>
@@ -218,7 +232,7 @@ used in our codelist is a measurement, it summarises its code use using
 <a href="https://ohdsi.github.io/MeasurementDiagnostics/reference/summariseCohortMeasurementUse.html" class="external-link">summariseCohortMeasurementUse()</a>.</li>
 <li>
 <strong>Drug diagnostics:</strong> If any of the concepts used in
-our codelist is a drug, it summarises its code use, including a summry
+our codelist is a drug, it summarises its code use, including a summary
 of the exposure duration, the days between records, the daily dose, and
 the quantity.</li>
 </ul>
@@ -253,8 +267,8 @@ the cohort table supplied, it summarises the overlap between them using
 <a href="https://darwin-eu.github.io/CohortCharacteristics/reference/summariseCohortOverlap.html" class="external-link">summariseCohortOverlap()</a>
 and the timing between them <a href="https://darwin-eu.github.io/CohortCharacteristics/reference/summariseCohortTiming.html" class="external-link">summariseCohortTiming()</a>.</li>
 <li>
-<strong>Cohort survival:</strong> Smmarises the survival until the
-event of death (if death table is present in the cdm) using<br><a href="https://darwin-eu-dev.github.io/CohortSurvival/reference/estimateSingleEventSurvival.html" class="external-link">estimateSingleEventSurvival()</a>.</li>
+<strong>Cohort survival:</strong> Summarises the survival until the
+event of death (if death table is present in the CDM) using<br><a href="https://darwin-eu-dev.github.io/CohortSurvival/reference/estimateSingleEventSurvival.html" class="external-link">estimateSingleEventSurvival()</a>.</li>
 </ul>
 <p>For computational efficiency, cohort diagnostics will take a joint
 random sample of 20,000 people from across the study cohorts for
@@ -293,14 +307,14 @@ by sex (Female, Male).</li>
 <li>Including all individuals, and restricting the denominator
 population to those with 0 and 365 of days of prior observation.</li>
 </ul>
-<p>By default incidence rates and prevalence will be calculated for all
-years captured in the dataset (based on earliest observation period
-start date and latest observation period end date). The date range can
-though be limited by using the <code>populationDateRange</code>
-argument.</p>
+<p>By default incidence rates and period prevalence will be calculated
+for all years captured in the dataset (based on earliest observation
+period start date and latest observation period end date). The date
+range can though be limited by using the
+<code>populationDateRange</code> argument.</p>
 <p>These analyses are also conducted on a random sample of the
-population captured in the dataset. By default this sample is set to 1
-million individuals and so will only be relevant for particularly large
+population captured in the dataset. By default this sample is set to
+100,000 individuals and so will only be relevant for particularly large
 datasets. The sampling number can be changed via the
 <code>populationSample</code> argument
 (e.g. <code>populationSample = 200000</code> to double the number) or

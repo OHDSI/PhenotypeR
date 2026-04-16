@@ -35,6 +35,7 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/PhenotypeDiagnostics.html">PhenotypeDiagnostics</a></li>
     <li><a class="dropdown-item" href="../articles/PhenotypeExpectations.html">PhenotypeExpectations</a></li>
+    <li><a class="dropdown-item" href="../articles/CreateDescriptions.html">CreateDescriptions</a></li>
     <li><a class="dropdown-item" href="../articles/ShinyDiagnostics.html">ShinyDiagnostics</a></li>
   </ul>
 </li>
@@ -67,15 +68,19 @@
 <h2 id="introduction-run-shinydiagnostics">Introduction: Run ShinyDiagnostics<a class="anchor" aria-label="anchor" href="#introduction-run-shinydiagnostics"></a>
 </h2>
 <p>In the previous vignettes we have seen how to run a phenotype
-diagnostics and it’s expectations. ShinyDiagnostics can help us to
-visualise all the results in an interactive shiny app. See an example of
-how to run it below:</p>
+diagnostics, create database and clinical descriptions, and cohort
+expectations. ShinyDiagnostics can help us to visualise all the results
+in an interactive shiny app. See an example of how to run it below:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ohdsi.github.io/CohortConstructor/" class="external-link">CohortConstructor</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ohdsi.github.io/PhenotypeR/">PhenotypeR</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://readr.tidyverse.org" class="external-link">readr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://here.r-lib.org/" class="external-link">here</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ohdsi.github.io/omock/" class="external-link">omock</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">cdm</span> <span class="op">&lt;-</span> <span class="fu">omock</span><span class="fu">::</span><span class="fu"><a href="https://ohdsi.github.io/omock/reference/mockCdmFromDataset.html" class="external-link">mockCdmFromDataset</a></span><span class="op">(</span>datasetName <span class="op">=</span> <span class="st">"synpuf-1k_5.3"</span>, source <span class="op">=</span> <span class="st">"duckdb"</span><span class="op">)</span></span>
+<span><span class="va">cdm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ohdsi.github.io/omock/reference/mockCdmFromDataset.html" class="external-link">mockCdmFromDataset</a></span><span class="op">(</span>datasetName <span class="op">=</span> <span class="st">"synpuf-1k_5.3"</span>, </span>
+<span>                          source <span class="op">=</span> <span class="st">"duckdb"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Create a code lists</span></span>
 <span><span class="va">codes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"user_of_warfarin"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1310149L</span>, <span class="fl">40163554L</span><span class="op">)</span>,</span>
@@ -95,24 +100,44 @@ how to run it below:</p>
 <span><span class="co"># Run PhenotypeDiagnostics including all diagnostics</span></span>
 <span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/phenotypeDiagnostics.html">phenotypeDiagnostics</a></span><span class="op">(</span><span class="va">cdm</span><span class="op">$</span><span class="va">my_cohort</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Generate expectations</span></span>
+<span><span class="co"># Generate expectations (see the vignette for more details)</span></span>
 <span><span class="va">chat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ellmer.tidyverse.org/reference/chat-any.html" class="external-link">chat</a></span><span class="op">(</span><span class="st">"google_gemini"</span><span class="op">)</span></span>
 <span><span class="va">expectations</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getCohortExpectations.html">getCohortExpectations</a></span><span class="op">(</span>chat <span class="op">=</span> <span class="va">chat</span>, </span>
 <span>                      phenotypes <span class="op">=</span> <span class="va">result</span><span class="op">)</span></span>
 <span></span>
+<span><span class="va">expectationsDir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://here.r-lib.org/reference/here.html" class="external-link">here</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://readr.tidyverse.org/reference/write_delim.html" class="external-link">write_csv</a></span><span class="op">(</span><span class="va">expectations</span>, </span>
+<span>          file <span class="op">=</span> <span class="fu"><a href="https://here.r-lib.org/reference/here.html" class="external-link">here</a></span><span class="op">(</span><span class="st">"expectations.csv"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Create database descriptions (see the vignette for more details)</span></span>
+<span><span class="va">databaseDescriptionDir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://here.r-lib.org/reference/here.html" class="external-link">here</a></span><span class="op">(</span><span class="st">"database_descriptions"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/downloadDatabaseDescriptionTemplate.html">downloadDatabaseDescriptionTemplate</a></span><span class="op">(</span>directory <span class="op">=</span> <span class="va">databaseDescriptionDir</span>,</span>
+<span>                                    name <span class="op">=</span> <span class="st">"synpuf-1k"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Create clinical descriptions (see the vignette for more details)</span></span>
+<span><span class="va">clinicalDescriptionDir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://here.r-lib.org/reference/here.html" class="external-link">here</a></span><span class="op">(</span><span class="st">"cinical_descriptions"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/downloadClinicalDescriptionTemplate.html">downloadClinicalDescriptionTemplate</a></span><span class="op">(</span>directory <span class="op">=</span> <span class="va">clinicalDescriptionDir</span>, name <span class="op">=</span> <span class="st">"user_of_warfarin"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/downloadClinicalDescriptionTemplate.html">downloadClinicalDescriptionTemplate</a></span><span class="op">(</span>directory <span class="op">=</span> <span class="va">clinicalDescriptionDir</span>, name <span class="op">=</span> <span class="st">"user_of_acetaminophen"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/downloadClinicalDescriptionTemplate.html">downloadClinicalDescriptionTemplate</a></span><span class="op">(</span>directory <span class="op">=</span> <span class="va">clinicalDescriptionDir</span>, name <span class="op">=</span> <span class="st">"user_of_morphine"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/downloadClinicalDescriptionTemplate.html">downloadClinicalDescriptionTemplate</a></span><span class="op">(</span>directory <span class="op">=</span> <span class="va">clinicalDescriptionDir</span>, name <span class="op">=</span> <span class="st">"measurements_cohort"</span><span class="op">)</span></span>
+<span></span>
 <span><span class="co"># Create the shiny app based on PhenotypeDiagnostics results, suppressing all </span></span>
-<span><span class="co"># cell counts smaller than 2, saved in a temporary directory, and with the </span></span>
-<span><span class="co"># expectations created using "gemini".</span></span>
-<span><span class="fu"><a href="../reference/shinyDiagnostics.html">shinyDiagnostics</a></span><span class="op">(</span>result <span class="op">=</span> <span class="va">result</span>, minCellCount <span class="op">=</span> <span class="fl">2</span>, directory <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, expectations <span class="op">=</span> <span class="va">expectations</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co"># cell counts smaller than 2, saved in a temporary directory, with the </span></span>
+<span><span class="co"># expectations created using "gemini" and the database and clinical descriptions:</span></span>
+<span><span class="fu"><a href="../reference/shinyDiagnostics.html">shinyDiagnostics</a></span><span class="op">(</span>result <span class="op">=</span> <span class="va">result</span>, </span>
+<span>                 minCellCount <span class="op">=</span> <span class="fl">2</span>, </span>
+<span>                 directory <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, </span>
+<span>                 expectationsDir <span class="op">=</span> <span class="va">expectationsDir</span>,</span>
+<span>                 databaseDescriptionsDir <span class="op">=</span> <span class="va">databaseDescriptionDir</span>,</span>
+<span>                 clinicalDescriptionsDir <span class="op">=</span> <span class="va">clinicalDescriptionDir</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="shiny-app-overview">Shiny App Overview<a class="anchor" aria-label="anchor" href="#shiny-app-overview"></a>
 </h2>
 <p>Let’s now explore the Shiny App created together! Once you’ve run the
-code above, you should obtain a shiny app similar to this one: <a href="https://dpa-pde-oxford.shinyapps.io/Readme_PhenotypeR/" class="external-link">here</a>.</p>
+code above, you should obtain a shiny app similar to this one: [here](<a href="https://dpa-pde-oxford.shinyapps.io/PhenotypeRShiny/" class="external-link uri">https://dpa-pde-oxford.shinyapps.io/PhenotypeRShiny/</a>.</p>
 <p>The first thing we will find when creating the PhenotypeR Shiny
-Diagnostics is a <strong>Background</strong> tab with a small summary of
-all the diagnostics:
+Diagnostics is a tab with a small summary of all the diagnostics:
 <img src="ShinyDiagnosticsFigures/figure1.png" class="r-plt" alt="" width="90%"></p>
 <p>You can see which PhenotypeR version was used to generate the Shiny
 App by clicking the <em>i</em> tab at the top.</p>
@@ -120,6 +145,8 @@ App by clicking the <em>i</em> tab at the top.</p>
 <p>Or download the summarised result by clicking the <em>download</em>
 tab:</p>
 <p><img src="ShinyDiagnosticsFigures/figure3.png" class="r-plt" alt="" width="90%"></p>
+<p>In the <strong>Background</strong> tab we will find the database and
+clinical descriptions for each database and cohort.</p>
 <p>Notice that we have a tab for each one of the diagnostics, and those
 contain the specific analyses performed. Results are visualised in the
 form of interactive tables and plots.</p>

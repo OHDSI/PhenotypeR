@@ -3,22 +3,27 @@
 ## Introduction
 
 In this vignette, we are going to present how to run
-`PhenotypeDiagnostics()`. We are going to use the following packages and
-mock data:
+`PhenotypeDiagnostics()`.
+
+We’ll use the following packages and mock data for example purposes:
 
 ``` r
 library(CohortConstructor)
 library(OmopSketch)
 library(PhenotypeR)
 library(dplyr)
+library(DBI)
+library(duckdb)
+library(CDMConnector)
 
-con <- DBI::dbConnect(duckdb::duckdb(), 
-                      CDMConnector::eunomiaDir("synpuf-1k", "5.3"))
-cdm <- CDMConnector::cdmFromCon(con = con, 
-                                cdmName = "Eunomia Synpuf",
-                                cdmSchema   = "main",
-                                writeSchema = "main", 
-                                achillesSchema = "main")
+con <- dbConnect(duckdb(), 
+                 eunomiaDir("synpuf-1k", "5.3"))
+
+cdm <- cdmFromCon(con = con, 
+                  cdmName = "Eunomia Synpuf",
+                  cdmSchema   = "main",
+                  writeSchema = "main", 
+                  achillesSchema = "main")
 cdm
 ```
 
@@ -48,10 +53,10 @@ cdm$my_cohort <- conceptCohort(cdm = cdm,
 
 ## Running PhenotypeDiagnostics
 
-Now we have our cohort, we will use `phenotypeDiagnotics()` to assess
-them. This will run the following diagnostics which help us know whether
-are cohorts are ready to be used in research with the OMOP CDM dataset
-we’re using:
+Now that we have our cohort, we will use `phenotypeDiagnotics()` to
+assess them. This will run the following diagnostics which help us know
+whether our cohorts are ready to be used in research with the OMOP CDM
+dataset we’re using:
 
 - **Database diagnostics**: This includes information about the size of
   the data, the time period covered, the number of people in the data,
@@ -66,21 +71,25 @@ we’re using:
   from the dataset. If only cohort diagnostics are of interest, these
   analyses can be run using `cohortDiagnotics()`.
 - **Population diagnostics**: Calculates the frequency of our study
-  cohorts in the database in terms of their incidence rates and
+  cohorts in the database in terms of their incidence rates and period
   prevalence. If only population diagnostics are of interest, these
   analyses can be run using `populationDiagnotics()`.
 
 If we do not provide any specifications, the default values of the
-functions will be used. That means, the following two scripts provide
-the same summarised result:
+functions will be used. That means, the following script will run with
+the default values used in each individual diagnostics function.
 
 ``` r
 diagnostics <- phenotypeDiagnostics(cdm$my_cohort,
                                 databaseDiagnostics = list(),
                                 codelistDiagnostics = list(),
                                 cohortDiagnostics = list(),
-                                populationDiagnostics = list())
+                                populationDiagnostics = list(),
+                                stagingDirectory = NULL)
 ```
+
+Notice that we can specify the directory where to save a log file so we
+can keep track on which incremental results are being run at each time.
 
 If we don’t want to run one of the diagnostics we can switch it off by
 setting it to NULL.
@@ -128,9 +137,8 @@ to perform the following analyses:
   This will allow us to see if there are individuals with multiple,
   non-overlapping, observation periods and how long each observation
   period lasts on average.
-- **Clinical Records**: The diagnostics will detect which domains
-  appears to the codelist associated to your cohort (i.e., Drug), and
-  use
+- **Clinical Records**: The diagnostics will detect which domains appear
+  to the codelist associated to your cohort (i.e., Drug), and use
   [summariseClinicalRecords()](https://ohdsi.github.io/OmopSketch/reference/summariseClinicalRecords.html)
   to summarise the associated clinical table (i.e., “drug_exposure”).
 
@@ -144,12 +152,16 @@ R packages to perform the following analyses:
 - **Achilles code use:** Which summarises the counts of our codes in our
   database based on achilles results using
   [summariseAchillesCodeUse()](https://darwin-eu.github.io/CodelistGenerator/reference/summariseAchillesCodeUse.html).
+  Notice that it will only run if ACHILLES tables are present in your
+  CDM.
 - **Orphan code use:** Orphan codes refer to codes that we did not
   include in our cohort definition, but that have any relationship with
   the codes in our codelist. So, although many can be false positives,
   we may identify some codes that we may want to use in our cohort
   definitions. This analysis uses
   [summariseOrphanCodes()](https://darwin-eu.github.io/CodelistGenerator/reference/summariseOrphanCodes.html).
+  Notice that it will only run if ACHILLES tables are present in your
+  CDM.
 - **Cohort code use:** Summarises the cohort code use in our cohort
   using
   [summariseCohortCodeUse()](https://darwin-eu.github.io/CodelistGenerator/reference/summariseCohortCodeUse.html).
@@ -157,7 +169,7 @@ R packages to perform the following analyses:
   codelist is a measurement, it summarises its code use using
   [summariseCohortMeasurementUse()](https://ohdsi.github.io/MeasurementDiagnostics/reference/summariseCohortMeasurementUse.html).
 - **Drug diagnostics:** If any of the concepts used in our codelist is a
-  drug, it summarises its code use, including a summry of the exposure
+  drug, it summarises its code use, including a summary of the exposure
   duration, the days between records, the daily dose, and the quantity.
 
 ### Cohort diagnostics
@@ -190,8 +202,8 @@ packages to perform the following analyses on our cohorts:
   [summariseCohortOverlap()](https://darwin-eu.github.io/CohortCharacteristics/reference/summariseCohortOverlap.html)
   and the timing between them
   [summariseCohortTiming()](https://darwin-eu.github.io/CohortCharacteristics/reference/summariseCohortTiming.html).
-- **Cohort survival:** Smmarises the survival until the event of death
-  (if death table is present in the cdm) using  
+- **Cohort survival:** Summarises the survival until the event of death
+  (if death table is present in the CDM) using  
   [estimateSingleEventSurvival()](https://darwin-eu-dev.github.io/CohortSurvival/reference/estimateSingleEventSurvival.html).
 
 For computational efficiency, cohort diagnostics will take a joint
@@ -230,13 +242,13 @@ By default, these analyses are performed for:
 - Including all individuals, and restricting the denominator population
   to those with 0 and 365 of days of prior observation.
 
-By default incidence rates and prevalence will be calculated for all
-years captured in the dataset (based on earliest observation period
+By default incidence rates and period prevalence will be calculated for
+all years captured in the dataset (based on earliest observation period
 start date and latest observation period end date). The date range can
 though be limited by using the `populationDateRange` argument.
 
 These analyses are also conducted on a random sample of the population
-captured in the dataset. By default this sample is set to 1 million
+captured in the dataset. By default this sample is set to 100,000
 individuals and so will only be relevant for particularly large
 datasets. The sampling number can be changed via the `populationSample`
 argument (e.g. `populationSample = 200000` to double the number) or

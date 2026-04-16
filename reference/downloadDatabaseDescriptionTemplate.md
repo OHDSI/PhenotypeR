@@ -37,6 +37,5 @@ downloadDatabaseDescriptionTemplate(directory = tempdir(),
                                     name = "GiBleed")
 #> ✔ Database description template download correctly!
 
-
 # }
 ```

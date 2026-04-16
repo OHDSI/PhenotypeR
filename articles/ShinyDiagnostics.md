@@ -3,16 +3,20 @@
 ## Introduction: Run ShinyDiagnostics
 
 In the previous vignettes we have seen how to run a phenotype
-diagnostics and it’s expectations. ShinyDiagnostics can help us to
-visualise all the results in an interactive shiny app. See an example of
-how to run it below:
+diagnostics, create database and clinical descriptions, and cohort
+expectations. ShinyDiagnostics can help us to visualise all the results
+in an interactive shiny app. See an example of how to run it below:
 
 ``` r
 library(CohortConstructor)
 library(PhenotypeR)
 library(dplyr)
+library(readr)
+library(here)
+library(omock)
 
-cdm <- omock::mockCdmFromDataset(datasetName = "synpuf-1k_5.3", source = "duckdb")
+cdm <- mockCdmFromDataset(datasetName = "synpuf-1k_5.3", 
+                          source = "duckdb")
 
 # Create a code lists
 codes <- list("user_of_warfarin" = c(1310149L, 40163554L),
@@ -32,26 +36,47 @@ cdm$my_cohort <- conceptCohort(cdm = cdm,
 # Run PhenotypeDiagnostics including all diagnostics
 result <- phenotypeDiagnostics(cdm$my_cohort)
 
-# Generate expectations
+# Generate expectations (see the vignette for more details)
 chat <- chat("google_gemini")
 expectations <- getCohortExpectations(chat = chat, 
                       phenotypes = result)
 
+expectationsDir <- here()
+write_csv(expectations, 
+          file = here("expectations.csv"))
+
+# Create database descriptions (see the vignette for more details)
+databaseDescriptionDir <- here("database_descriptions")
+downloadDatabaseDescriptionTemplate(directory = databaseDescriptionDir,
+                                    name = "synpuf-1k")
+
+# Create clinical descriptions (see the vignette for more details)
+clinicalDescriptionDir <- here("cinical_descriptions")
+downloadClinicalDescriptionTemplate(directory = clinicalDescriptionDir, name = "user_of_warfarin")
+downloadClinicalDescriptionTemplate(directory = clinicalDescriptionDir, name = "user_of_acetaminophen")
+downloadClinicalDescriptionTemplate(directory = clinicalDescriptionDir, name = "user_of_morphine")
+downloadClinicalDescriptionTemplate(directory = clinicalDescriptionDir, name = "measurements_cohort")
+
 # Create the shiny app based on PhenotypeDiagnostics results, suppressing all 
-# cell counts smaller than 2, saved in a temporary directory, and with the 
-# expectations created using "gemini".
-shinyDiagnostics(result = result, minCellCount = 2, directory = tempdir(), expectations = expectations)
+# cell counts smaller than 2, saved in a temporary directory, with the 
+# expectations created using "gemini" and the database and clinical descriptions:
+shinyDiagnostics(result = result, 
+                 minCellCount = 2, 
+                 directory = tempdir(), 
+                 expectationsDir = expectationsDir,
+                 databaseDescriptionsDir = databaseDescriptionDir,
+                 clinicalDescriptionsDir = clinicalDescriptionDir)
 ```
 
 ## Shiny App Overview
 
 Let’s now explore the Shiny App created together! Once you’ve run the
 code above, you should obtain a shiny app similar to this one:
-[here](https://dpa-pde-oxford.shinyapps.io/Readme_PhenotypeR/).
+\[here\](<https://dpa-pde-oxford.shinyapps.io/PhenotypeRShiny/>.
 
 The first thing we will find when creating the PhenotypeR Shiny
-Diagnostics is a **Background** tab with a small summary of all the
-diagnostics: ![](ShinyDiagnosticsFigures/figure1.png)
+Diagnostics is a tab with a small summary of all the diagnostics:
+![](ShinyDiagnosticsFigures/figure1.png)
 
 You can see which PhenotypeR version was used to generate the Shiny App
 by clicking the *i* tab at the top.
@@ -61,6 +86,9 @@ by clicking the *i* tab at the top.
 Or download the summarised result by clicking the *download* tab:
 
 ![](ShinyDiagnosticsFigures/figure3.png)
+
+In the **Background** tab we will find the database and clinical
+descriptions for each database and cohort.
 
 Notice that we have a tab for each one of the diagnostics, and those
 contain the specific analyses performed. Results are visualised in the

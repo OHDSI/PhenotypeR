@@ -2,13 +2,19 @@
 
 PhenotypeR diagnostics on the cdm object.
 
-Diagnostics include: \* Summarise a cdm_reference object, creating a
-snapshot with the metadata of the cdm_reference object. \* Summarise the
-observation period table getting some overall statistics in a
-summarised_result object. \* Summarise the person table including
-demographics (sex, race, ethnicity, year of birth) and related
-statistics. \* Summarise the OMOP clinical tables where the codes
-associated with your cohort are found.
+Diagnostics include:
+
+- Summarise a cdm_reference object, creating a snapshot with the
+  metadata of the cdm_reference object
+
+- Summarise the observation period table getting some overall statistics
+  in a summarised_result object.
+
+- Summarise the person table including demographics (sex, race,
+  ethnicity, year of birth) and related statistics.
+
+- Summarise the OMOP clinical tables where the codes associated with
+  your cohort are found.
 
 ## Usage
 
@@ -66,6 +72,7 @@ A summarised result
 library(omock)
 library(PhenotypeR)
 library(CohortConstructor)
+library(CDMConnector)
 
 cdm <- mockCdmFromDataset(source = "duckdb")
 #> ℹ Loading bundled GiBleed tables from package data.
@@ -89,8 +96,8 @@ cdm$new_cohort <- conceptCohort(cdm,
 #> • date_of_birth: density
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side
-#> → Start summary of data, at 2026-04-16 11:35:48.092048
-#> ✔ Summary finished, at 2026-04-16 11:35:48.150783
+#> → Start summary of data, at 2026-04-16 12:42:40.687901
+#> ✔ Summary finished, at 2026-04-16 12:42:40.762246
 #> ℹ retrieving cdm object from cdm_table.
 #> Warning: ! There are 2649 individuals not included in the person table.
 #> ℹ The following estimates will be calculated:
@@ -98,8 +105,8 @@ cdm$new_cohort <- conceptCohort(cdm,
 #> • observation_period_end_date: density
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side
-#> → Start summary of data, at 2026-04-16 11:35:51.454017
-#> ✔ Summary finished, at 2026-04-16 11:35:51.520191
+#> → Start summary of data, at 2026-04-16 12:42:44.181758
+#> ✔ Summary finished, at 2026-04-16 12:42:44.259564
 #> ℹ Adding variables of interest to drug_exposure.
 #> ℹ Summarising records per person in drug_exposure.
 #> ℹ Summarising subjects not in person table in drug_exposure.
@@ -124,6 +131,6 @@ cdm$new_cohort <- conceptCohort(cdm,
 #> ℹ Summarising concept types in procedure_occurrence.
 #> ℹ Summarising missing data in procedure_occurrence.
 
- CDMConnector::cdmDisconnect(cdm = cdm)
+ cdmDisconnect(cdm = cdm)
 # }
 ```
