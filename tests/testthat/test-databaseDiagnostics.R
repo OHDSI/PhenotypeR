@@ -50,6 +50,7 @@ test_that("db diagnostics", {
                      unique(),
                    "databaseDiagnostics")
 
+
   # skip clinical table summary
   expect_no_error(db_diag_no_clinical_summary <- databaseDiagnostics(cdm$my_cohort,
                                                                      clinicalRecordsSummary = FALSE))
@@ -59,6 +60,37 @@ test_that("db diagnostics", {
   expect_false("summarise_trend" %in%
                  (omopgenerics::settings(db_diag_no_clinical_summary) |>
                     dplyr::pull("result_type")))
+
+
+  # only clinical table summary for one cohort
+  expect_identical(
+    c("condition_occurrence", "drug_exposure"),
+  db_diag |>
+    omopgenerics::filterSettings(result_type == "summarise_clinical_records") |>
+    dplyr::pull("group_level") |>
+    unique() |>
+    sort())
+
+  db_diag_cohort_2 <- databaseDiagnostics(cdm$my_cohort, cohortId = 2)
+  expect_true(db_diag_cohort_2 |>
+      omopgenerics::filterSettings(result_type == "summarise_clinical_records") |>
+      nrow() == 0)
+
+
+  cdm$my_cohort <- cdm$my_cohort |>
+    omopgenerics::newCohortTable() |>
+    addCodelistAttribute(
+      codelist = list(c = 37110496L),
+      cohortName = c("cohort_2")
+    )
+  db_diag_cohort_2 <- databaseDiagnostics(cdm$my_cohort, cohortId = 2)
+  expect_identical(
+    c("condition_occurrence"),
+    db_diag_cohort_2 |>
+      omopgenerics::filterSettings(result_type == "summarise_clinical_records") |>
+      dplyr::pull("group_level") |>
+      unique() |>
+      sort())
 
   CDMConnector::cdmDisconnect(cdm = cdm)
 

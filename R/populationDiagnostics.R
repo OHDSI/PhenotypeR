@@ -8,6 +8,8 @@
 #' * Prevalence
 #'
 #' @inheritParams cohortDoc
+#' @param cohortId Specific cohort definition ID for which to run population
+#' diagnostics.
 #' @param incidence Whether to run `IncidencePrevalence::estimateIncidence()` (TRUE)
 #'        or not (FALSE).
 #' @param periodPrevalence Whether to run `IncidencePrevalence::estimatePeriodPrevalence()` (TRUE)
@@ -35,12 +37,15 @@
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
 populationDiagnostics <- function(cohort,
+                                  cohortId = NULL,
                                   incidence = TRUE,
                                   periodPrevalence = TRUE,
                                   populationSample = 100000,
                                   populationDateRange = as.Date(c(NA, NA))) {
 
   cohort <- omopgenerics::validateCohortArgument(cohort = cohort)
+  cohortId <- omopgenerics::validateCohortIdArgument(cohortId = cohortId,
+                                                     cohort = cohort)
   checksPopulationDiagnostics(populationSample, populationDateRange)
   omopgenerics::assertLogical(incidence, length = 1)
   omopgenerics::assertLogical(periodPrevalence, length = 1)
@@ -121,6 +126,7 @@ populationDiagnostics <- function(cohort,
       cdm = cdm,
       denominatorTable = denominatorTable,
       outcomeTable = cohortName,
+      outcomeCohortId = cohortId,
       interval = c("years", "overall"),
       repeatedEvents = FALSE,
       outcomeWashout = Inf,
@@ -136,6 +142,7 @@ populationDiagnostics <- function(cohort,
       cdm = cdm,
       denominatorTable = denominatorTable,
       outcomeTable = cohortName,
+      outcomeCohortId = cohortId,
       interval = c("years", "overall"),
       completeDatabaseIntervals = TRUE,
       fullContribution = FALSE)

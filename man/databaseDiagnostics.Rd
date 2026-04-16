@@ -6,6 +6,7 @@
 \usage{
 databaseDiagnostics(
   cohort,
+  cohortId = NULL,
   snapshot = TRUE,
   personTableSummary = TRUE,
   observationPeriodsSummary = TRUE,
@@ -14,6 +15,9 @@ databaseDiagnostics(
 }
 \arguments{
 \item{cohort}{Cohort table in a cdm reference}
+
+\item{cohortId}{Specific cohort definition ID for which to run database
+diagnostics. This will only affect the clinical tables summary results.}
 
 \item{snapshot}{Whether to run `OmopSketch::summariseOmopSnapshot()` (TRUE) or not (FALSE).}
 

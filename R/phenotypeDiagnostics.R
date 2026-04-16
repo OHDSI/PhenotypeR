@@ -98,6 +98,7 @@ phenotypeDiagnostics <- function(cohort,
 
   if (!is.null(databaseDiagnostics)) {
     results[["db_diag"]] <- databaseDiagnostics(cohort,
+                                                cohortId = databaseDiagnostics$cohortId,
                                                 snapshot = databaseDiagnostics$snapshot,
                                                 personTableSummary = databaseDiagnostics$personTableSummary,
                                                 observationPeriodsSummary = databaseDiagnostics$observationPeriodsSummary,
@@ -113,6 +114,7 @@ phenotypeDiagnostics <- function(cohort,
 
   if (!is.null(codelistDiagnostics)) {
     results[["code_diag"]] <- codelistDiagnostics(cohort,
+                                                  cohortId = codelistDiagnostics$cohortId,
                                                   achillesCodeUse = codelistDiagnostics$achillesCodeUse,
                                                   orphanCodeUse = codelistDiagnostics$orphanCodeUse,
                                                   cohortCodeUse = codelistDiagnostics$cohortCodeUse,
@@ -132,6 +134,7 @@ phenotypeDiagnostics <- function(cohort,
 
   if (!is.null(cohortDiagnostics)) {
     results[["cohort_diag"]] <- cohortDiagnostics(cohort,
+                                                  cohortId = cohortDiagnostics$cohortId,
                                                   cohortCount = cohortDiagnostics$cohortCount,
                                                   cohortCharacteristics = cohortDiagnostics$cohortCharacteristics,
                                                   largeScaleCharacteristics = cohortDiagnostics$largeScaleCharacteristics,
@@ -150,6 +153,7 @@ phenotypeDiagnostics <- function(cohort,
   }
   if (!is.null(populationDiagnostics)) {
     results[["pop_diag"]] <- populationDiagnostics(cohort,
+                                                   cohortId = populationDiagnostics$cohortId,
                                                    incidence = populationDiagnostics$incidence,
                                                    periodPrevalence = populationDiagnostics$periodPrevalence,
                                                    populationSample = populationDiagnostics$populationSample,

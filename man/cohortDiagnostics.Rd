@@ -6,6 +6,7 @@
 \usage{
 cohortDiagnostics(
   cohort,
+  cohortId = NULL,
   cohortCount = TRUE,
   cohortCharacteristics = TRUE,
   largeScaleCharacteristics = TRUE,
@@ -17,6 +18,9 @@ cohortDiagnostics(
 }
 \arguments{
 \item{cohort}{Cohort table in a cdm reference}
+
+\item{cohortId}{Specific cohort definition ID for which to run cohort
+diagnostics.}
 
 \item{cohortCount}{Whether to run `CohortCharacteristics::summariseCohortCount()` and
 `CohortCharacteristics::summariseCohortAttrition()` (TRUE) or not (FALSE).}

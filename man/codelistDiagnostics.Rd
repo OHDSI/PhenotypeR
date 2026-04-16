@@ -6,6 +6,7 @@
 \usage{
 codelistDiagnostics(
   cohort,
+  cohortId = NULL,
   achillesCodeUse = TRUE,
   orphanCodeUse = TRUE,
   cohortCodeUse = TRUE,
@@ -19,6 +20,9 @@ codelistDiagnostics(
 \item{cohort}{A cohort table in a cdm reference. The cohort_codelist
 attribute must be populated. The cdm reference must contain achilles
 tables as these will be used for deriving concept counts.}
+
+\item{cohortId}{Specific cohort definition ID for which to run codelist
+diagnostics.}
 
 \item{achillesCodeUse}{Whether to run `CodelistGenerator::summariseAchillesCodeUse()` (TRUE) or not (FALSE).}
 

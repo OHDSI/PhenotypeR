@@ -10,6 +10,8 @@
 #' * Summarise the OMOP clinical tables where the codes associated with your cohort are found.
 #'
 #' @inheritParams cohortDoc
+#' @param cohortId Specific cohort definition ID for which to run database
+#' diagnostics. This will only affect the clinical tables summary results.
 #' @param snapshot Whether to run `OmopSketch::summariseOmopSnapshot()` (TRUE) or not (FALSE).
 #' @param personTableSummary Whether to run `OmopSketch::summarisePerson()` (TRUE) or not (FALSE).
 #' @param observationPeriodsSummary Whether to run `OmopSketch::summariseObservationPeriod()` (TRUE) or not (FALSE).
@@ -36,13 +38,15 @@
 #'  CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
 databaseDiagnostics <- function(cohort,
+                                cohortId = NULL,
                                 snapshot = TRUE,
                                 personTableSummary = TRUE,
                                 observationPeriodsSummary = TRUE,
                                 clinicalRecordsSummary = TRUE){
 
   # Initial checks
-  omopgenerics::validateCohortArgument(cohort)
+  cohort <- omopgenerics::validateCohortArgument(cohort)
+  cohortId <- omopgenerics::validateCohortIdArgument(cohortId, cohort = cohort)
   omopgenerics::assertLogical(snapshot, length = 1)
   omopgenerics::assertLogical(personTableSummary, length = 1)
   omopgenerics::assertLogical(observationPeriodsSummary, length = 1)
@@ -109,12 +113,13 @@ databaseDiagnostics <- function(cohort,
 
   # Summarising omop tables - Empty cohort codelist ----
   if(isTRUE(clinicalRecordsSummary)) {
+
     emptyCodelist <- checkEmptyCodelists(cdm = cdm, cohortName = cohortName)
 
     if(isFALSE(emptyCodelist)){
       # Get all cohorts with codelists
-      cohortId <- dplyr::pull(attr(cdm[[cohortName]], "cohort_codelist"), "cohort_definition_id") |> unique()
-      cohortIds <- cohortIds[cohortIds %in% cohortId]
+      codelistCohortId <- dplyr::pull(attr(cdm[[cohortName]], "cohort_codelist"), "cohort_definition_id") |> unique()
+      cohortIds <- intersect(cohortId, codelistCohortId)
 
       # get all cohort codelists
       all_codelists <- purrr::map(cohortIds, \(x) {
@@ -123,7 +128,7 @@ databaseDiagnostics <- function(cohort,
         duplicatedCodelists()
 
       if(length(all_codelists) == 0){
-        cli::cli_warn(message = c("!" = "Cohort has no codelist available."))
+        cli::cli_warn(message = c("!" = "no codelist available for: {omopgenerics::getCohortName(cdm[[cohortName]], cohortId)} - skipping clinical record summary"))
       }else{
         # Check empty cohorts
         ids <- omopgenerics::cohortCount(cdm[[cohortName]]) |>

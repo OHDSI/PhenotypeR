@@ -15,6 +15,8 @@ test_that("population incidence and prevalence", {
 
   expect_error(pop_diag_no_sample <- populationDiagnostics(cohort = cdm$outcome,
                                                            populationDateRange = "error"))
+  expect_error(pop_diag_2 <- populationDiagnostics(cohort = cdm$outcome,
+                                                   cohortId = 2))
 
   # Check settings
   expect_identical(pop_diag_sample |>

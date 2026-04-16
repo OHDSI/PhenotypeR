@@ -6,6 +6,7 @@
 \usage{
 populationDiagnostics(
   cohort,
+  cohortId = NULL,
   incidence = TRUE,
   periodPrevalence = TRUE,
   populationSample = 1e+05,
@@ -14,6 +15,9 @@ populationDiagnostics(
 }
 \arguments{
 \item{cohort}{Cohort table in a cdm reference}
+
+\item{cohortId}{Specific cohort definition ID for which to run population
+diagnostics.}
 
 \item{incidence}{Whether to run `IncidencePrevalence::estimateIncidence()` (TRUE)
 or not (FALSE).}
