@@ -188,11 +188,19 @@ cohortDiagnostics <- function(cohort,
 
   # Large scale characteristics ----
   if(isTRUE(largeScaleCharacteristics)) {
-    lscWindows <- list(c(-Inf, -366), c(-365, -31),
-                       c(-30, -1), c(0, 0),
-                       c(1, 30), c(31, 365),
-                       c(366, Inf))
 
+    lscWindows <- getOption("PhenotypeR_summariseLargeScaleCharacteristics_window")
+    if(is.null(lscWindows)){
+      lscWindows <- list(c(-365, -31),
+                         c(-30, -1), c(0, 0),
+                         c(1, 30), c(31, 365))
+      cli::cli_inform("Using defaults for windows for large scale characteristics: {lscWindows}. These can be changed via passing alternative windows as a global option `PhenotypeR_summariseLargeScaleCharacteristics_window`")
+    } else {
+      cli::cli_inform("Using user specified windows for large scale characteristics set via global option: {lscWindows}")
+    }
+
+    lscTableEvents <- getOption("PhenotypeR_summariseLargeScaleCharacteristics_eventInWindow")
+    if(is.null(lscTableEvents)){
     lscTableEvents<-c("condition_occurrence",
                       "visit_occurrence",
                       # "visit_detail",  # not currently supported by CohortCharacteristics
@@ -200,9 +208,20 @@ cohortDiagnostics <- function(cohort,
                       "procedure_occurrence",
                       "device_exposure",
                       "observation")
+    cli::cli_inform("Using defaults for event tables for large scale characteristics: {lscTableEvents}. These can be changed via passing alternative windows as a global option `PhenotypeR_summariseLargeScaleCharacteristics_eventInWindow`")
+    } else{
+      cli::cli_inform("Using user specified event tables for large scale characteristics set via global option: {lscTableEvents}")
+    }
     lscTableEvents<-intersect(lscTableEvents, names(cdm))
 
-    lscTableEpisodes<- c("drug_exposure", "drug_era")
+
+    lscTableEpisodes <- getOption("PhenotypeR_summariseLargeScaleCharacteristics_episodeInWindow")
+    if(is.null(lscTableEpisodes)){
+      lscTableEpisodes<- c("drug_exposure", "drug_era")
+      cli::cli_inform("Using defaults for episode tables for large scale characteristics: {lscTableEpisodes}. These can be changed via passing alternative windows as a global option `PhenotypeR_summariseLargeScaleCharacteristics_episodeInWindow`")
+    } else{
+      cli::cli_inform("Using user specified episode tables for large scale characteristics set via global option: {lscTableEpisodes}")
+    }
     lscTableEpisodes<-intersect(lscTableEpisodes, names(cdm))
 
     # skip lsc for any empty tables
