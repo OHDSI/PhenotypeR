@@ -21,6 +21,8 @@ navbar:
         href: articles/PhenotypeDiagnostics.html
       - text: PhenotypeExpectations
         href: articles/PhenotypeExpectations.html
+      - text: CreateDescriptions
+        href: articles/CreateDescriptions.html
       - text: ShinyDiagnostics
         href: articles/ShinyDiagnostics.html
 

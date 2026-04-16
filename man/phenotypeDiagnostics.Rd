@@ -19,16 +19,21 @@ phenotypeDiagnostics(
 \item{databaseDiagnostics}{A list of arguments that uses `databaseDiagnostics`.
 If the list is empty, the default values will be used.
 Example:
+In the following example, all diagnostics will be run except *person table summary* from
+databaseDiagnostics:
 *databaseDiagnostics = list(
-"personTableSummary" = TRUE
+"personTableSummary" = FALSE
  )}
 
 \item{codelistDiagnostics}{A list of arguments that uses `codelistDiagnostics`.
 If the list is empty, the default values will be used.
 Example:
+In the below example, all diagnostics will be run, and a subsample of 1,000 participants will
+be used to run measurement diagnostics and another independent subsample of 500 participants
+will be used to run drug diagnostics:
 *codelistDiagnostics = list(
- "measurementDiagnosticsSample" = 0,
- "drugDiagnosticsSample" = 0
+ "measurementDiagnosticsSample" = 1000,
+ "drugDiagnosticsSample" = 500
   )}
 
 \item{cohortDiagnostics}{A list of arguments that uses `cohortDiagnostics`.
@@ -42,6 +47,8 @@ Example:
 \item{populationDiagnostics}{A list of arguments that uses `populationDiagnostics`.
 If the list is empty, the default values will be used.
 Example:
+In the below example, all diagnostics will be run and a subsample of 100,000 participants
+will be used to run populationDiagnostics.
 *populationDiagnostics = list(
  "populationSample" = 100000
  )}

@@ -15,7 +15,6 @@
 #' downloadDatabaseDescriptionTemplate(directory = tempdir(),
 #'                                     name = "GiBleed")
 #'
-#'
 #' }
 
 downloadDatabaseDescriptionTemplate <- function(directory,

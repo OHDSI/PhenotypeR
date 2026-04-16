@@ -61,6 +61,7 @@ The diganostics include:
 library(omock)
 library(CohortConstructor)
 library(PhenotypeR)
+library(CDMConnector)
 
 cdm <- mockCdmFromDataset(source = "duckdb")
 cdm$warfarin <- conceptCohort(cdm,
@@ -69,5 +70,7 @@ cdm$warfarin <- conceptCohort(cdm,
                               name = "warfarin")
 
 result <- cohortDiagnostics(cdm$warfarin)
+
+cdmDisconnect(cdm)
 }
 }
