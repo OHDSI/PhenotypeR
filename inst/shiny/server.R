@@ -1222,6 +1222,7 @@ server <- function(input, output, session) {
   filterMeasurementSummary <- eventReactive(input$updateMeasurementCodeUse, ({
     req(shared_cdm_names())
     req(shared_cohort_names())
+    req(inputs_initialized())
     if (is.null(dataFiltered$measurement_summary)) {
       validate("No measurement summary in results")
     }
@@ -1455,6 +1456,7 @@ server <- function(input, output, session) {
   filterDrugDiagnostics<- eventReactive(input$updateDrugDiagnostics, ({
     req(shared_cdm_names())
     req(shared_cohort_names())
+    req(inputs_initialized())
     if (is.null(dataFiltered$summarise_drug_use)) {
       validate("No drug diagnostics in results")
     }
