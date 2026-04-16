@@ -29,6 +29,5 @@ library(PhenotypeR)
 downloadDatabaseDescriptionTemplate(directory = tempdir(),
                                     name = "GiBleed")
 
-
 }
 }

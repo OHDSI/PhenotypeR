@@ -34,6 +34,7 @@
 #' library(omock)
 #' library(CohortConstructor)
 #' library(PhenotypeR)
+#' library(CDMConnector)
 #'
 #' cdm <- mockCdmFromDataset(source = "duckdb")
 #' cdm$warfarin <- conceptCohort(cdm,
@@ -42,6 +43,8 @@
 #'                               name = "warfarin")
 #'
 #' result <- cohortDiagnostics(cdm$warfarin)
+#'
+#' cdmDisconnect(cdm)
 #' }
 cohortDiagnostics <- function(cohort,
                               cohortId = NULL,

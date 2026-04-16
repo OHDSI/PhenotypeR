@@ -35,16 +35,19 @@ A summarised result
 PhenotypeR diagnostics on the cdm object.
 
 Diagnostics include:
-* Summarise a cdm_reference object, creating a snapshot with the metadata of the cdm_reference object.
-* Summarise the observation period table getting some overall statistics in a summarised_result object.
-* Summarise the person table including demographics (sex, race, ethnicity, year of birth) and related statistics.
-* Summarise the OMOP clinical tables where the codes associated with your cohort are found.
+\itemize{
+  \item Summarise a cdm_reference object, creating a snapshot with the metadata of the cdm_reference object
+  \item Summarise the observation period table getting some overall statistics in a summarised_result object.
+  \item Summarise the person table including demographics (sex, race, ethnicity, year of birth) and related statistics.
+  \item Summarise the OMOP clinical tables where the codes associated with your cohort are found.
+}
 }
 \examples{
 \donttest{
 library(omock)
 library(PhenotypeR)
 library(CohortConstructor)
+library(CDMConnector)
 
 cdm <- mockCdmFromDataset(source = "duckdb")
 
@@ -54,6 +57,6 @@ cdm$new_cohort <- conceptCohort(cdm,
 
  result <- databaseDiagnostics(cohort = cdm$new_cohort)
 
- CDMConnector::cdmDisconnect(cdm = cdm)
+ cdmDisconnect(cdm = cdm)
 }
 }

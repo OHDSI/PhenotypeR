@@ -40,17 +40,18 @@ observation_period table will be used for the latter.}
 A summarised result
 }
 \description{
-phenotypeR diagnostics on the cohort of input with relation to a denomination
+PhenotypeR diagnostics on the cohort of input with relation to a denomination
 population. Diagnostics include:
 
 * Incidence
-* Prevalence
+* Period Prevalence
 }
 \examples{
 \donttest{
 library(omock)
 library(CohortConstructor)
 library(PhenotypeR)
+library(CDMConnector)
 
 cdm <- mockCdmFromDataset(source = "duckdb")
 cdm$warfarin <- conceptCohort(cdm,
@@ -61,6 +62,6 @@ cdm$warfarin <- conceptCohort(cdm,
 result <- cdm$warfarin |>
   populationDiagnostics(populationSample = 100000)
 
-CDMConnector::cdmDisconnect(cdm = cdm)
+cdmDisconnect(cdm = cdm)
 }
 }
