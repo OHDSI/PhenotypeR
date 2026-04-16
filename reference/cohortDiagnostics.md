@@ -11,6 +11,7 @@ of the cohort. \* Attrition of the cohorts. \* Overlap between cohorts
 ``` r
 cohortDiagnostics(
   cohort,
+  cohortId = NULL,
   cohortCount = TRUE,
   cohortCharacteristics = TRUE,
   largeScaleCharacteristics = TRUE,
@@ -26,6 +27,10 @@ cohortDiagnostics(
 - cohort:
 
   Cohort table in a cdm reference
+
+- cohortId:
+
+  Specific cohort definition ID for which to run cohort diagnostics.
 
 - cohortCount:
 
@@ -129,8 +134,8 @@ result <- cohortDiagnostics(cdm$warfarin)
 #> • age: density
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side
-#> → Start summary of data, at 2026-04-15 14:32:36.553814
-#> ✔ Summary finished, at 2026-04-15 14:32:36.6577
+#> → Start summary of data, at 2026-04-16 05:50:15.121199
+#> ✔ Summary finished, at 2026-04-16 05:50:15.251807
 #> ℹ Summarising large scale characteristics 
 #>  - getting characteristics from table condition_occurrence (1 of 7)
 #>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
@@ -189,7 +194,7 @@ result <- cohortDiagnostics(cdm$warfarin)
 #>  - getting characteristics from table drug_era (7 of 7) for time window 31 and …
 #>  - getting characteristics from table drug_era (7 of 7) for time window 366 and…
 #> Formatting result
-#> 454 estimates dropped as frequency less than 1%
+#> 439 estimates dropped as frequency less than 1%
 #> ✔ Summarising large scale characteristics
 #> ℹ Summarising large scale characteristics 
 #>  - getting characteristics from table condition_occurrence (1 of 7)
@@ -249,7 +254,7 @@ result <- cohortDiagnostics(cdm$warfarin)
 #>  - getting characteristics from table drug_era (7 of 7) for time window 31 and …
 #>  - getting characteristics from table drug_era (7 of 7) for time window 366 and…
 #> Formatting result
-#> 454 estimates dropped as frequency less than 1%
+#> 439 estimates dropped as frequency less than 1%
 #> ✔ Summarising large scale characteristics
 #> `cohort_sample` and `matched_sample` casted to character.
 # }

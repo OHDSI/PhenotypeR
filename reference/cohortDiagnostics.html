@@ -62,6 +62,7 @@ The diganostics include:
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cohortDiagnostics</span><span class="op">(</span></span>
 <span>  <span class="va">cohort</span>,</span>
+<span>  cohortId <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  cohortCount <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  cohortCharacteristics <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  largeScaleCharacteristics <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -78,6 +79,11 @@ The diganostics include:
 
 <dl><dt id="arg-cohort">cohort<a class="anchor" aria-label="anchor" href="#arg-cohort"></a></dt>
 <dd><p>Cohort table in a cdm reference</p></dd>
+
+
+<dt id="arg-cohortid">cohortId<a class="anchor" aria-label="anchor" href="#arg-cohortid"></a></dt>
+<dd><p>Specific cohort definition ID for which to run cohort
+diagnostics.</p></dd>
 
 
 <dt id="arg-cohortcount">cohortCount<a class="anchor" aria-label="anchor" href="#arg-cohortcount"></a></dt>
@@ -178,8 +184,8 @@ matched cohorts will be created.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> age: density</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   the database side</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-15 14:32:36.553814</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-15 14:32:36.6577</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-16 05:50:15.121199</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-16 05:50:15.251807</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising large scale characteristics </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
@@ -238,7 +244,7 @@ matched cohorts will be created.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window 31 and …</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window 366 and…</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Formatting result</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 454 estimates dropped as frequency less than 1%</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 439 estimates dropped as frequency less than 1%</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summarising large scale characteristics</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising large scale characteristics </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7)</span>
@@ -298,7 +304,7 @@ matched cohorts will be created.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window 31 and …</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window 366 and…</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Formatting result</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 454 estimates dropped as frequency less than 1%</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 439 estimates dropped as frequency less than 1%</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summarising large scale characteristics</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `cohort_sample` and `matched_sample` casted to character.</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>

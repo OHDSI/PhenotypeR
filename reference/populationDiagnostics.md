@@ -10,6 +10,7 @@ denomination population. Diagnostics include:
 ``` r
 populationDiagnostics(
   cohort,
+  cohortId = NULL,
   incidence = TRUE,
   periodPrevalence = TRUE,
   populationSample = 1e+05,
@@ -22,6 +23,10 @@ populationDiagnostics(
 - cohort:
 
   Cohort table in a cdm reference
+
+- cohortId:
+
+  Specific cohort definition ID for which to run population diagnostics.
 
 - incidence:
 
@@ -77,12 +82,12 @@ cdm$warfarin <- conceptCohort(cdm,
 
 result <- cdm$warfarin |>
   populationDiagnostics(populationSample = 100000)
-#> [2026-04-15 14:38:05] - Population diagnosics - denominator cohort
-#> [2026-04-15 14:38:05] - Population diagnosics - sampling person table to 1e+05
+#> [2026-04-16 05:54:25] - Population diagnosics - denominator cohort
+#> [2026-04-16 05:54:25] - Population diagnosics - sampling person table to 1e+05
 #> people
 #> ℹ Creating denominator cohorts
-#> ✔ Cohorts created in 0 min and 5 sec
-#> [2026-04-15 14:38:10] - Population diagnosics - incidence
+#> ✔ Cohorts created in 0 min and 6 sec
+#> [2026-04-16 05:54:31] - Population diagnosics - incidence
 #> ℹ Getting incidence for analysis 1 of 7
 #> ℹ Getting incidence for analysis 2 of 7
 #> ℹ Getting incidence for analysis 3 of 7
@@ -90,8 +95,8 @@ result <- cdm$warfarin |>
 #> ℹ Getting incidence for analysis 5 of 7
 #> ℹ Getting incidence for analysis 6 of 7
 #> ℹ Getting incidence for analysis 7 of 7
-#> ✔ Overall time taken: 0 mins and 9 secs
-#> [2026-04-15 14:38:20] - Population diagnosics - prevalence
+#> ✔ Overall time taken: 0 mins and 10 secs
+#> [2026-04-16 05:54:42] - Population diagnosics - prevalence
 #> ℹ Getting prevalence for analysis 1 of 7
 #> ℹ Getting prevalence for analysis 2 of 7
 #> ℹ Getting prevalence for analysis 3 of 7
@@ -99,7 +104,7 @@ result <- cdm$warfarin |>
 #> ℹ Getting prevalence for analysis 5 of 7
 #> ℹ Getting prevalence for analysis 6 of 7
 #> ℹ Getting prevalence for analysis 7 of 7
-#> ✔ Time taken: 0 mins and 4 secs
+#> ✔ Time taken: 0 mins and 6 secs
 #> `populationDateStart`, `populationDateEnd`, and `populationSample` casted to
 #> character.
 #> `populationDateStart` and `populationDateEnd` eliminated from settings as all

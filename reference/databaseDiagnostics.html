@@ -59,6 +59,7 @@ Diagnostics include:
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">databaseDiagnostics</span><span class="op">(</span></span>
 <span>  <span class="va">cohort</span>,</span>
+<span>  cohortId <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  snapshot <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  personTableSummary <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  observationPeriodsSummary <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -72,6 +73,11 @@ Diagnostics include:
 
 <dl><dt id="arg-cohort">cohort<a class="anchor" aria-label="anchor" href="#arg-cohort"></a></dt>
 <dd><p>Cohort table in a cdm reference</p></dd>
+
+
+<dt id="arg-cohortid">cohortId<a class="anchor" aria-label="anchor" href="#arg-cohortid"></a></dt>
+<dd><p>Specific cohort definition ID for which to run database
+diagnostics. This will only affect the clinical tables summary results.</p></dd>
 
 
 <dt id="arg-snapshot">snapshot<a class="anchor" aria-label="anchor" href="#arg-snapshot"></a></dt>
@@ -125,8 +131,8 @@ tables where the codes associated with your cohort are found (TRUE) or not (FALS
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> date_of_birth: density</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   the database side</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-15 14:34:46.35934</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-15 14:34:46.414071</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-16 05:51:36.432857</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-16 05:51:36.49288</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> retrieving cdm object from <span style="font-style: italic;">cdm_table</span>.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span><span style="color: #BBBB00;">!</span> There are 2649 individuals not included in the person table.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The following estimates will be calculated:</span>
@@ -134,8 +140,8 @@ tables where the codes associated with your cohort are found (TRUE) or not (FALS
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> observation_period_end_date: density</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   the database side</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-15 14:34:49.528016</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-15 14:34:49.583014</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-16 05:51:39.853171</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-16 05:51:39.922039</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Adding variables of interest to <span style="color: #0000BB;">drug_exposure</span>.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising records per person in <span style="color: #0000BB;">drug_exposure</span>.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising subjects not in person table in <span style="color: #0000BB;">drug_exposure</span>.</span>

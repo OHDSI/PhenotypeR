@@ -15,6 +15,7 @@ associated with your cohort are found.
 ``` r
 databaseDiagnostics(
   cohort,
+  cohortId = NULL,
   snapshot = TRUE,
   personTableSummary = TRUE,
   observationPeriodsSummary = TRUE,
@@ -27,6 +28,11 @@ databaseDiagnostics(
 - cohort:
 
   Cohort table in a cdm reference
+
+- cohortId:
+
+  Specific cohort definition ID for which to run database diagnostics.
+  This will only affect the clinical tables summary results.
 
 - snapshot:
 
@@ -83,8 +89,8 @@ cdm$new_cohort <- conceptCohort(cdm,
 #> • date_of_birth: density
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side
-#> → Start summary of data, at 2026-04-15 14:34:46.35934
-#> ✔ Summary finished, at 2026-04-15 14:34:46.414071
+#> → Start summary of data, at 2026-04-16 05:51:36.432857
+#> ✔ Summary finished, at 2026-04-16 05:51:36.49288
 #> ℹ retrieving cdm object from cdm_table.
 #> Warning: ! There are 2649 individuals not included in the person table.
 #> ℹ The following estimates will be calculated:
@@ -92,8 +98,8 @@ cdm$new_cohort <- conceptCohort(cdm,
 #> • observation_period_end_date: density
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side
-#> → Start summary of data, at 2026-04-15 14:34:49.528016
-#> ✔ Summary finished, at 2026-04-15 14:34:49.583014
+#> → Start summary of data, at 2026-04-16 05:51:39.853171
+#> ✔ Summary finished, at 2026-04-16 05:51:39.922039
 #> ℹ Adding variables of interest to drug_exposure.
 #> ℹ Summarising records per person in drug_exposure.
 #> ℹ Summarising subjects not in person table in drug_exposure.

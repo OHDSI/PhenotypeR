@@ -53,6 +53,7 @@ population. Diagnostics include:</p>
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">populationDiagnostics</span><span class="op">(</span></span>
 <span>  <span class="va">cohort</span>,</span>
+<span>  cohortId <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  incidence <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  periodPrevalence <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  populationSample <span class="op">=</span> <span class="fl">1e+05</span>,</span>
@@ -66,6 +67,11 @@ population. Diagnostics include:</p>
 
 <dl><dt id="arg-cohort">cohort<a class="anchor" aria-label="anchor" href="#arg-cohort"></a></dt>
 <dd><p>Cohort table in a cdm reference</p></dd>
+
+
+<dt id="arg-cohortid">cohortId<a class="anchor" aria-label="anchor" href="#arg-cohortid"></a></dt>
+<dd><p>Specific cohort definition ID for which to run population
+diagnostics.</p></dd>
 
 
 <dt id="arg-incidence">incidence<a class="anchor" aria-label="anchor" href="#arg-incidence"></a></dt>
@@ -123,12 +129,12 @@ observation_period table will be used for the latter.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="va">cdm</span><span class="op">$</span><span class="va">warfarin</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">populationDiagnostics</span><span class="op">(</span>populationSample <span class="op">=</span> <span class="fl">100000</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-15 14:38:05]</span> - Population diagnosics - denominator cohort</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-15 14:38:05]</span> - Population diagnosics - sampling person table to 1e+05</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-16 05:54:25]</span> - Population diagnosics - denominator cohort</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-16 05:54:25]</span> - Population diagnosics - sampling person table to 1e+05</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> people</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Creating denominator cohorts</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Cohorts created in 0 min and 5 sec</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-15 14:38:10]</span> - Population diagnosics - incidence</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Cohorts created in 0 min and 6 sec</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-16 05:54:31]</span> - Population diagnosics - incidence</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 1 of 7</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 2 of 7</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 3 of 7</span>
@@ -136,8 +142,8 @@ observation_period table will be used for the latter.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 5 of 7</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 6 of 7</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 7 of 7</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Overall time taken: 0 mins and 9 secs</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-15 14:38:20]</span> - Population diagnosics - prevalence</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Overall time taken: 0 mins and 10 secs</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-16 05:54:42]</span> - Population diagnosics - prevalence</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 1 of 7</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 2 of 7</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 3 of 7</span>
@@ -145,7 +151,7 @@ observation_period table will be used for the latter.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 5 of 7</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 6 of 7</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 7 of 7</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Time taken: 0 mins and 4 secs</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Time taken: 0 mins and 6 secs</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `populationDateStart`, `populationDateEnd`, and `populationSample` casted to</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> character.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `populationDateStart` and `populationDateEnd` eliminated from settings as all</span>

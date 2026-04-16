@@ -13,6 +13,7 @@ present in the cdm so that concept counts could be derived.
 ``` r
 codelistDiagnostics(
   cohort,
+  cohortId = NULL,
   achillesCodeUse = TRUE,
   orphanCodeUse = TRUE,
   cohortCodeUse = TRUE,
@@ -30,6 +31,10 @@ codelistDiagnostics(
   A cohort table in a cdm reference. The cohort_codelist attribute must
   be populated. The cdm reference must contain achilles tables as these
   will be used for deriving concept counts.
+
+- cohortId:
+
+  Specific cohort definition ID for which to run codelist diagnostics.
 
 - achillesCodeUse:
 
@@ -108,15 +113,15 @@ result <- codelistDiagnostics(cdm$warfarin)
 #> • quantity: min, q01, q05, q25, median, q75, q95, q99, max, percentage_missing
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side
-#> → Start summary of data, at 2026-04-15 14:31:50.108859
-#> ✔ Summary finished, at 2026-04-15 14:31:50.842584
+#> → Start summary of data, at 2026-04-16 05:49:39.705653
+#> ✔ Summary finished, at 2026-04-16 05:49:40.622334
 #> ℹ The following estimates will be calculated:
 #> • days_to_next_record: min, q01, q05, q25, median, q75, q95, q99, max,
 #>   percentage_missing
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side
-#> → Start summary of data, at 2026-04-15 14:31:51.512768
-#> ✔ Summary finished, at 2026-04-15 14:31:51.655093
+#> → Start summary of data, at 2026-04-16 05:49:41.344655
+#> ✔ Summary finished, at 2026-04-16 05:49:41.522377
 #> ! No common ingredient found for codelist: `warfarin`.
 #> ℹ Change ingredient threshold with options(PhenotypeR_ingredient_threshold),
 #>   threshold = 0.8.

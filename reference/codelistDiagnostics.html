@@ -59,6 +59,7 @@ the cdm so that concept counts could be derived.</p>
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">codelistDiagnostics</span><span class="op">(</span></span>
 <span>  <span class="va">cohort</span>,</span>
+<span>  cohortId <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  achillesCodeUse <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  orphanCodeUse <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  cohortCodeUse <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -77,6 +78,11 @@ the cdm so that concept counts could be derived.</p>
 <dd><p>A cohort table in a cdm reference. The cohort_codelist
 attribute must be populated. The cdm reference must contain achilles
 tables as these will be used for deriving concept counts.</p></dd>
+
+
+<dt id="arg-cohortid">cohortId<a class="anchor" aria-label="anchor" href="#arg-cohortid"></a></dt>
+<dd><p>Specific cohort definition ID for which to run codelist
+diagnostics.</p></dd>
 
 
 <dt id="arg-achillescodeuse">achillesCodeUse<a class="anchor" aria-label="anchor" href="#arg-achillescodeuse"></a></dt>
@@ -152,15 +158,15 @@ run.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> quantity: min, q01, q05, q25, median, q75, q95, q99, max, percentage_missing</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   the database side</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-15 14:31:50.108859</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-15 14:31:50.842584</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-16 05:49:39.705653</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-16 05:49:40.622334</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The following estimates will be calculated:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> days_to_next_record: min, q01, q05, q25, median, q75, q95, q99, max,</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   percentage_missing</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   the database side</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-15 14:31:51.512768</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-15 14:31:51.655093</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-16 05:49:41.344655</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-16 05:49:41.522377</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> No common ingredient found for codelist: `warfarin`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Change ingredient threshold with options(PhenotypeR_ingredient_threshold),</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   threshold = 0.8.</span>
