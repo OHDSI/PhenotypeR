@@ -96,8 +96,8 @@ cdm$new_cohort <- conceptCohort(cdm,
 #> • date_of_birth: density
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side
-#> → Start summary of data, at 2026-04-16 12:42:40.687901
-#> ✔ Summary finished, at 2026-04-16 12:42:40.762246
+#> → Start summary of data, at 2026-04-16 17:47:51.568492
+#> ✔ Summary finished, at 2026-04-16 17:47:51.632691
 #> ℹ retrieving cdm object from cdm_table.
 #> Warning: ! There are 2649 individuals not included in the person table.
 #> ℹ The following estimates will be calculated:
@@ -105,8 +105,8 @@ cdm$new_cohort <- conceptCohort(cdm,
 #> • observation_period_end_date: density
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side
-#> → Start summary of data, at 2026-04-16 12:42:44.181758
-#> ✔ Summary finished, at 2026-04-16 12:42:44.259564
+#> → Start summary of data, at 2026-04-16 17:47:54.77482
+#> ✔ Summary finished, at 2026-04-16 17:47:54.847945
 #> ℹ Adding variables of interest to drug_exposure.
 #> ℹ Summarising records per person in drug_exposure.
 #> ℹ Summarising subjects not in person table in drug_exposure.
