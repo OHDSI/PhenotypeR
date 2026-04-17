@@ -71,4 +71,4 @@ jobs:
         env:
           SHINYAPPS_TOKEN: ${{ secrets.SHINYAPPS_TOKEN }}
           SHINYAPPS_SECRET: ${{ secrets.SHINYAPPS_SECRET }}
-        run: Rscript extras/descriptions_shiny/docShiny.R
+        run: Rscript extras/descriptions_shiny/docDescriptionShiny.R

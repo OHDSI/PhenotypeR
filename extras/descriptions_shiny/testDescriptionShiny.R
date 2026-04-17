@@ -1,3 +1,3 @@
 
 appName <- "PhenotypeDescriptionsShinyTest"
-source(here::here("extras", "descriptions_shiy", "deployShiny.R"))
+source(here::here("extras", "descriptions_shiny", "deployDescriptionShiny.R"))
