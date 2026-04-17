@@ -4,11 +4,14 @@ template:
 
 navbar:
   structure:
-    left:  [intro, reference, articles, news, custom_shiny]
+    left:  [intro, reference, articles, news, description_shiny, custom_shiny]
     right: [githublink]
   components:
+    description_shiny:
+      text: "Decriptions shiny app"
+      href: https://dpa-pde-oxford.shinyapps.io/PhenotypeDescriptionsShiny/
     custom_shiny:
-      text: "PhenotypeR shiny App"
+      text: "PhenotypeR shiny app"
       href: https://dpa-pde-oxford.shinyapps.io/PhenotypeRShiny/
     githublink:
       icon: fa-github

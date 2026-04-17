@@ -1,7 +1,7 @@
 Package: PhenotypeR
 Type: Package
 Title: Assess Study Cohorts Using a Common Data Model
-Version: 0.4.0
+Version: 0.4.0.900
 Authors@R: c(
     person("Edward", "Burn", , "edward.burn@ndorms.ox.ac.uk", 
     role = c("aut", "cre"), comment = c(ORCID = "0000-0002-9286-1128")),
@@ -64,7 +64,9 @@ Suggests:
     systemfonts,
     officer,
     fs,
-    OmopConstructor
+    OmopConstructor,
+    tools,
+    jsonlite
 Config/testthat/edition: 3
 RoxygenNote: 7.3.3
 Imports: 

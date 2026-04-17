@@ -1,4 +1,4 @@
-name: Generate and Deploy Shiny App
+name: Generate and Deploy Descriptions Shiny App
 
 on:
   push:
@@ -35,14 +35,6 @@ jobs:
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
 
-      - name: Install binary DuckDB
-        run: |
-          codename <- system("lsb_release -c -s", intern = TRUE)
-          rspm_url <- paste0("https://packagemanager.posit.co/cran/__linux__/", codename, "/latest")
-          options(repos = c(RSPM = rspm_url))
-          install.packages("duckdb")
-        shell: Rscript {0}
-
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: any::rcmdcheck, any::pak
@@ -61,22 +53,22 @@ jobs:
           Rscript -e 'pak::pkg_install("ohdsi/PhenotypeR")'
 
       - name: Create shiny app
-        run: Rscript extras/createShiny.R
+        run: Rscript extras/descriptions_shiny/createDescriptionShiny.R
 
       - name: Create renv file
         run: Rscript -e 'renv::init()'
-        working-directory: PhenotypeRShiny/
+        working-directory: descritpionShiny/
 
       - name: Deploy test shiny to shinyapps.io
         if: github.event_name == 'pull_request'
         env:
           SHINYAPPS_TOKEN: ${{ secrets.SHINYAPPS_TOKEN }}
           SHINYAPPS_SECRET: ${{ secrets.SHINYAPPS_SECRET }}
-        run: Rscript extras/testShiny.R
+        run: Rscript extras/descriptions_shiny/testDescriptionShiny.R
 
       - name: Deploy shiny to shinyapps.io
         if: github.event_name != 'pull_request'
         env:
           SHINYAPPS_TOKEN: ${{ secrets.SHINYAPPS_TOKEN }}
           SHINYAPPS_SECRET: ${{ secrets.SHINYAPPS_SECRET }}
-        run: Rscript extras/docShiny.R
+        run: Rscript extras/descriptions_shiny/docDescriptionShiny.R
