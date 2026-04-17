@@ -22,7 +22,7 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: ubuntu-latest, r: '4.3.3'}
+          - {os: ubuntu-22.04, r: '4.3.3'}
 
     steps:
       - uses: actions/checkout@v4
@@ -45,7 +45,7 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::rcmdcheck, any::pak
+          extra-packages: any::rcmdcheck
           needs: check
 
       - name: Install PhenotypeR from branch
