@@ -3,11 +3,11 @@ ui <- bslib::page_navbar(
   title = "Phenotype Development",
   id = "nav",
   fillable = FALSE,
-  
+
   shiny::tags$head(
     shiny::uiOutput("dynamic_css")
   ),
-  
+
   bslib::nav_panel(
     title = "Clinical Description",
     shiny::div(class = "p-3",
@@ -20,18 +20,24 @@ ui <- bslib::page_navbar(
                    bslib::card_header("Metadata"),
                    metadata_ui
                  ),
-                 shiny::div(
-                   shiny::h4("Clinical Profile", class = "mb-3"),
-                   clinical_ui
-                 )
+                 bslib::card(
+                   full_screen = TRUE,
+                   bslib::card_header("Clinical Profile"),
+                   # shiny::div(
+                   #   shiny::h4("Clinical Profile", class = "mb-3"),
+                   clinical_ui,
+                 ),
+                 # ),
                ),
-               shiny::br(),
-               shiny::uiOutput("clinical_download_section"),
-               shiny::br(),
-               shiny::br()
+               bslib::card(
+                 shiny::br(),
+                 shiny::uiOutput("clinical_download_section"),
+                 shiny::br(),
+                 shiny::br()
+               )
     )
   ),
-  
+
   bslib::nav_panel(
     title = "Database Description",
     shiny::div(class = "p-3",

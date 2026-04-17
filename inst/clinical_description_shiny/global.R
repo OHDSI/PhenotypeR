@@ -32,7 +32,7 @@ get_label_text <- function(id) {
 }
 create_label_ui <- function(id, description) {
   shiny::tags$span(
-    get_label_text(id), 
+    get_label_text(id),
     bslib::tooltip(shiny::icon("info-circle"), description)
   )
 }
@@ -41,7 +41,7 @@ metadata_props <- clinical_description_spec$properties$metadata$properties
 metadata_ui <- lapply(names(metadata_props), function(id) {
   prop <- metadata_props[[id]]
   label_ui <- create_label_ui(id, prop$description)
-  
+
   if (!is.null(prop$format) && prop$format == "date") {
     shiny::dateInput(id, label_ui, format = "yyyy-mm-dd", value = Sys.Date(), width = "100%")
   } else {
@@ -53,10 +53,11 @@ clinical_props <- clinical_description_spec$properties$clinical_profile$properti
 clinical_ui <- lapply(names(clinical_props), function(id) {
   prop <- clinical_props[[id]]
   label_ui <- create_label_ui(id, prop$description)
-  
+
   bslib::card(
     full_screen = TRUE,
-    shiny::textAreaInput(id, label_ui, rows = 4, width = "100%")
+    class = "expandable-card",
+    shiny::textAreaInput(id, label_ui, rows = 6, width = "100%", autoresize = TRUE)
   )
 })
 
@@ -64,11 +65,12 @@ db_props <- db_spec$properties
 db_ui <- lapply(names(db_props), function(id) {
   prop <- db_props[[id]]
   label_ui <- create_label_ui(id, prop$description)
-  
+
   if (id == "database_description") {
     bslib::card(
       full_screen = TRUE,
-      shiny::textAreaInput(id, label_ui, rows = 10, width = "100%")
+      class = "expandable-card",
+      shiny::textAreaInput(id, label_ui, rows = 10, width = "100%", autoresize = TRUE)
     )
   } else {
     shiny::textInput(id, label_ui, width = "100%")
