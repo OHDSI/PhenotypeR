@@ -1,3 +1,3 @@
 
-PhenotypeR::shinyDescriptions(directory = getwd(),
+PhenotypeR:::shinyDescriptions(directory = getwd(),
                               open = FALSE)

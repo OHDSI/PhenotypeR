@@ -1,21 +1,4 @@
-#' Create a shiny app creating clinical and database descriptions
-#'
-#' @description
-#' A shiny app that is designed for creating descriptions for the PhenotrpeR
-#' dianostics shiny app.
-#'
-#' @inheritParams directoryDoc
-#' @param open If TRUE, the shiny app will be launched in a new session. If
-#' FALSE, the shiny app will be created but not launched.
-#'
-#' @return A shiny app
-#' @export
-#'
-#' @examples
-#' \donttest{
-#' library(PhenotypeR)
-#' shinyDescriptions(tempdir())
-#' }
+
 shinyDescriptions <- function(directory,
                              open = rlang::is_interactive()){
 
