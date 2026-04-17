@@ -15,7 +15,7 @@ jobs:
     name: ${{ matrix.config.os }} (${{ matrix.config.r }})
 
     concurrency:
-      group: pr-${{ github.event.pull_request.number || github.run_id }}
+      group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}
       cancel-in-progress: true
 
     strategy:
@@ -64,11 +64,11 @@ jobs:
         env:
           SHINYAPPS_TOKEN: ${{ secrets.SHINYAPPS_TOKEN }}
           SHINYAPPS_SECRET: ${{ secrets.SHINYAPPS_SECRET }}
-        run: Rscript extras/testDescriptionShiny.R
+        run: Rscript extras/descriptions_shiny/testDescriptionShiny.R
 
       - name: Deploy shiny to shinyapps.io
         if: github.event_name != 'pull_request'
         env:
           SHINYAPPS_TOKEN: ${{ secrets.SHINYAPPS_TOKEN }}
           SHINYAPPS_SECRET: ${{ secrets.SHINYAPPS_SECRET }}
-        run: Rscript extras/docShiny.R
+        run: Rscript extras/descriptions_shiny/docShiny.R
