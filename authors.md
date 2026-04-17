@@ -21,7 +21,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/OHDSI/PhenotypeR/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/OHDSI/PhenotypeR/blob/v0.4.0/DESCRIPTION)
 
 Burn E, Català M, Chen X, Alcalde-Herraiz M, Mercade-Besora N,
 Prats-Uribe A (2026). *PhenotypeR: Assess Study Cohorts Using a Common

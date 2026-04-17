@@ -45,7 +45,7 @@ includes:
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Create a shiny app summarising your phenotyping results</h1>
-      <small class="dont-index">Source: <a href="https://github.com/OHDSI/PhenotypeR/blob/main/R/shinyDiagnostics.R" class="external-link"><code>R/shinyDiagnostics.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/OHDSI/PhenotypeR/blob/v0.4.0/R/shinyDiagnostics.R" class="external-link"><code>R/shinyDiagnostics.R</code></a></small>
       <div class="d-none name"><code>shinyDiagnostics.Rd</code></div>
     </div>
 
@@ -141,19 +141,19 @@ FALSE, the shiny app will be created but not launched.</p></dd>
 <span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="phenotypeDiagnostics.html">phenotypeDiagnostics</a></span><span class="op">(</span><span class="va">cdm</span><span class="op">$</span><span class="va">warfarin</span>,</span></span>
 <span class="r-in"><span>                               populationDiagnostics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"populationSample"</span> <span class="op">=</span> <span class="fl">100000</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Logging PhenotypeR progress in</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> /tmp/RtmpltFBVI/phenotypeDiagnostics_log_{date}_{time}1c7b2800f345.txt</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> /tmp/RtmpoY3R77/phenotypeDiagnostics_log_{date}_{time}1c7c4e884c77.txt</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Creating log file:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   <span style="color: #0000BB;">/tmp/RtmpltFBVI/phenotypeDiagnostics_log_2026_04_17_08_55_421c7b2800f345.txt</span>.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-17 08:55:42]</span> - Log file created</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-17 08:55:42]</span> - Database diagnostics - getting CDM Snapshot</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-17 08:55:43]</span> - Database diagnostics - summarising person table</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   <span style="color: #0000BB;">/tmp/RtmpoY3R77/phenotypeDiagnostics_log_2026_04_17_09_09_451c7c4e884c77.txt</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-17 09:09:45]</span> - Log file created</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-17 09:09:45]</span> - Database diagnostics - getting CDM Snapshot</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-17 09:09:45]</span> - Database diagnostics - summarising person table</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The following estimates will be calculated:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> date_of_birth: density</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   the database side</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-17 08:55:47.08979</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-17 08:55:47.14542</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-17 08:55:47]</span> - Database diagnostics - summarising observation period</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-17 09:09:49.571948</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-17 09:09:49.632976</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-17 09:09:49]</span> - Database diagnostics - summarising observation period</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> retrieving cdm object from <span style="font-style: italic;">cdm_table</span>.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span><span style="color: #BBBB00;">!</span> There are 2649 individuals not included in the person table.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The following estimates will be calculated:</span>
@@ -161,9 +161,9 @@ FALSE, the shiny app will be created but not launched.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> observation_period_end_date: density</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   the database side</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-17 08:55:50.281436</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-17 08:55:50.354624</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-17 08:55:51]</span> - Database diagnostics - summarising clinical tables -</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-17 09:09:52.916716</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-17 09:09:52.993712</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-17 09:09:53]</span> - Database diagnostics - summarising clinical tables -</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> summary</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Adding variables of interest to <span style="color: #0000BB;">drug_exposure</span>.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising records per person in <span style="color: #0000BB;">drug_exposure</span>.</span>
@@ -177,11 +177,11 @@ FALSE, the shiny app will be created but not launched.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising concept types in <span style="color: #0000BB;">drug_exposure</span>.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising concept class in <span style="color: #0000BB;">drug_exposure</span>.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising missing data in <span style="color: #0000BB;">drug_exposure</span>.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-17 08:55:54]</span> - Database diagnostics - summarising clinical tables -</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-17 09:09:57]</span> - Database diagnostics - summarising clinical tables -</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> trends</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-17 08:55:55]</span> - Codelist diagnostics - index event breakdown</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-17 09:09:58]</span> - Codelist diagnostics - index event breakdown</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Getting counts of warfarin codes for cohort warfarin</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-17 08:55:57]</span> - Codelist diagnostics - drug diagnostics</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-17 09:09:59]</span> - Codelist diagnostics - drug diagnostics</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Returning entry cohort as the size of the cohorts to be sampled is equal or</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> smaller than `n`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The following estimates will be calculated:</span>
@@ -190,27 +190,27 @@ FALSE, the shiny app will be created but not launched.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> quantity: min, q01, q05, q25, median, q75, q95, q99, max, percentage_missing</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   the database side</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-17 08:55:58.69296</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-17 08:55:59.483191</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-17 09:10:01.680906</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-17 09:10:02.526087</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The following estimates will be calculated:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> days_to_next_record: min, q01, q05, q25, median, q75, q95, q99, max,</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   percentage_missing</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   the database side</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-17 08:56:00.102695</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-17 08:56:00.261898</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-17 09:10:03.177284</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-17 09:10:03.336326</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> No common ingredient found for codelist: `warfarin`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Change ingredient threshold with options(PhenotypeR_ingredient_threshold),</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   threshold = 0.8.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The CDM reference containing the cohort must also contain achilles tables.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> Returning only index event breakdown.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-17 08:56:03]</span> - Cohort diagnostics - cohort attrition</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-17 08:56:03]</span> - Cohort diagnostics - cohort count</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-17 09:10:07]</span> - Cohort diagnostics - cohort attrition</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-17 09:10:07]</span> - Cohort diagnostics - cohort count</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising data</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising cohort <span style="color: #0000BB;">warfarin</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> summariseCharacteristics finished!</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Skipping cohort sampling as all cohorts have less than 20000 individuals.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-17 08:56:04]</span> - Cohort diagnostics - matched cohorts</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-17 09:10:08]</span> - Cohort diagnostics - matched cohorts</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Sampling cohort `tmp_058_sampled`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Returning entry cohort as the size of the cohorts to be sampled is equal or</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> smaller than `n`.</span>
@@ -227,7 +227,7 @@ FALSE, the shiny app will be created but not launched.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Binding cohorts</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Done</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Getting cohorts and indexes</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-17 08:56:15]</span> - Cohort diagnostics - cohort characteristics</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-17 09:10:19]</span> - Cohort diagnostics - cohort characteristics</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> adding demographics columns</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> adding tableIntersectCount 1/1</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> window names casted to snake_case:</span>
@@ -237,13 +237,13 @@ FALSE, the shiny app will be created but not launched.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising cohort <span style="color: #0000BB;">warfarin_sampled</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising cohort <span style="color: #0000BB;">warfarin_matched</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> summariseCharacteristics finished!</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-17 08:56:20]</span> - Cohort diagnostics - age density</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-17 09:10:24]</span> - Cohort diagnostics - age density</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The following estimates will be calculated:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> age: density</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   the database side</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-17 08:56:21.007319</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-17 08:56:21.137643</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-17 09:10:25.164523</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-17 09:10:25.292938</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Using defaults for windows for large scale characteristics: c(-365, -31),</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> c(-30, -1), c(0, 0), c(1, 30), and c(31, 365). These can be changed via passing</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> alternative windows as a global option</span>
@@ -257,7 +257,7 @@ FALSE, the shiny app will be created but not launched.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> drug_exposure and drug_era. These can be changed via passing alternative</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> windows as a global option</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `PhenotypeR_summariseLargeScaleCharacteristics_episodeInWindow`</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-17 08:56:21]</span> - Cohort diagnostics - large scale characteristics</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-17 09:10:25]</span> - Cohort diagnostics - large scale characteristics</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising large scale characteristics </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
@@ -351,12 +351,12 @@ FALSE, the shiny app will be created but not launched.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 231 estimates dropped as frequency less than 1%</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summarising large scale characteristics</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `cohort_sample` and `matched_sample` casted to character.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-17 08:57:05]</span> - Population diagnosics - denominator cohort</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-17 08:57:05]</span> - Population diagnosics - sampling person table to 1e+05</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-17 09:11:11]</span> - Population diagnosics - denominator cohort</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-17 09:11:11]</span> - Population diagnosics - sampling person table to 1e+05</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> people</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Creating denominator cohorts</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Cohorts created in 0 min and 5 sec</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-17 08:57:11]</span> - Population diagnosics - incidence</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-17 09:11:17]</span> - Population diagnosics - incidence</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 1 of 7</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 2 of 7</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 3 of 7</span>
@@ -364,8 +364,8 @@ FALSE, the shiny app will be created but not launched.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 5 of 7</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 6 of 7</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 7 of 7</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Overall time taken: 0 mins and 9 secs</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-17 08:57:20]</span> - Population diagnosics - prevalence</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Overall time taken: 0 mins and 10 secs</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-17 09:11:27]</span> - Population diagnosics - prevalence</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 1 of 7</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 2 of 7</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 3 of 7</span>
@@ -373,17 +373,17 @@ FALSE, the shiny app will be created but not launched.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 5 of 7</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 6 of 7</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 7 of 7</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Time taken: 0 mins and 5 secs</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Time taken: 0 mins and 6 secs</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `populationDateStart`, `populationDateEnd`, and `populationSample` casted to</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> character.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `populationDateStart` and `populationDateEnd` eliminated from settings as all</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> elements are NA.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-17 08:57:27]</span> - Exporting log file</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-17 09:11:34]</span> - Exporting log file</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">shinyDiagnostics</span><span class="op">(</span><span class="va">result</span>,</span></span>
 <span class="r-in"><span>                <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Creating shiny from provided data</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-17 08:57:27]</span> - Exporting log file</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-04-17 09:11:35]</span> - Exporting log file</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The following tabs from codelistDiagnostics will be removed because they are</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> not present in the summarised result: achilles_code_use, orphan_code_use, and</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> measurement_diagnostics</span>
@@ -393,7 +393,7 @@ FALSE, the shiny app will be created but not launched.</p></dd>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Expectations tab in cohort_count, cohort_characteristics,</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> large_scale_characteristics, and compare_large_scale_characteristics will be</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> removed, as none were provided.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Shiny app created in /tmp/RtmpltFBVI/PhenotypeRShiny</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Shiny app created in /tmp/RtmpoY3R77/PhenotypeRShiny</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">CDMConnector</span><span class="fu">::</span><span class="fu"><a href="https://darwin-eu.github.io/omopgenerics/reference/cdmDisconnect.html" class="external-link">cdmDisconnect</a></span><span class="op">(</span>cdm <span class="op">=</span> <span class="va">cdm</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
