@@ -63,6 +63,9 @@ jobs:
       - name: Create shiny app
         run: Rscript extras/createShiny.R
 
+      - name: Pin fs version for shinyapps.io
+        run: Rscript -e 'pak::pkg_install("fs@2.0.1")'
+
       - name: Create renv file
         run: Rscript -e 'renv::init()'
         working-directory: PhenotypeRShiny/

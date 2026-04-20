@@ -1,4 +1,17 @@
 
+#' Shiny app to create descriptions for contextualising diagnostic results
+#'
+#' @param directory Directory where to save shiny app
+#' @param open If TRUE, the shiny app will be launched in a new session. If
+#' FALSE, the shiny app will be created but not launched.
+#'
+#' @returns
+#' @export
+#'
+#' @examples
+#' \donttest{
+#' shinyDescriptions(tempdir())
+#' }
 shinyDescriptions <- function(directory,
                              open = rlang::is_interactive()){
 

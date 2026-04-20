@@ -45,6 +45,7 @@ reference:
 - subtitle: Clinical descriptions for event of interest
 - contents:
   - getClinicalDescription
+  - shinyDescriptions
 - subtitle: Expectations for phenotyping results
 - contents:
   - getCohortExpectations
