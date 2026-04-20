@@ -12,6 +12,9 @@ jobs:
     permissions:
       contents: write
 
+    env:
+      USE_BUNDLED_LIBUV: 1
+
     name: ${{ matrix.config.os }} (${{ matrix.config.r }})
 
     concurrency:

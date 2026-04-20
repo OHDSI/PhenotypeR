@@ -12,6 +12,9 @@ jobs:
     permissions:
       contents: write
 
+    env:
+      USE_BUNDLED_LIBUV: 1
+
     name: ${{ matrix.config.os }} (${{ matrix.config.r }})
 
     concurrency:
@@ -50,8 +53,21 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::rcmdcheck
+          extra-packages: |
+             any::rcmdcheck
+             any::omock
           needs: check
+
+      - name: Download Mock Dataset
+        run: |
+          options(timeout = 600)
+          if (!dir.exists(Sys.getenv("OMOP_DATA_FOLDER"))) {
+            dir.create(Sys.getenv("OMOP_DATA_FOLDER"), recursive = TRUE)
+          }
+          omock::downloadMockDataset(datasetName = "GiBleed", path = Sys.getenv("OMOP_DATA_FOLDER"))
+          omock::downloadMockDataset(datasetName = "synpuf-1k_5.3", path = Sys.getenv("OMOP_DATA_FOLDER"))
+          omock::downloadMockDataset(datasetName = "synthea-covid19-200k", path = Sys.getenv("OMOP_DATA_FOLDER"))
+        shell: Rscript {0}
 
       - name: Install PhenotypeR from branch
         if: github.event_name == 'pull_request'
