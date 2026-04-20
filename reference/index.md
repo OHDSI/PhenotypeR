@@ -25,6 +25,9 @@
 
 - [`getClinicalDescription()`](https://ohdsi.github.io/PhenotypeR/reference/getClinicalDescription.md)
   : Get clinical descriptions using an LLM
+- [`shinyDescriptions()`](https://ohdsi.github.io/PhenotypeR/reference/shinyDescriptions.md)
+  : Shiny app to create descriptions for contextualising diagnostic
+  results
 
 ### Expectations for phenotyping results
 
