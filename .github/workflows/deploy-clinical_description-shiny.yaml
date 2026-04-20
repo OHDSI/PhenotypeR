@@ -12,9 +12,6 @@ jobs:
     permissions:
       contents: write
 
-    env:
-      USE_BUNDLED_LIBUV: 1
-
     name: ${{ matrix.config.os }} (${{ matrix.config.r }})
 
     concurrency:
@@ -62,13 +59,6 @@ jobs:
 
       - name: Create shiny app
         run: Rscript extras/descriptions_shiny/createDescriptionShiny.R
-
-      - name: Create renv file
-        run: Rscript -e 'renv::init()'
-        working-directory: descritpionShiny/
-
-      - name: Configure shinyapps.io environment
-        run: echo "USE_BUNDLED_LIBUV=1" >> descritpionShiny/.Renviron
 
       - name: Deploy test shiny to shinyapps.io
         if: github.event_name == 'pull_request'
