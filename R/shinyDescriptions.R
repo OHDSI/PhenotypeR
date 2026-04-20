@@ -5,7 +5,7 @@
 #' @param open If TRUE, the shiny app will be launched in a new session. If
 #' FALSE, the shiny app will be created but not launched.
 #'
-#' @returns
+#' @returns Shiny app
 #' @export
 #'
 #' @examples
