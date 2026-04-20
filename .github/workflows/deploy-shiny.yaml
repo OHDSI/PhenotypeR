@@ -14,6 +14,7 @@ jobs:
 
     env:
       USE_BUNDLED_LIBUV: 1
+      OMOP_DATA_FOLDER: ${{ github.workspace }}/omop
 
     name: ${{ matrix.config.os }} (${{ matrix.config.r }})
 

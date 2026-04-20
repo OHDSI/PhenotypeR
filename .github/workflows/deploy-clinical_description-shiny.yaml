@@ -67,6 +67,9 @@ jobs:
         run: Rscript -e 'renv::init()'
         working-directory: descritpionShiny/
 
+      - name: Configure shinyapps.io environment
+        run: echo "USE_BUNDLED_LIBUV=1" >> descritpionShiny/.Renviron
+
       - name: Deploy test shiny to shinyapps.io
         if: github.event_name == 'pull_request'
         env:
