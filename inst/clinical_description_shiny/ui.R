@@ -3,58 +3,89 @@ ui <- bslib::page_navbar(
   title = "Phenotype Development",
   id = "nav",
   fillable = FALSE,
-
+  
   shiny::tags$head(
-    shiny::uiOutput("dynamic_css")
+    shiny::uiOutput("dynamic_css"),
+    shiny::tags$style("
+      /* Remove blue background and text color when open */
+      .accordion-button:not(.collapsed) {
+        background-color: var(--bs-accordion-bg) !important;
+        color: var(--bs-accordion-color) !important;
+        box-shadow: none !important;
+      }
+      /* Remove the blue focus ring/outline when clicked */
+      .accordion-button:focus {
+        box-shadow: none !important;
+        border-color: rgba(0,0,0,.125) !important;
+      }
+    ")
   ),
-
+  
   bslib::nav_panel(
     title = "Clinical Description",
     shiny::div(class = "p-3",
                shiny::titlePanel(clinical_description_spec$title),
                shiny::p(clinical_description_spec$description, class = "text-muted mb-4"),
-               bslib::layout_columns(
-                 col_widths = c(3, 9),
-                 bslib::card(
-                   full_screen = TRUE,
-                   bslib::card_header("Metadata"),
-                   metadata_ui
-                 ),
-                 bslib::card(
-                   full_screen = TRUE,
-                   bslib::card_header("Clinical Profile"),
-                   # shiny::div(
-                   #   shiny::h4("Clinical Profile", class = "mb-3"),
-                   clinical_ui,
-                 ),
-                 # ),
+               
+               shiny::div(class = "mb-4",
+                          shiny::uiOutput("clinical_download_section")
                ),
-               bslib::card(
-                 shiny::br(),
-                 shiny::uiOutput("clinical_download_section"),
-                 shiny::br(),
-                 shiny::br()
+               
+               bslib::accordion(
+                 multiple = TRUE,
+                 open = c("Metadata", "Clinical Profile"),
+                 
+                 bslib::accordion_panel(
+                   title = "Metadata",
+                   icon = shiny::icon("tags"),
+                   
+                   # Phenotype Name on its own row
+                   shiny::div(
+                     class = "p-3 mb-4 bg-light border-start border-primary border-4 rounded shadow-sm",
+                     metadata_ui[[1]], # phenotype_name on its own
+                     
+                     shiny::actionButton(
+                       inputId = "draft_with_ai", 
+                       label = "Draft with AI", 
+                       icon = shiny::icon("wand-magic-sparkles"), 
+                       class = "btn-primary mt-2"
+                     ),
+                     shiny::uiOutput("ai_draft_message")
+                   ),
+                   
+                   # other metadata
+                   do.call(bslib::layout_column_wrap, c(list(width = 1/2), metadata_ui[-1]))
+                 ),
+                 
+                 bslib::accordion_panel(
+                   title = "Clinical Profile",
+                   icon = shiny::icon("file-medical"),
+                   clinical_ui
+                 )
                )
     )
   ),
-
+  
   bslib::nav_panel(
     title = "Database Description",
     shiny::div(class = "p-3",
                shiny::titlePanel(db_spec$title),
                shiny::p(db_spec$description, class = "text-muted mb-4"),
-               bslib::layout_columns(
-                 col_widths = c(12),
-                 bslib::card(
-                   full_screen = TRUE,
-                   bslib::card_header("Database Details"),
+               
+               shiny::div(class = "mb-4",
+                          shiny::uiOutput("db_download_section")
+               ),
+               
+               bslib::accordion(
+                 multiple = TRUE,
+                 open = "Database Details",
+                 
+                 bslib::accordion_panel(
+                   title = "Database Details",
+                   icon = shiny::icon("database"),
                    db_ui
                  )
-               ),
-               shiny::br(),
-               shiny::uiOutput("db_download_section"),
-               shiny::br(),
-               shiny::br()
+               )
     )
   )
 )

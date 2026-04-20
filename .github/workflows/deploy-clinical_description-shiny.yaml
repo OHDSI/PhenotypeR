@@ -35,6 +35,11 @@ jobs:
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
 
+      - name: Install libuv system dependency
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libuv1-dev
+
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: any::rcmdcheck

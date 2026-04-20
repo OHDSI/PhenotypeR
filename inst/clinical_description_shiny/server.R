@@ -186,4 +186,12 @@ server <- function(input, output, session) {
       print(doc, target = file)
     }
   )
+  
+  
+  output$ai_draft_message <- shiny::renderUI({
+    shiny::req(input$draft_with_ai > 0) 
+    shiny::span("AI draft functionality not yet supported - coming soon!",
+                class = "text-danger fw-bold mt-2 d-block")
+  })
+  
 }
