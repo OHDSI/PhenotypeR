@@ -82,6 +82,9 @@ jobs:
         run: |
           Rscript -e 'pak::pkg_install("ohdsi/PhenotypeR")'
 
+      - name: Force working version of fs
+        run: Rscript -e 'pak::pkg_install("fs@2.0.1")'
+
       - name: Create shiny app
         run: Rscript extras/createShiny.R
 
