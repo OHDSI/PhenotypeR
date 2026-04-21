@@ -177,7 +177,6 @@ server <- function(input, output, session) {
     
     
     # using ellmer chat object created by user in global
-    browser()
     PhenotypeR::getClinicalDescription(chat,
                                        name = input$phenotype_name,
                                        outputDir =  tmp)
