@@ -1,0 +1,102 @@
+{
+  "title": "Clinical Description",
+  "description": "A clinical description to inform development of computable phenotypes using real world health data.",
+  "type": "object",
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "description": "Information on the provenance of clinical description.",
+      "properties": {
+        "phenotype_name": {
+          "type": "string",
+          "description": "The name of the phenotype the clinical description is for."
+        },
+        "version": {
+          "type": "string",
+          "description": "The version number or identifier of this clinical profile document."
+        },
+        "created_by": {
+          "type": "string",
+          "description": "The name or identifier of the person/ tool."
+        },
+        "created_date": {
+          "type": "string",
+          "format": "date",
+          "description": "The date this clinical profile was originally generated, formatted as YYYY-MM-DD."
+        },
+        "last_edited_by": {
+          "type": "string",
+          "description": "The name or identifier of person/ tool that most recently modified the description."
+        },
+        "last_edited_date": {
+          "type": "string",
+          "format": "date",
+          "description": "The date this clinical profile was most recently modified, formatted as YYYY-MM-DD."
+        },
+        "source_of_information": {
+          "type": "string",
+          "description": "The references, literature, or data sources used to compile this clinical profile."
+        }
+      },
+      "required": [
+        "phenotype_name",
+        "version",
+        "created_by",
+        "created_date",
+        "last_edited_by",
+        "last_edited_date",
+        "source_of_information"
+      ],
+      "additionalProperties": false
+    },
+    "clinical_profile": {
+      "type": "object",
+      "description": "The core clinical and epidemiological data.",
+      "properties": {
+        "introduction_synonyms": {
+          "type": "string",
+          "description": "A high-level description of the condition, including commonly used synonyms in the medical literature and by medical professionals."
+        },
+        "clinical_presentation_and_symptoms": {
+          "type": "string",
+          "description": "A summary of the typical clinical presentation and associated symptoms."
+        },
+        "assessment_diagnosis": {
+          "type": "string",
+          "description": "An explanation of how patients are assessed and how the diagnosis is made."
+        },
+        "therapeutic_plan_treatment": {
+          "type": "string",
+          "description": "A description of the typical therapeutic or treatment plan."
+        },
+        "complications_prognosis": {
+          "type": "string",
+          "description": "A summary of common complications and the prognosis for patients."
+        },
+        "disqualifiers": {
+          "type": "string",
+          "description": "An explanation of disqualifiers and differential diagnoses considered by medical professionals."
+        },
+        "epidemiology": {
+          "type": "string",
+          "description": "A summary of the known epidemiology, including prevalence, risk factors, and comorbidities."
+        }
+      },
+      "required": [
+        "introduction_synonyms",
+        "clinical_presentation_and_symptoms",
+        "epidemiology",
+        "assessment_diagnosis",
+        "therapeutic_plan_treatment",
+        "complications_prognosis",
+        "disqualifiers"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "metadata",
+    "clinical_profile"
+  ],
+  "additionalProperties": false
+}
