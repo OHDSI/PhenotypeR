@@ -4,9 +4,13 @@ library(jsonlite)
 library(officer)
 library(tools)
 
-clinical_description_spec <- jsonlite::fromJSON(here::here("clinical_description_specification.json"),
+# create ellmer chat object for AI draft functionality
+# e.g. chat <- ellmer::chat("google_gemini")
+chat <- NULL
+
+clinical_description_spec <- jsonlite::fromJSON(system.file("clinical_description_specification.json", package = "PhenotypeR"),
                                                 simplifyVector = FALSE)
-db_spec <- jsonlite::fromJSON(here::here("database_description.json"),
+db_spec <- jsonlite::fromJSON(system.file("database_description.json", package = "PhenotypeR"),
                               simplifyVector = FALSE)
 
 

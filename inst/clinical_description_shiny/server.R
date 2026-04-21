@@ -1,5 +1,5 @@
 server <- function(input, output, session) {
-
+  
   required_metadata <- unlist(clinical_description_spec$properties$metadata$required)
   required_clinical <- unlist(clinical_description_spec$properties$clinical_profile$required)
   all_clinical_fields <- c(required_metadata, required_clinical)
@@ -51,17 +51,14 @@ server <- function(input, output, session) {
     if (length(missing) == 0) {
       shiny::div(
         class = "d-flex gap-2",
-        shiny::downloadButton("download_clinical_json", "Download JSON", class = "btn-primary"),
-        shiny::downloadButton("download_clinical_word", "Download Word", class = "btn-info")
+        shiny::downloadButton("download_clinical_json", "Download JSON", class = "btn-primary")
       )
     } else {
       missing_names <- paste(clinical_labels[missing], collapse = ", ")
       shiny::tagList(
         shiny::div(
           class = "d-flex gap-2",
-          shiny::actionButton("disabled_clinical_json", "Download JSON", class = "btn-secondary disabled"),
-          shiny::actionButton("disabled_clinical_word", "Download Word", class = "btn-secondary disabled")
-        ),
+          shiny::actionButton("disabled_clinical_json", "Download JSON", class = "btn-secondary disabled")        ),
         shiny::p(paste("Please fill in the following missing required fields to enable downloads:", missing_names), class = "text-danger mt-2 fw-bold")
       )
     }
@@ -73,17 +70,13 @@ server <- function(input, output, session) {
     if (length(missing) == 0) {
       shiny::div(
         class = "d-flex gap-2",
-        shiny::downloadButton("download_db_json", "Download JSON", class = "btn-primary"),
-        shiny::downloadButton("download_db_word", "Download Word", class = "btn-info")
-      )
+        shiny::downloadButton("download_db_json", "Download JSON", class = "btn-primary")      )
     } else {
       missing_names <- paste(db_labels[missing], collapse = ", ")
       shiny::tagList(
         shiny::div(
           class = "d-flex gap-2",
-          shiny::actionButton("disabled_db_json", "Download JSON", class = "btn-secondary disabled"),
-          shiny::actionButton("disabled_db_word", "Download Word", class = "btn-secondary disabled")
-        ),
+          shiny::actionButton("disabled_db_json", "Download JSON", class = "btn-secondary disabled")        ),
         shiny::p(paste("Please fill in the following missing required fields to enable downloads:", missing_names), class = "text-danger mt-2 fw-bold")
       )
     }
@@ -118,35 +111,6 @@ server <- function(input, output, session) {
     }
   )
 
-  output$download_clinical_word <- shiny::downloadHandler(
-    filename = function() {
-      paste0("clinical_description_", Sys.Date(), ".docx")
-    },
-    content = function(file) {
-      shiny::req(length(clinical_missing()) == 0)
-
-      doc <- officer::read_docx()
-
-      doc <- officer::body_add_par(doc, "Metadata", style = "heading 1")
-      for (id in names(metadata_props)) {
-        val <- if (!is.null(metadata_props[[id]]$format) && metadata_props[[id]]$format == "date") {
-          as.character(input[[id]])
-        } else {
-          input[[id]]
-        }
-        doc <- officer::body_add_par(doc, get_label_text(id), style = "heading 2")
-        doc <- officer::body_add_par(doc, val, style = "Normal")
-      }
-
-      doc <- officer::body_add_par(doc, "Clinical Profile", style = "heading 1")
-      for (id in names(clinical_props)) {
-        doc <- officer::body_add_par(doc, get_label_text(id), style = "heading 2")
-        doc <- officer::body_add_par(doc, input[[id]], style = "Normal")
-      }
-
-      print(doc, target = file)
-    }
-  )
 
   output$download_db_json <- shiny::downloadHandler(
     filename = function() {
@@ -168,30 +132,75 @@ server <- function(input, output, session) {
     }
   )
 
-  output$download_db_word <- shiny::downloadHandler(
-    filename = function() {
-      paste0("database_description_", Sys.Date(), ".docx")
-    },
-    content = function(file) {
-      shiny::req(length(db_missing()) == 0)
 
-      doc <- officer::read_docx()
-
-      doc <- officer::body_add_par(doc, "Database Description", style = "heading 1")
-      for (id in names(db_props)) {
-        doc <- officer::body_add_par(doc, get_label_text(id), style = "heading 2")
-        doc <- officer::body_add_par(doc, input[[id]], style = "Normal")
-      }
-
-      print(doc, target = file)
-    }
-  )
-  
   
   output$ai_draft_message <- shiny::renderUI({
     shiny::req(input$draft_with_ai > 0) 
-    shiny::span("AI draft functionality not yet supported - coming soon!",
-                class = "text-danger fw-bold mt-2 d-block")
+
+    if(input$phenotype_name == ""){
+      return(
+        shiny::span("Phenotype name must be provided",
+                  class = "text-danger fw-bold mt-2 d-block")
+      )
+    }
+   
+    if(is.null(chat)){
+      return(
+        shiny::span("No LLM available To use an LLM to draft description, run app locally using PhenotypeR::getClinicalDescription() and create ellmer chat object in global.R",
+                    class = "text-danger fw-bold mt-2 d-block")
+      )
+    }
+    
+    shinyjs::disable("draft_with_ai")
+    shiny::showModal(
+      shiny::modalDialog(
+        title = "Drafting with AI",
+        shiny::div(
+          class = "d-flex align-items-center gap-3",
+          shiny::icon("spinner", class = "fa-spin fa-2x text-primary"),
+          shiny::span("Please wait while LLM generates the clinical description", 
+                      class = "fs-5")
+        ),
+        footer = NULL,      
+        easyClose = FALSE  
+      )
+    )
+    
+    # Ensure the button enables AND the modal closes when finished
+    on.exit({
+      shinyjs::enable("draft_with_ai")
+      shiny::removeModal()
+    })
+    
+    tmp <- file.path(tempdir(), omopgenerics::uniqueTableName())
+    dir.create(tmp)
+    
+    
+    # using ellmer chat object created by user in global
+    browser()
+    PhenotypeR::getClinicalDescription(chat,
+                                       name = input$phenotype_name,
+                                       outputDir =  tmp)
+    clinical_description <-  PhenotypeR:::importClinicalDescription(path = tmp)
+    
+
+      for (i in seq_along(names(clinical_description[[1]]$clinical_profile))) {
+        shiny::updateTextAreaInput(
+          session = session,
+          inputId = names(clinical_description[[1]]$clinical_profile[i]),
+          value = clinical_description[[1]]$clinical_profile[[i]]
+        )
+      }
+    
+    for (i in seq_along(names(clinical_description[[1]]$metadata))) {
+      shiny::updateTextAreaInput(
+        session = session,
+        inputId = names(clinical_description[[1]]$metadata[i]),
+        value = clinical_description[[1]]$metadata[[i]]
+      )
+    }
+
+
   })
   
 }
