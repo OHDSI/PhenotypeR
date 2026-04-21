@@ -10,10 +10,10 @@ codelistDiagnostics(
   achillesCodeUse = TRUE,
   orphanCodeUse = TRUE,
   cohortCodeUse = TRUE,
-  drugDiagnostics = TRUE,
-  measurementDiagnostics = TRUE,
-  measurementDiagnosticsSample = 20000,
-  drugDiagnosticsSample = 20000
+  drugDiagnostics = FALSE,
+  drugDiagnosticsSample = 20000,
+  measurementDiagnostics = FALSE,
+  measurementDiagnosticsSample = 20000
 )
 }
 \arguments{
@@ -33,17 +33,17 @@ diagnostics.}
 \item{drugDiagnostics}{Whether to run drug diagnostics (TRUE) or not (FALSE). Note that, if set to TRUE, the
 diagnostics will only run if the cohort code list contains drug codes.}
 
+\item{drugDiagnosticsSample}{The number of people to take a random sample for
+drug diagnostics. If `drugDiagnosticsSample = NULL`, no sampling will be
+performed. If `drugDiagnosticsSample = 0` drug diagnostics will not be
+run.}
+
 \item{measurementDiagnostics}{Whether to run measurement diagnostics (TRUE) or not (FALSE). Note that, if set to TRUE, the
 diagnostics will only run if the cohort code list contains measurement codes.}
 
 \item{measurementDiagnosticsSample}{The number of people to take a random sample for
 measurement diagnostics. If `measurementDiagnosticsSample = NULL`, no sampling will be
 performed. If `measurementDiagnosticsSample = 0` measurement diagnostics will not be
-run.}
-
-\item{drugDiagnosticsSample}{The number of people to take a random sample for
-drug diagnostics. If `drugDiagnosticsSample = NULL`, no sampling will be
-performed. If `drugDiagnosticsSample = 0` drug diagnostics will not be
 run.}
 }
 \value{
