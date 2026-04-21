@@ -104,6 +104,7 @@ test_that("measurementDiagnostics working", {
                                                              codes,
                                                              "measurement_cohort")
   res <- PhenotypeR::codelistDiagnostics(cdm$measurement_cohort,
+                                         measurementDiagnostics = TRUE,
                                          measurementDiagnosticsSample = NULL)
 
   expect_equal(
@@ -120,7 +121,9 @@ test_that("measurementDiagnostics working", {
                    "codelistDiagnostics")
 
   # sampling
-  res_sampled <- PhenotypeR::codelistDiagnostics(cdm$measurement_cohort, measurementDiagnosticsSample = 5)
+  res_sampled <- PhenotypeR::codelistDiagnostics(cdm$measurement_cohort,
+                                                 measurementDiagnostics = TRUE,
+                                                 measurementDiagnosticsSample = 5)
 
   expect_true(res_sampled |>
     omopgenerics::filterSettings(result_type == "measurement_summary") |>
@@ -138,7 +141,8 @@ test_that("measurementDiagnostics working", {
                                                         multiple_codes,
                                                         "measurement_2")
 
-    res <- PhenotypeR::codelistDiagnostics(cdm$measurement_2)
+    res <- PhenotypeR::codelistDiagnostics(cdm$measurement_2,
+                                           measurementDiagnostics = TRUE)
   expect_equal(
     settings(res)$result_type,
     c("cohort_code_use", "measurement_summary", "measurement_value_as_number", "measurement_value_as_concept")
@@ -225,12 +229,14 @@ test_that("cohortId working", {
   cdm$my_cohort <- cdm$my_cohort |>
     omopgenerics::newCohortTable() |>
     addCodelistAttribute(
-      codelist = list(a = 37110496L, b = 1361364),
+      codelist = list(a = 37110496L, b = 1361364L),
       cohortName = c("cohort_1", "cohort_2")
     )
 
 # specify cohort id
-res <- codelistDiagnostics(cdm$my_cohort, cohortId = 2)
+res <- codelistDiagnostics(cdm$my_cohort,
+                           drugDiagnostics = TRUE,
+                           cohortId = 2L)
 expect_true(res |>
   dplyr::filter(stringr::str_detect(group_level, "cohort_1")) |>
   nrow() == 0)
