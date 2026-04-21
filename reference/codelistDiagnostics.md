@@ -17,10 +17,10 @@ codelistDiagnostics(
   achillesCodeUse = TRUE,
   orphanCodeUse = TRUE,
   cohortCodeUse = TRUE,
-  drugDiagnostics = TRUE,
-  measurementDiagnostics = TRUE,
-  measurementDiagnosticsSample = 20000,
-  drugDiagnosticsSample = 20000
+  drugDiagnostics = FALSE,
+  drugDiagnosticsSample = 20000,
+  measurementDiagnostics = FALSE,
+  measurementDiagnosticsSample = 20000
 )
 ```
 
@@ -57,6 +57,12 @@ codelistDiagnostics(
   set to TRUE, the diagnostics will only run if the cohort code list
   contains drug codes.
 
+- drugDiagnosticsSample:
+
+  The number of people to take a random sample for drug diagnostics. If
+  \`drugDiagnosticsSample = NULL\`, no sampling will be performed. If
+  \`drugDiagnosticsSample = 0\` drug diagnostics will not be run.
+
 - measurementDiagnostics:
 
   Whether to run measurement diagnostics (TRUE) or not (FALSE). Note
@@ -69,12 +75,6 @@ codelistDiagnostics(
   diagnostics. If \`measurementDiagnosticsSample = NULL\`, no sampling
   will be performed. If \`measurementDiagnosticsSample = 0\` measurement
   diagnostics will not be run.
-
-- drugDiagnosticsSample:
-
-  The number of people to take a random sample for drug diagnostics. If
-  \`drugDiagnosticsSample = NULL\`, no sampling will be performed. If
-  \`drugDiagnosticsSample = 0\` drug diagnostics will not be run.
 
 ## Value
 
@@ -105,26 +105,6 @@ cdm$warfarin <- conceptCohort(cdm,
 #> ✔ Cohort warfarin created.
 result <- codelistDiagnostics(cdm$warfarin)
 #> Getting counts of warfarin codes for cohort warfarin
-#> Returning entry cohort as the size of the cohorts to be sampled is equal or
-#> smaller than `n`.
-#> ℹ The following estimates will be calculated:
-#> • exposure_duration: min, q01, q05, q25, median, q75, q95, q99, max,
-#>   percentage_missing
-#> • quantity: min, q01, q05, q25, median, q75, q95, q99, max, percentage_missing
-#> ! Table is collected to memory as not all requested estimates are supported on
-#>   the database side
-#> → Start summary of data, at 2026-04-21 10:31:28.551425
-#> ✔ Summary finished, at 2026-04-21 10:31:29.489984
-#> ℹ The following estimates will be calculated:
-#> • days_to_next_record: min, q01, q05, q25, median, q75, q95, q99, max,
-#>   percentage_missing
-#> ! Table is collected to memory as not all requested estimates are supported on
-#>   the database side
-#> → Start summary of data, at 2026-04-21 10:31:30.206139
-#> ✔ Summary finished, at 2026-04-21 10:31:30.37919
-#> ! No common ingredient found for codelist: `warfarin`.
-#> ℹ Change ingredient threshold with options(PhenotypeR_ingredient_threshold),
-#>   threshold = 0.8.
 #> Warning: The CDM reference containing the cohort must also contain achilles tables.
 #> Returning only index event breakdown.
 
