@@ -1,0 +1,4 @@
+{
+  "database_name": "Synthea-covid19-200k",
+  "database_description": "Synthea-covid19-200k database is a synthetic database tailored to simulate the COVID-19 pandemic impact. It contains data for about 200k patients. "
+}

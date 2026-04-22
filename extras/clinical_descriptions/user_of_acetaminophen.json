@@ -1,0 +1,20 @@
+{
+  "metadata": {
+    "phenotype_name": "user_of_acetaminophen",
+    "version": "1.0",
+    "created_by": "gemini-2.5-pro (via PhenotypeR::getClinicalDescription())",
+    "created_date": "2026-04-22",
+    "last_edited_by": "N/A",
+    "last_edited_date": "2026-04-22",
+    "source_of_information": "gemini-2.5-pro"
+  },
+  "clinical_profile": {
+    "introduction_synonyms": "Acetaminophen, also widely known as paracetamol, is an analgesic and antipyretic medication. It is used for the management of mild-to-moderate pain and for the reduction of fever.",
+    "clinical_presentation_and_symptoms": "Individuals using acetaminophen typically present with symptoms of pain or fever. The nature of the pain is diverse and can include headache, dental pain, musculoskeletal pain such as from osteoarthritis or backache, and post-operative or post-procedural pain. Fever is usually a symptom of an underlying condition, most commonly an infection.",
+    "assessment_diagnosis": "The decision to use acetaminophen is based on a clinical assessment of the patient's symptoms of pain or fever. A healthcare professional will take a history to understand the onset, location, duration, and character of the pain or to investigate the cause of the fever. A physical examination may be performed to identify the source of the symptoms. For mild, self-limiting conditions, extensive diagnostic testing is often not required. The choice of acetaminophen is based on its efficacy for mild-to-moderate symptoms and its safety profile, particularly when compared to other analgesics.",
+    "therapeutic_plan_treatment": "Acetaminophen is a first-line therapeutic option for mild-to-moderate pain and fever. It may be administered orally, rectally, or intravenously, depending on the clinical context. For more severe pain, acetaminophen is often used as part of a multimodal analgesic approach, combined with other agents such as non-steroidal anti-inflammatory drugs (NSAIDs) or opioids. In chronic pain conditions, it may be used as a baseline analgesic, with other medications added as required. The treatment plan is guided by the underlying cause of the symptoms, and treatment duration varies from short-term use for acute conditions to long-term use for chronic pain.",
+    "complications_prognosis": "The primary complication associated with acetaminophen is dose-dependent hepatotoxicity, which can result from an acute overdose or from chronic use exceeding the recommended maximum daily dose. In individuals with pre-existing liver disease, the risk is increased. The prognosis for a user of acetaminophen is determined by the prognosis of the underlying condition for which it is being used. For acute, self-limiting illnesses, the prognosis is excellent. For chronic pain conditions, acetaminophen may provide symptomatic relief but does not alter the course of the underlying disease.",
+    "disqualifiers": "The main contraindications to using acetaminophen are a history of hypersensitivity to the drug or the presence of severe liver impairment or active liver disease. When selecting an analgesic, healthcare professionals consider alternatives based on the patient's profile. For instance, a non-steroidal anti-inflammatory drug might be considered if an anti-inflammatory effect is also desired, but this must be weighed against the risk of gastrointestinal, cardiovascular, and renal side effects. Opioid analgesics are reserved for more severe pain due to their side effect profile and potential for dependence.",
+    "epidemiology": "Use of acetaminophen is widespread across all ages, from infancy to older adulthood, and in both sexes. There are no specific demographic risk factors for its use; rather, risk factors are associated with the underlying conditions causing pain or fever. Modifiable and non-modifiable risk factors are therefore those of the indication, such as lifestyle factors for tension headaches or age for osteoarthritis. Comorbidities are highly variable and reflect the reason for treatment, including acute infectious diseases, chronic pain conditions like arthritis, and injuries."
+  }
+}

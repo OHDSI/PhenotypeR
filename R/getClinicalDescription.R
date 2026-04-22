@@ -142,6 +142,13 @@ exportClinicalDescription <- function(clinicalDescription, modelName, outputDir)
 
 }
 
+#' Import clinical descriptions
+#'
+#' @param path Either a directory containing clinical descriptions or a path to
+#' a specific clinical description
+#'
+#' @returns A list of clinical descriptions
+#' @export
 importClinicalDescription <- function(path){
 
   omopgenerics::assertCharacter(path, length = 1, call = call)
@@ -177,3 +184,47 @@ importClinicalDescription <- function(path){
   return(descriptions)
 
 }
+
+#' Import database descriptions
+#'
+#' @param path Either a directory containing database descriptions or a path to
+#' a specific database description
+#'
+#' @returns A list of database descriptions
+#' @export
+importDatabaseDescription <- function(path){
+
+  omopgenerics::assertCharacter(path, length = 1, call = call)
+  if (!file.exists(path)) {
+    cli::cli_abort("{.path {path}} does not exist")
+  }
+
+  if (file.info(path)$isdir) {
+    path <- list.files(path = path, full.names = TRUE)
+  }
+  path <- path[tools::file_ext(path) == "json"]
+  names(path) <- as.list(tools::file_path_sans_ext(basename(path)))
+
+  if(length(path) == 0){
+    cli::cli_abort("No database descriptions found")
+  }
+
+  descriptions <- list()
+  for(i in seq_along(path)){
+    working_file <- path[[i]]
+    cli::cli_inform("Importing database description from: '{working_file}'")
+    validate <-jsonvalidate::json_validate(
+      working_file,
+      system.file("database_description.json", package = "PhenotypeR"),
+      verbose = TRUE,
+      error = TRUE)
+    working_json <- jsonlite::read_json(working_file)
+    working_database <- working_json$database_name
+    descriptions[[working_database]] <- working_json
+    cli::cli_alert_success("Imported database description: '{working_database}'")
+  }
+
+  return(descriptions)
+
+}
+

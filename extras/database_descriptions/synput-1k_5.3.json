@@ -1,0 +1,4 @@
+{
+  "database_name": "synput-1k_5.3",
+  "database_description": "synput-1k_5.3 is a synthetic dataset designed for testing OHDSI tools. It is based on a subsample of Medicare claims data standardised to the OMOP Common Data Model (CDM) version 5.3.  It contains approximately records for 1k participants. "
+}
