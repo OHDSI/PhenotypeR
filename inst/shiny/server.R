@@ -444,44 +444,39 @@ server <- function(input, output, session) {
     req(shared_cdm_names())
     req(inputs_initialized())
 
-    info <- database_descriptions |>
-      dplyr::filter(.data$database %in% shared_cdm_names())
+    if(length(shared_cdm_names()) == 0){
+      validate("No databases selected")
+    }
+
+    if(length(database_descriptions) == 0){
+      validate("No database descriptions found")
+    }
+
+    info <- database_descriptions[tolower(names(database_descriptions)) %in% tolower(shared_cdm_names())]
 
     return(info)
   })
 
   output$database_text <- renderUI({
+
+    req(shared_cdm_names())
+    req(inputs_initialized())
+
     info <- database_description()
+    working_dbs <- shared_cdm_names()
 
-    info$author[which(info$author == "")] <- "Unknown author"
-    info$date[which(info$date == "")]     <- "Unknown date"
-    info$key_sources[which(info$key_sources == "")] <- "Unknown key sources"
-
-    info <- info |>
-      dplyr::mutate("metadata" = paste0("Author: ", author, " (Date: ", date, ")<br>Sources: ", key_sources))
-
-    info$description <-  purrr::map(info$description,
-                                    function(info) {paste0("<lbr>", info, "</br>")})
-
-    lapply(1:nrow(info), function(i) {
-      row <- info[i, ]
-
-      has_meta <- !is.na(row$author) && !is.na(row$date) && !is.na(row$key_sources)
-
+    lapply(1:length(working_dbs), function(i) {
+      working_info <- info[[working_dbs[i]]]
       tags$details(
-        tags$summary(row$database),
+        tags$summary(working_dbs[i]),
         tags$div(
           class = "content-box",
 
-          if (has_meta) {
+          if(!is.null(working_info$database_name)){
             tagList(
               tags$div(
-                style = "padding: 15px; border-left: 4px solid #750075; color = grey; background: #E9E9E9; font-style: italic;",
-                shiny::HTML(row$metadata)
-              ),
-              tags$div(
                 style = "padding: 15px; border-left: 4px solid #750075; background: #E9E9E9; font-weight: normal;",
-                shiny::HTML(row$description[[1]])
+                shiny::HTML(working_info$database_description)
               )
             )
           } else{
@@ -498,55 +493,70 @@ server <- function(input, output, session) {
     req(shared_cohort_names())
     req(inputs_initialized())
 
-    info <- clinical_descriptions |>
-      dplyr::filter(.data$phenotype %in% shared_cohort_names()) |>
-      dplyr::rename("description" = input$phenotypes_section)
+    if(length(shared_cdm_names()) == 0){
+      validate("No cohorts selected")
+    }
+
+    if(length(clinical_descriptions) == 0){
+      validate("No database descriptions found")
+    }
+
+    info <- clinical_descriptions[tolower(names(clinical_descriptions)) %in% tolower(shared_cohort_names())]
 
     return(info)
   })
 
   output$clinical_text <- renderUI({
+    req(shared_cohort_names())
+    req(inputs_initialized())
+
     info <- clinical_description()
-    info$author[which(info$author == "")] <- "Unknown author"
-    info$date[which(info$date == "")]     <- "Unknown date"
-    info$key_sources[which(info$key_sources == "")] <- "Unknown key sources"
+    working_cohorts <- shared_cohort_names()
+    lapply(1:length(working_cohorts), function(i) {
+      working_info <- info[[working_cohorts[i]]]
 
-    info <- info |>
-      dplyr::mutate("metadata" = paste0("Author: ", author, " (Date: ", date, ")<br>Sources: ", key_sources))
+      meta_bullets <- working_info$metadata
+      meta_bullets <- lapply(names(meta_bullets), function(key) {
+        tags$li(tags$b(stringr::str_to_sentence(gsub("_", " ", key)), ": "), meta_bullets[[key]])
+      })
 
-    info$description <-  purrr::map(info$description,
-                                    function(info) {paste0("<lbr>", info, "</br>")})
+      profile_body <- working_info$clinical_profile
+      profile_body <- lapply(names(profile_body), function(key) {
+        tagList(
+          tags$h6(stringr::str_to_sentence(gsub("_", " ", key)),
+                  style = "font-weight: bold; margin-bottom: 2px;"),
+          tags$div(profile_body[[key]],
+                   style = "margin-bottom: 12px;")
+        )
+      })
 
-    lapply(1:nrow(info), function(i) {
-      row <- info[i, ]
-
-      has_meta <- !is.na(row$author) && !is.na(row$date) && !is.na(row$key_sources)
 
       tags$details(
-        tags$summary(row$phenotype),
+        tags$summary(working_cohorts[i]),
         tags$div(
           class = "content-box",
-
-          if (has_meta) {
+          if(!is.null(working_info$metadata)){
             tagList(
               tags$div(
-                style = "padding: 15px; border-left: 4px solid #750075; color = grey; background: #E9E9E9; font-style: italic;",
-                shiny::HTML(row$metadata)
-              ),
-              tags$div(
                 style = "padding: 15px; border-left: 4px solid #750075; background: #E9E9E9; font-weight: normal;",
-                shiny::HTML(row$description[[1]])
+                tags$h5("Metadata",
+                        style = "font-weight: bold; margin-bottom: 2px; color: #750075;"),
+                tags$ul(meta_bullets),
+                tags$br(),
+                tags$h5("Clinical profile",
+                        style = "font-weight: bold; margin-bottom: 2px; color: #750075;"),
+                profile_body
               )
             )
           } else{
-            tags$div(
-              style = "padding: 15px; border-left: 4px solid #750075; background: #E9E9E9; font-weight: normal;",
-              "No description for this cohort")
-
+            tags$div(style = "padding: 15px; border-left: 4px solid #750075; background: #E9E9E9; font-weight: normal;",
+                     "No clinical description found for this cohort")
           }
         )
       )
     })
+
+
   })
 
   # summarise_omop_snapshot -----

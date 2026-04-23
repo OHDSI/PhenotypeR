@@ -20,6 +20,12 @@ library(qs2)
 
 source(here::here("scripts", "functions.R"))
 
+# Background descriptions
+cli::cli_inform("Importing descriptions")
+clinical_descriptions <- PhenotypeR::importClinicalDescription(here::here("data", "raw", "clinical_descriptions"))
+database_descriptions <- PhenotypeR::importDatabaseDescription(here::here("data", "raw", "database_descriptions"))
+
+
 # Create results list
 cli::cli_inform("Importing results")
 result <- omopgenerics::importSummarisedResult(file.path(getwd(),"data", "raw"), recursive = FALSE)
@@ -300,107 +306,6 @@ if(length(phenotyper_version)>1){
   phenotyper_version <- paste0(phenotyper_version, collapse = "; ")
 }
 
-# Load clinical description ----
-if(!is.null(values$shared_cohort_names)){
-docs <- purrr::imap(
-  rlang::set_names(values$shared_cohort_names),
-  \(x, name) {
-    path <- file.path("data", "raw", "clinical_descriptions", paste0(name, ".docx"))
-    if (!file.exists(path)) return(NULL)
-    path
-  })
-} else {
-  docs <- list()
-}
-
-# Check for other docx files in the folder
-other <- list.files(path = file.path("data","raw","clinical_descriptions"), pattern = "\\.docx$")
-other <- gsub(".docx","",other)
-other <- setdiff(other, names(docs))
-if(length(other)) {
-  cli::cli_warn("A docx file ({other}) was found in 'data/raw/clinical_descriptions' that does not match any cohort name. This file will be ignored. Please note that clinical description documents must be named exactly the same as their corresponding cohort.")
-}
-
-# Read clinical descriptions
-clinical_descriptions <- list()
-for(i in seq_along(docs)){
-  name <- names(docs)[[i]]
-
-  if(length(docs[[i]]) == 0){
-    clinical_descriptions[[name]] <- dplyr::tibble(
-      "phenotype" = name,
-      "author" = NA_character_,
-      "key_sources" = NA_character_,
-      "date" = NA_character_,
-      "background" = list("item" = ""),
-      "phenotyping_plan" = list("item" = "")
-    )
-  }else{
-    path_docx <- here::here(docs[[i]])
-
-    text <- parse_docx_runs(path_docx, folder = "clinical_descriptions")
-
-    clinical_descriptions[[name]] <- tibble::tibble(
-      "phenotype" = find_info_in_the_line(text, "Phenotype name:"),
-      "author" = find_info_in_the_line(text, "author:"),
-      "date" = find_info_in_the_line(text, "Date:"),
-      "key_sources" = find_info_in_the_paragraph(text, start = "Information source", end = "Introduction", addStyle = FALSE, removeFirstTitle = TRUE),
-      "background" = list("item" = find_info_in_the_paragraph(text, start = "Introduction", end = "Phenotyping plan", addStyle = TRUE, removeFirstTitle = FALSE)),
-      "phenotyping_plan" = list("item" = find_info_in_the_paragraph(text, start = "Phenotyping plan", end = NULL, addStyle = TRUE, removeFirstTitle = FALSE))
-    )
-  }
-}
-
-clinical_descriptions <- dplyr::bind_rows(clinical_descriptions, .id = "phenotype")
-
-# Load database description ----
-docs <- purrr::imap(
-  rlang::set_names(values$shared_cdm_names),
-  \(x, name) {
-    path <- file.path("data", "raw", "database_descriptions", paste0(name, ".docx"))
-    if (!file.exists(path)) return(NULL)
-    path
-  })
-
-# Check for other docx files in the folder
-other <- list.files(path = file.path("data","raw","database_descriptions"), pattern = "\\.docx$")
-other <- gsub(".docx","",other)
-other <- setdiff(other, names(docs))
-if(length(other)) {
-  cli::cli_warn("A docx file ({other}) was found in 'data/raw/database_descriptions' that does not match any database name. This file will be ignored. Please note that database description documents must be named exactly the same as their corresponding database.")
-}
-
-
-# Read database descriptions
-database_descriptions <- list()
-for(i in seq_along(docs)){
-  name <- names(docs)[[i]]
-
-  if(length(docs[[i]]) == 0){
-    database_descriptions[[name]] <- dplyr::tibble(
-      "database" = name,
-      "author" = NA_character_,
-      "key_sources" = NA_character_,
-      "date" = NA_character_,
-      "description" = list("item" = "No database description for this database.")
-    )
-  }else{
-    path_docx <- here::here(docs[[i]])
-    text <- parse_docx_runs(path_docx, folder = "database_descriptions")
-
-    database_descriptions[[name]] <- dplyr::tibble(
-      "database" = find_info_in_the_line(text, "database name:"),
-      "author" = find_info_in_the_line(text, "author:"),
-      "date" = find_info_in_the_line(text, "Date:"),
-      "key_sources" = find_info_in_the_paragraph(text, start = "Information source", end = "Description", addStyle = FALSE, removeFirstTitle = TRUE),
-      "description" = list("item" = find_info_in_the_paragraph(text, start = "Description", end = NULL, addStyle = TRUE, removeFirstTitle = FALSE))
-    )
-  }
-}
-
-database_descriptions <- dplyr::bind_rows(database_descriptions, .id = "database")
-
-clinical_descriptions <- purrr::compact(clinical_descriptions)
 selected$summarise_clinical_description_cohort_name <- selected$shared_cohort_names
 choices$summarise_clinical_description_cohort_name <- choices$shared_cohort_names
 selected$summarise_database_description_cdm_name <- selected$shared_cdm_names
@@ -429,4 +334,5 @@ qs2::qs_savem(dataFiltered,
 
 rm(result, data, expectations, dataFiltered, choices, selected, values, values_subset,
    clinical_descriptions, database_descriptions)
+
 
