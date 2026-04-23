@@ -135,8 +135,8 @@ result <- cohortDiagnostics(cdm$warfarin)
 #> • age: density
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side
-#> → Start summary of data, at 2026-04-23 09:52:43.669461
-#> ✔ Summary finished, at 2026-04-23 09:52:43.802518
+#> → Start summary of data, at 2026-04-23 12:10:41.943503
+#> ✔ Summary finished, at 2026-04-23 12:10:42.064973
 #> Using defaults for windows for large scale characteristics: c(-365, -31),
 #> c(-30, -1), c(0, 0), c(1, 30), and c(31, 365). These can be changed via passing
 #> alternative windows as a global option
