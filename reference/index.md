@@ -21,10 +21,14 @@
 - [`shinyDiagnostics()`](https://ohdsi.github.io/PhenotypeR/reference/shinyDiagnostics.md)
   : Create a shiny app summarising your phenotyping results
 
-### Clinical descriptions for event of interest
+### Clinical and database descriptions
 
 - [`getClinicalDescription()`](https://ohdsi.github.io/PhenotypeR/reference/getClinicalDescription.md)
   : Get clinical descriptions using an LLM
+- [`importClinicalDescription()`](https://ohdsi.github.io/PhenotypeR/reference/importClinicalDescription.md)
+  : Import clinical descriptions
+- [`importDatabaseDescription()`](https://ohdsi.github.io/PhenotypeR/reference/importDatabaseDescription.md)
+  : Import database descriptions
 - [`shinyDescriptions()`](https://ohdsi.github.io/PhenotypeR/reference/shinyDescriptions.md)
   : Shiny app to create descriptions for contextualising diagnostic
   results

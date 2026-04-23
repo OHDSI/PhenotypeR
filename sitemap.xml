@@ -22,6 +22,8 @@
 <url><loc>https://ohdsi.github.io/PhenotypeR/reference/expectationsDoc.html</loc></url>
 <url><loc>https://ohdsi.github.io/PhenotypeR/reference/getClinicalDescription.html</loc></url>
 <url><loc>https://ohdsi.github.io/PhenotypeR/reference/getCohortExpectations.html</loc></url>
+<url><loc>https://ohdsi.github.io/PhenotypeR/reference/importClinicalDescription.html</loc></url>
+<url><loc>https://ohdsi.github.io/PhenotypeR/reference/importDatabaseDescription.html</loc></url>
 <url><loc>https://ohdsi.github.io/PhenotypeR/reference/index.html</loc></url>
 <url><loc>https://ohdsi.github.io/PhenotypeR/reference/matchedDoc.html</loc></url>
 <url><loc>https://ohdsi.github.io/PhenotypeR/reference/measurementDiagnosticsSampleDoc.html</loc></url>
