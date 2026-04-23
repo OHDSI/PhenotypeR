@@ -33,6 +33,8 @@ library(stringr)
 library(qs2)
 library(lubridate)
 library(systemfonts)
+library(jsonlite)
+library(jsonvalidate)
 
 source(here::here("scripts", "functions.R"))
 

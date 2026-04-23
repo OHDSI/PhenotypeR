@@ -151,6 +151,9 @@ exportClinicalDescription <- function(clinicalDescription, modelName, outputDir)
 #' @export
 importClinicalDescription <- function(path){
 
+  rlang::check_installed("jsonlite")
+  rlang::check_installed("jsonvalidate")
+
   omopgenerics::assertCharacter(path, length = 1, call = call)
   if (!file.exists(path)) {
     cli::cli_abort("{.path {path}} does not exist")
@@ -194,6 +197,9 @@ importClinicalDescription <- function(path){
 #' @returns A list of database descriptions
 #' @export
 importDatabaseDescription <- function(path){
+
+  rlang::check_installed("jsonlite")
+  rlang::check_installed("jsonvalidate")
 
   omopgenerics::assertCharacter(path, length = 1, call = call)
   if (!file.exists(path)) {
