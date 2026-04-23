@@ -1,0 +1,4 @@
+{
+  "database_name": "GiBleed",
+  "database_description": "GiBleed database is a synthetic dataset designed for testing OHDSI tools. It simulates clinical histories for approximately 2,500 patients, with a focus on gastrointestinal bleed outcomes. "
+}

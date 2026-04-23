@@ -42,9 +42,11 @@ reference:
 - subtitle: Visualise results
 - contents:
   - shinyDiagnostics
-- subtitle: Clinical descriptions for event of interest
+- subtitle: Clinical and database descriptions
 - contents:
   - getClinicalDescription
+  - importClinicalDescription
+  - importDatabaseDescription
   - shinyDescriptions
 - subtitle: Expectations for phenotyping results
 - contents:
