@@ -67,7 +67,8 @@ Suggests:
     OmopConstructor,
     tools,
     jsonlite,
-    jsonvalidate
+    jsonvalidate, 
+    shinyjs
 Config/testthat/edition: 3
 RoxygenNote: 7.3.3
 Imports: 

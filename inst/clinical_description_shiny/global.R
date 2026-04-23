@@ -1,8 +1,10 @@
 library(shiny)
 library(bslib)
 library(jsonlite)
+library(jsonvalidate)
 library(officer)
 library(tools)
+library(shinyjs)
 
 # create ellmer chat object for AI draft functionality
 # e.g. chat <- ellmer::chat("google_gemini")
