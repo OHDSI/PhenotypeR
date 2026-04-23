@@ -163,7 +163,8 @@ importClinicalDescription <- function(path){
   names(path) <- as.list(tools::file_path_sans_ext(basename(path)))
 
   if(length(path) == 0){
-    cli::cli_abort("No clinical descriptions found")
+    cli::cli_warn("No clinical descriptions found")
+    return(list())
   }
 
   descriptions <- list()
@@ -206,7 +207,8 @@ importDatabaseDescription <- function(path){
   names(path) <- as.list(tools::file_path_sans_ext(basename(path)))
 
   if(length(path) == 0){
-    cli::cli_abort("No database descriptions found")
+    cli::cli_warn("No database descriptions found")
+    return(list())
   }
 
   descriptions <- list()
