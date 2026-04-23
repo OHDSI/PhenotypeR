@@ -10,7 +10,7 @@ databaseDiagnostics(
   snapshot = TRUE,
   personTableSummary = TRUE,
   observationPeriodsSummary = TRUE,
-  clinicalRecordsSummary = TRUE
+  clinicalRecordsSummary = FALSE
 )
 }
 \arguments{
