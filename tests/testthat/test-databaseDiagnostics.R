@@ -18,7 +18,8 @@ test_that("db diagnostics", {
                                  schema ="main", overwrite = TRUE)
 
   # Empty codelist
-  expect_warning(db_diag <- databaseDiagnostics(cdm$my_cohort))
+  expect_warning(db_diag <- databaseDiagnostics(cdm$my_cohort,
+                                                clinicalRecordsSummary = TRUE))
   expect_equal(settings(db_diag)$result_type |>
                  unique() |>
                  sort(),
