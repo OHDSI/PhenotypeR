@@ -34,7 +34,8 @@ test_that("db diagnostics", {
       codelist = list(a = c(37110496L, 45430573L, 1361368L, 45438358L), b = 40371897L),
       cohortName = c("cohort_1", "cohort_1")
     )
-  expect_no_error(db_diag <- databaseDiagnostics(cdm$my_cohort))
+  expect_no_error(db_diag <- databaseDiagnostics(cdm$my_cohort,
+                                                 clinicalRecordsSummary = TRUE))
   expect_equal(settings(db_diag)$result_type |>
                  unique() |>
                  sort(),
@@ -72,7 +73,8 @@ test_that("db diagnostics", {
     unique() |>
     sort())
 
-  db_diag_cohort_2 <- databaseDiagnostics(cdm$my_cohort, cohortId = 2)
+  db_diag_cohort_2 <- databaseDiagnostics(cdm$my_cohort, cohortId = 2,
+                                          clinicalRecordsSummary = TRUE)
   expect_true(db_diag_cohort_2 |>
       omopgenerics::filterSettings(result_type == "summarise_clinical_records") |>
       nrow() == 0)
@@ -84,7 +86,8 @@ test_that("db diagnostics", {
       codelist = list(c = 37110496L),
       cohortName = c("cohort_2")
     )
-  db_diag_cohort_2 <- databaseDiagnostics(cdm$my_cohort, cohortId = 2)
+  db_diag_cohort_2 <- databaseDiagnostics(cdm$my_cohort, cohortId = 2,
+                                          clinicalRecordsSummary = TRUE)
   expect_identical(
     c("condition_occurrence"),
     db_diag_cohort_2 |>
