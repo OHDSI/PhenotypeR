@@ -68,7 +68,7 @@ Summarise the OMOP clinical tables where the codes associated with your cohort a
 <span>  snapshot <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  personTableSummary <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  observationPeriodsSummary <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  clinicalRecordsSummary <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  clinicalRecordsSummary <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -137,8 +137,8 @@ tables where the codes associated with your cohort are found (TRUE) or not (FALS
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> date_of_birth: density</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   the database side</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-23 12:11:41.460773</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-23 12:11:41.518469</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-24 08:05:17.866943</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-24 08:05:17.929708</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> retrieving cdm object from <span style="font-style: italic;">cdm_table</span>.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span><span style="color: #BBBB00;">!</span> There are 2649 individuals not included in the person table.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The following estimates will be calculated:</span>
@@ -146,31 +146,8 @@ tables where the codes associated with your cohort are found (TRUE) or not (FALS
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> observation_period_end_date: density</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   the database side</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-23 12:11:44.801585</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-23 12:11:44.867517</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Adding variables of interest to <span style="color: #0000BB;">drug_exposure</span>.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising records per person in <span style="color: #0000BB;">drug_exposure</span>.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising subjects not in person table in <span style="color: #0000BB;">drug_exposure</span>.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising records in observation in <span style="color: #0000BB;">drug_exposure</span>.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising records with start before birth date in <span style="color: #0000BB;">drug_exposure</span>.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising records with end date before start date in <span style="color: #0000BB;">drug_exposure</span>.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising domains in <span style="color: #0000BB;">drug_exposure</span>.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising standard concepts in <span style="color: #0000BB;">drug_exposure</span>.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising source vocabularies in <span style="color: #0000BB;">drug_exposure</span>.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising concept types in <span style="color: #0000BB;">drug_exposure</span>.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising concept class in <span style="color: #0000BB;">drug_exposure</span>.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising missing data in <span style="color: #0000BB;">drug_exposure</span>.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Adding variables of interest to <span style="color: #0000BB;">procedure_occurrence</span>.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising records per person in <span style="color: #0000BB;">procedure_occurrence</span>.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising subjects not in person table in <span style="color: #0000BB;">procedure_occurrence</span>.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising records in observation in <span style="color: #0000BB;">procedure_occurrence</span>.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising records with start before birth date in <span style="color: #0000BB;">procedure_occurrence</span>.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising records with end date before start date in <span style="color: #0000BB;">procedure_occurrence</span>.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising domains in <span style="color: #0000BB;">procedure_occurrence</span>.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising standard concepts in <span style="color: #0000BB;">procedure_occurrence</span>.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising source vocabularies in <span style="color: #0000BB;">procedure_occurrence</span>.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising concept types in <span style="color: #0000BB;">procedure_occurrence</span>.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising missing data in <span style="color: #0000BB;">procedure_occurrence</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-04-24 08:05:21.029919</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-04-24 08:05:21.100468</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span> <span class="fu"><a href="https://darwin-eu.github.io/omopgenerics/reference/cdmDisconnect.html" class="external-link">cdmDisconnect</a></span><span class="op">(</span>cdm <span class="op">=</span> <span class="va">cdm</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>

@@ -25,7 +25,7 @@ databaseDiagnostics(
   snapshot = TRUE,
   personTableSummary = TRUE,
   observationPeriodsSummary = TRUE,
-  clinicalRecordsSummary = TRUE
+  clinicalRecordsSummary = FALSE
 )
 ```
 
@@ -96,8 +96,8 @@ cdm$new_cohort <- conceptCohort(cdm,
 #> • date_of_birth: density
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side
-#> → Start summary of data, at 2026-04-23 12:11:41.460773
-#> ✔ Summary finished, at 2026-04-23 12:11:41.518469
+#> → Start summary of data, at 2026-04-24 08:05:17.866943
+#> ✔ Summary finished, at 2026-04-24 08:05:17.929708
 #> ℹ retrieving cdm object from cdm_table.
 #> Warning: ! There are 2649 individuals not included in the person table.
 #> ℹ The following estimates will be calculated:
@@ -105,31 +105,8 @@ cdm$new_cohort <- conceptCohort(cdm,
 #> • observation_period_end_date: density
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side
-#> → Start summary of data, at 2026-04-23 12:11:44.801585
-#> ✔ Summary finished, at 2026-04-23 12:11:44.867517
-#> ℹ Adding variables of interest to drug_exposure.
-#> ℹ Summarising records per person in drug_exposure.
-#> ℹ Summarising subjects not in person table in drug_exposure.
-#> ℹ Summarising records in observation in drug_exposure.
-#> ℹ Summarising records with start before birth date in drug_exposure.
-#> ℹ Summarising records with end date before start date in drug_exposure.
-#> ℹ Summarising domains in drug_exposure.
-#> ℹ Summarising standard concepts in drug_exposure.
-#> ℹ Summarising source vocabularies in drug_exposure.
-#> ℹ Summarising concept types in drug_exposure.
-#> ℹ Summarising concept class in drug_exposure.
-#> ℹ Summarising missing data in drug_exposure.
-#> ℹ Adding variables of interest to procedure_occurrence.
-#> ℹ Summarising records per person in procedure_occurrence.
-#> ℹ Summarising subjects not in person table in procedure_occurrence.
-#> ℹ Summarising records in observation in procedure_occurrence.
-#> ℹ Summarising records with start before birth date in procedure_occurrence.
-#> ℹ Summarising records with end date before start date in procedure_occurrence.
-#> ℹ Summarising domains in procedure_occurrence.
-#> ℹ Summarising standard concepts in procedure_occurrence.
-#> ℹ Summarising source vocabularies in procedure_occurrence.
-#> ℹ Summarising concept types in procedure_occurrence.
-#> ℹ Summarising missing data in procedure_occurrence.
+#> → Start summary of data, at 2026-04-24 08:05:21.029919
+#> ✔ Summary finished, at 2026-04-24 08:05:21.100468
 
  cdmDisconnect(cdm = cdm)
 # }
