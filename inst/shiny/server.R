@@ -2726,7 +2726,8 @@ server <- function(input, output, session) {
 
   # log file -----
   output$summarise_log_file_gt <- gt::render_gt({
-    dataFiltered$summarise_log_file |>
+    log_summary <- dataFiltered$summarise_log_file |>
+      omopgenerics::filterSettings(diagnostic == "Logging") |>
       omopgenerics::tidy() |>
       dplyr::mutate(log_id = as.integer(log_id)) |>
       dplyr::arrange("cdm_name", "log_id")  |>
@@ -2752,7 +2753,12 @@ server <- function(input, output, session) {
       dplyr::rename("task" = "variable_name",
                     estimate_value = "elapsed_time") |>
       dplyr::mutate(estimate_type = "character",
-                    estimate_name = "Time taken") |>
+                    estimate_name = "Time taken")  |>
+      dplyr::filter(!task %in% c("Log file created",
+                                 "Exporting log file"))
+
+
+    log_summary |>
       visOmopResults::visTable(
         header = c("cdm_name", "estimate_name"),
         rename = c("Database name" = "cdm_name"),
