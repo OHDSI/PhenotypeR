@@ -445,11 +445,11 @@ server <- function(input, output, session) {
     req(inputs_initialized())
 
     if(length(shared_cdm_names()) == 0){
-      validate("No databases selected")
+      shiny::validate("No databases selected")
     }
 
     if(length(database_descriptions) == 0){
-      validate("No database descriptions found")
+      shiny::validate("No database descriptions found")
     }
 
     info <- database_descriptions[tolower(names(database_descriptions)) %in% tolower(shared_cdm_names())]
@@ -494,11 +494,11 @@ server <- function(input, output, session) {
     req(inputs_initialized())
 
     if(length(shared_cdm_names()) == 0){
-      validate("No cohorts selected")
+      shiny::validate("No cohorts selected")
     }
 
     if(length(clinical_descriptions) == 0){
-      validate("No database descriptions found")
+      shiny::validate("No database descriptions found")
     }
 
     info <- clinical_descriptions[tolower(names(clinical_descriptions)) %in% tolower(shared_cohort_names())]
@@ -562,7 +562,7 @@ server <- function(input, output, session) {
   # summarise_omop_snapshot -----
   filterOmopSnapshot <- eventReactive(input$updateSnapshot, ({
     if (is.null(dataFiltered$summarise_omop_snapshot)) {
-      validate("No snapshot in results")
+      shiny::validate("No snapshot in results")
     }
 
     result <- dataFiltered$summarise_omop_snapshot |>
@@ -599,7 +599,7 @@ server <- function(input, output, session) {
   # summarise_person -----
   filterPerson <- eventReactive(input$updatePerson, ({
     if (is.null(dataFiltered$summarise_person)) {
-      validate("No person summary in results")
+      shiny::validate("No person summary in results")
     }
 
     result <- dataFiltered$summarise_person |>
@@ -638,7 +638,7 @@ server <- function(input, output, session) {
   ## Plot date of birth ----
   filterPersonDob <- eventReactive(input$updatePerson, ({
     if (is.null(dataFiltered$summarise_dob_density)) {
-      validate("No date of birth summary in results")
+      shiny::validate("No date of birth summary in results")
     }
 
     result <- dataFiltered$summarise_dob_density |>
@@ -675,7 +675,7 @@ server <- function(input, output, session) {
   # summarise_observation_period -----
   filterObservationPeriod <- eventReactive(input$updateObservationPeriod, ({
     if (is.null(dataFiltered$summarise_observation_period)) {
-      validate("No observation period summary in results")
+      shiny::validate("No observation period summary in results")
     }
 
     result <- dataFiltered$summarise_observation_period |>
@@ -713,7 +713,7 @@ server <- function(input, output, session) {
   ## Plot obs start end ----
   filterObs <- eventReactive(input$updateObservationPeriod, ({
     if (is.null(dataFiltered$summarise_obs_density)) {
-      validate("No date of observation period distributions in results")
+      shiny::validate("No date of observation period distributions in results")
     }
 
     result <- dataFiltered$summarise_obs_density |>
@@ -765,7 +765,7 @@ server <- function(input, output, session) {
   # summarise_clinical_records ----
   filterClinicalRecords <- eventReactive(input$updateClinicalRecords, ({
     if (is.null(dataFiltered$summarise_clinical_records)) {
-      validate("No clinical records summary in results")
+      shiny::validate("No clinical records summary in results")
     }
     result <- dataFiltered$summarise_clinical_records |>
       dplyr::filter(cdm_name %in% shared_cdm_names(),
@@ -803,7 +803,7 @@ server <- function(input, output, session) {
   ## Plot clinical record trends -----
   filterClinicalRecordTrends <- eventReactive(input$updateClinicalRecords, ({
     if (is.null(dataFiltered$summarise_trend)) {
-      validate("No clinical records summary in results")
+      shiny::validate("No clinical records summary in results")
     }
 
     result <- dataFiltered$summarise_trend |>
@@ -854,7 +854,7 @@ server <- function(input, output, session) {
     req(inputs_initialized())
 
     if (is.null(dataFiltered$achilles_code_use)) {
-      validate("No achilles code use in results")
+      shiny::validate("No achilles code use in results")
     }
 
     achillesFiltered <- dataFiltered$achilles_code_use  |>
@@ -975,7 +975,7 @@ server <- function(input, output, session) {
     req(shared_cdm_names())
     req(inputs_initialized())
     if (is.null(dataFiltered$orphan_code_use)) {
-      validate("No orphan codes in results")
+      shiny::validate("No orphan codes in results")
     }
 
     result <- dataFiltered$orphan_code_use |>
@@ -1098,7 +1098,7 @@ server <- function(input, output, session) {
     req(shared_cohort_names())
     req(inputs_initialized())
     if (is.null(dataFiltered$cohort_code_use)) {
-      validate("No cohort code use in results")
+      shiny::validate("No cohort code use in results")
     }
 
     result <- dataFiltered$cohort_code_use |>
@@ -1234,7 +1234,7 @@ server <- function(input, output, session) {
     req(shared_cohort_names())
     req(inputs_initialized())
     if (is.null(dataFiltered$measurement_summary)) {
-      validate("No measurement summary in results")
+      shiny::validate("No measurement summary in results")
     }
 
     result <- dataFiltered$measurement_summary |>
@@ -1310,7 +1310,7 @@ server <- function(input, output, session) {
   filterMeasurementValueAsConcept <- eventReactive(input$updateMeasurementCodeUse, ({
 
     if (is.null(dataFiltered$measurement_value_as_concept)) {
-      validate("No measurement value as concept in results")
+      shiny::validate("No measurement value as concept in results")
     }
 
     result <- dataFiltered$measurement_value_as_concept |>
@@ -1388,7 +1388,7 @@ server <- function(input, output, session) {
   filterMeasurementValueAsNumber <- eventReactive(input$updateMeasurementCodeUse, ({
 
     if (is.null(dataFiltered$measurement_value_as_number)) {
-      validate("No measurement value as number in results")
+      shiny::validate("No measurement value as number in results")
     }
 
     result <- dataFiltered$measurement_value_as_number |>
@@ -1468,7 +1468,7 @@ server <- function(input, output, session) {
     req(shared_cohort_names())
     req(inputs_initialized())
     if (is.null(dataFiltered$summarise_drug_use)) {
-      validate("No drug diagnostics in results")
+      shiny::validate("No drug diagnostics in results")
     }
 
     result <- dataFiltered$summarise_drug_use |>
@@ -1594,7 +1594,7 @@ server <- function(input, output, session) {
     req(shared_cohort_names())
     req(inputs_initialized())
     if (is.null(dataFiltered$summarise_cohort_count)) {
-      validate("No cohort count in results")
+      shiny::validate("No cohort count in results")
     }
 
     result <- dataFiltered$summarise_cohort_count |>
@@ -1647,7 +1647,7 @@ server <- function(input, output, session) {
     req(shared_cohort_names())
     req(inputs_initialized())
     if (is.null(dataFiltered$summarise_cohort_attrition)) {
-      validate("No cohort attrition in results")
+      shiny::validate("No cohort attrition in results")
     }
 
     result <- dataFiltered$summarise_cohort_attrition |>
@@ -1726,7 +1726,7 @@ server <- function(input, output, session) {
     req(shared_cohort_names())
     req(inputs_initialized())
     if (is.null(dataFiltered$summarise_characteristics)) {
-      validate("No cohort characteristics in results")
+      shiny::validate("No cohort characteristics in results")
     }
 
     selectedCohorts <- shared_cohort_names()
@@ -1790,12 +1790,12 @@ server <- function(input, output, session) {
       arrange(group_level)
 
     if (nrow(summarise_table) == 0 || nrow(summarise_characteristics) == 0 ) {
-      validate("No results found for selected inputs")
+      shiny::validate("No results found for selected inputs")
     }
 
 
     if (nrow(summarise_table) == 0 || nrow(summarise_characteristics) == 0 ) {
-      validate("No results found for selected inputs")
+      shiny::validate("No results found for selected inputs")
     }
 
     plotAgeDensity(summarise_table, summarise_characteristics, input$summarise_characteristics_add_interquantile_range)
@@ -1827,7 +1827,7 @@ server <- function(input, output, session) {
     req(shared_cohort_names())
     req(inputs_initialized())
     if (is.null(dataFiltered$summarise_large_scale_characteristics)) {
-      validate("No large scale characteristics in results")
+      shiny::validate("No large scale characteristics in results")
     }
 
     lsc_data <- dataFiltered$summarise_large_scale_characteristics |>
@@ -1975,10 +1975,10 @@ server <- function(input, output, session) {
     cohort <- shared_cohort_names()
 
     if(length(cohort) > 1){
-      validate("Please select only one cohort")
+      shiny::validate("Please select only one cohort")
     }
     if(length(cohort) == 0){
-      validate("Please select a cohort")
+      shiny::validate("Please select a cohort")
     }
 
     cohort1 <- switch(input$compare_large_scale_characteristics_cohort_1,
@@ -1992,10 +1992,10 @@ server <- function(input, output, session) {
                       "matched" = paste0(input$compare_large_scale_characteristics_cohort_compare,"_matched"))
 
     if(length(cohort2) > 1){
-      validate("Please select only one comparator cohort")
+      shiny::validate("Please select only one comparator cohort")
     }
     if(length(cohort2) == 0){
-      validate("Please select a comparator cohort")
+      shiny::validate("Please select a comparator cohort")
     }
 
     return(list("cohort1" = cohort1,
@@ -2011,7 +2011,7 @@ server <- function(input, output, session) {
     })
 
     if (is.null(dataFiltered$summarise_large_scale_characteristics)) {
-      validate("No large scale characteristics in results")
+      shiny::validate("No large scale characteristics in results")
     }
 
     cohorts <- getComparedCohorts()
@@ -2202,7 +2202,7 @@ server <- function(input, output, session) {
     req(shared_cohort_names())
     req(inputs_initialized())
     if (is.null(dataFiltered$summarise_cohort_overlap)) {
-      validate("No cohort overlap in results")
+      shiny::validate("No cohort overlap in results")
     }
 
     result <- dataFiltered$summarise_cohort_overlap |>
@@ -2285,7 +2285,7 @@ server <- function(input, output, session) {
     req(shared_cohort_names())
     req(inputs_initialized())
     if (is.null(dataFiltered$summarise_cohort_timing)) {
-      validate("No cohort timing in results")
+      shiny::validate("No cohort timing in results")
     }
 
     result <- dataFiltered$summarise_cohort_timing |>
@@ -2363,7 +2363,7 @@ server <- function(input, output, session) {
     req(shared_cohort_names())
     req(inputs_initialized())
     if (is.null(dataFiltered$survival_estimates)) {
-      validate("No survival in results")
+      shiny::validate("No survival in results")
     }
 
     if(input$survival_porbability_include_matches){
@@ -2462,7 +2462,7 @@ server <- function(input, output, session) {
     req(shared_cohort_names())
     req(inputs_initialized())
     if (is.null(dataFiltered$incidence)) {
-      validate("No incidence in results")
+      shiny::validate("No incidence in results")
     }
 
     result <- dataFiltered$incidence |>
@@ -2595,7 +2595,7 @@ server <- function(input, output, session) {
     req(shared_cohort_names())
     req(inputs_initialized())
     if (is.null(dataFiltered$prevalence)) {
-      validate("No prevalence in results")
+      shiny::validate("No prevalence in results")
     }
 
     result <- dataFiltered$prevalence |>
@@ -2793,7 +2793,7 @@ server <- function(input, output, session) {
 
       if(nrow(result) == 0){
         section_name_nice <- stringr::str_replace_all(section_name, "_", " ")
-        validate(glue::glue("No expectations for {section_name_nice} results."))
+        shiny::validate(glue::glue("No expectations for {section_name_nice} results."))
       }
       result
     })

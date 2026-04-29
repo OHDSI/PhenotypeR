@@ -176,10 +176,10 @@ if("cohortDiagnostics" %in% diagnostics){
   values_subset$compare_large_scale_characteristics_cohort_2 <- c("original", "sampled", "matched")
   values_subset$compare_large_scale_characteristics_cohort_name <- values$shared_cohort_names
   values_subset$compare_large_scale_characteristics_cohort_compare <- values$shared_cohort_names
-  values_subset$compare_large_scale_characteristics_variable_level <- c("-inf to -366", "-365 to -31", "-30 to -1", "0 to 0", "1 to 30", "31 to 365", "366 to inf")
+  values_subset$compare_large_scale_characteristics_variable_level <-values_subset$compare_large_scale_characteristics_variable_level[order(as.numeric(sub(" .*$", "", values_subset$compare_large_scale_characteristics_variable_level)))]
   values <- append(values, values_subset)
 
-  values$summarise_large_scale_characteristics_variable_level <-c("-inf to -366", "-365 to -31", "-30 to -1", "0 to 0", "1 to 30", "31 to 365", "366 to inf")
+  values$summarise_large_scale_characteristics_variable_level <- values_subset$compare_large_scale_characteristics_variable_level
 
   if("summarise_cohort_overlap" %in% names(dataFiltered)){
     values$summarise_cohort_overlap_cohort_comparator <- values$summarise_cohort_overlap_cohort_name_comparator
