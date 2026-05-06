@@ -190,6 +190,7 @@ cohortDiagnostics <- function(cohort,
   }
 
   # Large scale characteristics ----
+  lscCohortName <- tempCohortName
   if(isTRUE(largeScaleCharacteristics)) {
 
     lscWindows <- getOption("PhenotypeR_summariseLargeScaleCharacteristics_window")
@@ -251,8 +252,6 @@ cohortDiagnostics <- function(cohort,
           name = lscCohortName, temporary = FALSE,
           logPrefix = "CohortConstructor_sampleCohorts_first_"
         )
-    } else{
-      lscCohortName <- tempCohortName
     }
 
     results[["lsc_standard"]] <- CohortCharacteristics::summariseLargeScaleCharacteristics(
