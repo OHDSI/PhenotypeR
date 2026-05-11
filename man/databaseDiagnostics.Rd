@@ -19,13 +19,13 @@ databaseDiagnostics(
 \item{cohortId}{Specific cohort definition ID for which to run database
 diagnostics. This will only affect the clinical tables summary results.}
 
-\item{snapshot}{Whether to run `OmopSketch::summariseOmopSnapshot()` (TRUE) or not (FALSE).}
+\item{snapshot}{Whether to run \code{OmopSketch::summariseOmopSnapshot()} (TRUE) or not (FALSE).}
 
-\item{personTableSummary}{Whether to run `OmopSketch::summarisePerson()` (TRUE) or not (FALSE).}
+\item{personTableSummary}{Whether to run \code{OmopSketch::summarisePerson()} (TRUE) or not (FALSE).}
 
-\item{observationPeriodsSummary}{Whether to run `OmopSketch::summariseObservationPeriod()` (TRUE) or not (FALSE).}
+\item{observationPeriodsSummary}{Whether to run \code{OmopSketch::summariseObservationPeriod()} (TRUE) or not (FALSE).}
 
-\item{clinicalRecordsSummary}{Whether to run `OmopSketch::summariseClinicalRecords()` on those clinical
+\item{clinicalRecordsSummary}{Whether to run \code{OmopSketch::summariseClinicalRecords()} on those clinical
 tables where the codes associated with your cohort are found (TRUE) or not (FALSE).}
 }
 \value{
@@ -36,10 +36,10 @@ PhenotypeR diagnostics on the cdm object.
 
 Diagnostics include:
 \itemize{
-  \item Summarise a cdm_reference object, creating a snapshot with the metadata of the cdm_reference object
-  \item Summarise the observation period table getting some overall statistics in a summarised_result object.
-  \item Summarise the person table including demographics (sex, race, ethnicity, year of birth) and related statistics.
-  \item Summarise the OMOP clinical tables where the codes associated with your cohort are found.
+\item Summarise a cdm_reference object, creating a snapshot with the metadata of the cdm_reference object
+\item Summarise the observation period table getting some overall statistics in a summarised_result object.
+\item Summarise the person table including demographics (sex, race, ethnicity, year of birth) and related statistics.
+\item Summarise the OMOP clinical tables where the codes associated with your cohort are found.
 }
 }
 \examples{

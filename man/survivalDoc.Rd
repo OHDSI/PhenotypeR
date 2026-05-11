@@ -2,12 +2,12 @@
 % Please edit documentation in R/documentationHelper.R
 \name{survivalDoc}
 \alias{survivalDoc}
-\title{Helper for consistent documentation of `survival`.}
+\title{Helper for consistent documentation of \code{survival}.}
 \arguments{
 \item{survival}{TRUE or FALSE. Whether to conduct survival analysis (TRUE)
 or not (FALSE).}
 }
 \description{
-Helper for consistent documentation of `survival`.
+Helper for consistent documentation of \code{survival}.
 }
 \keyword{internal}

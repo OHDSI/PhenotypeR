@@ -22,26 +22,26 @@ cohortDiagnostics(
 \item{cohortId}{Specific cohort definition ID for which to run cohort
 diagnostics.}
 
-\item{cohortCount}{Whether to run `CohortCharacteristics::summariseCohortCount()` and
-`CohortCharacteristics::summariseCohortAttrition()` (TRUE) or not (FALSE).}
+\item{cohortCount}{Whether to run \code{CohortCharacteristics::summariseCohortCount()} and
+\code{CohortCharacteristics::summariseCohortAttrition()} (TRUE) or not (FALSE).}
 
-\item{cohortCharacteristics}{Whether to run `CohortCharacteristics::summariseCharacteristics()` and
+\item{cohortCharacteristics}{Whether to run \code{CohortCharacteristics::summariseCharacteristics()} and
 summarise age density (TRUE) or not (FALSE).}
 
-\item{largeScaleCharacteristics}{Whether to run `CohortCharacteristics::summariseLargeScaleCharacteristics()` (TRUE)
+\item{largeScaleCharacteristics}{Whether to run \code{CohortCharacteristics::summariseLargeScaleCharacteristics()} (TRUE)
 or not (FALSE).}
 
-\item{compareCohorts}{Whether to run `CohortCharacteristics::summariseCohortOverlap()` and
-`CohortCharacteristics::summariseCohortTiming()` (TRUE) or not (FALSE). Notice that,
+\item{compareCohorts}{Whether to run \code{CohortCharacteristics::summariseCohortOverlap()} and
+\code{CohortCharacteristics::summariseCohortTiming()} (TRUE) or not (FALSE). Notice that,
 if set to TRUE, the diagnostics will only be run when there are more than one cohort.}
 
-\item{cohortSurvival}{Whether to run `CohortSurvival::estimateSingleEventSurvival()` (TRUE) or
+\item{cohortSurvival}{Whether to run \code{CohortSurvival::estimateSingleEventSurvival()} (TRUE) or
 not (FALSE).}
 
-\item{cohortSample}{The number of people to take a random sample for cohortDiagnostics. If `cohortSample = NULL`, no sampling will be performed.}
+\item{cohortSample}{The number of people to take a random sample for cohortDiagnostics. If \code{cohortSample = NULL}, no sampling will be performed.}
 
 \item{matchedSample}{The number of people to take a random sample for
-matching. If `matchedSample = NULL`, no sampling will be performed. If `matchedSample = 0`, no
+matching. If \code{matchedSample = NULL}, no sampling will be performed. If \code{matchedSample = 0}, no
 matched cohorts will be created.}
 }
 \value{
@@ -50,11 +50,13 @@ A summarised result
 \description{
 Runs phenotypeR diagnostics on the cohort.
 The diganostics include:
-* Age groups and sex summarised.
-* A summary of visits of everyone in the cohort using visit_occurrence table.
-* A summary of age and sex density of the cohort.
-* Attrition of the cohorts.
-* Overlap between cohorts (if more than one cohort is being used).
+\itemize{
+\item Age groups and sex summarised.
+\item A summary of visits of everyone in the cohort using visit_occurrence table.
+\item A summary of age and sex density of the cohort.
+\item Attrition of the cohorts.
+\item Overlap between cohorts (if more than one cohort is being used).
+}
 }
 \examples{
 \donttest{

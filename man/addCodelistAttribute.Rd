@@ -12,18 +12,18 @@ addCodelistAttribute(cohort, codelist, cohortName = names(codelist))
 \item{codelist}{Named list of concepts}
 
 \item{cohortName}{For each element of the codelist, the name of the cohort in
-`cohort` to which the codelist refers}
+\code{cohort} to which the codelist refers}
 }
 \value{
 A cohort
 }
 \description{
-`addCodelistAttribute()` allows the users to add a codelist to a cohort in
+\code{addCodelistAttribute()} allows the users to add a codelist to a cohort in
 OMOP CDM.
 
-This is particularly important for the use of `codelistDiagnostics()`, as the
+This is particularly important for the use of \code{codelistDiagnostics()}, as the
 underlying assumption is that the cohort that is fed into
-`codelistDiagnostics()` has a cohort_codelist attribute attached to it.
+\code{codelistDiagnostics()} has a cohort_codelist attribute attached to it.
 }
 \examples{
 \donttest{

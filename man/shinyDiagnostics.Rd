@@ -39,12 +39,13 @@ A shiny app
 \description{
 A shiny app that is designed for any diagnostics results from phenotypeR, this
 includes:
-
-* A diagnostics on the database via `databaseDiagnostics`.
-* A diagnostics on the cohort_codelist attribute of the cohort via `codelistDiagnostics`.
-* A diagnostics on the cohort via `cohortDiagnostics`.
-* A diagnostics on the population via `populationDiagnostics`.
-* A diagnostics on the matched cohort via `matchedDiagnostics`.
+\itemize{
+\item A diagnostics on the database via \code{databaseDiagnostics}.
+\item A diagnostics on the cohort_codelist attribute of the cohort via \code{codelistDiagnostics}.
+\item A diagnostics on the cohort via \code{cohortDiagnostics}.
+\item A diagnostics on the population via \code{populationDiagnostics}.
+\item A diagnostics on the matched cohort via \code{matchedDiagnostics}.
+}
 }
 \examples{
 \donttest{

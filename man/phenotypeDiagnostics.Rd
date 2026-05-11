@@ -16,42 +16,42 @@ phenotypeDiagnostics(
 \arguments{
 \item{cohort}{Cohort table in a cdm reference}
 
-\item{databaseDiagnostics}{A list of arguments that uses `databaseDiagnostics`.
+\item{databaseDiagnostics}{A list of arguments that uses \code{databaseDiagnostics}.
 If the list is empty, the default values will be used.
 Example:
-In the following example, all diagnostics will be run except *person table summary* from
+In the following example, all diagnostics will be run except \emph{person table summary} from
 databaseDiagnostics:
 *databaseDiagnostics = list(
 "personTableSummary" = FALSE
- )}
+)}
 
-\item{codelistDiagnostics}{A list of arguments that uses `codelistDiagnostics`.
+\item{codelistDiagnostics}{A list of arguments that uses \code{codelistDiagnostics}.
 If the list is empty, the default values will be used.
 Example:
 In the below example, all diagnostics will be run, and a subsample of 1,000 participants will
 be used to run measurement diagnostics and another independent subsample of 500 participants
 will be used to run drug diagnostics:
 *codelistDiagnostics = list(
- "measurementDiagnosticsSample" = 1000,
- "drugDiagnosticsSample" = 500
-  )}
+"measurementDiagnosticsSample" = 1000,
+"drugDiagnosticsSample" = 500
+)}
 
-\item{cohortDiagnostics}{A list of arguments that uses `cohortDiagnostics`.
+\item{cohortDiagnostics}{A list of arguments that uses \code{cohortDiagnostics}.
 If the list is empty,
 the default values will be used.
 Example:
 *cohortDiagnostics = list(
- "cohortSurvival" = TRUE
- )}
+"cohortSurvival" = TRUE
+)}
 
-\item{populationDiagnostics}{A list of arguments that uses `populationDiagnostics`.
+\item{populationDiagnostics}{A list of arguments that uses \code{populationDiagnostics}.
 If the list is empty, the default values will be used.
 Example:
 In the below example, all diagnostics will be run and a subsample of 100,000 participants
 will be used to run populationDiagnostics.
 *populationDiagnostics = list(
- "populationSample" = 100000
- )}
+"populationSample" = 100000
+)}
 
 \item{stagingDirectory}{Path to folder to save incremental results and log file}
 }
@@ -62,10 +62,10 @@ A summarised result
 This comprises all the diagnostics that are being offered in this package,
 this includes:
 \itemize{
-  \item A diagnostic on the OMOP CDM dataset as a whole via \code{databaseDiagnostics}.
-  \item A diagnostic on the codelists associated with cohorts via \code{codelistDiagnostics}.
-  \item A diagnostic on the cohort itself via \code{cohortDiagnostics}.
-  \item A diagnostic on the frequency of the cohort in the dataset population via \code{populationDiagnostics}.
+\item A diagnostic on the OMOP CDM dataset as a whole via \code{databaseDiagnostics}.
+\item A diagnostic on the codelists associated with cohorts via \code{codelistDiagnostics}.
+\item A diagnostic on the cohort itself via \code{cohortDiagnostics}.
+\item A diagnostic on the frequency of the cohort in the dataset population via \code{populationDiagnostics}.
 }
 }
 \examples{

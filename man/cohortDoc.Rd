@@ -2,11 +2,11 @@
 % Please edit documentation in R/documentationHelper.R
 \name{cohortDoc}
 \alias{cohortDoc}
-\title{Helper for consistent documentation of `cohort`.}
+\title{Helper for consistent documentation of \code{cohort}.}
 \arguments{
 \item{cohort}{Cohort table in a cdm reference}
 }
 \description{
-Helper for consistent documentation of `cohort`.
+Helper for consistent documentation of \code{cohort}.
 }
 \keyword{internal}
