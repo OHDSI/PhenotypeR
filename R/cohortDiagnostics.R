@@ -113,7 +113,7 @@ cohortDiagnostics <- function(cohort,
       }
       cdm[[cohortNameSampled]] <- CohortConstructor::sampleCohorts(cdm[[cohortName]],
                                                                    cohortId = cohortId,
-                                                                   independent = FALSE,
+                                                                   independent = TRUE,
                                                                    n = cohortSample,
                                                                    name = cohortNameSampled)
     }
