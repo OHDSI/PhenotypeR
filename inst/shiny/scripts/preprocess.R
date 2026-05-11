@@ -213,8 +213,8 @@ if("summarise_drug_use" %in% names(dataFiltered)){
 }
 
 if("cohortDiagnostics" %in% diagnostics){
-  selected$summarise_large_scale_characteristics_variable_level <- "-inf to -366"
-  selected$compare_large_scale_characteristics_variable_level <- "-inf to -366"
+  selected$summarise_large_scale_characteristics_variable_level <- selected$summarise_large_scale_characteristics_variable_level[1]
+  selected$compare_large_scale_characteristics_variable_level <- selected$compare_large_scale_characteristics_variable_level[1]
   selected$compare_large_scale_characteristics_table_name     <- "condition_occurrence"
   selected$compare_large_scale_characteristics_cohort_1  <- "sampled"
   selected$compare_large_scale_characteristics_cohort_2  <- "matched"
