@@ -498,7 +498,7 @@ server <- function(input, output, session) {
     }
 
     if(length(clinical_descriptions) == 0){
-      shiny::validate("No database descriptions found")
+      shiny::validate("No clinical descriptions found")
     }
 
     info <- clinical_descriptions[tolower(names(clinical_descriptions)) %in% tolower(shared_cohort_names())]
