@@ -255,7 +255,7 @@ ui <- fluidPage(
                                        ),
                                        position = "right"
               ),
-              shiny::plotOutput("dobPlot")
+              shiny::plotOutput("dobPlot", height = plotHeightCss)
           )
             )
         )
@@ -352,7 +352,7 @@ ui <- fluidPage(
                                        ),
                                        position = "right"
               ),
-            plotOutput("obsPlot")
+            plotOutput("obsPlot", height = plotHeightCss)
           )
         )
           )
@@ -460,7 +460,7 @@ ui <- fluidPage(
                 ),
                 bslib::card(
                   full_screen = TRUE,
-                  plotOutput("clinicalTrends")
+                  plotOutput("clinicalTrends", height = plotHeightCss)
                 )
               )
             )
@@ -893,7 +893,7 @@ ui <- fluidPage(
                                          ),
                                          position = "right"
                 ),
-                shiny::plotOutput("plot_measurement_summary")
+                shiny::plotOutput("plot_measurement_summary", height = plotHeightCss)
               )
             )
           ),
@@ -983,7 +983,7 @@ ui <- fluidPage(
                                          ),
                                          position = "right"
                 ),
-                shiny::plotOutput("plot_measurement_value_as_concept")
+                shiny::plotOutput("plot_measurement_value_as_concept", height = plotHeightCss)
               )
             )
           ),
@@ -1073,7 +1073,7 @@ ui <- fluidPage(
                                          ),
                                          position = "right"
                 ),
-                shiny::plotOutput("plot_measurement_value_as_number")
+                shiny::plotOutput("plot_measurement_value_as_number", height = plotHeightCss)
               )
             )
           )
@@ -1332,7 +1332,7 @@ ui <- fluidPage(
                   ),
                   class = "text-end"
                 ),
-                DiagrammeR::grVizOutput("summarise_cohort_attrition_grViz") |> withSpinner()
+                DiagrammeR::grVizOutput("summarise_cohort_attrition_grViz", height = plotHeightCss) |> withSpinner()
               )
             )
           )
@@ -1474,7 +1474,7 @@ ui <- fluidPage(
                   ),
                   htmltools::tags$p(style = "font-size: 0.75em;", msgCohortSample),
                   htmltools::tags$p(style = "font-size: 0.75em;", msgMatchedSample),
-                  shiny::plotOutput("plot_age_pyramid")
+                  shiny::plotOutput("plot_age_pyramid", height = plotHeightCss)
                 )
               )
             )
@@ -1812,7 +1812,7 @@ ui <- fluidPage(
                   position = "right",
                   htmltools::tags$p(style = "font-size: 0.75em;", msgCohortSample),
                   htmltools::tags$p(style = "font-size: 0.75em;", msgMatchedSample),
-                  plotly::plotlyOutput("plotly_compare_lsc") |> withSpinner()
+                  plotly::plotlyOutput("plotly_compare_lsc", height = plotHeightCss) |> withSpinner()
                 )
               )
             )
@@ -1992,7 +1992,7 @@ ui <- fluidPage(
                                            ),
                                            position = "right"
                   ),
-                  plotly::plotlyOutput("summarise_cohort_overlap_plot")
+                  plotly::plotlyOutput("summarise_cohort_overlap_plot", height = plotHeightCss)
                 )
               )
             ),

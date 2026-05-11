@@ -1,3 +1,7 @@
+# Shared plot height, in pixels, used by UI outputs and server-side renderers.
+plotHeight <- 800
+plotHeightCss <- paste0(plotHeight, "px")
+
 # ensure minimum versions
 rlang::check_installed("omopgenerics", version = "1.2.0")
 rlang::check_installed("visOmopResults", version = "1.0.0")

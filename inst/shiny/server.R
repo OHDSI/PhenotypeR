@@ -2341,7 +2341,7 @@ server <- function(input, output, session) {
     )
   })
   output$summarise_cohort_timing_plot <- shiny::renderUI({
-    renderPlot(createPlotCohortTiming())
+    renderPlot(createPlotCohortTiming(), height = plotHeight)
   })
   output$summarise_cohort_timing_plot_download <- shiny::downloadHandler(
     filename = "summarise_cohort_timing_plot.png",
@@ -2435,9 +2435,9 @@ server <- function(input, output, session) {
   })
   output$summarise_cohort_survival_plot <- shiny::renderUI({
     if(isTRUE(input$survival_plot_interactive)){
-      plot <- plotly::ggplotly(createPlotSurvival())
+      plot <- plotly::ggplotly(createPlotSurvival(), height = plotHeight)
     } else {
-      plot <- renderPlot(createPlotSurvival())
+      plot <- renderPlot(createPlotSurvival(), height = plotHeight)
     }
     plot
   })
@@ -2568,9 +2568,9 @@ server <- function(input, output, session) {
 
   output$incidence_plot <- shiny::renderUI({
     if(isTRUE(input$incidence_plot_interactive)){
-      plot <- plotly::ggplotly(createPlotIncidence())
+      plot <- plotly::ggplotly(createPlotIncidence(), height = plotHeight)
     } else {
-      plot <- renderPlot(createPlotIncidence())
+      plot <- renderPlot(createPlotIncidence(), height = plotHeight)
     }
     plot
   })
@@ -2702,9 +2702,9 @@ server <- function(input, output, session) {
 
   output$prevalence_plot <- shiny::renderUI({
     if(isTRUE(input$prevalence_plot_interactive)){
-      plot <- plotly::ggplotly(createPlotPrevalence())
+      plot <- plotly::ggplotly(createPlotPrevalence(), height = plotHeight)
     } else {
-      plot <- renderPlot(createPlotPrevalence())
+      plot <- renderPlot(createPlotPrevalence(), height = plotHeight)
     }
     plot
 
@@ -2811,5 +2811,4 @@ server <- function(input, output, session) {
   createExpectationsOutput(reactive(input$updateCompareCohorts), "compare_cohorts_expectations")
   createExpectationsOutput(reactive(input$updateCohortSurvival), "cohort_survival_expectations")
 }
-
 
