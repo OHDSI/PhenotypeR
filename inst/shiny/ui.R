@@ -255,7 +255,8 @@ ui <- fluidPage(
                                        ),
                                        position = "right"
               ),
-              shiny::plotOutput("dobPlot")
+              shiny::plotOutput("dobPlot", height = plotHeight) |>
+                adjustPlotHeight()
           )
             )
         )
@@ -352,7 +353,8 @@ ui <- fluidPage(
                                        ),
                                        position = "right"
               ),
-            plotOutput("obsPlot")
+            plotOutput("obsPlot", height = plotHeight) |>
+              adjustPlotHeight()
           )
         )
           )
@@ -460,7 +462,8 @@ ui <- fluidPage(
                 ),
                 bslib::card(
                   full_screen = TRUE,
-                  plotOutput("clinicalTrends")
+                  plotOutput("clinicalTrends", height = plotHeight) |>
+                    adjustPlotHeight()
                 )
               )
             )
@@ -893,7 +896,8 @@ ui <- fluidPage(
                                          ),
                                          position = "right"
                 ),
-                shiny::plotOutput("plot_measurement_summary")
+                shiny::plotOutput("plot_measurement_summary", height = plotHeight) |>
+                  adjustPlotHeight()
               )
             )
           ),
@@ -983,7 +987,8 @@ ui <- fluidPage(
                                          ),
                                          position = "right"
                 ),
-                shiny::plotOutput("plot_measurement_value_as_concept")
+                shiny::plotOutput("plot_measurement_value_as_concept", height = plotHeight) |>
+                  adjustPlotHeight()
               )
             )
           ),
@@ -1073,7 +1078,8 @@ ui <- fluidPage(
                                          ),
                                          position = "right"
                 ),
-                shiny::plotOutput("plot_measurement_value_as_number")
+                shiny::plotOutput("plot_measurement_value_as_number", height = plotHeight) |>
+                  adjustPlotHeight()
               )
             )
           )
@@ -1332,7 +1338,9 @@ ui <- fluidPage(
                   ),
                   class = "text-end"
                 ),
-                DiagrammeR::grVizOutput("summarise_cohort_attrition_grViz") |> withSpinner()
+                DiagrammeR::grVizOutput("summarise_cohort_attrition_grViz", height = plotHeight) |>
+                  adjustPlotHeight() |>
+                  withSpinner()
               )
             )
           )
@@ -1474,7 +1482,8 @@ ui <- fluidPage(
                   ),
                   htmltools::tags$p(style = "font-size: 0.75em;", msgCohortSample),
                   htmltools::tags$p(style = "font-size: 0.75em;", msgMatchedSample),
-                  shiny::plotOutput("plot_age_pyramid")
+                  shiny::plotOutput("plot_age_pyramid", height = plotHeight) |>
+                    adjustPlotHeight()
                 )
               )
             )
@@ -1812,7 +1821,9 @@ ui <- fluidPage(
                   position = "right",
                   htmltools::tags$p(style = "font-size: 0.75em;", msgCohortSample),
                   htmltools::tags$p(style = "font-size: 0.75em;", msgMatchedSample),
-                  plotly::plotlyOutput("plotly_compare_lsc") |> withSpinner()
+                  plotly::plotlyOutput("plotly_compare_lsc", height = plotHeight) |>
+                    adjustPlotHeight() |>
+                    withSpinner()
                 )
               )
             )
@@ -1992,7 +2003,8 @@ ui <- fluidPage(
                                            ),
                                            position = "right"
                   ),
-                  plotly::plotlyOutput("summarise_cohort_overlap_plot")
+                  plotly::plotlyOutput("summarise_cohort_overlap_plot", height = plotHeight) |>
+                    adjustPlotHeight()
                 )
               )
             ),
@@ -2092,7 +2104,8 @@ ui <- fluidPage(
                                            ),
                                            position = "right"
                   ),
-                  uiOutput("summarise_cohort_timing_plot")
+                  plotOutput("summarise_cohort_timing_plot", height = plotHeight) |>
+                    adjustPlotHeight()
                 )
               )
             )
@@ -2274,7 +2287,18 @@ ui <- fluidPage(
                   ),
                   htmltools::tags$p(style = "font-size: 0.75em;", msgCohortSample),
                   htmltools::tags$p(style = "font-size: 0.75em;", msgMatchedSample),
-                  uiOutput("summarise_cohort_survival_plot") |> withSpinner()
+                  shiny::conditionalPanel(
+                    condition = "input.survival_plot_interactive",
+                    plotly::plotlyOutput("summarise_cohort_survival_plotly", height = plotHeight) |>
+                      adjustPlotHeight() |>
+                      withSpinner()
+                  ),
+                  shiny::conditionalPanel(
+                    condition = "!input.survival_plot_interactive",
+                    shiny::plotOutput("summarise_cohort_survival_plot_static", height = plotHeight) |>
+                      adjustPlotHeight() |>
+                      withSpinner()
+                  )
                 )
               )
             )
@@ -2489,7 +2513,18 @@ ui <- fluidPage(
                                            position = "right"
                   ),
                   htmltools::tags$p(style = "font-size: 0.75em;", msgPopulationDiag),
-                  uiOutput("incidence_plot") |> withSpinner()
+                  shiny::conditionalPanel(
+                    condition = "input.incidence_plot_interactive",
+                    plotly::plotlyOutput("incidence_plotly", height = plotHeight) |>
+                      adjustPlotHeight() |>
+                      withSpinner()
+                  ),
+                  shiny::conditionalPanel(
+                    condition = "!input.incidence_plot_interactive",
+                    shiny::plotOutput("incidence_plot_static", height = plotHeight) |>
+                      adjustPlotHeight() |>
+                      withSpinner()
+                  )
                 )
               )
             )
@@ -2695,7 +2730,18 @@ ui <- fluidPage(
                                            position = "right"
                   ),
                   htmltools::tags$p(style = "font-size: 0.75em;", gsub("Incidence", "Prevalence", msgPopulationDiag)),
-                  uiOutput("prevalence_plot") |> withSpinner()
+                  shiny::conditionalPanel(
+                    condition = "input.prevalence_plot_interactive",
+                    plotly::plotlyOutput("prevalence_plotly", height = plotHeight) |>
+                      adjustPlotHeight() |>
+                      withSpinner()
+                  ),
+                  shiny::conditionalPanel(
+                    condition = "!input.prevalence_plot_interactive",
+                    shiny::plotOutput("prevalence_plot_static", height = plotHeight) |>
+                      adjustPlotHeight() |>
+                      withSpinner()
+                  )
                 )
               )
             )

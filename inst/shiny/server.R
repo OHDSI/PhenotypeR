@@ -2340,8 +2340,8 @@ server <- function(input, output, session) {
       colour = input$summarise_cohort_timing_plot_colour
     )
   })
-  output$summarise_cohort_timing_plot <- shiny::renderUI({
-    renderPlot(createPlotCohortTiming())
+  output$summarise_cohort_timing_plot <- shiny::renderPlot({
+    createPlotCohortTiming()
   })
   output$summarise_cohort_timing_plot_download <- shiny::downloadHandler(
     filename = "summarise_cohort_timing_plot.png",
@@ -2433,13 +2433,11 @@ server <- function(input, output, session) {
       labs(color = "Color") +
       guides(fill = "none")
   })
-  output$summarise_cohort_survival_plot <- shiny::renderUI({
-    if(isTRUE(input$survival_plot_interactive)){
-      plot <- plotly::ggplotly(createPlotSurvival())
-    } else {
-      plot <- renderPlot(createPlotSurvival())
-    }
-    plot
+  output$summarise_cohort_survival_plotly <- plotly::renderPlotly({
+    plotly::ggplotly(createPlotSurvival())
+  })
+  output$summarise_cohort_survival_plot_static <- shiny::renderPlot({
+    createPlotSurvival()
   })
   output$summarise_cohort_survival_plot_download <- shiny::downloadHandler(
     filename = "summarise_cohort_survival_plot.png",
@@ -2566,13 +2564,11 @@ server <- function(input, output, session) {
     return(plot)
   })
 
-  output$incidence_plot <- shiny::renderUI({
-    if(isTRUE(input$incidence_plot_interactive)){
-      plot <- plotly::ggplotly(createPlotIncidence())
-    } else {
-      plot <- renderPlot(createPlotIncidence())
-    }
-    plot
+  output$incidence_plotly <- plotly::renderPlotly({
+    plotly::ggplotly(createPlotIncidence())
+  })
+  output$incidence_plot_static <- shiny::renderPlot({
+    createPlotIncidence()
   })
   output$incidence_plot_download <- shiny::downloadHandler(
     filename = "incidence_plot.png",
@@ -2700,14 +2696,11 @@ server <- function(input, output, session) {
 
   })
 
-  output$prevalence_plot <- shiny::renderUI({
-    if(isTRUE(input$prevalence_plot_interactive)){
-      plot <- plotly::ggplotly(createPlotPrevalence())
-    } else {
-      plot <- renderPlot(createPlotPrevalence())
-    }
-    plot
-
+  output$prevalence_plotly <- plotly::renderPlotly({
+    plotly::ggplotly(createPlotPrevalence())
+  })
+  output$prevalence_plot_static <- shiny::renderPlot({
+    createPlotPrevalence()
   })
   output$prevalence_plot_download <- shiny::downloadHandler(
     filename = "prevalence_plot.png",
@@ -2811,5 +2804,3 @@ server <- function(input, output, session) {
   createExpectationsOutput(reactive(input$updateCompareCohorts), "compare_cohorts_expectations")
   createExpectationsOutput(reactive(input$updateCohortSurvival), "cohort_survival_expectations")
 }
-
-

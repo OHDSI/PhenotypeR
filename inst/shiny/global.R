@@ -1,3 +1,9 @@
+# plot size helper
+plotHeight <- "100%"
+adjustPlotHeight <- function(output) {
+  htmltools::tagAppendAttributes(output, style = "min-height: 400px;")
+}
+
 # ensure minimum versions
 rlang::check_installed("omopgenerics", version = "1.2.0")
 rlang::check_installed("visOmopResults", version = "1.0.0")
