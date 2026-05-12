@@ -81,48 +81,48 @@ this includes:</p><ul><li><p>A diagnostic on the OMOP CDM dataset as a whole via
 
 
 <dt id="arg-databasediagnostics">databaseDiagnostics<a class="anchor" aria-label="anchor" href="#arg-databasediagnostics"></a></dt>
-<dd><p>A list of arguments that uses `databaseDiagnostics`.
+<dd><p>A list of arguments that uses <code>databaseDiagnostics</code>.
 If the list is empty, the default values will be used.
 Example:
-In the following example, all diagnostics will be run except *person table summary* from
+In the following example, all diagnostics will be run except <em>person table summary</em> from
 databaseDiagnostics:
 *databaseDiagnostics = list(
 "personTableSummary" = FALSE
- )</p></dd>
+)</p></dd>
 
 
 <dt id="arg-codelistdiagnostics">codelistDiagnostics<a class="anchor" aria-label="anchor" href="#arg-codelistdiagnostics"></a></dt>
-<dd><p>A list of arguments that uses `codelistDiagnostics`.
+<dd><p>A list of arguments that uses <code>codelistDiagnostics</code>.
 If the list is empty, the default values will be used.
 Example:
 In the below example, all diagnostics will be run, and a subsample of 1,000 participants will
 be used to run measurement diagnostics and another independent subsample of 500 participants
 will be used to run drug diagnostics:
 *codelistDiagnostics = list(
- "measurementDiagnosticsSample" = 1000,
- "drugDiagnosticsSample" = 500
-  )</p></dd>
+"measurementDiagnosticsSample" = 1000,
+"drugDiagnosticsSample" = 500
+)</p></dd>
 
 
 <dt id="arg-cohortdiagnostics">cohortDiagnostics<a class="anchor" aria-label="anchor" href="#arg-cohortdiagnostics"></a></dt>
-<dd><p>A list of arguments that uses `cohortDiagnostics`.
+<dd><p>A list of arguments that uses <code>cohortDiagnostics</code>.
 If the list is empty,
 the default values will be used.
 Example:
 *cohortDiagnostics = list(
- "cohortSurvival" = TRUE
- )</p></dd>
+"cohortSurvival" = TRUE
+)</p></dd>
 
 
 <dt id="arg-populationdiagnostics">populationDiagnostics<a class="anchor" aria-label="anchor" href="#arg-populationdiagnostics"></a></dt>
-<dd><p>A list of arguments that uses `populationDiagnostics`.
+<dd><p>A list of arguments that uses <code>populationDiagnostics</code>.
 If the list is empty, the default values will be used.
 Example:
 In the below example, all diagnostics will be run and a subsample of 100,000 participants
 will be used to run populationDiagnostics.
 *populationDiagnostics = list(
- "populationSample" = 100000
- )</p></dd>
+"populationSample" = 100000
+)</p></dd>
 
 
 <dt id="arg-stagingdirectory">stagingDirectory<a class="anchor" aria-label="anchor" href="#arg-stagingdirectory"></a></dt>
@@ -158,19 +158,19 @@ will be used to run populationDiagnostics.
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Cohort <span style="font-weight: bold;">warfarin</span> created.</span>
 <span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">phenotypeDiagnostics</span><span class="op">(</span><span class="va">cdm</span><span class="op">$</span><span class="va">warfarin</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Logging PhenotypeR progress in</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> /tmp/RtmpCz8LWt/phenotypeDiagnostics_log_{date}_{time}1c587ff9aadc.txt</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> /tmp/RtmpR5u2bE/phenotypeDiagnostics_log_{date}_{time}1c453b50956c.txt</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Creating log file:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   <span style="color: #0000BB;">/tmp/RtmpCz8LWt/phenotypeDiagnostics_log_2026_05_12_06_07_321c587ff9aadc.txt</span>.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-05-12 06:07:32]</span> - Log file created</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-05-12 06:07:32]</span> - Database diagnostics - getting CDM Snapshot</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-05-12 06:07:32]</span> - Database diagnostics - summarising person table</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   <span style="color: #0000BB;">/tmp/RtmpR5u2bE/phenotypeDiagnostics_log_2026_05_12_06_21_241c453b50956c.txt</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-05-12 06:21:24]</span> - Log file created</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-05-12 06:21:24]</span> - Database diagnostics - getting CDM Snapshot</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-05-12 06:21:25]</span> - Database diagnostics - summarising person table</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The following estimates will be calculated:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> date_of_birth: density</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   the database side</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-05-12 06:07:37.013889</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-05-12 06:07:37.071872</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-05-12 06:07:37]</span> - Database diagnostics - summarising observation period</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-05-12 06:21:29.577735</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-05-12 06:21:29.645617</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-05-12 06:21:29]</span> - Database diagnostics - summarising observation period</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> retrieving cdm object from <span style="font-style: italic;">cdm_table</span>.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span><span style="color: #BBBB00;">!</span> There are 2649 individuals not included in the person table.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The following estimates will be calculated:</span>
@@ -178,19 +178,19 @@ will be used to run populationDiagnostics.
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> observation_period_end_date: density</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   the database side</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-05-12 06:07:40.422742</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-05-12 06:07:40.490945</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-05-12 06:07:41]</span> - Codelist diagnostics - index event breakdown</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-05-12 06:21:33.055457</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-05-12 06:21:33.123213</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-05-12 06:21:33]</span> - Codelist diagnostics - index event breakdown</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Getting counts of warfarin codes for cohort warfarin</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The CDM reference containing the cohort must also contain achilles tables.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> Returning only index event breakdown.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-05-12 06:07:42]</span> - Cohort diagnostics - cohort attrition</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-05-12 06:07:43]</span> - Cohort diagnostics - cohort count</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-05-12 06:21:35]</span> - Cohort diagnostics - cohort attrition</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-05-12 06:21:35]</span> - Cohort diagnostics - cohort count</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising data</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising cohort <span style="color: #0000BB;">warfarin</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> summariseCharacteristics finished!</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Skipping cohort sampling as all cohorts have less than 20000 individuals.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-05-12 06:07:44]</span> - Cohort diagnostics - matched cohorts</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-05-12 06:21:36]</span> - Cohort diagnostics - matched cohorts</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Sampling cohort `tmp_022_sampled`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Returning entry cohort as the size of the cohorts to be sampled is equal or</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> smaller than `n`.</span>
@@ -207,7 +207,7 @@ will be used to run populationDiagnostics.
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Binding cohorts</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Done</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Getting cohorts and indexes</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-05-12 06:07:55]</span> - Cohort diagnostics - cohort characteristics</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-05-12 06:21:48]</span> - Cohort diagnostics - cohort characteristics</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> adding demographics columns</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> adding tableIntersectCount 1/1</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> window names casted to snake_case:</span>
@@ -217,13 +217,13 @@ will be used to run populationDiagnostics.
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising cohort <span style="color: #0000BB;">warfarin_sampled</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> summarising cohort <span style="color: #0000BB;">warfarin_matched</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> summariseCharacteristics finished!</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-05-12 06:08:00]</span> - Cohort diagnostics - age density</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-05-12 06:21:54]</span> - Cohort diagnostics - age density</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The following estimates will be calculated:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> age: density</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Table is collected to memory as not all requested estimates are supported on</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   the database side</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-05-12 06:08:01.342206</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-05-12 06:08:01.476395</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start summary of data, at 2026-05-12 06:21:54.536838</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summary finished, at 2026-05-12 06:21:54.663564</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Using defaults for windows for large scale characteristics: c(-365, -31),</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> c(-30, -1), c(0, 0), c(1, 30), and c(31, 365). These can be changed via passing</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> alternative windows as a global option</span>
@@ -237,7 +237,7 @@ will be used to run populationDiagnostics.
 <span class="r-msg co"><span class="r-pr">#&gt;</span> drug_exposure and drug_era. These can be changed via passing alternative</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> windows as a global option</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `PhenotypeR_summariseLargeScaleCharacteristics_episodeInWindow`</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-05-12 06:08:01]</span> - Cohort diagnostics - large scale characteristics</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-05-12 06:21:55]</span> - Cohort diagnostics - large scale characteristics</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising large scale characteristics </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7) for time wi…</span>
@@ -282,7 +282,7 @@ will be used to run populationDiagnostics.
 <span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window 1 and 30</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window 31 and …</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Formatting result</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 229 estimates dropped as frequency less than 1%</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 240 estimates dropped as frequency less than 1%</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summarising large scale characteristics</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summarising large scale characteristics </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">condition_occurrence</span> (1 of 7)</span>
@@ -328,15 +328,15 @@ will be used to run populationDiagnostics.
 <span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window 1 and 30</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>  - getting characteristics from table <span style="color: #0000BB;">drug_era</span> (7 of 7) for time window 31 and …</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Formatting result</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 229 estimates dropped as frequency less than 1%</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 240 estimates dropped as frequency less than 1%</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Summarising large scale characteristics</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `cohort_sample` and `matched_sample` casted to character.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-05-12 06:08:48]</span> - Population diagnosics - denominator cohort</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-05-12 06:08:48]</span> - Population diagnosics - sampling person table to 1e+05</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-05-12 06:22:42]</span> - Population diagnosics - denominator cohort</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-05-12 06:22:42]</span> - Population diagnosics - sampling person table to 1e+05</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> people</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Creating denominator cohorts</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Cohorts created in 0 min and 5 sec</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-05-12 06:08:54]</span> - Population diagnosics - incidence</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Cohorts created in 0 min and 6 sec</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-05-12 06:22:48]</span> - Population diagnosics - incidence</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 1 of 7</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 2 of 7</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 3 of 7</span>
@@ -345,7 +345,7 @@ will be used to run populationDiagnostics.
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 6 of 7</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting incidence for analysis 7 of 7</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Overall time taken: 0 mins and 10 secs</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-05-12 06:09:04]</span> - Population diagnosics - prevalence</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-05-12 06:22:59]</span> - Population diagnosics - prevalence</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 1 of 7</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 2 of 7</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Getting prevalence for analysis 3 of 7</span>
@@ -358,7 +358,7 @@ will be used to run populationDiagnostics.
 <span class="r-msg co"><span class="r-pr">#&gt;</span> character.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `populationDateStart` and `populationDateEnd` eliminated from settings as all</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> elements are NA.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-05-12 06:09:11]</span> - Exporting log file</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">[2026-05-12 06:23:06]</span> - Exporting log file</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>

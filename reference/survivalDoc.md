@@ -1,6 +1,6 @@
-# Helper for consistent documentation of \`survival\`.
+# Helper for consistent documentation of `survival`.
 
-Helper for consistent documentation of \`survival\`.
+Helper for consistent documentation of `survival`.
 
 ## Arguments
 

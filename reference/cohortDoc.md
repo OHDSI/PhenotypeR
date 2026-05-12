@@ -1,6 +1,6 @@
-# Helper for consistent documentation of \`cohort\`.
+# Helper for consistent documentation of `cohort`.
 
-Helper for consistent documentation of \`cohort\`.
+Helper for consistent documentation of `cohort`.
 
 ## Arguments
 

@@ -42,24 +42,28 @@ databaseDiagnostics(
 
 - snapshot:
 
-  Whether to run \`OmopSketch::summariseOmopSnapshot()\` (TRUE) or not
-  (FALSE).
+  Whether to run
+  [`OmopSketch::summariseOmopSnapshot()`](https://OHDSI.github.io/OmopSketch/reference/summariseOmopSnapshot.html)
+  (TRUE) or not (FALSE).
 
 - personTableSummary:
 
-  Whether to run \`OmopSketch::summarisePerson()\` (TRUE) or not
-  (FALSE).
+  Whether to run
+  [`OmopSketch::summarisePerson()`](https://OHDSI.github.io/OmopSketch/reference/summarisePerson.html)
+  (TRUE) or not (FALSE).
 
 - observationPeriodsSummary:
 
-  Whether to run \`OmopSketch::summariseObservationPeriod()\` (TRUE) or
-  not (FALSE).
+  Whether to run
+  [`OmopSketch::summariseObservationPeriod()`](https://OHDSI.github.io/OmopSketch/reference/summariseObservationPeriod.html)
+  (TRUE) or not (FALSE).
 
 - clinicalRecordsSummary:
 
-  Whether to run \`OmopSketch::summariseClinicalRecords()\` on those
-  clinical tables where the codes associated with your cohort are found
-  (TRUE) or not (FALSE).
+  Whether to run
+  [`OmopSketch::summariseClinicalRecords()`](https://OHDSI.github.io/OmopSketch/reference/summariseClinicalRecords.html)
+  on those clinical tables where the codes associated with your cohort
+  are found (TRUE) or not (FALSE).
 
 ## Value
 
@@ -96,8 +100,8 @@ cdm$new_cohort <- conceptCohort(cdm,
 #> • date_of_birth: density
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side
-#> → Start summary of data, at 2026-05-12 06:07:16.500848
-#> ✔ Summary finished, at 2026-05-12 06:07:16.558861
+#> → Start summary of data, at 2026-05-12 06:21:08.304912
+#> ✔ Summary finished, at 2026-05-12 06:21:08.370451
 #> ℹ retrieving cdm object from cdm_table.
 #> Warning: ! There are 2649 individuals not included in the person table.
 #> ℹ The following estimates will be calculated:
@@ -105,8 +109,8 @@ cdm$new_cohort <- conceptCohort(cdm,
 #> • observation_period_end_date: density
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side
-#> → Start summary of data, at 2026-05-12 06:07:19.88881
-#> ✔ Summary finished, at 2026-05-12 06:07:19.958531
+#> → Start summary of data, at 2026-05-12 06:21:11.786311
+#> ✔ Summary finished, at 2026-05-12 06:21:11.855819
 
  cdmDisconnect(cdm = cdm)
 # }

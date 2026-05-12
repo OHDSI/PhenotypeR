@@ -1,10 +1,17 @@
 # Run cohort-level diagnostics
 
-Runs phenotypeR diagnostics on the cohort. The diganostics include: \*
-Age groups and sex summarised. \* A summary of visits of everyone in the
-cohort using visit_occurrence table. \* A summary of age and sex density
-of the cohort. \* Attrition of the cohorts. \* Overlap between cohorts
-(if more than one cohort is being used).
+Runs phenotypeR diagnostics on the cohort. The diganostics include:
+
+- Age groups and sex summarised.
+
+- A summary of visits of everyone in the cohort using visit_occurrence
+  table.
+
+- A summary of age and sex density of the cohort.
+
+- Attrition of the cohorts.
+
+- Overlap between cohorts (if more than one cohort is being used).
 
 ## Usage
 
@@ -34,43 +41,49 @@ cohortDiagnostics(
 
 - cohortCount:
 
-  Whether to run \`CohortCharacteristics::summariseCohortCount()\` and
-  \`CohortCharacteristics::summariseCohortAttrition()\` (TRUE) or not
-  (FALSE).
+  Whether to run
+  [`CohortCharacteristics::summariseCohortCount()`](https://darwin-eu.github.io/CohortCharacteristics/reference/summariseCohortCount.html)
+  and
+  [`CohortCharacteristics::summariseCohortAttrition()`](https://darwin-eu.github.io/CohortCharacteristics/reference/summariseCohortAttrition.html)
+  (TRUE) or not (FALSE).
 
 - cohortCharacteristics:
 
-  Whether to run \`CohortCharacteristics::summariseCharacteristics()\`
+  Whether to run
+  [`CohortCharacteristics::summariseCharacteristics()`](https://darwin-eu.github.io/CohortCharacteristics/reference/summariseCharacteristics.html)
   and summarise age density (TRUE) or not (FALSE).
 
 - largeScaleCharacteristics:
 
   Whether to run
-  \`CohortCharacteristics::summariseLargeScaleCharacteristics()\` (TRUE)
-  or not (FALSE).
+  [`CohortCharacteristics::summariseLargeScaleCharacteristics()`](https://darwin-eu.github.io/CohortCharacteristics/reference/summariseLargeScaleCharacteristics.html)
+  (TRUE) or not (FALSE).
 
 - compareCohorts:
 
-  Whether to run \`CohortCharacteristics::summariseCohortOverlap()\` and
-  \`CohortCharacteristics::summariseCohortTiming()\` (TRUE) or not
-  (FALSE). Notice that, if set to TRUE, the diagnostics will only be run
-  when there are more than one cohort.
+  Whether to run
+  [`CohortCharacteristics::summariseCohortOverlap()`](https://darwin-eu.github.io/CohortCharacteristics/reference/summariseCohortOverlap.html)
+  and
+  [`CohortCharacteristics::summariseCohortTiming()`](https://darwin-eu.github.io/CohortCharacteristics/reference/summariseCohortTiming.html)
+  (TRUE) or not (FALSE). Notice that, if set to TRUE, the diagnostics
+  will only be run when there are more than one cohort.
 
 - cohortSurvival:
 
-  Whether to run \`CohortSurvival::estimateSingleEventSurvival()\`
+  Whether to run
+  [`CohortSurvival::estimateSingleEventSurvival()`](https://darwin-eu.github.io/CohortSurvival/reference/estimateSingleEventSurvival.html)
   (TRUE) or not (FALSE).
 
 - cohortSample:
 
   The number of people to take a random sample for cohortDiagnostics. If
-  \`cohortSample = NULL\`, no sampling will be performed.
+  `cohortSample = NULL`, no sampling will be performed.
 
 - matchedSample:
 
   The number of people to take a random sample for matching. If
-  \`matchedSample = NULL\`, no sampling will be performed. If
-  \`matchedSample = 0\`, no matched cohorts will be created.
+  `matchedSample = NULL`, no sampling will be performed. If
+  `matchedSample = 0`, no matched cohorts will be created.
 
 ## Value
 
@@ -135,8 +148,8 @@ result <- cohortDiagnostics(cdm$warfarin)
 #> • age: density
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side
-#> → Start summary of data, at 2026-05-12 06:06:13.790319
-#> ✔ Summary finished, at 2026-05-12 06:06:13.916788
+#> → Start summary of data, at 2026-05-12 06:20:03.379941
+#> ✔ Summary finished, at 2026-05-12 06:20:03.514293
 #> Using defaults for windows for large scale characteristics: c(-365, -31),
 #> c(-30, -1), c(0, 0), c(1, 30), and c(31, 365). These can be changed via passing
 #> alternative windows as a global option
@@ -194,7 +207,7 @@ result <- cohortDiagnostics(cdm$warfarin)
 #>  - getting characteristics from table drug_era (7 of 7) for time window 1 and 30
 #>  - getting characteristics from table drug_era (7 of 7) for time window 31 and …
 #> Formatting result
-#> 233 estimates dropped as frequency less than 1%
+#> 275 estimates dropped as frequency less than 1%
 #> ✔ Summarising large scale characteristics
 #> ℹ Summarising large scale characteristics 
 #>  - getting characteristics from table condition_occurrence (1 of 7)
@@ -240,7 +253,7 @@ result <- cohortDiagnostics(cdm$warfarin)
 #>  - getting characteristics from table drug_era (7 of 7) for time window 1 and 30
 #>  - getting characteristics from table drug_era (7 of 7) for time window 31 and …
 #> Formatting result
-#> 233 estimates dropped as frequency less than 1%
+#> 275 estimates dropped as frequency less than 1%
 #> ✔ Summarising large scale characteristics
 #> `cohort_sample` and `matched_sample` casted to character.
 

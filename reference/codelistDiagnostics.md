@@ -1,11 +1,13 @@
 # Run codelist-level diagnostics
 
-\`codelistDiagnostics()\` runs phenotypeR diagnostics on the
+`codelistDiagnostics()` runs phenotypeR diagnostics on the
 cohort_codelist attribute on the cohort. Thus codelist attribute of the
 cohort must be populated. If it is missing then it could be populated
-using \`addCodelistAttribute()\` function.
+using
+[`addCodelistAttribute()`](https://ohdsi.github.io/PhenotypeR/reference/addCodelistAttribute.md)
+function.
 
-Furthermore \`codelistDiagnostics()\` requires achilles tables to be
+Furthermore `codelistDiagnostics()` requires achilles tables to be
 present in the cdm so that concept counts could be derived.
 
 ## Usage
@@ -38,18 +40,20 @@ codelistDiagnostics(
 
 - achillesCodeUse:
 
-  Whether to run \`CodelistGenerator::summariseAchillesCodeUse()\`
+  Whether to run
+  [`CodelistGenerator::summariseAchillesCodeUse()`](https://darwin-eu.github.io/CodelistGenerator/reference/summariseAchillesCodeUse.html)
   (TRUE) or not (FALSE).
 
 - orphanCodeUse:
 
-  Whether to run \`CodelistGenerator::summariseOrphanCodeUse()\` (TRUE)
-  or not (FALSE).
+  Whether to run `CodelistGenerator::summariseOrphanCodeUse()` (TRUE) or
+  not (FALSE).
 
 - cohortCodeUse:
 
-  Whether to run \`CodelistGenerator::summariseCohortCodeUse()\` (TRUE)
-  or not (FALSE).
+  Whether to run
+  [`CodelistGenerator::summariseCohortCodeUse()`](https://darwin-eu.github.io/CodelistGenerator/reference/summariseCohortCodeUse.html)
+  (TRUE) or not (FALSE).
 
 - drugDiagnostics:
 
@@ -60,8 +64,8 @@ codelistDiagnostics(
 - drugDiagnosticsSample:
 
   The number of people to take a random sample for drug diagnostics. If
-  \`drugDiagnosticsSample = NULL\`, no sampling will be performed. If
-  \`drugDiagnosticsSample = 0\` drug diagnostics will not be run.
+  `drugDiagnosticsSample = NULL`, no sampling will be performed. If
+  `drugDiagnosticsSample = 0` drug diagnostics will not be run.
 
 - measurementDiagnostics:
 
@@ -72,8 +76,8 @@ codelistDiagnostics(
 - measurementDiagnosticsSample:
 
   The number of people to take a random sample for measurement
-  diagnostics. If \`measurementDiagnosticsSample = NULL\`, no sampling
-  will be performed. If \`measurementDiagnosticsSample = 0\` measurement
+  diagnostics. If `measurementDiagnosticsSample = NULL`, no sampling
+  will be performed. If `measurementDiagnosticsSample = 0` measurement
   diagnostics will not be run.
 
 ## Value

@@ -1,6 +1,6 @@
-# Helper for consistent documentation of \`directory\`.
+# Helper for consistent documentation of `directory`.
 
-Helper for consistent documentation of \`directory\`.
+Helper for consistent documentation of `directory`.
 
 ## Arguments
 

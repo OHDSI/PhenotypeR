@@ -1,6 +1,6 @@
-# Helper for consistent documentation of \`populationSample\`.
+# Helper for consistent documentation of `populationSample`.
 
-Helper for consistent documentation of \`populationSample\`.
+Helper for consistent documentation of `populationSample`.
 
 ## Arguments
 

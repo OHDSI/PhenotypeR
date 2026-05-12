@@ -3,7 +3,9 @@
 PhenotypeR diagnostics on the cohort of input with relation to a
 denomination population. Diagnostics include:
 
-\* Incidence \* Period Prevalence
+- Incidence
+
+- Period Prevalence
 
 ## Usage
 
@@ -30,12 +32,14 @@ populationDiagnostics(
 
 - incidence:
 
-  Whether to run \`IncidencePrevalence::estimateIncidence()\` (TRUE) or
-  not (FALSE).
+  Whether to run
+  [`IncidencePrevalence::estimateIncidence()`](https://darwin-eu.github.io/IncidencePrevalence/reference/estimateIncidence.html)
+  (TRUE) or not (FALSE).
 
 - periodPrevalence:
 
-  Whether to run \`IncidencePrevalence::estimatePeriodPrevalence()\`
+  Whether to run
+  [`IncidencePrevalence::estimatePeriodPrevalence()`](https://darwin-eu.github.io/IncidencePrevalence/reference/estimatePeriodPrevalence.html)
   (TRUE) or not (FALSE).
 
 - populationSample:
@@ -83,12 +87,12 @@ cdm$warfarin <- conceptCohort(cdm,
 
 result <- cdm$warfarin |>
   populationDiagnostics(populationSample = 100000)
-#> [2026-05-12 06:09:21] - Population diagnosics - denominator cohort
-#> [2026-05-12 06:09:21] - Population diagnosics - sampling person table to 1e+05
+#> [2026-05-12 06:23:17] - Population diagnosics - denominator cohort
+#> [2026-05-12 06:23:17] - Population diagnosics - sampling person table to 1e+05
 #> people
 #> ℹ Creating denominator cohorts
 #> ✔ Cohorts created in 0 min and 6 sec
-#> [2026-05-12 06:09:28] - Population diagnosics - incidence
+#> [2026-05-12 06:23:23] - Population diagnosics - incidence
 #> ℹ Getting incidence for analysis 1 of 7
 #> ℹ Getting incidence for analysis 2 of 7
 #> ℹ Getting incidence for analysis 3 of 7
@@ -97,7 +101,7 @@ result <- cdm$warfarin |>
 #> ℹ Getting incidence for analysis 6 of 7
 #> ℹ Getting incidence for analysis 7 of 7
 #> ✔ Overall time taken: 0 mins and 10 secs
-#> [2026-05-12 06:09:38] - Population diagnosics - prevalence
+#> [2026-05-12 06:23:34] - Population diagnosics - prevalence
 #> ℹ Getting prevalence for analysis 1 of 7
 #> ℹ Getting prevalence for analysis 2 of 7
 #> ℹ Getting prevalence for analysis 3 of 7

@@ -1,12 +1,13 @@
 # Adds the cohort_codelist attribute to a cohort
 
-\`addCodelistAttribute()\` allows the users to add a codelist to a
-cohort in OMOP CDM.
+`addCodelistAttribute()` allows the users to add a codelist to a cohort
+in OMOP CDM.
 
-This is particularly important for the use of \`codelistDiagnostics()\`,
+This is particularly important for the use of
+[`codelistDiagnostics()`](https://ohdsi.github.io/PhenotypeR/reference/codelistDiagnostics.md),
 as the underlying assumption is that the cohort that is fed into
-\`codelistDiagnostics()\` has a cohort_codelist attribute attached to
-it.
+[`codelistDiagnostics()`](https://ohdsi.github.io/PhenotypeR/reference/codelistDiagnostics.md)
+has a cohort_codelist attribute attached to it.
 
 ## Usage
 
@@ -26,7 +27,7 @@ addCodelistAttribute(cohort, codelist, cohortName = names(codelist))
 
 - cohortName:
 
-  For each element of the codelist, the name of the cohort in \`cohort\`
+  For each element of the codelist, the name of the cohort in `cohort`
   to which the codelist refers
 
 ## Value
@@ -62,7 +63,7 @@ cohort <- addCodelistAttribute(cohort = cdm$warfarin,
 #> Warning: Overwriting codelist for cohort warfarin
 attr(cohort, "cohort_codelist")
 #> # Source:   table<results.test_warfarin_codelist> [?? x 4]
-#> # Database: DuckDB 1.5.2 [unknown@Linux 6.17.0-1010-azure:R 4.6.0//tmp/RtmpCz8LWt/file1c581f80081a.duckdb]
+#> # Database: DuckDB 1.5.2 [unknown@Linux 6.17.0-1010-azure:R 4.6.0//tmp/RtmpR5u2bE/file1c451b3a6734.duckdb]
 #>   cohort_definition_id codelist_name concept_id codelist_type
 #>                  <int> <chr>              <int> <chr>        
 #> 1                    1 warfarin         1310149 index event  

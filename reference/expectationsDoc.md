@@ -1,6 +1,6 @@
-# Helper for consistent documentation of \`expectations\`.
+# Helper for consistent documentation of `expectations`.
 
-Helper for consistent documentation of \`expectations\`.
+Helper for consistent documentation of `expectations`.
 
 ## Arguments
 
