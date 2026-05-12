@@ -45,6 +45,12 @@ test_that("run with a single cohort", {
    omopgenerics::settings(result) |>
     dplyr::pull("result_type")))
 
+  # option lsc FALSE works
+  expect_no_error(result <- cdm$my_cohort |> cohortDiagnostics(largeScaleCharacteristics = FALSE))
+  expect_false(any("summarise_large_scale_characteristics" ==
+                     omopgenerics::settings(result) |>
+                     dplyr::pull("result_type")))
+
 })
 
 test_that("run with multiple cohorts", {
