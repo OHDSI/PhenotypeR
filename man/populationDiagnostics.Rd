@@ -19,10 +19,10 @@ populationDiagnostics(
 \item{cohortId}{Specific cohort definition ID for which to run population
 diagnostics.}
 
-\item{incidence}{Whether to run `IncidencePrevalence::estimateIncidence()` (TRUE)
+\item{incidence}{Whether to run \code{IncidencePrevalence::estimateIncidence()} (TRUE)
 or not (FALSE).}
 
-\item{periodPrevalence}{Whether to run `IncidencePrevalence::estimatePeriodPrevalence()` (TRUE)
+\item{periodPrevalence}{Whether to run \code{IncidencePrevalence::estimatePeriodPrevalence()} (TRUE)
 or not (FALSE).}
 
 \item{populationSample}{Number of people from the cdm to sample. If NULL no
@@ -42,9 +42,10 @@ A summarised result
 \description{
 PhenotypeR diagnostics on the cohort of input with relation to a denomination
 population. Diagnostics include:
-
-* Incidence
-* Period Prevalence
+\itemize{
+\item Incidence
+\item Period Prevalence
+}
 }
 \examples{
 \donttest{

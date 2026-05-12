@@ -2,11 +2,11 @@
 % Please edit documentation in R/documentationHelper.R
 \name{directoryDoc}
 \alias{directoryDoc}
-\title{Helper for consistent documentation of `directory`.}
+\title{Helper for consistent documentation of \code{directory}.}
 \arguments{
 \item{directory}{Directory where to save report}
 }
 \description{
-Helper for consistent documentation of `directory`.
+Helper for consistent documentation of \code{directory}.
 }
 \keyword{internal}

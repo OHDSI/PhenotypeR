@@ -2,11 +2,11 @@
 % Please edit documentation in R/documentationHelper.R
 \name{expectationsDoc}
 \alias{expectationsDoc}
-\title{Helper for consistent documentation of `expectations`.}
+\title{Helper for consistent documentation of \code{expectations}.}
 \arguments{
 \item{expectations}{Data frame or tibble with cohort expectations. It must contain the following columns: cohort_name, estimate, value, and source.}
 }
 \description{
-Helper for consistent documentation of `expectations`.
+Helper for consistent documentation of \code{expectations}.
 }
 \keyword{internal}

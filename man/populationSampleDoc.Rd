@@ -2,7 +2,7 @@
 % Please edit documentation in R/documentationHelper.R
 \name{populationSampleDoc}
 \alias{populationSampleDoc}
-\title{Helper for consistent documentation of `populationSample`.}
+\title{Helper for consistent documentation of \code{populationSample}.}
 \arguments{
 \item{populationSample}{Number of people from the cdm to sample. If NULL no
 sampling will be performed. Sample will be within populationDateRange if
@@ -16,6 +16,6 @@ second date is set as missing, the latest observation_end_date in the
 observation_period table will be used for the latter.}
 }
 \description{
-Helper for consistent documentation of `populationSample`.
+Helper for consistent documentation of \code{populationSample}.
 }
 \keyword{internal}

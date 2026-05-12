@@ -2,14 +2,14 @@
 % Please edit documentation in R/documentationHelper.R
 \name{measurementDiagnosticsSampleDoc}
 \alias{measurementDiagnosticsSampleDoc}
-\title{Helper for consistent documentation of `measurementDiagnosticsSample`.}
+\title{Helper for consistent documentation of \code{measurementDiagnosticsSample}.}
 \arguments{
 \item{measurementDiagnosticsSample}{The number of people to take a random sample for
-measurement diagnostics. If `measurementDiagnosticsSample = NULL`, no sampling will be
-performed. If `measurementDiagnosticsSample = 0` measurement diagnostics will not be
+measurement diagnostics. If \code{measurementDiagnosticsSample = NULL}, no sampling will be
+performed. If \code{measurementDiagnosticsSample = 0} measurement diagnostics will not be
 run.}
 }
 \description{
-Helper for consistent documentation of `measurementDiagnosticsSample`.
+Helper for consistent documentation of \code{measurementDiagnosticsSample}.
 }
 \keyword{internal}

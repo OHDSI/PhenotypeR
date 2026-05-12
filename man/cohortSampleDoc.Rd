@@ -2,11 +2,11 @@
 % Please edit documentation in R/documentationHelper.R
 \name{cohortSampleDoc}
 \alias{cohortSampleDoc}
-\title{Helper for consistent documentation of `cohortSample`.}
+\title{Helper for consistent documentation of \code{cohortSample}.}
 \arguments{
-\item{cohortSample}{The number of people to take a random sample for cohortDiagnostics. If `cohortSample = NULL`, no sampling will be performed.}
+\item{cohortSample}{The number of people to take a random sample for cohortDiagnostics. If \code{cohortSample = NULL}, no sampling will be performed.}
 }
 \description{
-Helper for consistent documentation of `cohortSample`.
+Helper for consistent documentation of \code{cohortSample}.
 }
 \keyword{internal}

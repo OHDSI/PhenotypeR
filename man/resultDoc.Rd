@@ -2,11 +2,11 @@
 % Please edit documentation in R/documentationHelper.R
 \name{resultDoc}
 \alias{resultDoc}
-\title{Helper for consistent documentation of `result`.}
+\title{Helper for consistent documentation of \code{result}.}
 \arguments{
 \item{result}{A summarised result}
 }
 \description{
-Helper for consistent documentation of `result`.
+Helper for consistent documentation of \code{result}.
 }
 \keyword{internal}

@@ -24,38 +24,38 @@ tables as these will be used for deriving concept counts.}
 \item{cohortId}{Specific cohort definition ID for which to run codelist
 diagnostics.}
 
-\item{achillesCodeUse}{Whether to run `CodelistGenerator::summariseAchillesCodeUse()` (TRUE) or not (FALSE).}
+\item{achillesCodeUse}{Whether to run \code{CodelistGenerator::summariseAchillesCodeUse()} (TRUE) or not (FALSE).}
 
-\item{orphanCodeUse}{Whether to run `CodelistGenerator::summariseOrphanCodeUse()` (TRUE) or not (FALSE).}
+\item{orphanCodeUse}{Whether to run \code{CodelistGenerator::summariseOrphanCodeUse()} (TRUE) or not (FALSE).}
 
-\item{cohortCodeUse}{Whether to run `CodelistGenerator::summariseCohortCodeUse()` (TRUE) or not (FALSE).}
+\item{cohortCodeUse}{Whether to run \code{CodelistGenerator::summariseCohortCodeUse()} (TRUE) or not (FALSE).}
 
 \item{drugDiagnostics}{Whether to run drug diagnostics (TRUE) or not (FALSE). Note that, if set to TRUE, the
 diagnostics will only run if the cohort code list contains drug codes.}
 
 \item{drugDiagnosticsSample}{The number of people to take a random sample for
-drug diagnostics. If `drugDiagnosticsSample = NULL`, no sampling will be
-performed. If `drugDiagnosticsSample = 0` drug diagnostics will not be
+drug diagnostics. If \code{drugDiagnosticsSample = NULL}, no sampling will be
+performed. If \code{drugDiagnosticsSample = 0} drug diagnostics will not be
 run.}
 
 \item{measurementDiagnostics}{Whether to run measurement diagnostics (TRUE) or not (FALSE). Note that, if set to TRUE, the
 diagnostics will only run if the cohort code list contains measurement codes.}
 
 \item{measurementDiagnosticsSample}{The number of people to take a random sample for
-measurement diagnostics. If `measurementDiagnosticsSample = NULL`, no sampling will be
-performed. If `measurementDiagnosticsSample = 0` measurement diagnostics will not be
+measurement diagnostics. If \code{measurementDiagnosticsSample = NULL}, no sampling will be
+performed. If \code{measurementDiagnosticsSample = 0} measurement diagnostics will not be
 run.}
 }
 \value{
 A summarised result
 }
 \description{
-`codelistDiagnostics()` runs phenotypeR diagnostics on the cohort_codelist
+\code{codelistDiagnostics()} runs phenotypeR diagnostics on the cohort_codelist
 attribute on the cohort. Thus codelist attribute of the cohort must be
 populated. If it is missing then it could be populated using
-`addCodelistAttribute()` function.
+\code{addCodelistAttribute()} function.
 
-Furthermore `codelistDiagnostics()` requires achilles tables to be present in
+Furthermore \code{codelistDiagnostics()} requires achilles tables to be present in
 the cdm so that concept counts could be derived.
 }
 \examples{
