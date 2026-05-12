@@ -1,6 +1,8 @@
-# Shared plot height, in pixels, used by UI outputs and server-side renderers.
-plotHeight <- 800
-plotHeightCss <- paste0(plotHeight, "px")
+# plot size helper
+plotHeight <- "100%"
+adjustPlotHeight <- function(output) {
+  htmltools::tagAppendAttributes(output, style = "min-height: 400px;")
+}
 
 # ensure minimum versions
 rlang::check_installed("omopgenerics", version = "1.2.0")
