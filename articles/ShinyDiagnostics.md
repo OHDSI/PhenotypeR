@@ -8,6 +8,7 @@ expectations. ShinyDiagnostics can help us to visualise all the results
 in an interactive shiny app. See an example of how to run it below:
 
 ``` r
+
 library(CohortConstructor)
 library(PhenotypeR)
 library(dplyr)

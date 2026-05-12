@@ -19,6 +19,7 @@ We can use the function
 to download the template to be used for a database description:
 
 ``` r
+
 library(PhenotypeR)
 library(here)
 downloadDatabaseDescriptionTemplate(directory = here(),
@@ -48,6 +49,7 @@ We can use the function
 to download the template to be used for a clinical description:
 
 ``` r
+
 library(PhenotypeR)
 library(here)
 downloadClinicalDescriptionTemplate(directory = here(),
@@ -81,6 +83,7 @@ ellmer R Package (see here the documentation:
 environment:
 
 ``` r
+
 usethis::edit_r_environ()
 
 # Add your API in your R environment:
@@ -90,6 +93,7 @@ GEMINI_API_KEY = "your API"
 ```
 
 ``` r
+
 library(ellmer)
 chat <- ellmer::chat("mistral")
 getClinicalDescription(chat, 

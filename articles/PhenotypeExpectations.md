@@ -24,6 +24,7 @@ called “knee_replacement”. We could create expectations about median age
 and the proportion that is male for each cohort like so.
 
 ``` r
+
 library(dplyr)
 library(PhenotypeR)
 
@@ -44,6 +45,7 @@ of them (we’ll see in the next vignette how we can then also include
 them in our shiny app).
 
 ``` r
+
 tableCohortExpectations(expectations)
 ```
 
@@ -51,6 +53,7 @@ Note as long as we make sure to include our four required columns we can
 create any set of expectations that is relevant for our cohorts.
 
 ``` r
+
 tibble(cohort_name = "knee_osteoarthritis",
                   estimate = c("Commonly seen subsequent procedures"),
                   value = c("Knee replacement"),
@@ -80,6 +83,7 @@ following this link: <https://aistudio.google.com/app/apikey>. And then
 add the API in your R environment:
 
 ``` r
+
 usethis::edit_r_environ()
 
 # Add your API in your R environment:
@@ -89,6 +93,7 @@ GEMINI_API_KEY = "your API"
 ```
 
 ``` r
+
 library(ellmer)
 
 chat <- chat("google_gemini")
@@ -106,6 +111,7 @@ instead. In this case we’ll automatically get expectations for each of
 the study cohorts in our results.
 
 ``` r
+
 library(DBI)
 library(duckdb)
 library(CDMConnector)
@@ -135,6 +141,7 @@ getCohortExpectations(chat = chat,
 Instead of Google Gemini we could use Mistral instead.
 
 ``` r
+
 chat <- ellmer::chat("mistral")
 diag_results <- phenotypeDiagnostics(cdm$my_cohort)
 getCohortExpectations(chat = chat, 

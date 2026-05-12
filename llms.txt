@@ -31,12 +31,14 @@ set of cohorts we have defined. This assessment includes:
 You can install PhenotypeR from CRAN:
 
 ``` r
+
 install.packages("PhenotypeR")
 ```
 
 Or you can install the development version from GitHub:
 
 ``` r
+
 # install.packages("remotes")
 remotes::install_github("OHDSI/PhenotypeR")
 ```
@@ -48,6 +50,7 @@ using the Eunomia Synpuf dataset. We’ll first load the required packages
 and create the cdm reference for the data.
 
 ``` r
+
 library(dplyr)
 library(CohortConstructor)
 library(PhenotypeR)
@@ -58,6 +61,7 @@ library(DBI)
 ```
 
 ``` r
+
 # Connect to the database and create the cdm object
 con <- dbConnect(duckdb(), dbdir = eunomiaDir("synpuf-1k", "5.3"))
 cdm <- CDMConnector::cdmFromCon(con = con, 
@@ -71,6 +75,7 @@ Note that we’ve included achilles results in our cdm reference. Where we
 can we’ll use these precomputed counts to speed up our analysis.
 
 ``` r
+
 cdm
 #> 
 #> ── # OMOP CDM reference (duckdb) of Eunomia Synpuf ─────────────────────────────
@@ -88,6 +93,7 @@ cdm
 ```
 
 ``` r
+
 # Create a code lists
 codes <- list("warfarin" = c(1310149L, 40163554L),
               "acetaminophen" = c(1125315L, 1127078L, 1127433L, 40229134L, 40231925L, 40162522L, 19133768L),
@@ -108,6 +114,7 @@ diagnostics**, **codelist diagnostics**, **cohort diagnostics**, and
 [`phenotypeDiagnostics()`](https://ohdsi.github.io/PhenotypeR/reference/phenotypeDiagnostics.md):
 
 ``` r
+
 result <- phenotypeDiagnostics(cdm$my_cohort)
 ```
 
@@ -115,6 +122,7 @@ You can also create a table with the expected results, so you can
 compare later with the actual results.
 
 ``` r
+
 expectations <- tibble(
   "cohort_name" = c("warfarin", "acetaminophen", "morphine", "measurements_cohort"),
   "estimate" = c("Male percentage", "Survival probability after 5y", "Median age", "Median age"),
@@ -127,6 +135,7 @@ expectations <- tibble(
 Or alternatively, you can use AI to generate expectations
 
 ``` r
+
 library(ellmer)
 # Notice that you may need to generate an google gemini API with https://aistudio.google.com/app/apikey and add it to your R environment:
 # usethis::edit_r_environ()
@@ -143,6 +152,7 @@ application. Here we’ll apply a minimum cell count of 10 to our results
 and save our shiny app to a temporary directory.
 
 ``` r
+
 shinyDiagnostics(result = result, minCellCount = 2, directory = tempdir(), expectations = expectations)
 ```
 

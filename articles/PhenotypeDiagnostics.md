@@ -8,6 +8,7 @@ In this vignette, we are going to present how to run
 We’ll use the following packages and mock data for example purposes:
 
 ``` r
+
 library(CohortConstructor)
 library(OmopSketch)
 library(PhenotypeR)
@@ -38,6 +39,7 @@ generate cohorts with users of *warfarin*, *acetaminophen* and
 *morphine*.
 
 ``` r
+
 # Create codelists
 codes <- list("warfarin" = c(1310149, 40163554),
               "acetaminophen" = c(1125315, 1127078, 1127433, 40229134, 40231925, 40162522, 19133768),
@@ -80,6 +82,7 @@ functions will be used. That means, the following script will run with
 the default values used in each individual diagnostics function.
 
 ``` r
+
 diagnostics <- phenotypeDiagnostics(cdm$my_cohort,
                                 databaseDiagnostics = list(),
                                 codelistDiagnostics = list(),
@@ -95,6 +98,7 @@ If we don’t want to run one of the diagnostics we can switch it off by
 setting it to NULL.
 
 ``` r
+
 phenotypeDiagnostics(cdm$my_cohort,
                      databaseDiagnostics = list(),
                      codelistDiagnostics = NULL,
@@ -109,6 +113,7 @@ default (cohortSuvival is set by default to FALSE in
 defaults, like so:
 
 ``` r
+
 diagnostics <- phenotypeDiagnostics(cdm$my_cohort,
                                 databaseDiagnostics = list(),
                                 codelistDiagnostics = list(),
@@ -263,6 +268,7 @@ function from
 Package:
 
 ``` r
+
 exportSummarisedResult(diagnostics, path = here::here(), minCellCount = 5)
 ```
 
@@ -273,6 +279,7 @@ Once we get our **Phenotype diagnostics** result, we can use
 results:
 
 ``` r
+
 shinyDiagnostics(diagnostics,
                  directory = tempdir(),
                  minCellCount = 5, 
