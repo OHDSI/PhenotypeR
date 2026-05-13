@@ -1,6 +1,63 @@
+colsToGetFromSettings <- function(x, colsToGet) {
+  x |>
+    dplyr::mutate("package_name" = paste0(package_name, " (v", package_version, ")")) |>
+    dplyr::select(any_of(colsToGet)) |>
+    dplyr::distinct()
+}
+
 prepareResult <- function(result, resultList) {
   purrr::map(resultList, \(x) filterResult(result, x))
 }
+
+tidySettings <- function(settingsFiltered, subDiagnostic) {
+  
+  if(subDiagnostic %in% c("cohort_code_use", "measurement_summary",  "measurement_value_as_number", "measurement_value_as_concept",
+                          "summarise_drug_use")) {
+    colsToGetFromSettings(settingsFiltered[[subDiagnostic]], c("cdm_name", "package_name", "timing"))
+    
+  } else if (subDiagnostic %in% c("summarise_characteristics") ){
+    colsToGetFromSettings(settingsFiltered[[subDiagnostic]], c("cdm_name", "package_name", "cohort_sample", "matched_sample"))
+    
+  } else if (subDiagnostic %in% c("summarise_large_scale_characteristics") ){
+    colsToGetFromSettings(settingsFiltered[[subDiagnostic]], c("cdm_name", "package_name", "cohort_sample", "matched_sample")) |>
+      dplyr::mutate("minimum_frequency" = 0.01,
+                    "events" = c("condition_occurrence, measurement, procedure_occurrence, device_exposure, observation"),
+                    "episodes" = c("drug_exposure, drug_era, visit_occurrence"))
+    
+  } else if (subDiagnostic %in% c("summarise_cohort_overlap") ){
+    colsToGetFromSettings(settingsFiltered[[subDiagnostic]], c("cdm_name", "package_name", "cohort_sample", "matched_sample", "overlap_by")) 
+    
+  } else if (subDiagnostic %in% c("summarise_cohort_timing") ){
+    colsToGetFromSettings(settingsFiltered[[subDiagnostic]], c("cdm_name", "package_name", "cohort_sample", "matched_sample", "restrict_to_first_entry")) 
+    
+  } else if (subDiagnostic %in% c("survival_summary") ){
+    colsToGetFromSettings(settingsFiltered[[subDiagnostic]], c("cdm_name", "package_name", "cohort_sample", "matched_sample", "censor_on_cohort_exit", "outcome_washout", "minimum_survival_days"))  |>
+      dplyr::mutate("eventGap" = 30)
+    
+  } else if (subDiagnostic %in% c("incidence") ){
+    colsToGetFromSettings(settingsFiltered[[subDiagnostic]], c("cdm_name", "package_name", "populationSample", "populationDateStart", "populationDateEnd", "analysis_complete_database_intervals", "analysis_outcome_washout", "analysis_repeated_events", "denominator_time_at_risk"))
+    
+  } else if (subDiagnostic %in% c("prevalence") ){
+    colsToGetFromSettings(settingsFiltered[[subDiagnostic]], c("cdm_name", "package_name", "populationSample", "populationDateStart", "populationDateEnd", "analysis_complete_database_intervals", "analysis_full_contribution", "analysis_level", "analysis_type", "denominator_time_at_risk"))
+    
+  } else {
+    colsToGetFromSettings(settingsFiltered[[subDiagnostic]], c("cdm_name", "package_name"))
+  }
+}
+
+getSettingsResult <- function(result, resultList) {
+  purrr::map(resultList, 
+             \(x) filterResult(result, x) |> 
+               omopgenerics::settings() |>
+               dplyr::distinct() |>
+               dplyr::left_join(
+                 result |> 
+                   dplyr::select("result_id", "cdm_name") |>
+                   dplyr::distinct(),
+                 by = "result_id")
+  ) 
+}
+
 filterResult <- function(result, filt) {
   nms <- names(filt)
   for (nm in nms) {
