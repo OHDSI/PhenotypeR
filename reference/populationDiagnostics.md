@@ -87,12 +87,12 @@ cdm$warfarin <- conceptCohort(cdm,
 
 result <- cdm$warfarin |>
   populationDiagnostics(populationSample = 100000)
-#> [2026-05-12 06:23:17] - Population diagnosics - denominator cohort
-#> [2026-05-12 06:23:17] - Population diagnosics - sampling person table to 1e+05
+#> [2026-05-13 12:51:18] - Population diagnosics - denominator cohort
+#> [2026-05-13 12:51:18] - Population diagnosics - sampling person table to 1e+05
 #> people
 #> ℹ Creating denominator cohorts
-#> ✔ Cohorts created in 0 min and 6 sec
-#> [2026-05-12 06:23:23] - Population diagnosics - incidence
+#> ✔ Cohorts created in 0 min and 5 sec
+#> [2026-05-13 12:51:23] - Population diagnosics - incidence
 #> ℹ Getting incidence for analysis 1 of 7
 #> ℹ Getting incidence for analysis 2 of 7
 #> ℹ Getting incidence for analysis 3 of 7
@@ -100,8 +100,8 @@ result <- cdm$warfarin |>
 #> ℹ Getting incidence for analysis 5 of 7
 #> ℹ Getting incidence for analysis 6 of 7
 #> ℹ Getting incidence for analysis 7 of 7
-#> ✔ Overall time taken: 0 mins and 10 secs
-#> [2026-05-12 06:23:34] - Population diagnosics - prevalence
+#> ✔ Overall time taken: 0 mins and 9 secs
+#> [2026-05-13 12:51:33] - Population diagnosics - prevalence
 #> ℹ Getting prevalence for analysis 1 of 7
 #> ℹ Getting prevalence for analysis 2 of 7
 #> ℹ Getting prevalence for analysis 3 of 7
@@ -109,7 +109,7 @@ result <- cdm$warfarin |>
 #> ℹ Getting prevalence for analysis 5 of 7
 #> ℹ Getting prevalence for analysis 6 of 7
 #> ℹ Getting prevalence for analysis 7 of 7
-#> ✔ Time taken: 0 mins and 6 secs
+#> ✔ Time taken: 0 mins and 5 secs
 #> `populationDateStart`, `populationDateEnd`, and `populationSample` casted to
 #> character.
 #> `populationDateStart` and `populationDateEnd` eliminated from settings as all
