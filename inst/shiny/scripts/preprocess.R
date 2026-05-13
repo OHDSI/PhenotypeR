@@ -123,24 +123,24 @@ if("summarise_dob_density" %in% names(dataFiltered)){
     dplyr::pull("max_dob") |>
     lubridate::ceiling_date(unit = "years")
 } else {
-  minDob <- as.Date(NA)
-  maxDob <- as.Date(NA)
+  minDob <- c(as.Date("1900-01-01"))
+  maxDob <- Sys.Date()
 }
 
-if("summarise_dob_density" %in% names(dataFiltered)){
+if("summarise_obs_density" %in% names(dataFiltered)){
   minObs <- dataFiltered$summarise_obs_density |>
     omopgenerics::tidy() |>
     dplyr::summarise(min_obs = min(density_x, na.rm = TRUE)) |>
     dplyr::pull("min_obs") |>
     lubridate::floor_date(unit = "years")
-  maxObs <- dataFiltered$summarise_dob_density |>
+  maxObs <- dataFiltered$summarise_obs_density |>
     omopgenerics::tidy() |>
     dplyr::summarise(max_obs = max(density_x, na.rm = TRUE)) |>
     dplyr::pull("max_obs") |>
     lubridate::ceiling_date(unit = "years")
 } else {
-  minObs <- as.Date(NA)
-  maxObs <- as.Date(NA)
+  minObs <- c(as.Date("1900-01-01"))
+  maxObs <- Sys.Date()
 }
 
 if("summarise_trend" %in% names(dataFiltered)){
@@ -213,32 +213,38 @@ if("summarise_drug_use" %in% names(dataFiltered)){
 }
 
 if("cohortDiagnostics" %in% diagnostics){
-  selected$summarise_large_scale_characteristics_variable_level <- selected$summarise_large_scale_characteristics_variable_level[1]
-  selected$compare_large_scale_characteristics_variable_level <- selected$compare_large_scale_characteristics_variable_level[1]
-  selected$compare_large_scale_characteristics_table_name     <- "condition_occurrence"
-  selected$compare_large_scale_characteristics_cohort_1  <- "sampled"
-  selected$compare_large_scale_characteristics_cohort_2  <- "matched"
-  selected$compare_large_scale_characteristics_cohort_compare <- values$compare_large_scale_characteristics_cohort_compare[1]
-  if("survival_probability" %in% names(dataFiltered)){
-    selected$survival_probability_cohort_name <- c(paste0(gsub("_matched|sampled", "", selected$survival_probability_cohort_name[1]),"_sampled"),
-                                                   paste0(gsub("_matched|sampled", "", selected$survival_probability_cohort_name[1]),"_matched"))
-
-  }
+  settings_cohort_diagnostics <- omopgenerics::settings(result) |>
+    dplyr::filter(diagnostic == "cohortDiagnostics")
 
   typeCohort <- "original"
-  if("cohort_sample" %in% (omopgenerics::settings(result) |> colnames())){
-    cohort_sample <- as.numeric(omopgenerics::settings(dataFiltered$summarise_large_scale_characteristics) |> dplyr::pull("cohort_sample") |> unique())
+  if("cohort_sample" %in% colnames(settings_cohort_diagnostics)) {
+    cohort_sample <- unique(settings_cohort_diagnostics$cohort_sample)
     cohort_sample <- formatC(cohort_sample, format = "f", digits = 0, big.mark = ",")
     msgCohortSample <- glue::glue("Cohorts were jointly sampled to up to {cohort_sample} participants")
     typeCohort <- "sampled"
   }
 
-  if("matched_sample" %in% (omopgenerics::settings(result) |> colnames())){
-    matched_sample <- as.numeric(omopgenerics::settings(dataFiltered$summarise_large_scale_characteristics) |> dplyr::pull("matched_sample") |> unique())
+  if("matched_sample" %in% colnames(settings_cohort_diagnostics)){
+    matched_sample <-  unique(settings_cohort_diagnostics$matched_sample)
     if(all(matched_sample != 0)){
       matched_sample <- formatC(matched_sample, format = "f", digits = 0, big.mark = ",")
       msgMatchedSample <- glue::glue("Matched cohorts were created based on a subsample of ", paste(matched_sample, collapse = " and ")," participants from the {typeCohort} cohorts.")
     }
+  }
+
+  if("summarise_large_scale_characteristics" %in% settings_cohort_diagnostics$result_type) {
+    selected$summarise_large_scale_characteristics_variable_level <- selected$summarise_large_scale_characteristics_variable_level[1]
+    selected$compare_large_scale_characteristics_variable_level <- selected$compare_large_scale_characteristics_variable_level[1]
+    selected$compare_large_scale_characteristics_table_name     <- "condition_occurrence"
+    selected$compare_large_scale_characteristics_cohort_1  <- "sampled"
+    selected$compare_large_scale_characteristics_cohort_2  <- "matched"
+    selected$compare_large_scale_characteristics_cohort_compare <- values$compare_large_scale_characteristics_cohort_compare[1]
+  }
+
+  if("survival_probability" %in% settings_cohort_diagnostics$result_type){
+    selected$survival_probability_cohort_name <- c(paste0(gsub("_matched|sampled", "", selected$survival_probability_cohort_name[1]),"_sampled"),
+                                                   paste0(gsub("_matched|sampled", "", selected$survival_probability_cohort_name[1]),"_matched"))
+
   }
 }
 
