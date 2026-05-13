@@ -7,7 +7,7 @@
 codelistDiagnostics(
   cohort,
   cohortId = NULL,
-  achillesCodeUse = TRUE,
+  achillesCodeUse = FALSE,
   orphanCodeUse = TRUE,
   cohortCodeUse = TRUE,
   drugDiagnostics = FALSE,
