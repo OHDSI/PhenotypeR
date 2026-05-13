@@ -206,7 +206,6 @@ cohortDiagnostics <- function(cohort,
     lscTableEvents <- getOption("PhenotypeR_summariseLargeScaleCharacteristics_eventInWindow")
     if(is.null(lscTableEvents)){
     lscTableEvents<-c("condition_occurrence",
-                      "visit_occurrence",
                       # "visit_detail",  # not currently supported by CohortCharacteristics
                       "measurement",
                       "procedure_occurrence",
@@ -221,7 +220,7 @@ cohortDiagnostics <- function(cohort,
 
     lscTableEpisodes <- getOption("PhenotypeR_summariseLargeScaleCharacteristics_episodeInWindow")
     if(is.null(lscTableEpisodes)){
-      lscTableEpisodes<- c("drug_exposure", "drug_era")
+      lscTableEpisodes<- c("drug_exposure", "drug_era", "visit_occurrence")
       cli::cli_inform("Using defaults for episode tables for large scale characteristics: {lscTableEpisodes}. These can be changed via passing alternative windows as a global option `PhenotypeR_summariseLargeScaleCharacteristics_episodeInWindow`")
     } else{
       cli::cli_inform("Using user specified episode tables for large scale characteristics set via global option: {lscTableEpisodes}")
