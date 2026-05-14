@@ -25,7 +25,6 @@ cli::cli_inform("Importing descriptions")
 clinical_descriptions <- PhenotypeR::importClinicalDescription(here::here("data", "raw", "clinical_descriptions"))
 database_descriptions <- PhenotypeR::importDatabaseDescription(here::here("data", "raw", "database_descriptions"))
 
-
 # Create results list
 cli::cli_inform("Importing results")
 result <- omopgenerics::importSummarisedResult(file.path(getwd(),"data", "raw"), recursive = FALSE)
@@ -54,6 +53,7 @@ resultList <- setNames(lapply(data, function(x) list(result_type = x)), data)
 # Prepare
 dataFiltered <- prepareResult(result, resultList)
 values <- getValues(result, resultList)
+settingsFiltered <- getSettingsResult(result, resultList)
 
 if(length(dataFiltered) > 0){
   diagnostics <- omopgenerics::settings(result) |> dplyr::pull("diagnostic") |> unique()
@@ -317,6 +317,11 @@ choices$summarise_clinical_description_cohort_name <- choices$shared_cohort_name
 selected$summarise_database_description_cdm_name <- selected$shared_cdm_names
 choices$summarise_database_description_cdm_name <- choices$shared_cdm_names
 
+# Settings pop out----
+settingsFiltered <- purrr::map(names(settingsFiltered), 
+                               \(x) tidySettings(settingsFiltered, x)) |>
+  stats::setNames(names(settingsFiltered))
+
 cli::cli_inform("Saving data for shiny")
 qs2::qs_savem(dataFiltered,
               selected,
@@ -336,6 +341,7 @@ qs2::qs_savem(dataFiltered,
               expectations,
               clinical_descriptions,
               database_descriptions,
+              settingsFiltered,
               file = here::here("data", "appData.qs"))
 
 rm(result, data, expectations, dataFiltered, choices, selected, values, values_subset,
