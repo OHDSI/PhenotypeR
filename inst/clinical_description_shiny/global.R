@@ -10,10 +10,11 @@ library(shinyjs)
 # e.g. chat <- ellmer::chat("google_gemini")
 chat <- NULL
 
-clinical_description_spec <- jsonlite::fromJSON(system.file("clinical_description_specification.json", package = "PhenotypeR"),
+clinical_description_spec <- jsonlite::fromJSON(system.file("clinical_description_specification.json", 
+                                                            package = "PhenotypeR"),
                                                 simplifyVector = FALSE)
-db_spec <- jsonlite::fromJSON(system.file("database_description.json", package = "PhenotypeR"),
-                              simplifyVector = FALSE)
+db_spec <- PhenotypeR::dataSourceDescriptionSpecification() |> 
+  jsonlite::fromJSON(simplifyVector = FALSE)
 
 
 get_label_text <- function(id) {
@@ -67,18 +68,34 @@ clinical_ui <- lapply(names(clinical_props), function(id) {
   )
 })
 
-db_props <- db_spec$properties
-db_ui <- lapply(names(db_props), function(id) {
-  prop <- db_props[[id]]
+db_admin <- db_spec$properties$administrative_details$properties
+db_admin_ui <- lapply(names(db_admin), function(id) {
+  prop <- db_admin[[id]]
   label_ui <- create_label_ui(id, prop$description)
 
-  if (id == "database_description") {
+  if (id == "main_references") {
     bslib::card(
       full_screen = TRUE,
       class = "expandable-card",
-      shiny::textAreaInput(id, label_ui, rows = 10, width = "100%", autoresize = TRUE)
+      shiny::textAreaInput(id, label_ui, rows = 3, width = "100%", autoresize = TRUE)
     )
   } else {
-    shiny::textInput(id, label_ui, width = "100%")
+    bslib::card(
+      full_screen = TRUE,
+      class = "expandable-card",
+      shiny::textAreaInput(id, label_ui, rows = 1, width = "100%", autoresize = TRUE)
+    )
   }
+})
+
+db_data <- db_spec$properties$data_elements_collected$properties
+db_data_ui <- lapply(names(db_data), function(id) {
+  prop <- db_data[[id]]
+  label_ui <- create_label_ui(id, prop$description)
+  
+    bslib::card(
+      full_screen = TRUE,
+      class = "expandable-card",
+      shiny::textAreaInput(id, label_ui, rows = 5, width = "100%", autoresize = TRUE)
+    )
 })

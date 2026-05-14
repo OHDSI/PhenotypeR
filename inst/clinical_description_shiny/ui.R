@@ -76,24 +76,31 @@ ui <- bslib::page_navbar(
   ),
   
   bslib::nav_panel(
-    title = "Database Description",
+    title = "Database Description New",
     shiny::div(class = "p-3",
                shiny::titlePanel(db_spec$title),
-               shiny::p(db_spec$description, class = "text-muted mb-4"),
-               
+               shiny::p(db_spec$description, 
+                        class = "text-muted mb-4"),
                bslib::accordion(
                  multiple = TRUE,
-                 open = "Database Details",
+                 open = c("Administrative details",
+                          "Data elements collected"),
                  
                  bslib::accordion_panel(
-                   title = "Database Details",
-                   icon = shiny::icon("database"),
-                   db_ui
+                   title = "Administrative details",
+                   icon = shiny::icon("file-medical"),
+                   db_admin_ui
+                 ),
+                 
+                 bslib::accordion_panel(
+                   title = "Data elements collected",
+                   icon = shiny::icon("file-medical"),
+                   db_data_ui
                  )
-               ),
-               shiny::div(class = "mb-4",
-                          shiny::uiOutput("db_download_section")
                )
+    ),
+    shiny::div(class = "mb-4",
+               shiny::uiOutput("db_download_section")
     )
   )
 )

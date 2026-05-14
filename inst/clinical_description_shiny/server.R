@@ -4,7 +4,9 @@ server <- function(input, output, session) {
   required_clinical <- unlist(clinical_description_spec$properties$clinical_profile$required)
   all_clinical_fields <- c(required_metadata, required_clinical)
 
-  all_db_fields <- unlist(db_spec$required)
+  required_admin <- unlist(db_spec$properties$administrative_details$required)
+  required_data_elements <- unlist(db_spec$properties$data_elements_collected$required)
+  all_db_fields <- c(required_admin, required_data_elements)
 
   clinical_labels <- sapply(all_clinical_fields, get_label_text)
   names(clinical_labels) <- all_clinical_fields
