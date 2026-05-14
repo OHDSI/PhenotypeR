@@ -46,22 +46,18 @@ defineDataSourceSpec <- function() {
           ),
           data_source_countries = list(
             type = "string",
-            format = "uri",
             description = "The URL of the official data source website."
           ),
           data_source_website = list(
             type = "string",
-            format = "uri",
             description = "The URL of the official data source website."
           ),
           hma_ema_catalogue = list(
             type = "string",
-            format = "uri",
             description = "The URL of the HMA-EMA Catalogue entry."
           ),
           main_references = list(
             type = "string",
-            format = "uri",
             description = "References to publications describing the dataset."
           )
         ),
@@ -116,7 +112,16 @@ defineDataSourceSpec <- function() {
             description = "Summary of limitations of the data source."
           )
         ),
-        required = c("healthcare_setting_type_of_data"),
+        required = c("data_coverage_and_timespan",
+                     "healthcare_setting_type_of_data",
+                     "data_collection_process",
+                     "general_representativeness",
+                     "data_content_source_coding",
+                     "data_harmonisation",
+                     "quality_control",
+                     "linkage",
+                     "mortality",
+                     "limitations"),
         additionalProperties = FALSE
       )
     ),

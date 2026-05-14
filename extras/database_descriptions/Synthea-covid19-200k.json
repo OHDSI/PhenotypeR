@@ -1,4 +1,19 @@
 {
-  "database_name": "Synthea-covid19-200k",
-  "database_description": "Synthea-covid19-200k database is a synthetic database tailored to simulate the COVID-19 pandemic impact. It contains data for about 200k patients. "
+  "administrative_details": {
+    "name_of_data_source": "synthea-covid19-200k synthetic database",
+    "data_source_acronym": "synthea-covid19-200k",
+    "data_source_countries": "N/A (synthetic data)"
+  },
+  "data_elements_collected": {
+    "data_coverage_and_timespan": "N/A (synthetic data)",
+    "healthcare_setting_type_of_data": "N/A (synthetic data)",
+    "data_collection_process": "N/A (synthetic data)",
+    "general_representativeness": "N/A (synthetic data)",
+    "data_content_source_coding": "N/A (synthetic data)",
+    "data_harmonisation": "N/A (synthetic data)",
+    "quality_control": "N/A (synthetic data)",
+    "linkage": "N/A (synthetic data)",
+    "mortality": "N/A (synthetic data)",
+    "limitations": "N/A (synthetic data)"
+  }
 }

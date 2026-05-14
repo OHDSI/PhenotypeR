@@ -46,6 +46,7 @@ reference:
 - contents:
   - getClinicalDescription
   - importClinicalDescription
+  - dataSourceDescriptionSpecification
   - importDatabaseDescription
   - shinyDescriptions
 - subtitle: Expectations for phenotyping results
