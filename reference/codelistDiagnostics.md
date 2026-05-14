@@ -16,7 +16,7 @@ present in the cdm so that concept counts could be derived.
 codelistDiagnostics(
   cohort,
   cohortId = NULL,
-  achillesCodeUse = TRUE,
+  achillesCodeUse = FALSE,
   orphanCodeUse = TRUE,
   cohortCodeUse = TRUE,
   drugDiagnostics = FALSE,
