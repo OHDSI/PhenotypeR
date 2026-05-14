@@ -148,8 +148,8 @@ result <- cohortDiagnostics(cdm$warfarin)
 #> • age: density
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side
-#> → Start summary of data, at 2026-05-14 06:01:05.177144
-#> ✔ Summary finished, at 2026-05-14 06:01:05.320522
+#> → Start summary of data, at 2026-05-14 06:27:47.679742
+#> ✔ Summary finished, at 2026-05-14 06:27:47.80745
 #> Using defaults for windows for large scale characteristics: c(-365, -31),
 #> c(-30, -1), c(0, 0), c(1, 30), and c(31, 365). These can be changed via passing
 #> alternative windows as a global option
@@ -206,7 +206,7 @@ result <- cohortDiagnostics(cdm$warfarin)
 #>  - getting characteristics from table visit_occurrence (7 of 7) for time window…
 #>  - getting characteristics from table visit_occurrence (7 of 7) for time window…
 #> Formatting result
-#> 260 estimates dropped as frequency less than 1%
+#> 223 estimates dropped as frequency less than 1%
 #> ✔ Summarising large scale characteristics
 #> ℹ Summarising large scale characteristics 
 #>  - getting characteristics from table condition_occurrence (1 of 7)
@@ -252,7 +252,7 @@ result <- cohortDiagnostics(cdm$warfarin)
 #>  - getting characteristics from table visit_occurrence (7 of 7) for time window…
 #>  - getting characteristics from table visit_occurrence (7 of 7) for time window…
 #> Formatting result
-#> 260 estimates dropped as frequency less than 1%
+#> 223 estimates dropped as frequency less than 1%
 #> ✔ Summarising large scale characteristics
 #> `cohort_sample` and `matched_sample` casted to character.
 
