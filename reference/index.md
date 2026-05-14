@@ -27,6 +27,8 @@
   : Get clinical descriptions using an LLM
 - [`importClinicalDescription()`](https://ohdsi.github.io/PhenotypeR/reference/importClinicalDescription.md)
   : Import clinical descriptions
+- [`dataSourceDescriptionSpecification()`](https://ohdsi.github.io/PhenotypeR/reference/dataSourceDescriptionSpecification.md)
+  : Data source description specification
 - [`importDatabaseDescription()`](https://ohdsi.github.io/PhenotypeR/reference/importDatabaseDescription.md)
   : Import database descriptions
 - [`shinyDescriptions()`](https://ohdsi.github.io/PhenotypeR/reference/shinyDescriptions.md)
