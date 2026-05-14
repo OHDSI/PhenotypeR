@@ -92,7 +92,8 @@ shinyDiagnostics <- function(result,
   omopgenerics::exportSummarisedResult(result = result,
                                        minCellCount = minCellCount,
                                        fileName = "result.csv",
-                                       path = file.path(to, "data", "raw"))
+                                       path = file.path(to, "data", "raw"),
+                                       logFile = NULL)
 
   # copy expectations
   if(!is.null(expectationsDir)){

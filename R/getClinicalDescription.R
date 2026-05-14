@@ -221,13 +221,13 @@ importDatabaseDescription <- function(path){
   for(i in seq_along(path)){
     working_file <- path[[i]]
     cli::cli_inform("Importing database description from: '{working_file}'")
-    validate <-jsonvalidate::json_validate(
+    validate <- jsonvalidate::json_validate(
       working_file,
-      system.file("database_description.json", package = "PhenotypeR"),
+      dataSourceDescriptionSpecification(),
       verbose = TRUE,
       error = TRUE)
     working_json <- jsonlite::read_json(working_file)
-    working_database <- working_json$database_name
+    working_database <- working_json$administrative_details$data_source_acronym
     descriptions[[working_database]] <- working_json
     cli::cli_alert_success("Imported database description: '{working_database}'")
   }
