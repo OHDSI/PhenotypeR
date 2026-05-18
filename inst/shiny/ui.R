@@ -510,6 +510,118 @@ ui <- fluidPage(
     bslib::nav_menu(
       title = "Codelist diagnostics",
       icon = shiny::icon("list"),
+      ## cohort_code_use_start -----
+      bslib::nav_panel(
+        title = "Cohort code use",
+        bslib::accordion(
+          bslib::accordion_panel(
+            title = "Shared inputs",
+            tags$div(
+              style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
+              tags$label("Select Database(s):"),
+              tags$div(
+                style = "width: 225px;",
+                tags$div(
+                  style = "margin-top: 15px;",
+                  shinyWidgets::pickerInput(
+                    inputId = "cohort_code_use_cdm_name",
+                    label = NULL,
+                    selected = selected$shared_cdm_name,
+                    choices = choices$shared_cdm_name,
+                    multiple = TRUE,
+                    options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                                   `deselect-all-text` = "None", `select-all-text` = "All"),
+                    width = "100%"
+                  )
+                )
+              ),
+              tags$label("Select Cohort(s):"),
+              tags$div(
+                style = "width: 225px;",
+                tags$div(
+                  style = "margin-top: 15px;",
+                  shinyWidgets::pickerInput(
+                    inputId = "cohort_code_use_cohort_name",
+                    label = NULL,
+                    selected = selected$shared_cohort_name,
+                    choices = choices$shared_cohort_name,
+                    multiple = TRUE,
+                    options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
+                                   `deselect-all-text` = "None", `select-all-text` = "All"),
+                    width = "100%"
+                  )
+                )
+              ),
+              tags$div(
+                style = "width: 225px;",
+                actionBttn("updateCohortCodeUse", "Update",
+                           style = "simple"),
+                width = "100%"
+              )
+            )
+          )),
+        icon = shiny::icon("chart-column"),
+        bslib::layout_sidebar(
+          sidebar = bslib::sidebar(width = 400, open = "closed",
+                                   bslib::accordion(
+                                     bslib::accordion_panel(
+                                       title = "Settings",
+                                       shinyWidgets::pickerInput(
+                                         inputId = "cohort_code_use_domain_id",
+                                         label = "Domain",
+                                         choices = NULL,
+                                         selected = NULL,
+                                         multiple = TRUE,
+                                         options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+                                       ),
+                                       div(style="display: flex; justify-content: space-between;",
+                                           div(style="flex: 1;", prettyCheckbox(inputId = "cohort_code_use_person_count",
+                                                                                label = "Person count",
+                                                                                value = TRUE,
+                                                                                status = "primary",
+                                                                                shape = "curve",
+                                                                                outline = TRUE)),
+                                           div(style="flex: 1;", prettyCheckbox(inputId = "cohort_code_use_record_count",
+                                                                                label = "Record count",
+                                                                                value = TRUE,
+                                                                                status = "primary",
+                                                                                shape = "curve",
+                                                                                outline = TRUE))
+                                       )
+                                     ),
+                                     bslib::accordion_panel(
+                                       title = "Table formatting",
+                                       materialSwitch(inputId = "cohort_code_use_interactive",
+                                                      value = TRUE,
+                                                      label = "Interactive",
+                                                      status = "primary"),
+                                       uiOutput("cohort_code_use_sortable")
+                                     )
+                                   )
+          ),
+          bslib::nav_panel(
+            title = "Table cohort code use",
+            bslib::card(
+              full_screen = TRUE,
+              bslib::card_header(
+                shiny::downloadButton(outputId = "cohort_code_use_download", label = ""),
+                bslib::popover(
+                  icon("circle-info"),
+                  gt::gt_output("cohort_code_use_settings"),
+                  placement = "bottom",
+                  options = list(
+                    customClass = "log-popover-wide",
+                    container = "body"
+                  )
+                ),
+                class = "text-end"
+              ),
+              uiOutput("cohort_code_use_tbl") |> withSpinner()
+            )
+          )
+        )
+      ),
+      ## cohort_code_use_end -----
       ## achilles_code_use_start -----
       bslib::nav_panel(
         title = "Achilles code use",
@@ -698,118 +810,6 @@ ui <- fluidPage(
         )
       ),
       ## orphan_code_use_end ----
-      ## cohort_code_use_start -----
-      bslib::nav_panel(
-        title = "Cohort code use",
-        bslib::accordion(
-          bslib::accordion_panel(
-            title = "Shared inputs",
-            tags$div(
-              style = "background-color: #750075; color: white; padding: 10px; font-weight: bold;  display: flex; flex-wrap: wrap; gap: 10px; gap: 10px; height: auto; align-items: center;",
-              tags$label("Select Database(s):"),
-              tags$div(
-                style = "width: 225px;",
-                tags$div(
-                  style = "margin-top: 15px;",
-                  shinyWidgets::pickerInput(
-                    inputId = "cohort_code_use_cdm_name",
-                    label = NULL,
-                    selected = selected$shared_cdm_name,
-                    choices = choices$shared_cdm_name,
-                    multiple = TRUE,
-                    options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                                   `deselect-all-text` = "None", `select-all-text` = "All"),
-                    width = "100%"
-                  )
-                )
-              ),
-              tags$label("Select Cohort(s):"),
-              tags$div(
-                style = "width: 225px;",
-                tags$div(
-                  style = "margin-top: 15px;",
-                  shinyWidgets::pickerInput(
-                    inputId = "cohort_code_use_cohort_name",
-                    label = NULL,
-                    selected = selected$shared_cohort_name,
-                    choices = choices$shared_cohort_name,
-                    multiple = TRUE,
-                    options = list(`actions-box` = TRUE, `selected-text-format` = "count > 1",
-                                   `deselect-all-text` = "None", `select-all-text` = "All"),
-                    width = "100%"
-                  )
-                )
-              ),
-              tags$div(
-                style = "width: 225px;",
-                actionBttn("updateCohortCodeUse", "Update",
-                           style = "simple"),
-                width = "100%"
-              )
-            )
-          )),
-        icon = shiny::icon("chart-column"),
-        bslib::layout_sidebar(
-          sidebar = bslib::sidebar(width = 400, open = "closed",
-                                   bslib::accordion(
-                                     bslib::accordion_panel(
-                                       title = "Settings",
-                                       shinyWidgets::pickerInput(
-                                         inputId = "cohort_code_use_domain_id",
-                                         label = "Domain",
-                                         choices = NULL,
-                                         selected = NULL,
-                                         multiple = TRUE,
-                                         options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-                                       ),
-                                       div(style="display: flex; justify-content: space-between;",
-                                           div(style="flex: 1;", prettyCheckbox(inputId = "cohort_code_use_person_count",
-                                                                                label = "Person count",
-                                                                                value = TRUE,
-                                                                                status = "primary",
-                                                                                shape = "curve",
-                                                                                outline = TRUE)),
-                                           div(style="flex: 1;", prettyCheckbox(inputId = "cohort_code_use_record_count",
-                                                                                label = "Record count",
-                                                                                value = TRUE,
-                                                                                status = "primary",
-                                                                                shape = "curve",
-                                                                                outline = TRUE))
-                                       )
-                                     ),
-                                     bslib::accordion_panel(
-                                       title = "Table formatting",
-                                       materialSwitch(inputId = "cohort_code_use_interactive",
-                                                      value = TRUE,
-                                                      label = "Interactive",
-                                                      status = "primary"),
-                                       uiOutput("cohort_code_use_sortable")
-                                     )
-                                   )
-          ),
-          bslib::nav_panel(
-            title = "Table cohort code use",
-            bslib::card(
-              full_screen = TRUE,
-              bslib::card_header(
-                shiny::downloadButton(outputId = "cohort_code_use_download", label = ""),
-                bslib::popover(
-                  icon("circle-info"),
-                  gt::gt_output("cohort_code_use_settings"),
-                  placement = "bottom",
-                  options = list(
-                    customClass = "log-popover-wide",
-                    container = "body"
-                  )
-                ),
-                class = "text-end"
-              ),
-              uiOutput("cohort_code_use_tbl") |> withSpinner()
-            )
-          )
-        )
-      ),
-      ## cohort_code_use_end -----
       ## measurement_diagnostics_start ----
       bslib::nav_panel(
         title = "Measurement Diagnostics",
