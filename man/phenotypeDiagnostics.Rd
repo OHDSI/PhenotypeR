@@ -19,11 +19,11 @@ phenotypeDiagnostics(
 \item{databaseDiagnostics}{A list of arguments that uses \code{databaseDiagnostics}.
 If the list is empty, the default values will be used.
 Example:
-In the following example, all diagnostics will be run except \emph{person table summary} from
-databaseDiagnostics:
-*databaseDiagnostics = list(
-"personTableSummary" = FALSE
-)}
+In the following example, all default diagnostics will be run except
+\emph{person table summary} from databaseDiagnostics:
+\code{databaseDiagnostics = list("personTableSummary" = FALSE)}
+
+If \code{NULL} database diagnostics won't be executed.}
 
 \item{codelistDiagnostics}{A list of arguments that uses \code{codelistDiagnostics}.
 If the list is empty, the default values will be used.
@@ -31,27 +31,25 @@ Example:
 In the below example, all diagnostics will be run, and a subsample of 1,000 participants will
 be used to run measurement diagnostics and another independent subsample of 500 participants
 will be used to run drug diagnostics:
-*codelistDiagnostics = list(
-"measurementDiagnosticsSample" = 1000,
-"drugDiagnosticsSample" = 500
-)}
+\code{codelistDiagnostics = list( "measurementDiagnosticsSample" = 1000, "drugDiagnosticsSample" = 500 )}
+
+If \code{NULL} codelist diagnostics won't be executed.}
 
 \item{cohortDiagnostics}{A list of arguments that uses \code{cohortDiagnostics}.
-If the list is empty,
-the default values will be used.
+If the list is empty, the default values will be used.
 Example:
-*cohortDiagnostics = list(
-"cohortSurvival" = TRUE
-)}
+\code{cohortDiagnostics = list( "cohortSurvival" = TRUE )}
+
+If \code{NULL} cohort diagnostics won't be executed.}
 
 \item{populationDiagnostics}{A list of arguments that uses \code{populationDiagnostics}.
 If the list is empty, the default values will be used.
 Example:
 In the below example, all diagnostics will be run and a subsample of 100,000 participants
 will be used to run populationDiagnostics.
-*populationDiagnostics = list(
-"populationSample" = 100000
-)}
+\code{populationDiagnostics = list( "populationSample" = 100000 )}
+
+If \code{NULL} population diagnostics won't be executed.}
 
 \item{stagingDirectory}{Path to folder to save incremental results and log file}
 }
