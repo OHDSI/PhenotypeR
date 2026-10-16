@@ -17,6 +17,7 @@ export(importDatabaseDescription)
 export(importSummarisedResult)
 export(phenotypeDiagnostics)
 export(populationDiagnostics)
+export(reviewCohortConcepts)
 export(settings)
 export(shinyClinicalDescriptions)
 export(shinyDataSourceDescriptions)
@@ -27,15 +28,21 @@ export(summariseCohortCodeUse)
 export(summariseOrphanCodes)
 export(suppress)
 export(tableCohortExpectations)
-importFrom(CodelistGenerator,summariseAchillesCodeUse)
-importFrom(CodelistGenerator,summariseCodeUse)
-importFrom(CodelistGenerator,summariseCohortCodeUse)
-importFrom(CodelistGenerator,summariseOrphanCodes)
-importFrom(omopgenerics,bind)
-importFrom(omopgenerics,exportSummarisedResult)
-importFrom(omopgenerics,importSummarisedResult)
-importFrom(omopgenerics,settings)
-importFrom(omopgenerics,suppress)
-importFrom(rlang,"%||%")
-importFrom(rlang,.data)
-importFrom(rlang,.env)
+importFrom(CodelistGenerator,
+  summariseAchillesCodeUse,
+  summariseCodeUse,
+  summariseCohortCodeUse,
+  summariseOrphanCodes
+)
+importFrom(omopgenerics,
+  bind,
+  exportSummarisedResult,
+  importSummarisedResult,
+  settings,
+  suppress
+)
+importFrom(rlang,
+  "%||%",
+  .data,
+  .env
+)
