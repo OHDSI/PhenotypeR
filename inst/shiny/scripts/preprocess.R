@@ -264,14 +264,14 @@ if("populationDiagnostics" %in% diagnostics){
   selected$prevalence_denominator_days_prior_observation <- "0"
 
   if("populationDateStart" %in% (omopgenerics::settings(dataFiltered$incidence) |> colnames())){
-    min_incidence_start <- as.Date(omopgenerics::settings(dataFiltered$incidence) |> tidyr::drop_na() |> dplyr::pull("populationDateStart") |> unique())
+    min_incidence_start <- as.Date(omopgenerics::settings(dataFiltered$incidence) |> tidyr::drop_na() |> dplyr::pull("populationDateStart") |> unique()) |> na.omit()
     msgPopulationDiag <- paste0("Incidence is calculated using data from ", format(as.Date(min_incidence_start), "%B %d, %Y")," onwards. ")
   }else{
     min_incidence_start <- as.Date(NA)
   }
 
   if("populationDateEnd" %in% (omopgenerics::settings(dataFiltered$incidence) |> colnames())){
-    max_incidence_end <- as.Date(omopgenerics::settings(dataFiltered$incidence) |> tidyr::drop_na() |> dplyr::pull("populationDateEnd") |> unique())
+    max_incidence_end <- as.Date(omopgenerics::settings(dataFiltered$incidence) |> tidyr::drop_na() |> dplyr::pull("populationDateEnd") |> unique()) |> na.omit()
     msgPopulationDiag <- paste0("Incidence is calculated up to ", format(as.Date(max_incidence_end), "%B %d, %Y"),". ")
   }else{
     max_incidence_end <- as.Date(NA)
@@ -282,8 +282,8 @@ if("populationDiagnostics" %in% diagnostics){
   }
 
   if("populationSample" %in% (omopgenerics::settings(dataFiltered$incidence) |> colnames())){
-    populationSample <- as.numeric(omopgenerics::settings(dataFiltered$incidence) |> dplyr::pull("populationSample") |> unique())
-    populationSample <- formatC(populationSample, format = "f", digits = 0, big.mark = ",")
+    populationSample <- as.numeric(omopgenerics::settings(dataFiltered$incidence) |> dplyr::pull("populationSample")) |> unique()
+    populationSample <- formatC(populationSample, format = "f", digits = 0, big.mark = ",") |> unique()
     msgPopulationDiag  <- paste0(msgPopulationDiag, "Population diagnostics was performed within a subsample of ", populationSample, " individuals.")
   }
 }
