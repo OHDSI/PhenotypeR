@@ -106,7 +106,7 @@ cdm <- mockCdmFromDataset(source = "duckdb")
 #> ℹ Creating local <cdm_reference> object.
 #> ℹ Inserting <cdm_reference> into duckdb.
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmprdhPUv/duckdb
+#> ℹ /tmp/RtmpEHd6Lj/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
@@ -158,8 +158,8 @@ result <- cohortDiagnostics(cdm$warfarin)
 #> • age: density
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side.
-#> → Start summary of data, at 2026-08-02 16:33:32.75927
-#> ✔ Summary finished, at 2026-08-02 16:33:32.89767
+#> → Start summary of data, at 2026-10-16 10:15:24.661713
+#> ✔ Summary finished, at 2026-10-16 10:15:24.835175
 #> Using defaults for windows for large scale characteristics: c(-365, -31),
 #> c(-30, -1), c(0, 0), c(1, 30), and c(31, 365). These can be changed via passing
 #> alternative windows as a global option
@@ -216,7 +216,7 @@ result <- cohortDiagnostics(cdm$warfarin)
 #>  - getting characteristics from table visit_occurrence (7 of 7) for time window…
 #>  - getting characteristics from table visit_occurrence (7 of 7) for time window…
 #> Formatting result
-#> 247 estimates dropped as frequency less than 1%
+#> 238 estimates dropped as frequency less than 1%
 #> ✔ Summarising large scale characteristics
 #> ℹ Summarising large scale characteristics 
 #>  - getting characteristics from table condition_occurrence (1 of 7)
@@ -262,7 +262,7 @@ result <- cohortDiagnostics(cdm$warfarin)
 #>  - getting characteristics from table visit_occurrence (7 of 7) for time window…
 #>  - getting characteristics from table visit_occurrence (7 of 7) for time window…
 #> Formatting result
-#> 247 estimates dropped as frequency less than 1%
+#> 238 estimates dropped as frequency less than 1%
 #> ✔ Summarising large scale characteristics
 #> `cohort_sample` and `matched_sample` cast to character.
 
