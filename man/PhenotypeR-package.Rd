@@ -23,6 +23,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Edward Burn \email{edward.burn@ndorms.ox.ac.uk} (\href{https://orcid.org/0000-0002-9286-1128}{ORCID})
   \item Martí Català \email{marti.catalasabate@ndorms.ox.ac.uk} (\href{https://orcid.org/0000-0003-3308-9905}{ORCID})
   \item Xihang Chen \email{xihang.chen@ndorms.ox.ac.uk} (\href{https://orcid.org/0009-0001-8112-8959}{ORCID})
   \item Marta Alcalde-Herraiz \email{marta.alcaldeherraiz@ndorms.ox.ac.uk} (\href{https://orcid.org/0009-0002-4405-1814}{ORCID})
