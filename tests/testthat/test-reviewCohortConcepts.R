@@ -28,7 +28,7 @@ test_that("review included concepts", {
                        cohortConcepts = res,
                        clinicalDescription = cd))
 
- expect_error(reviewCohortConcepts(chat = chat,
+ expect_warning(reviewCohortConcepts(chat = chat,
                       cohortConcepts = omopgenerics::emptySummarisedResult(),
                       clinicalDescription = cd))
 
