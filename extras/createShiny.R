@@ -10,9 +10,9 @@ codes <- list(
   "hospitalised_inpatient" = c(9201L)
 )
 
-expectations <- importCohortExpectations(here::here("extras", "expectations", "expectations.csv"))
-clinical_descriptions <- importClinicalDescription(here::here("extras", "clinical_descriptions"))
-database_descriptions  <- importDatabaseDescription(here::here("extras", "database_descriptions"))
+expectations <- PhenotypeR::importCohortExpectations(here::here("extras", "expectations", "expectations.csv"))
+clinical_descriptions <- PhenotypeR::importClinicalDescription(here::here("extras", "clinical_descriptions"))
+database_descriptions  <- PhenotypeR::importDatabaseDescription(here::here("extras", "database_descriptions"))
 
 # run against different omock datasets
 datasets <- c("GiBleed", "synpuf-1k_5.3")
