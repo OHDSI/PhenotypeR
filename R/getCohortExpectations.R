@@ -43,9 +43,6 @@ getCohortExpectations <- function(chat, phenotypes, outputDir){
     dplyr::rename("cohort_name" = "name") |>
     dplyr::mutate("source" = chat$get_model())
 
-  expectations |>
-    exportCohortExpectations(names = phenotypes, outputDir = outputDir)
-
   return(invisible(expectations))
 }
 
@@ -228,15 +225,56 @@ chat_output
 
 }
 
-exportCohortExpectations <- function(expectations, names, outputDir) {
+#' Export cohort expectations to a CSV file
+#'
+#' @param expectations Cohort expectations
+#' @param fileName Name of the file that will be created.
+#' @param path Path where the CSV file should be created.
+#'
+#' @returns NULL. Called to write file to disk
+#' @export
+#'
+exportCohortExpectations <- function(expectations,
+                                     fileName = "expectations.csv",
+                                     path = getwd()) {
+
+  if (!dir.exists(path)) {
+    cli::cli_abort("path: {path}, does not exist")
+  }
+
+  names <- expectations$cohort_name |> unique()
 
   cli::cli_inform("Exporting CSV with expectations for {names}")
+  utils::write.csv(expectations,
+                   file = file.path(path, fileName),
+                   row.names = FALSE)
+  cli::cli_alert_success("Exported exportations to {file.path(path, fileName)}")
 
-  path <- file.path(outputDir, paste0("expectations", ".csv"))
-  expectations |>
-    readr::write_csv(file = path)
+  return(invisible(NULL))
 
-  cli::cli_alert_success("Exported as {path}")
+  }
+
+#' Import cohort expectations
+#'
+#' @param path Path to cohort expectations
+#'
+#' @returns Cohort expectations
+#' @export
+#'
+importCohortExpectations <- function(path){
+  rlang::check_installed("readr")
+  if (!file.exists(path)) {
+    cli::cli_abort("path: {path}, does not exist")
+  }
+
+  readr::read_csv(path,
+                  col_types = readr::cols(
+    cohort_name = readr::col_character(),
+    estimate = readr::col_character(),
+    value = readr::col_character(),
+    diagnostics = readr::col_character(),
+    source = readr::col_character()
+  ))
 }
 
 #' Create a table summarising cohort expectations

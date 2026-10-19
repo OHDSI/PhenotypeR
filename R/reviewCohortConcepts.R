@@ -90,7 +90,7 @@ getIncludedConceptsReview <- function(chat, name, concepts, clinicalDescription)
 concepts_reviewed <- dplyr::bind_cols(concepts, results) |>
   dplyr::mutate(
       explanation = stringr::str_extract(explanation, "^[^.!?]+[.!?]") |>
-        dplyr::coalesce(explanation) |>
+        dplyr::coalesce(.data$explanation) |>
         stringr::str_trim()
     )
 

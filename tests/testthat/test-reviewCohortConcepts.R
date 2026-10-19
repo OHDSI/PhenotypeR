@@ -22,8 +22,7 @@ test_that("review included concepts", {
   res <- codelistDiagnostics(cdm$my_cohort)
 
   cd <- draftClinicalDescription(chat, name = c("warfarin", "morphine",
-                                                "asthma", "ankle_sprain", "ankle_fracture"),
-                           tempdir())
+                                                "asthma", "ankle_sprain", "ankle_fracture"))
 
  expect_no_error(code_review <- reviewCohortConcepts(chat = chat,
                        cohortConcepts = res,

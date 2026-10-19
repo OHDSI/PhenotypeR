@@ -4,20 +4,22 @@ test_that("getting cohort expectations from ellmer", {
   skip_on_ci()
   skip_if_not_installed("ellmer")
 
-  chat <- ellmer::chat("google_gemini")
+ chat <- ellmer::chat_ollama(
+    model = "MedGemma:4b"
+  )
 
   # specific diagnosis
-  expect_no_error(getCohortExpectations(chat, "prostate cancer", outputDir = tempdir()))
-  expect_no_error(getCohortExpectations(chat, "lung cancer", outputDir = tempdir()))
+  expect_no_error(getCohortExpectations(chat, "prostate cancer"))
+  expect_no_error(getCohortExpectations(chat, "lung cancer"))
   # can pass multiple
-  expect_no_error(getCohortExpectations(chat, c("asthma", "copd"), outputDir = tempdir()))
+  expect_no_error(getCohortExpectations(chat, c("asthma", "copd")))
 
   # drugs
-  expect_no_error(getCohortExpectations(chat, "metformin", outputDir = tempdir()))
+  expect_no_error(getCohortExpectations(chat, "metformin"))
 
   # more examples
-  expect_no_error(getCohortExpectations(chat, "knee osteoarthritis", outputDir = tempdir()))
-  expect_no_error(getCohortExpectations(chat, "knee replacement", outputDir = tempdir()))
+  expect_no_error(getCohortExpectations(chat, "knee osteoarthritis"))
+  expect_no_error(getCohortExpectations(chat, "knee replacement"))
 
 
 })
@@ -28,7 +30,9 @@ test_that("getting cohort expectations from ellmer - using results object", {
   skip_on_ci()
   skip_if_not_installed("ellmer")
 
-  chat <- ellmer::chat("google_gemini")
+  chat <- ellmer::chat_ollama(
+    model = "MedGemma:4b"
+  )
 
   # Create a code lists
   codes <- list("warfarin" = c(1310149L, 40163554L),
@@ -37,19 +41,14 @@ test_that("getting cohort expectations from ellmer - using results object", {
                 "ankle_sprain" = 81151,
                 "ankle_fracture" = 4059173)
 
-  con <- DBI::dbConnect(duckdb::duckdb(), dbdir = CDMConnector::eunomiaDir())
-  cdm <- CDMConnector::cdmFromCon(
-    con = con, cdmSchema = "main", writeSchema = "main", cdmName = "Eunomia"
-  )
-
-  # Instantiate cohorts with CohortConstructor
+  cdm <- omock::mockCdmFromDataset(source = "duckdb")
   cdm$my_cohort <- CohortConstructor::conceptCohort(cdm = cdm,
                                  conceptSet = codes,
                                  exit = "event_end_date",
                                  overlap = "merge",
                                  name = "my_cohort")
 
-  res <- phenotypeDiagnostics(cdm$my_cohort)
+  res <- cohortDiagnostics(cdm$my_cohort)
 
  expect_no_error(expectations <- getCohortExpectations(chat, res, outputDir = tempdir()))
 
@@ -73,3 +72,21 @@ test_that("custom table of cohort expectations", {
   expect_no_error(tableCohortExpectations(ex))
   expect_no_error(tableCohortExpectations(ex, type = "gt"))
 })
+
+test_that("import/ export", {
+  skip_on_cran()
+  skip_on_ci()
+  skip_if_not_installed("ellmer")
+
+  chat <- ellmer::chat_ollama(
+    model = "MedGemma:4b"
+  )
+  expect_no_error(exp <- getCohortExpectations(chat, c("asthma", "copd")))
+
+  exportCohortExpectations(expectations = exp,
+                           path = tempdir())
+  exp2 <- importCohortExpectations(path = file.path(tempdir(), "expectations.csv"))
+  expect_identical(exp, exp2)
+
+
+  })

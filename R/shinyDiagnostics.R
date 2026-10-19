@@ -48,9 +48,10 @@ shinyDiagnostics <- function(result,
                              directory,
                              minCellCount = 5,
                              open = rlang::is_interactive(),
-                             expectationsDir = NULL,
-                             clinicalDescriptionsDir = NULL,
-                             databaseDescriptionsDir = NULL,
+                             expectations = NULL,
+                             conceptReview = NULL,
+                             clinicalDescriptions = NULL,
+                             databaseDescriptions = NULL,
                              removeEmptyTabs = TRUE){
 
   folderName <- "PhenotypeRShiny"
@@ -96,19 +97,16 @@ shinyDiagnostics <- function(result,
                                        logFile = NULL)
 
   # copy expectations
-  if(!is.null(expectationsDir)){
-    invisible(copyDirectory(from = expectationsDir, to = file.path(to, "data","raw", "expectations")))
+  if(!is.null(expectations)){
+    exportCohortExpectations(expectations = expectations, path = file.path(to, "data","raw", "expectations"))
   }else{
     emptyExpectations() |>
       readr::write_csv(file = file.path(to, "data", "raw", "expectations", "expectations.csv"))
   }
   # copy clinical descriptions directory
-  if(!is.null(clinicalDescriptionsDir)) {
-      invisible(copyDirectory(from = clinicalDescriptionsDir, to = file.path(to, "data","raw","clinical_descriptions")))
-  }
-  # copy database descriptions directory
-  if(!is.null(clinicalDescriptionsDir)) {
-    invisible(copyDirectory(from = databaseDescriptionsDir, to = file.path(to, "data","raw","database_descriptions")))
+  if(!is.null(clinicalDescriptions)) {
+    exportClinicalDescription(clinicalDescription = clinicalDescriptions,
+                              outputDir = file.path(to, "data","raw","clinical_descriptions"))
   }
 
   # remove tabs

@@ -9,9 +9,10 @@ shinyDiagnostics(
   directory,
   minCellCount = 5,
   open = rlang::is_interactive(),
-  expectationsDir = NULL,
-  clinicalDescriptionsDir = NULL,
-  databaseDescriptionsDir = NULL,
+  expectations = NULL,
+  conceptReview = NULL,
+  clinicalDescriptions = NULL,
+  databaseDescriptions = NULL,
   removeEmptyTabs = TRUE
 )
 }
@@ -25,13 +26,13 @@ shinyDiagnostics(
 \item{open}{If TRUE, the shiny app will be launched in a new session. If
 FALSE, the shiny app will be created but not launched.}
 
+\item{removeEmptyTabs}{Whether to remove tabs of those diagnostics that have not been performed or that were insufficient counts to produce a result (TRUE) or not (FALSE)}
+
 \item{expectationsDir}{Directory where to find the expectations CSV.}
 
 \item{clinicalDescriptionsDir}{Directory where to find the clinical descriptions word documents.}
 
 \item{databaseDescriptionsDir}{Directory where to find the database descriptions word documents.}
-
-\item{removeEmptyTabs}{Whether to remove tabs of those diagnostics that have not been performed or that were insufficient counts to produce a result (TRUE) or not (FALSE)}
 }
 \value{
 A shiny app
