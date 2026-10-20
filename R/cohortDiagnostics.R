@@ -165,14 +165,6 @@ cohortDiagnostics <- function(cohort,
 
   if(isTRUE(cohortCharacteristics)) {
     cli::cli_bullets(c(">" = "Getting cohorts and indexes"))
-    cdm[[tempCohortName]]  <- cdm[[tempCohortName]] |>
-      PatientProfiles::addDemographics(age = TRUE,
-                                       ageGroup = list(c(0, 17), c(18, 64), c(65, 150)),
-                                       sex = TRUE,
-                                       priorObservation = FALSE,
-                                       futureObservation = FALSE,
-                                       dateOfBirth = FALSE,
-                                       name = tempCohortName)
     cdm[[tempCohortName]] <- CohortConstructor::addCohortTableIndex(cdm[[tempCohortName]])
 
     if (!is.null(getOption("omopgenerics.logFile"))) {
@@ -180,7 +172,6 @@ cohortDiagnostics <- function(cohort,
     }
     results[["cohort_summary"]] <- cdm[[tempCohortName]] |>
       CohortCharacteristics::summariseCharacteristics(
-        strata = list("age_group", "sex"),
         tableIntersectCount = list(
           "Number visits prior year" = list(
             tableName = "visit_occurrence",
@@ -252,10 +243,8 @@ cohortDiagnostics <- function(cohort,
     lscTableEvents <- getOption("PhenotypeR_summariseLargeScaleCharacteristics_eventInWindow")
     if(is.null(lscTableEvents)){
     lscTableEvents<-c("condition_occurrence",
-                      # "visit_detail",  # not currently supported by CohortCharacteristics
                       "measurement",
                       "procedure_occurrence",
-                      "device_exposure",
                       "observation")
     cli::cli_inform("Using defaults for event tables for large scale characteristics: {lscTableEvents}. These can be changed via passing alternative windows as a global option `PhenotypeR_summariseLargeScaleCharacteristics_eventInWindow`")
     } else{
@@ -266,7 +255,7 @@ cohortDiagnostics <- function(cohort,
 
     lscTableEpisodes <- getOption("PhenotypeR_summariseLargeScaleCharacteristics_episodeInWindow")
     if(is.null(lscTableEpisodes)){
-      lscTableEpisodes<- c("drug_exposure", "drug_era", "visit_occurrence")
+      lscTableEpisodes<- c("drug_exposure", "visit_occurrence")
       cli::cli_inform("Using defaults for episode tables for large scale characteristics: {lscTableEpisodes}. These can be changed via passing alternative windows as a global option `PhenotypeR_summariseLargeScaleCharacteristics_episodeInWindow`")
     } else{
       cli::cli_inform("Using user specified episode tables for large scale characteristics set via global option: {lscTableEpisodes}")
@@ -279,9 +268,6 @@ cohortDiagnostics <- function(cohort,
 
     lscMminimumFrequency <- 0.01
 
-    if (!is.null(getOption("omopgenerics.logFile"))) {
-      omopgenerics::logMessage("Cohort diagnostics - large scale characteristics")
-    }
     if((omopgenerics::cohortCount(cdm[[tempCohortName]]) |>
         dplyr::filter(.data$number_records != .data$number_subjects) |>
         nrow()) >= 1){
@@ -299,16 +285,9 @@ cohortDiagnostics <- function(cohort,
         )
     }
 
-    results[["lsc_standard"]] <- CohortCharacteristics::summariseLargeScaleCharacteristics(
-      cohort = cdm[[lscCohortName]],
-      window = lscWindows,
-      eventInWindow = lscTableEvents,
-      episodeInWindow = lscTableEpisodes,
-      minimumFrequency = lscMminimumFrequency,
-      includeSource = FALSE,
-      excludedCodes = NULL
-    )
-
+    if (!is.null(getOption("omopgenerics.logFile"))) {
+      omopgenerics::logMessage("Cohort diagnostics - large scale characteristics")
+    }
     results[["lsc_source"]] <- CohortCharacteristics::summariseLargeScaleCharacteristics(
       cohort = cdm[[lscCohortName]],
       window = lscWindows,
