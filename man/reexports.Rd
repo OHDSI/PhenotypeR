@@ -19,8 +19,8 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{CodelistGenerator}{\code{\link[CodelistGenerator]{summariseAchillesCodeUse}}, \code{\link[CodelistGenerator]{summariseCodeUse}}, \code{\link[CodelistGenerator]{summariseCohortCodeUse}}, \code{\link[CodelistGenerator]{summariseOrphanCodes}}}
+  \item{CodelistGenerator}{\code{\link[CodelistGenerator:summariseAchillesCodeUse]{summariseAchillesCodeUse()}}, \code{\link[CodelistGenerator:summariseCodeUse]{summariseCodeUse()}}, \code{\link[CodelistGenerator:summariseCohortCodeUse]{summariseCohortCodeUse()}}, \code{\link[CodelistGenerator:summariseOrphanCodes]{summariseOrphanCodes()}}}
 
-  \item{omopgenerics}{\code{\link[omopgenerics]{bind}}, \code{\link[omopgenerics]{exportSummarisedResult}}, \code{\link[omopgenerics]{importSummarisedResult}}, \code{\link[omopgenerics]{settings}}, \code{\link[omopgenerics]{suppress}}}
+  \item{omopgenerics}{\code{\link[omopgenerics:bind]{bind()}}, \code{\link[omopgenerics:exportSummarisedResult]{exportSummarisedResult()}}, \code{\link[omopgenerics:importSummarisedResult]{importSummarisedResult()}}, \code{\link[omopgenerics:settings]{settings()}}, \code{\link[omopgenerics:suppress]{suppress()}}}
 }}
 

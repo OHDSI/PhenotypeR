@@ -4,14 +4,12 @@
 \alias{draftClinicalDescription}
 \title{Draft clinical descriptions using an LLM}
 \usage{
-draftClinicalDescription(chat, name, outputDir)
+draftClinicalDescription(chat, name)
 }
 \arguments{
 \item{chat}{An ellmer chat}
 
 \item{name}{Clinical event of interest}
-
-\item{outputDir}{Folder to save clinical descriptions.}
 }
 \value{
 Creates a draft clinical description for each event of interest.

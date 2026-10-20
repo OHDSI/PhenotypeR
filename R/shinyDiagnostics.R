@@ -16,9 +16,12 @@
 #' @param minCellCount Minimum cell count for suppression when exporting results.
 #' @param open If TRUE, the shiny app will be launched in a new session. If
 #' FALSE, the shiny app will be created but not launched.
-#' @param expectationsDir Directory where to find the expectations CSV.
-#' @param clinicalDescriptionsDir Directory where to find the clinical descriptions word documents.
-#' @param databaseDescriptionsDir Directory where to find the database descriptions word documents.
+#' @param expectations Expectations from `getCohortExpectations()` or
+#' `importCohortExpectations()`
+#' @param conceptReview Concept review from `reviewCohortConcepts()`
+#' @param clinicalDescriptions Clinical descriptions from `draftClinicalDescription()`
+#' or `importClinicalDescription()`
+#' @param databaseDescriptions Database descriptions from `importDatabaseDescription()`
 #' @param removeEmptyTabs Whether to remove tabs of those diagnostics that have not been performed or that were insufficient counts to produce a result (TRUE) or not (FALSE)
 #'
 #' @return A shiny app
@@ -48,9 +51,10 @@ shinyDiagnostics <- function(result,
                              directory,
                              minCellCount = 5,
                              open = rlang::is_interactive(),
-                             expectationsDir = NULL,
-                             clinicalDescriptionsDir = NULL,
-                             databaseDescriptionsDir = NULL,
+                             expectations = NULL,
+                             conceptReview = NULL,
+                             clinicalDescriptions = NULL,
+                             databaseDescriptions = NULL,
                              removeEmptyTabs = TRUE){
 
   folderName <- "PhenotypeRShiny"
@@ -96,19 +100,16 @@ shinyDiagnostics <- function(result,
                                        logFile = NULL)
 
   # copy expectations
-  if(!is.null(expectationsDir)){
-    invisible(copyDirectory(from = expectationsDir, to = file.path(to, "data","raw", "expectations")))
+  if(!is.null(expectations)){
+    exportCohortExpectations(expectations = expectations, path = file.path(to, "data","raw", "expectations"))
   }else{
     emptyExpectations() |>
       readr::write_csv(file = file.path(to, "data", "raw", "expectations", "expectations.csv"))
   }
   # copy clinical descriptions directory
-  if(!is.null(clinicalDescriptionsDir)) {
-      invisible(copyDirectory(from = clinicalDescriptionsDir, to = file.path(to, "data","raw","clinical_descriptions")))
-  }
-  # copy database descriptions directory
-  if(!is.null(clinicalDescriptionsDir)) {
-    invisible(copyDirectory(from = databaseDescriptionsDir, to = file.path(to, "data","raw","database_descriptions")))
+  if(!is.null(clinicalDescriptions)) {
+    exportClinicalDescription(clinicalDescription = clinicalDescriptions,
+                              outputDir = file.path(to, "data","raw","clinical_descriptions"))
   }
 
   # remove tabs

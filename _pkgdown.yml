@@ -54,9 +54,14 @@ reference:
   - dataSourceDescriptionSpecification
   - importDatabaseDescription
   - shinyDataSourceDescriptions
+- subtitle: Concept review
+- contents:
+  - reviewCohortConcepts
 - subtitle: Expectations for phenotyping results
 - contents:
   - getCohortExpectations
+  - exportCohortExpectations
+  - importCohortExpectations
   - tableCohortExpectations
 - subtitle: Download templates
 - contents:

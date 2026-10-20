@@ -10,9 +10,9 @@ codes <- list(
   "hospitalised_inpatient" = c(9201L)
 )
 
-expectations_path <- here::here("extras", "expectations")
-clinical_descriptions_path <- here::here("extras", "clinical_descriptions")
-database_descriptions_path  <- here::here("extras", "database_descriptions")
+expectations <- PhenotypeR::importCohortExpectations(here::here("extras", "expectations", "expectations.csv"))
+clinical_descriptions <- PhenotypeR::importClinicalDescription(here::here("extras", "clinical_descriptions"))
+database_descriptions  <- PhenotypeR::importDatabaseDescription(here::here("extras", "database_descriptions"))
 
 # run against different omock datasets
 datasets <- c("GiBleed", "synpuf-1k_5.3")
@@ -47,9 +47,9 @@ result[[working_dataset]] <- PhenotypeR::phenotypeDiagnostics(cohort = cdm$my_co
 result <- omopgenerics::bind(result)
 
 PhenotypeR::shinyDiagnostics(result = result,
-                             expectationsDir = expectations_path,
-                             clinicalDescriptionsDir = clinical_descriptions_path,
-                             databaseDescriptionsDir = database_descriptions_path,
+                             expectations = expectations,
+                             clinicalDescriptions = clinical_descriptions,
+                             databaseDescriptions = database_descriptions,
                              minCellCount = 2,
                              directory = getwd(),
                              open = FALSE)

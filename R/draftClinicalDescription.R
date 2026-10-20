@@ -3,12 +3,11 @@
 #'
 #' @param chat An ellmer chat
 #' @param name Clinical event of interest
-#' @param outputDir Folder to save clinical descriptions.
 #'
 #' @returns Creates a draft clinical description for each event of interest.
 #' @export
 #'
-draftClinicalDescription <- function(chat, name, outputDir){
+draftClinicalDescription <- function(chat, name){
 
   rlang::check_installed("ellmer")
   rlang::check_installed("jsonlite")
@@ -18,23 +17,15 @@ draftClinicalDescription <- function(chat, name, outputDir){
   model_name <- chat$get_model()
 
   omopgenerics::assertCharacter(name)
-  if (!dir.exists(outputDir)) {
-    cli::cli_abort("{outputDir} does not exist")
-  }
 
   descriptions <- list()
   for(i in seq_along(name)){
     working_name <- name[[i]]
     descriptions[[working_name]] <- fetchClinicalDescription(chat = chat,
                                            name = working_name)
-    if(!is.null(outputDir)){
-      descriptions[working_name] |>
-        exportClinicalDescription(modelName = model_name,
-                                  outputDir = outputDir)
-    }
   }
 
-  return(invisible(descriptions))
+  return(descriptions)
 
 }
 
@@ -96,7 +87,28 @@ fetchClinicalDescription <- function(chat, name){
     type = type_my_df,
     echo = "none")
 
-  return(chat_output)
+  structured_list <- list(
+    metadata = list(
+      phenotype_name = name,
+      version = "1.0",
+      created_by = chat$get_model(),
+      created_date = as.character(as.Date(Sys.Date())),
+      last_edited_by = "N/A",
+      last_edited_date = as.character(as.Date(Sys.Date())),
+      source_of_information = chat$get_model()
+    ),
+    clinical_profile = list(
+      introduction_synonyms = chat_output$introduction_synonyms,
+      clinical_presentation_and_symptoms = chat_output$clinical_presentation_and_symptoms,
+      assessment_diagnosis = chat_output$assessment_diagnosis,
+      therapeutic_plan_treatment = chat_output$therapeutic_plan_treatment,
+      complications_prognosis = chat_output$complications_prognosis,
+      disqualifiers = chat_output$disqualifiers,
+      epidemiology = chat_output$epidemiology
+    )
+  )
+
+  return(structured_list)
 
 }
 
@@ -109,29 +121,8 @@ exportClinicalDescription <- function(clinicalDescription, modelName, outputDir)
 
       cli::cli_inform("Exporting clinical description for: '{name}'")
 
-      structured_list <- list(
-        metadata = list(
-          phenotype_name = name,
-          version = "1.0",
-          created_by = paste0(modelName, " (via PhenotypeR::draftClinicalDescription())"),
-          created_date = as.Date(Sys.Date()),
-          last_edited_by = "N/A",
-          last_edited_date = as.Date(Sys.Date()),
-          source_of_information = modelName
-        ),
-        clinical_profile = list(
-          introduction_synonyms = clinicalDescription[[i]]$introduction_synonyms,
-          clinical_presentation_and_symptoms = clinicalDescription[[i]]$clinical_presentation_and_symptoms,
-          assessment_diagnosis = clinicalDescription[[i]]$assessment_diagnosis,
-          therapeutic_plan_treatment = clinicalDescription[[i]]$therapeutic_plan_treatment,
-          complications_prognosis = clinicalDescription[[i]]$complications_prognosis,
-          disqualifiers = clinicalDescription[[i]]$disqualifiers,
-          epidemiology = clinicalDescription[[i]]$epidemiology
-        )
-      )
-
       jsonlite::write_json(
-        structured_list,
+        clinicalDescription[[name]],
         path = path,
         auto_unbox = TRUE,
         pretty = TRUE
