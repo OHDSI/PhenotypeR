@@ -26,13 +26,17 @@ shinyDiagnostics(
 \item{open}{If TRUE, the shiny app will be launched in a new session. If
 FALSE, the shiny app will be created but not launched.}
 
+\item{expectations}{Expectations from \code{getCohortExpectations()} or
+\code{importCohortExpectations()}}
+
+\item{conceptReview}{Concept review from \code{reviewCohortConcepts()}}
+
+\item{clinicalDescriptions}{Clinical descriptions from \code{draftClinicalDescription()}
+or \code{importClinicalDescription()}}
+
+\item{databaseDescriptions}{Database descriptions from \code{importDatabaseDescription()}}
+
 \item{removeEmptyTabs}{Whether to remove tabs of those diagnostics that have not been performed or that were insufficient counts to produce a result (TRUE) or not (FALSE)}
-
-\item{expectationsDir}{Directory where to find the expectations CSV.}
-
-\item{clinicalDescriptionsDir}{Directory where to find the clinical descriptions word documents.}
-
-\item{databaseDescriptionsDir}{Directory where to find the database descriptions word documents.}
 }
 \value{
 A shiny app

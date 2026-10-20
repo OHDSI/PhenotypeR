@@ -16,9 +16,12 @@
 #' @param minCellCount Minimum cell count for suppression when exporting results.
 #' @param open If TRUE, the shiny app will be launched in a new session. If
 #' FALSE, the shiny app will be created but not launched.
-#' @param expectationsDir Directory where to find the expectations CSV.
-#' @param clinicalDescriptionsDir Directory where to find the clinical descriptions word documents.
-#' @param databaseDescriptionsDir Directory where to find the database descriptions word documents.
+#' @param expectations Expectations from `getCohortExpectations()` or
+#' `importCohortExpectations()`
+#' @param conceptReview Concept review from `reviewCohortConcepts()`
+#' @param clinicalDescriptions Clinical descriptions from `draftClinicalDescription()`
+#' or `importClinicalDescription()`
+#' @param databaseDescriptions Database descriptions from `importDatabaseDescription()`
 #' @param removeEmptyTabs Whether to remove tabs of those diagnostics that have not been performed or that were insufficient counts to produce a result (TRUE) or not (FALSE)
 #'
 #' @return A shiny app
