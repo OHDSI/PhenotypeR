@@ -75,7 +75,7 @@ cdm <- mockCdmFromDataset(source = "duckdb")
 #> ℹ Creating local <cdm_reference> object.
 #> ℹ Inserting <cdm_reference> into duckdb.
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpiOjD2E/duckdb
+#> ℹ /tmp/RtmpM8TONp/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
@@ -95,12 +95,12 @@ cdm$warfarin <- conceptCohort(cdm,
 
 result <- cdm$warfarin |>
   populationDiagnostics(populationSample = 100000)
-#> [2026-10-16 10:30:20] - Population diagnosics - denominator cohort
-#> [2026-10-16 10:30:20] - Population diagnosics - sampling person table to 1e+05
+#> [2026-10-20 01:15:31] - Population diagnosics - denominator cohort
+#> [2026-10-20 01:15:31] - Population diagnosics - sampling person table to 1e+05
 #> people
 #> ℹ Creating denominator cohorts
-#> ✔ Cohorts created in 0 min and 4 sec
-#> [2026-10-16 10:30:24] - Population diagnosics - incidence
+#> ✔ Cohorts created in 0 min and 2 sec
+#> [2026-10-20 01:15:33] - Population diagnosics - incidence
 #> ℹ Getting incidence for analysis 1 of 7
 #> ℹ Getting incidence for analysis 2 of 7
 #> ℹ Getting incidence for analysis 3 of 7
@@ -108,8 +108,8 @@ result <- cdm$warfarin |>
 #> ℹ Getting incidence for analysis 5 of 7
 #> ℹ Getting incidence for analysis 6 of 7
 #> ℹ Getting incidence for analysis 7 of 7
-#> ✔ Overall time taken: 0 mins and 10 secs
-#> [2026-10-16 10:30:35] - Population diagnosics - prevalence
+#> ✔ Overall time taken: 0 mins and 5 secs
+#> [2026-10-20 01:15:39] - Population diagnosics - prevalence
 #> ℹ Getting prevalence for analysis 1 of 7
 #> ℹ Getting prevalence for analysis 2 of 7
 #> ℹ Getting prevalence for analysis 3 of 7
@@ -117,7 +117,7 @@ result <- cdm$warfarin |>
 #> ℹ Getting prevalence for analysis 5 of 7
 #> ℹ Getting prevalence for analysis 6 of 7
 #> ℹ Getting prevalence for analysis 7 of 7
-#> ✔ Time taken: 0 mins and 6 secs
+#> ✔ Time taken: 0 mins and 3 secs
 #> `populationDateStart`, `populationDateEnd`, and `populationSample` cast to
 #> character.
 #> `populationDateStart` and `populationDateEnd` eliminated from settings as all

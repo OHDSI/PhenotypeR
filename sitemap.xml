@@ -22,8 +22,10 @@
 <url><loc>https://ohdsi.github.io/PhenotypeR/reference/draftClinicalDescription.html</loc></url>
 <url><loc>https://ohdsi.github.io/PhenotypeR/reference/drugDiagnosticsSampleDoc.html</loc></url>
 <url><loc>https://ohdsi.github.io/PhenotypeR/reference/expectationsDoc.html</loc></url>
+<url><loc>https://ohdsi.github.io/PhenotypeR/reference/exportCohortExpectations.html</loc></url>
 <url><loc>https://ohdsi.github.io/PhenotypeR/reference/getCohortExpectations.html</loc></url>
 <url><loc>https://ohdsi.github.io/PhenotypeR/reference/importClinicalDescription.html</loc></url>
+<url><loc>https://ohdsi.github.io/PhenotypeR/reference/importCohortExpectations.html</loc></url>
 <url><loc>https://ohdsi.github.io/PhenotypeR/reference/importDatabaseDescription.html</loc></url>
 <url><loc>https://ohdsi.github.io/PhenotypeR/reference/index.html</loc></url>
 <url><loc>https://ohdsi.github.io/PhenotypeR/reference/matchedDoc.html</loc></url>
@@ -33,6 +35,7 @@
 <url><loc>https://ohdsi.github.io/PhenotypeR/reference/populationSampleDoc.html</loc></url>
 <url><loc>https://ohdsi.github.io/PhenotypeR/reference/reexports.html</loc></url>
 <url><loc>https://ohdsi.github.io/PhenotypeR/reference/resultDoc.html</loc></url>
+<url><loc>https://ohdsi.github.io/PhenotypeR/reference/reviewCohortConcepts.html</loc></url>
 <url><loc>https://ohdsi.github.io/PhenotypeR/reference/shinyClinicalDescriptions.html</loc></url>
 <url><loc>https://ohdsi.github.io/PhenotypeR/reference/shinyDataSourceDescriptions.html</loc></url>
 <url><loc>https://ohdsi.github.io/PhenotypeR/reference/shinyDiagnostics.html</loc></url>

@@ -22,9 +22,10 @@ shinyDiagnostics(
   directory,
   minCellCount = 5,
   open = rlang::is_interactive(),
-  expectationsDir = NULL,
-  clinicalDescriptionsDir = NULL,
-  databaseDescriptionsDir = NULL,
+  expectations = NULL,
+  conceptReview = NULL,
+  clinicalDescriptions = NULL,
+  databaseDescriptions = NULL,
   removeEmptyTabs = TRUE
 )
 ```
@@ -48,17 +49,29 @@ shinyDiagnostics(
   If TRUE, the shiny app will be launched in a new session. If FALSE,
   the shiny app will be created but not launched.
 
-- expectationsDir:
+- expectations:
 
-  Directory where to find the expectations CSV.
+  Expectations from
+  [`getCohortExpectations()`](https://ohdsi.github.io/PhenotypeR/reference/getCohortExpectations.md)
+  or
+  [`importCohortExpectations()`](https://ohdsi.github.io/PhenotypeR/reference/importCohortExpectations.md)
 
-- clinicalDescriptionsDir:
+- conceptReview:
 
-  Directory where to find the clinical descriptions word documents.
+  Concept review from
+  [`reviewCohortConcepts()`](https://ohdsi.github.io/PhenotypeR/reference/reviewCohortConcepts.md)
 
-- databaseDescriptionsDir:
+- clinicalDescriptions:
 
-  Directory where to find the database descriptions word documents.
+  Clinical descriptions from
+  [`draftClinicalDescription()`](https://ohdsi.github.io/PhenotypeR/reference/draftClinicalDescription.md)
+  or
+  [`importClinicalDescription()`](https://ohdsi.github.io/PhenotypeR/reference/importClinicalDescription.md)
+
+- databaseDescriptions:
+
+  Database descriptions from
+  [`importDatabaseDescription()`](https://ohdsi.github.io/PhenotypeR/reference/importDatabaseDescription.md)
 
 - removeEmptyTabs:
 
@@ -84,7 +97,7 @@ cdm <- mockCdmFromDataset(source = "duckdb")
 #> ℹ Creating local <cdm_reference> object.
 #> ℹ Inserting <cdm_reference> into duckdb.
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpiOjD2E/duckdb
+#> ℹ /tmp/RtmpM8TONp/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
@@ -105,19 +118,19 @@ cdm$warfarin <- conceptCohort(cdm,
 result <- phenotypeDiagnostics(cdm$warfarin,
                                populationDiagnostics = list("populationSample" = 100000))
 #> Logging PhenotypeR progress in
-#> /tmp/RtmpiOjD2E/phenotypeDiagnostics_log_{date}_{time}1b6d74665455.txt
+#> /tmp/RtmpM8TONp/phenotypeDiagnostics_log_{date}_{time}1abe1cc45fc3.txt
 #> ℹ Creating log file:
-#>   /tmp/RtmpiOjD2E/phenotypeDiagnostics_log_2026_10_16_10_30_531b6d74665455.txt.
-#> [2026-10-16 10:30:53] - Log file created
-#> [2026-10-16 10:30:53] - Database diagnostics - getting CDM Snapshot
-#> [2026-10-16 10:30:54] - Database diagnostics - summarising person table
+#>   /tmp/RtmpM8TONp/phenotypeDiagnostics_log_2026_10_20_01_15_511abe1cc45fc3.txt.
+#> [2026-10-20 01:15:51] - Log file created
+#> [2026-10-20 01:15:51] - Database diagnostics - getting CDM Snapshot
+#> [2026-10-20 01:15:51] - Database diagnostics - summarising person table
 #> ℹ The following estimates will be calculated:
 #> • date_of_birth: density
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side.
-#> → Start summary of data, at 2026-10-16 10:30:58.03727
-#> ✔ Summary finished, at 2026-10-16 10:30:58.103061
-#> [2026-10-16 10:30:58] - Database diagnostics - summarising observation period
+#> → Start summary of data, at 2026-10-20 01:15:53.970474
+#> ✔ Summary finished, at 2026-10-20 01:15:54.01116
+#> [2026-10-20 01:15:54] - Database diagnostics - summarising observation period
 #> ℹ retrieving cdm object from cdm_table.
 #> Warning: ! There are 2649 individuals not included in the person table.
 #> ℹ The following estimates will be calculated:
@@ -125,19 +138,19 @@ result <- phenotypeDiagnostics(cdm$warfarin,
 #> • observation_period_end_date: density
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side.
-#> → Start summary of data, at 2026-10-16 10:31:01.554088
-#> ✔ Summary finished, at 2026-10-16 10:31:01.630849
-#> [2026-10-16 10:31:02] - Codelist diagnostics - index event breakdown
+#> → Start summary of data, at 2026-10-20 01:15:56.022405
+#> ✔ Summary finished, at 2026-10-20 01:15:56.073284
+#> [2026-10-20 01:15:56] - Codelist diagnostics - index event breakdown
 #> Getting counts of warfarin codes for cohort warfarin
 #> Warning: The CDM reference containing the cohort must also contain achilles tables.
 #> Returning only index event breakdown.
-#> [2026-10-16 10:31:04] - Cohort diagnostics - cohort attrition
-#> [2026-10-16 10:31:04] - Cohort diagnostics - cohort count
+#> [2026-10-20 01:15:57] - Cohort diagnostics - cohort attrition
+#> [2026-10-20 01:15:57] - Cohort diagnostics - cohort count
 #> ℹ summarising data
 #> ℹ summarising cohort warfarin
 #> ✔ summariseCharacteristics finished!
 #> → Skipping cohort sampling as all cohorts have less than 20000 individuals.
-#> [2026-10-16 10:31:05] - Cohort diagnostics - matched cohorts
+#> [2026-10-20 01:15:58] - Cohort diagnostics - matched cohorts
 #> → Sampling cohort `tmp_038_sampled_independent`
 #> Returning entry cohort as the size of the cohorts to be sampled is equal or
 #> smaller than `n`.
@@ -154,7 +167,7 @@ result <- phenotypeDiagnostics(cdm$warfarin,
 #> Binding cohorts
 #> ✔ Done
 #> → Getting cohorts and indexes
-#> [2026-10-16 10:31:17] - Cohort diagnostics - cohort characteristics
+#> [2026-10-20 01:16:06] - Cohort diagnostics - cohort characteristics
 #> ℹ adding demographics columns
 #> ℹ adding tableIntersectCount 1/1
 #> window names cast to snake_case:
@@ -164,13 +177,13 @@ result <- phenotypeDiagnostics(cdm$warfarin,
 #> ℹ summarising cohort warfarin_sampled
 #> ℹ summarising cohort warfarin_matched
 #> ✔ summariseCharacteristics finished!
-#> [2026-10-16 10:31:22] - Cohort diagnostics - age density
+#> [2026-10-20 01:16:09] - Cohort diagnostics - age density
 #> ℹ The following estimates will be calculated:
 #> • age: density
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side.
-#> → Start summary of data, at 2026-10-16 10:31:23.461382
-#> ✔ Summary finished, at 2026-10-16 10:31:23.590192
+#> → Start summary of data, at 2026-10-20 01:16:10.016307
+#> ✔ Summary finished, at 2026-10-20 01:16:10.096673
 #> Using defaults for windows for large scale characteristics: c(-365, -31),
 #> c(-30, -1), c(0, 0), c(1, 30), and c(31, 365). These can be changed via passing
 #> alternative windows as a global option
@@ -183,7 +196,7 @@ result <- phenotypeDiagnostics(cdm$warfarin,
 #> drug_exposure, drug_era, and visit_occurrence. These can be changed via passing
 #> alternative windows as a global option
 #> `PhenotypeR_summariseLargeScaleCharacteristics_episodeInWindow`
-#> [2026-10-16 10:31:24] - Cohort diagnostics - large scale characteristics
+#> [2026-10-20 01:16:10] - Cohort diagnostics - large scale characteristics
 #> ℹ Summarising large scale characteristics 
 #>  - getting characteristics from table condition_occurrence (1 of 7)
 #>  - getting characteristics from table condition_occurrence (1 of 7) for time wi…
@@ -228,7 +241,7 @@ result <- phenotypeDiagnostics(cdm$warfarin,
 #>  - getting characteristics from table visit_occurrence (7 of 7) for time window…
 #>  - getting characteristics from table visit_occurrence (7 of 7) for time window…
 #> Formatting result
-#> 229 estimates dropped as frequency less than 1%
+#> 244 estimates dropped as frequency less than 1%
 #> ✔ Summarising large scale characteristics
 #> ℹ Summarising large scale characteristics 
 #>  - getting characteristics from table condition_occurrence (1 of 7)
@@ -274,15 +287,15 @@ result <- phenotypeDiagnostics(cdm$warfarin,
 #>  - getting characteristics from table visit_occurrence (7 of 7) for time window…
 #>  - getting characteristics from table visit_occurrence (7 of 7) for time window…
 #> Formatting result
-#> 229 estimates dropped as frequency less than 1%
+#> 244 estimates dropped as frequency less than 1%
 #> ✔ Summarising large scale characteristics
 #> `cohort_sample` and `matched_sample` cast to character.
-#> [2026-10-16 10:32:02] - Population diagnosics - denominator cohort
-#> [2026-10-16 10:32:02] - Population diagnosics - sampling person table to 1e+05
+#> [2026-10-20 01:16:35] - Population diagnosics - denominator cohort
+#> [2026-10-20 01:16:35] - Population diagnosics - sampling person table to 1e+05
 #> people
 #> ℹ Creating denominator cohorts
-#> ✔ Cohorts created in 0 min and 4 sec
-#> [2026-10-16 10:32:07] - Population diagnosics - incidence
+#> ✔ Cohorts created in 0 min and 2 sec
+#> [2026-10-20 01:16:37] - Population diagnosics - incidence
 #> ℹ Getting incidence for analysis 1 of 7
 #> ℹ Getting incidence for analysis 2 of 7
 #> ℹ Getting incidence for analysis 3 of 7
@@ -290,8 +303,8 @@ result <- phenotypeDiagnostics(cdm$warfarin,
 #> ℹ Getting incidence for analysis 5 of 7
 #> ℹ Getting incidence for analysis 6 of 7
 #> ℹ Getting incidence for analysis 7 of 7
-#> ✔ Overall time taken: 0 mins and 10 secs
-#> [2026-10-16 10:32:17] - Population diagnosics - prevalence
+#> ✔ Overall time taken: 0 mins and 5 secs
+#> [2026-10-20 01:16:43] - Population diagnosics - prevalence
 #> ℹ Getting prevalence for analysis 1 of 7
 #> ℹ Getting prevalence for analysis 2 of 7
 #> ℹ Getting prevalence for analysis 3 of 7
@@ -299,12 +312,12 @@ result <- phenotypeDiagnostics(cdm$warfarin,
 #> ℹ Getting prevalence for analysis 5 of 7
 #> ℹ Getting prevalence for analysis 6 of 7
 #> ℹ Getting prevalence for analysis 7 of 7
-#> ✔ Time taken: 0 mins and 6 secs
+#> ✔ Time taken: 0 mins and 3 secs
 #> `populationDateStart`, `populationDateEnd`, and `populationSample` cast to
 #> character.
 #> `populationDateStart` and `populationDateEnd` eliminated from settings as all
 #> elements are NA.
-#> [2026-10-16 10:32:24] - Exporting log file
+#> [2026-10-20 01:16:48] - Exporting log file
 
 shinyDiagnostics(result,
                 tempdir())
@@ -320,7 +333,7 @@ shinyDiagnostics(result,
 #> Warning: Expectations tab in cohort_count, cohort_characteristics,
 #> large_scale_characteristics, and compare_large_scale_characteristics will be
 #> removed, as none were provided.
-#> ℹ Shiny app created in /tmp/RtmpiOjD2E/PhenotypeRShiny
+#> ℹ Shiny app created in /tmp/RtmpM8TONp/PhenotypeRShiny
 
 CDMConnector::cdmDisconnect(cdm = cdm)
 # }

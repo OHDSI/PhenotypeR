@@ -84,7 +84,7 @@ cdm <- mockCdmFromDataset(source = "duckdb")
 #> ℹ Creating local <cdm_reference> object.
 #> ℹ Inserting <cdm_reference> into duckdb.
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpiOjD2E/duckdb
+#> ℹ /tmp/RtmpM8TONp/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
@@ -108,8 +108,8 @@ cdm$new_cohort <- conceptCohort(cdm,
 #> • date_of_birth: density
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side.
-#> → Start summary of data, at 2026-10-16 10:28:20.39267
-#> ✔ Summary finished, at 2026-10-16 10:28:20.456219
+#> → Start summary of data, at 2026-10-20 01:14:14.996598
+#> ✔ Summary finished, at 2026-10-20 01:14:15.038173
 #> ℹ retrieving cdm object from cdm_table.
 #> Warning: ! There are 2649 individuals not included in the person table.
 #> ℹ The following estimates will be calculated:
@@ -117,8 +117,8 @@ cdm$new_cohort <- conceptCohort(cdm,
 #> • observation_period_end_date: density
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side.
-#> → Start summary of data, at 2026-10-16 10:28:23.701922
-#> ✔ Summary finished, at 2026-10-16 10:28:23.782936
+#> → Start summary of data, at 2026-10-20 01:14:17.320098
+#> ✔ Summary finished, at 2026-10-20 01:14:17.365549
 
  cdmDisconnect(cdm = cdm)
 # }

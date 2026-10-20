@@ -206,10 +206,19 @@ the package vignettes.
   : Shiny app to create data source descriptions for contextualising
   diagnostic results
 
+### Concept review
+
+- [`reviewCohortConcepts()`](https://ohdsi.github.io/PhenotypeR/reference/reviewCohortConcepts.md)
+  : Use an LLM to review concepts that led to cohort inclusion
+
 ### Expectations for phenotyping results
 
 - [`getCohortExpectations()`](https://ohdsi.github.io/PhenotypeR/reference/getCohortExpectations.md)
   : Get cohort expectations using an LLM
+- [`exportCohortExpectations()`](https://ohdsi.github.io/PhenotypeR/reference/exportCohortExpectations.md)
+  : Export cohort expectations to a CSV file
+- [`importCohortExpectations()`](https://ohdsi.github.io/PhenotypeR/reference/importCohortExpectations.md)
+  : Import cohort expectations
 - [`tableCohortExpectations()`](https://ohdsi.github.io/PhenotypeR/reference/tableCohortExpectations.md)
   : Create a table summarising cohort expectations
 

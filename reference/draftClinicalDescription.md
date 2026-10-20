@@ -5,7 +5,7 @@ Draft clinical descriptions using an LLM
 ## Usage
 
 ``` r
-draftClinicalDescription(chat, name, outputDir)
+draftClinicalDescription(chat, name)
 ```
 
 ## Arguments
@@ -17,10 +17,6 @@ draftClinicalDescription(chat, name, outputDir)
 - name:
 
   Clinical event of interest
-
-- outputDir:
-
-  Folder to save clinical descriptions.
 
 ## Value
 
