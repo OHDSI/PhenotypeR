@@ -41,7 +41,7 @@ validateDiagnosticsCohortId <- function(diagnostics, cohort, call = parent.frame
     }
   }
 
-  return(diagnostics)
+  return(rlang::eval_tidy(diagnostics))
 }
 
 checkDatabaseDiagnosticsInput <- function(databaseDiagnostics, call = parent.frame()) {
