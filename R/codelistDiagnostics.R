@@ -50,10 +50,10 @@ codelistDiagnostics <- function(cohort,
                                 drugDiagnostics = FALSE,
                                 drugDiagnosticsSample = 20000,
                                 measurementDiagnostics = FALSE,
-                                measurementDiagnosticsSample = 20000){
+                                measurementDiagnosticsSample = 20000) {
 
   cohort <- omopgenerics::validateCohortArgument(cohort = cohort)
-  cohortId <- omopgenerics::validateCohortIdArgument(cohortId = cohortId, cohort = cohort)
+  cohortId <- omopgenerics::validateCohortIdArgument(cohortId = {{cohortId}}, cohort = cohort)
   omopgenerics::assertLogical(achillesCodeUse, length = 1)
   omopgenerics::assertLogical(orphanCodeUse, length = 1)
   omopgenerics::assertLogical(cohortCodeUse, length = 1)

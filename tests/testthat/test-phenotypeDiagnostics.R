@@ -1,42 +1,23 @@
 test_that("test check functions", {
-  expect_error(checkDatabaseDiagnosticsInput(databaseDiagnostics = "h"))
-  expect_error(checkDatabaseDiagnosticsInput(codelistDiagnostics = list("h" = 1)))
-  expect_error(checkDatabaseDiagnosticsInput(codelistDiagnostics = list("h")))
-  expect_error(checkDatabaseDiagnosticsInput(databaseDiagnostics = list("diagnostics" = "h")))
-  expect_no_error(x <- checkDatabaseDiagnosticsInput(databaseDiagnostics =  NULL))
-  expect_true(is.null(x))
-  expect_no_error(x <- checkDatabaseDiagnosticsInput(databaseDiagnostics = list()))
-  expect_equal(formals("databaseDiagnostics")[-which(names(formals("databaseDiagnostics")) == "cohort")],
-               x)
+  diagnostics_names <- c(
+    "databaseDiagnostics",
+    "codelistDiagnostics",
+    "cohortDiagnostics",
+    "populationDiagnostics"
+  )
 
-  expect_error(checkCodelistDiagnosticsInput(codelistDiagnostics = "h"))
-  expect_error(checkCodelistDiagnosticsInput(codelistDiagnostics = list("h" = 1)))
-  expect_error(checkCodelistDiagnosticsInput(codelistDiagnostics = list("h")))
-  expect_no_error(x <- checkCodelistDiagnosticsInput(codelistDiagnostics =  NULL))
-  expect_true(is.null(x))
-  expect_no_error(x <- checkCodelistDiagnosticsInput(codelistDiagnostics = list()))
-  expect_equal(formals("codelistDiagnostics")[-which(names(formals("codelistDiagnostics")) == "cohort")],
-               x)
+  for (diagnostics in diagnostics_names) {
+    expect_error(validateDiagnosticsInput("h", diagnostics, cohort = NULL))
+    expect_error(validateDiagnosticsInput(list("h" = 1), diagnostics, cohort = NULL))
+    expect_error(validateDiagnosticsInput(list("h"), diagnostics, cohort = NULL))
+    expect_no_error(x <- validateDiagnosticsInput(NULL, diagnostics, cohort = NULL))
+    expect_null(x)
+    expect_no_error(x <- validateDiagnosticsInput(list(), diagnostics, cohort = NULL))
 
-  expect_error(checkCohortDiagnosticsInput(cohortDiagnostics = "h"))
-  expect_error(checkCohortDiagnosticsInput(cohortDiagnostics = list("h" = 1)))
-  expect_error(checkCohortDiagnosticsInput(cohortDiagnostics = list("h")))
-  expect_no_error(x <- checkCohortDiagnosticsInput(cohortDiagnostics =  NULL))
-  expect_true(is.null(x))
-  expect_no_error(x <- checkCohortDiagnosticsInput(cohortDiagnostics = list()))
-  expect_equal(formals("cohortDiagnostics")[-which(names(formals("cohortDiagnostics")) == "cohort")],
-               x)
-
-  expect_error(checkPopulationDiagnosticsInput(populationDiagnostics = "h"))
-  expect_error(checkPopulationDiagnosticsInput(populationDiagnostics = list("h" = 1)))
-  expect_error(checkPopulationDiagnosticsInput(populationDiagnostics = list("h")))
-  expect_no_error(x <- checkPopulationDiagnosticsInput(populationDiagnostics =  NULL))
-  expect_true(is.null(x))
-  expect_no_error(x <- checkPopulationDiagnosticsInput(populationDiagnostics = list()))
-  x1 <- formals("populationDiagnostics")[-which(names(formals("populationDiagnostics")) == "cohort")]
-  x1$populationDateRange <- eval(x1$populationDateRange)
-  expect_equal(names(x1),
-               names(x))
+    expected <- formals(get(diagnostics, envir = asNamespace("PhenotypeR"))) |>
+      purrr::discard(rlang::is_missing)
+    expect_identical(x, expected)
+  }
 }
 )
 
@@ -78,6 +59,22 @@ test_that("overall diagnostics function", {
   expect_no_error(my_result <- phenotypeDiagnostics(cdm$my_cohort,
                                                     populationDiagnostics = list("populationSample" = 10000),
                                                     stagingDirectory = staging_path))
+
+  expect_no_error(phenotypeDiagnostics(
+    cdm$my_cohort,
+    databaseDiagnostics = NULL,
+    codelistDiagnostics = NULL,
+    cohortDiagnostics = list(
+      cohortId = dplyr::starts_with("cohort_1"),
+      cohortCount = TRUE,
+      cohortCharacteristics = FALSE,
+      largeScaleCharacteristics = FALSE,
+      compareCohorts = FALSE,
+      cohortSurvival = FALSE
+    ),
+    populationDiagnostics = NULL
+  ))
+
   cohort_post <- cdm$my_cohort |>
     dplyr::collect()
   logs_post <- list.files(staging_path, pattern = ".txt")

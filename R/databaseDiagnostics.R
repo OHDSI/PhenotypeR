@@ -49,7 +49,7 @@ databaseDiagnostics <- function(cohort,
 
   # Initial checks
   cohort <- omopgenerics::validateCohortArgument(cohort)
-  cohortId <- omopgenerics::validateCohortIdArgument(cohortId, cohort = cohort)
+  cohortId <- omopgenerics::validateCohortIdArgument({{cohortId}}, cohort = cohort)
   omopgenerics::assertLogical(snapshot, length = 1)
   omopgenerics::assertLogical(personTableSummary, length = 1)
   omopgenerics::assertLogical(observationPeriodsSummary, length = 1)

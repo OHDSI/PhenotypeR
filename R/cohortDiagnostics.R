@@ -60,7 +60,7 @@ cohortDiagnostics <- function(cohort,
 
   # Initial checks ----
   omopgenerics::validateCohortArgument(cohort)
-  cohortId <- omopgenerics::validateCohortIdArgument(cohortId = cohortId, cohort = cohort)
+  cohortId <- omopgenerics::validateCohortIdArgument(cohortId = {{cohortId}}, cohort = cohort)
   omopgenerics::assertLogical(cohortCount, length = 1)
   omopgenerics::assertLogical(cohortCharacteristics, length = 1)
   omopgenerics::assertLogical(largeScaleCharacteristics, length = 1)

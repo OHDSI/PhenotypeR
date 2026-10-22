@@ -45,7 +45,7 @@ populationDiagnostics <- function(cohort,
                                   populationDateRange = as.Date(c(NA, NA))) {
 
   cohort <- omopgenerics::validateCohortArgument(cohort = cohort)
-  cohortId <- omopgenerics::validateCohortIdArgument(cohortId = cohortId,
+  cohortId <- omopgenerics::validateCohortIdArgument(cohortId = {{cohortId}},
                                                      cohort = cohort)
   checksPopulationDiagnostics(populationSample, populationDateRange)
   omopgenerics::assertLogical(incidence, length = 1)
