@@ -178,15 +178,8 @@ databaseDiagnostics <- function(cohort,
 
   results <- results |>
     vctrs::list_drop_empty() |>
-    omopgenerics::bind()
-
-  newSettings <- results |>
-    omopgenerics::settings() |>
-    dplyr::mutate("phenotyper_version" = as.character(utils::packageVersion(pkg = "PhenotypeR")),
-                  "diagnostic" = "databaseDiagnostics")
-
-  results <- results |>
-    omopgenerics::newSummarisedResult(settings = newSettings)
+    omopgenerics::bind() |>
+    appendPhenotypeRVersion(diagnostic = "databaseDiagnostics")
 
   return(results)
 }

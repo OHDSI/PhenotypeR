@@ -253,15 +253,7 @@ codelistDiagnostics <- function(cohort,
     results <- omopgenerics::emptySummarisedResult()
   }
 
-  newSettings <- results |>
-    omopgenerics::settings() |>
-    dplyr::mutate("phenotyper_version" = as.character(utils::packageVersion(pkg = "PhenotypeR")),
-                  "diagnostic" = "codelistDiagnostics")
-
-  results <- results |>
-    omopgenerics::newSummarisedResult(settings = newSettings)
-
- return(results)
+  appendPhenotypeRVersion(results, diagnostic = "codelistDiagnostics")
 }
 
 duplicatedCodelists <- function(codelists) {

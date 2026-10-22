@@ -352,19 +352,15 @@ cohortDiagnostics <- function(cohort,
   if(lscCohortName != tempCohortName){
     omopgenerics::dropSourceTable(cdm, dplyr::starts_with(prefix2))
   }
+
   results <- results |>
     vctrs::list_drop_empty() |>
-    omopgenerics::bind()
-
-  newSettings <- results |>
-    omopgenerics::settings() |>
-    dplyr::mutate("phenotyper_version" = as.character(utils::packageVersion(pkg = "PhenotypeR")),
-                  "diagnostic" = "cohortDiagnostics",
-                  "cohort_sample"  = .env$cohortSample,
-                  "matched_sample" = .env$matchedSample)
-
-  results <- results |>
-    omopgenerics::newSummarisedResult(settings = newSettings)
+    omopgenerics::bind() |>
+    appendPhenotypeRVersion(
+      diagnostic = "cohortDiagnostics",
+      cohort_sample  = cohortSample,
+      matched_sample = matchedSample
+    )
 
   return(results)
 }
