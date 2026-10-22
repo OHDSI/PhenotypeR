@@ -71,7 +71,6 @@ validateDiagnosticsInput <- function(x, diagnostics, cohort, call = parent.frame
       names(conf), choices = nms, unique = TRUE, null = TRUE, call = call,
       msg = msg
     )
-    c(configuration,
-      availableArguments[!names(availableArguments) %in% names(configuration)])
+    c(conf, availableArguments[!names(availableArguments) %in% names(conf)])
   })
 }
