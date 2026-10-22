@@ -30,6 +30,11 @@ validateDiagnosticsInput <- function(x, diagnostics, cohort, call = parent.frame
       names(arguments) <- argument_names
       safe_expression <- rlang::call2("list", !!!arguments)
       x <- rlang::eval_tidy(safe_expression, env = expression_environment)
+
+      if (missing(cohort)) {
+        cli::cli_abort(c(x = "{.cls tidysect} expressions are not supported in specifications."), call = call)
+      }
+
       # validate cohortId
       x$cohortId <- rlang::inject(
         omopgenerics::validateCohortIdArgument(
