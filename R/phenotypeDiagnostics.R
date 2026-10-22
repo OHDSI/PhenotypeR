@@ -100,7 +100,7 @@ phenotypeDiagnostics <- function(cohort,
 
   existingLogFile <- getOption(x = "omopgenerics.logFile", default = NULL)
   if(!is.null(existingLogFile)){
-  options("omopgenerics.logFile" = NULL)
+    options("omopgenerics.logFile" = NULL)
   }
 
   if(!is.null(stagingDirectory)){
@@ -108,7 +108,7 @@ phenotypeDiagnostics <- function(cohort,
     phenotyperLogFile <- file.path(stagingDirectory, "phenotypeDiagnostics_log_{date}_{time}")
   } else {
     phenotyperLogFile <- tempfile(pattern = "phenotypeDiagnostics_log_{date}_{time}",
-                                 fileext = ".txt")
+                                  fileext = ".txt")
   }
 
   if(!is.null(phenotyperLogFile)) {
@@ -123,79 +123,81 @@ phenotypeDiagnostics <- function(cohort,
 
   # Run phenotypeR diagnostics
   cdm <- omopgenerics::cdmReference(cohort)
+
+  # empty initial results
   results <- list()
 
-  if (!is.null(databaseDiagnostics)) {
-    results[["db_diag"]] <- databaseDiagnostics(cohort,
-                                                cohortId = databaseDiagnostics$cohortId,
-                                                snapshot = databaseDiagnostics$snapshot,
-                                                personTableSummary = databaseDiagnostics$personTableSummary,
-                                                observationPeriodsSummary = databaseDiagnostics$observationPeriodsSummary,
-                                                clinicalRecordsSummary = databaseDiagnostics$clinicalRecordsSummary)
-    if(!is.null(incrementalResultPath)){
-      if (dir.exists(incrementalResultPath))
-        cli::cli_inform("Savining database diagnostics results in {incrementalResultPath}")
-        exportSummarisedResult(results[["db_diag"]] ,
-                               fileName = "incremental_database_diagnostics.csv",
-                               path = incrementalResultPath)
-    }
+  n <- length(databaseDiagnostics)
+  for (i in seq_len(n)) {
+    omopgenerics::logMessage("Running databaseDiagnostics ({i} of {n})")
+    diag <- databaseDiagnostics[[i]]
+    key <- sprintf("databaseDiagnostics_%03i", i)
+    results[[key]] <- databaseDiagnostics(
+      cohort = cohort,
+      cohortId = diag$cohortId,
+      snapshot = diag$snapshot,
+      personTableSummary = diag$personTableSummary,
+      observationPeriodsSummary = diag$observationPeriodsSummary,
+      clinicalRecordsSummary = diag$clinicalRecordsSummary
+    )
+    saveIncremental(incrementalResultPath, results, "databaseDiagnostics", i, n)
   }
 
-  if (!is.null(codelistDiagnostics)) {
-    results[["code_diag"]] <- codelistDiagnostics(cohort,
-                                                  cohortId = codelistDiagnostics$cohortId,
-                                                  achillesCodeUse = codelistDiagnostics$achillesCodeUse,
-                                                  orphanCodeUse = codelistDiagnostics$orphanCodeUse,
-                                                  cohortCodeUse = codelistDiagnostics$cohortCodeUse,
-                                                  drugDiagnostics = codelistDiagnostics$drugDiagnostics,
-                                                  measurementDiagnostics = codelistDiagnostics$measurementDiagnostics,
-                                                  measurementDiagnosticsSample = codelistDiagnostics$measurementDiagnosticsSample,
-                                                  drugDiagnosticsSample = codelistDiagnostics$drugDiagnosticsSample)
-    if(!is.null(incrementalResultPath)){
-      if (dir.exists(incrementalResultPath)) {
-        cli::cli_inform("Savining codelist diagnostics results in {incrementalResultPath}")
-        exportSummarisedResult(results[["code_diag"]],
-                               fileName = "incremental_codelist_diagnostics.csv",
-                               path = incrementalResultPath)
-      }
-    }
+  n <- length(codelistDiagnostics)
+  for (i in seq_len(n)) {
+    omopgenerics::logMessage("Running codelistDiagnostics ({i} of {n})")
+    diag <- codelistDiagnostics[[i]]
+    key <- sprintf("codelistDiagnostics_%03i", i)
+    results[[key]] <- codelistDiagnostics(
+      cohort = cohort,
+      cohortId = diag$cohortId,
+      achillesCodeUse = diag$achillesCodeUse,
+      orphanCodeUse = diag$orphanCodeUse,
+      cohortCodeUse = diag$cohortCodeUse,
+      drugDiagnostics = diag$drugDiagnostics,
+      measurementDiagnostics = diag$measurementDiagnostics,
+      measurementDiagnosticsSample = diag$measurementDiagnosticsSample,
+      drugDiagnosticsSample = diag$drugDiagnosticsSample
+    )
+    saveIncremental(incrementalResultPath, results, "codelistDiagnostics", i, n)
   }
 
-  if (!is.null(cohortDiagnostics)) {
-    results[["cohort_diag"]] <- cohortDiagnostics(cohort,
-                                                  cohortId = cohortDiagnostics$cohortId,
-                                                  cohortCount = cohortDiagnostics$cohortCount,
-                                                  cohortCharacteristics = cohortDiagnostics$cohortCharacteristics,
-                                                  largeScaleCharacteristics = cohortDiagnostics$largeScaleCharacteristics,
-                                                  compareCohorts = cohortDiagnostics$compareCohorts,
-                                                  cohortSurvival = cohortDiagnostics$cohortSurvival,
-                                                  cohortSample = cohortDiagnostics$cohortSample,
-                                                  matchedSample = cohortDiagnostics$matchedSample)
-    if(!is.null(incrementalResultPath)){
-      if (dir.exists(incrementalResultPath)) {
-        cli::cli_inform("Savining cohort diagnostics results in {incrementalResultPath}")
-        exportSummarisedResult(results[["cohort_diag"]] ,
-                               fileName = "incremental_cohort_diagnostics.csv",
-                               path = incrementalResultPath)
-      }
-    }
+  n <- length(cohortDiagnostics)
+  for (i in seq_len(n)) {
+    omopgenerics::logMessage("Running cohortDiagnostics ({i} of {n})")
+    diag <- cohortDiagnostics[[i]]
+    key <- sprintf("cohortDiagnostics_%03i", i)
+    results[[key]] <- cohortDiagnostics(
+      cohort = cohort,
+      cohortId = diag$cohortId,
+      cohortCount = diag$cohortCount,
+      cohortCharacteristics = diag$cohortCharacteristics,
+      largeScaleCharacteristics = diag$largeScaleCharacteristics,
+      compareCohorts = diag$compareCohorts,
+      cohortSurvival = diag$cohortSurvival,
+      cohortSample = diag$cohortSample,
+      matchedSample = diag$matchedSample
+    )
+    saveIncremental(incrementalResultPath, results, "cohortDiagnostics", i, n)
   }
-  if (!is.null(populationDiagnostics)) {
-    results[["pop_diag"]] <- populationDiagnostics(cohort,
-                                                   cohortId = populationDiagnostics$cohortId,
-                                                   incidence = populationDiagnostics$incidence,
-                                                   periodPrevalence = populationDiagnostics$periodPrevalence,
-                                                   populationSample = populationDiagnostics$populationSample,
-                                                   populationDateRange = eval(populationDiagnostics$populationDateRange))
-    if(!is.null(incrementalResultPath)){
-      if (dir.exists(incrementalResultPath)) {
-        cli::cli_inform("Savining population diagnostics results in {incrementalResultPath}")
-        exportSummarisedResult(results[["pop_diag"]] ,
-                               fileName = "incremental_population_diagnostics.csv",
-                               path = incrementalResultPath)
-      }
-    }
+
+  n <- length(populationDiagnostics)
+  for (i in seq_len(n)) {
+    omopgenerics::logMessage("Running populationDiagnostics ({i} of {n})")
+    diag <- populationDiagnostics[[i]]
+    key <- sprintf("populationDiagnostics_%03i", i)
+    results[[key]] <- populationDiagnostics(
+      cohort = cohort,
+      cohortId = diag$cohortId,
+      incidence = diag$incidence,
+      periodPrevalence = diag$periodPrevalence,
+      populationSample = diag$populationSample,
+      populationDateRange = eval(diag$populationDateRange)
+    )
+    saveIncremental(incrementalResultPath, results, "populationDiagnostics", i, n)
   }
+
+  # export log file
   results[["log"]] <- omopgenerics::summariseLogFile(
     cdmName = omopgenerics::cdmName(cdm)
   )
@@ -224,4 +226,19 @@ phenotypeDiagnostics <- function(cohort,
   }
 
   return(results)
+}
+
+saveIncremental <- function(path, result, diag, i, n) {
+  if (!is.null(path) && dir.exists(path)) {
+    omopgenerics::logMessage("Saving {diag} ({i}/{n}) results in {path}")
+    key <- sprintf("%s_%03i", diag, i)
+    fileName <- sprintf("incremental_%s_%03i.csv", diag, i)
+    exportSummarisedResult(
+      result = result[[key]],
+      fileName = fileName,
+      path = path,
+      logFile = NULL,
+      logSqlPath = NULL
+    )
+  }
 }
