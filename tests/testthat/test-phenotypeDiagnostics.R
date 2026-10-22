@@ -10,16 +10,89 @@ test_that("test check functions", {
     expect_error(validateDiagnosticsInput("h", diagnostics, cohort = NULL))
     expect_error(validateDiagnosticsInput(list("h" = 1), diagnostics, cohort = NULL))
     expect_error(validateDiagnosticsInput(list("h"), diagnostics, cohort = NULL))
+    expect_error(validateDiagnosticsInput(list(list("h" = 1)), diagnostics, cohort = NULL))
     expect_no_error(x <- validateDiagnosticsInput(NULL, diagnostics, cohort = NULL))
     expect_null(x)
     expect_no_error(x <- validateDiagnosticsInput(list(), diagnostics, cohort = NULL))
 
     expected <- formals(get(diagnostics, envir = asNamespace("PhenotypeR"))) |>
       purrr::discard(rlang::is_missing)
-    expect_identical(x, expected)
+    expect_identical(x, list(expected))
+    expect_identical(
+      validateDiagnosticsInput(list(list()), diagnostics, cohort = NULL),
+      list(expected)
+    )
   }
 }
 )
+
+test_that("diagnostic configurations preserve tidyselect expressions", {
+  cdm <- omock::mockCdmReference() |>
+    omock::mockPerson(nPerson = 10) |>
+    omock::mockObservationPeriod() |>
+    omock::mockCohort(name = "my_cohort", numberCohorts = 2)
+
+  prefix <- "cohort_1"
+  for (diagnostics in c("databaseDiagnostics", "codelistDiagnostics",
+                        "cohortDiagnostics", "populationDiagnostics")) {
+    single <- validateDiagnosticsInput(
+      list(cohortId = dplyr::starts_with(prefix)), diagnostics, cdm$my_cohort
+    )
+    multiple <- validateDiagnosticsInput(
+      list(
+        list(cohortId = dplyr::starts_with(prefix)),
+        list(cohortId = dplyr::ends_with("_2"))
+      ),
+      diagnostics, cdm$my_cohort
+    )
+
+    expect_length(single, 1)
+    expect_identical(single[[1]]$cohortId, 1L)
+    expect_length(multiple, 2)
+    expect_identical(multiple[[1]], single[[1]])
+    expect_identical(multiple[[2]]$cohortId, 2L)
+
+    configuration <- list(cohortId = 1L)
+    configurations <- list(configuration, list(cohortId = 2L))
+    expect_identical(
+      validateDiagnosticsInput(configuration, diagnostics, cdm$my_cohort), single
+    )
+    expect_identical(
+      validateDiagnosticsInput(configurations, diagnostics, cdm$my_cohort), multiple
+    )
+  }
+
+  single <- validateDiagnosticsInput(
+    list(cohortId = 1, clinicalRecordsSummary = TRUE),
+    "databaseDiagnostics", cdm$my_cohort
+  )
+  expect_identical(single[[1]]$cohortId, 1L)
+  expect_true(single[[1]]$clinicalRecordsSummary)
+  expect_identical(
+    single,
+    validateDiagnosticsInput(
+      list(list(cohortId = 1, clinicalRecordsSummary = TRUE)),
+      "databaseDiagnostics", cdm$my_cohort
+    )
+  )
+
+  evaluation <- new.env(parent = emptyenv())
+  evaluation$done <- FALSE
+  expect_error(
+    validateDiagnosticsInput(
+      list(
+        list(cohortId = dplyr::starts_with(prefix), snapshot = {
+          evaluation$done <- TRUE
+          TRUE
+        }),
+        list(cohortId = 99)
+      ),
+      "databaseDiagnostics", cdm$my_cohort
+    ),
+    "not defined"
+  )
+  expect_false(evaluation$done)
+})
 
 test_that("overall diagnostics function", {
 
@@ -85,10 +158,10 @@ test_that("overall diagnostics function", {
   expect_true(length(logs_post) > length(logs_pre))
   # we have incremental
   expect_true(length(results_post) > length(results_pre))
-  expect_true("incremental_codelist_diagnostics.csv" %in% results_post)
-  expect_true("incremental_cohort_diagnostics.csv" %in% results_post)
-  expect_true("incremental_database_diagnostics.csv" %in% results_post)
-  expect_true("incremental_population_diagnostics.csv" %in% results_post)
+  expect_true("incremental_codelistDiagnostics_001.csv" %in% results_post)
+  expect_true("incremental_cohortDiagnostics_001.csv" %in% results_post)
+  expect_true("incremental_databaseDiagnostics_001.csv" %in% results_post)
+  expect_true("incremental_populationDiagnostics_001.csv" %in% results_post)
   # we have updated the original log
   expect_true(nrow(original_log_summary_post) >
                 nrow(original_log_summary_pre))
@@ -96,6 +169,25 @@ test_that("overall diagnostics function", {
   log_types <- settings(my_result) |>
     dplyr::pull("result_type")
   expect_true("summarise_log_file" %in% log_types)
+
+  expect_no_error(multiple_database_results <- phenotypeDiagnostics(
+    cdm$my_cohort,
+    databaseDiagnostics = list(
+      list(cohortId = 1, snapshot = TRUE, personTableSummary = FALSE,
+           observationPeriodsSummary = FALSE, clinicalRecordsSummary = FALSE),
+      list(cohortId = 2, snapshot = FALSE, personTableSummary = FALSE,
+           observationPeriodsSummary = TRUE, clinicalRecordsSummary = FALSE)
+    ),
+    codelistDiagnostics = NULL,
+    cohortDiagnostics = NULL,
+    populationDiagnostics = NULL,
+    stagingDirectory = staging_path
+  ))
+  expect_true(all(
+    c("summarise_omop_snapshot", "summarise_observation_period") %in%
+      omopgenerics::settings(multiple_database_results)$result_type
+  ))
+  expect_true(file.exists(file.path(staging_path, "incremental_databaseDiagnostics_002.csv")))
 
 
   expect_no_error(my_result_2 <- phenotypeDiagnostics(cdm$my_cohort,
