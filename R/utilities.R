@@ -6,49 +6,48 @@ hasRows <- function(tbl){
 }
 
 validateDiagnosticsInput <- function(x, diagnostics, cohort, call = parent.frame()) {
-  # validation of cohortId
-  # to avoid evaluation
   x <- rlang::enquo(x)
-  expression <- rlang::quo_get_expr(x)
+  expression_environment <- rlang::quo_get_env(x)
 
-  # check that input is a list
-  if (rlang::is_call(expression) &&
-      (rlang::call_name(expression) == "list" ||
-       identical(expression[[1]], quote(base::list)))) {
+  # Resolve cohortId expressions
+  resolveCohortIds <- function(expression) {
+    if (!rlang::is_call(expression) ||
+        !(identical(expression[[1]], quote(list)) ||
+          identical(expression[[1]], quote(base::list)))) {
+      return(expression)
+    }
 
-    # find cohortId argument
-    expression_environment <- rlang::quo_get_env(x)
     arguments <- rlang::call_args(expression)
     argument_names <- names(arguments)
-    cohort_id_position <- which(argument_names == "cohortId")
-
-    # evaluate safely cohortId if present
-    if (length(cohort_id_position) == 1) {
-      # change cohortId for NULL
-      cohort_id_expression <- arguments[[cohort_id_position]]
-      arguments[cohort_id_position] <- list(quote(NULL))
-      names(arguments) <- argument_names
-      safe_expression <- rlang::call2("list", !!!arguments)
-      x <- rlang::eval_tidy(safe_expression, env = expression_environment)
-      # validate cohortId
-      x$cohortId <- rlang::inject(
-        omopgenerics::validateCohortIdArgument(
-          !!rlang::new_quosure(cohort_id_expression, expression_environment),
-          cohort = cohort,
-          call = call
+    for (i in seq_along(arguments)) {
+      if (!is.null(argument_names) && identical(argument_names[[i]], "cohortId")) {
+        cohortId <- rlang::inject(
+          omopgenerics::validateCohortIdArgument(
+            !!rlang::new_quosure(arguments[[i]], expression_environment),
+            cohort = cohort,
+            call = call
+          )
         )
-      )
-    } else {
-      x <- rlang::eval_tidy(x)
+        arguments[i] <- list(cohortId)
+      } else {
+        arguments[i] <- list(resolveCohortIds(arguments[[i]]))
+      }
     }
-  } else {
-    x <- rlang::eval_tidy(x)
+    rlang::call2("list", !!!arguments)
   }
+
+  expression <- resolveCohortIds(rlang::quo_get_expr(x))
+  x <- rlang::eval_tidy(expression, env = expression_environment)
 
   omopgenerics::assertList(x, null = TRUE, call = call, nm = diagnostics)
 
   if (is.null(x)) {
     return(x)
+  }
+
+  # A named list describes one configuration -> wrapped to handle multiple
+  if (length(x) == 0 || !is.null(names(x))) {
+    x <- list(x)
   }
 
   availableArguments <- paste0("PhenotypeR::", diagnostics) |>
@@ -57,21 +56,21 @@ validateDiagnosticsInput <- function(x, diagnostics, cohort, call = parent.frame
     formals() |>
     purrr::discard(rlang::is_missing)
 
-  if (!length(x) == 0) {
-    msg <- paste0(
-      diagnostics, " elements must be named only with optional arguments from the ",
-      diagnostics, " function.\nIf you don't want to run ", diagnostics,
-      ", set `", diagnostics, " = NULL`."
-    )
+  nms <- names(availableArguments)
+
+  msg <- paste0(
+    diagnostics, " elements must be named only with arguments from the ",
+    diagnostics, " function.\nIf you don't want to run ", diagnostics,
+    ", set `", diagnostics, " = NULL`."
+  )
+
+  # add defaults that are missing or complain if extra arguments are provided
+  purrr::map(x, \(conf) {
+    omopgenerics::assertList(conf, call = call, nm = diagnostics)
     omopgenerics::assertChoice(
-      names(x),
-      choices = names(availableArguments),
-      unique = TRUE,
-      call = call,
+      names(conf), choices = nms, unique = TRUE, null = TRUE, call = call,
       msg = msg
     )
-  }
-
-  # add not populated elements
-  c(x, availableArguments[!names(availableArguments) %in% names(x)])
+    c(conf, availableArguments[!names(availableArguments) %in% names(conf)])
+  })
 }
