@@ -30,11 +30,17 @@ checkDatabaseDiagnosticsInput <- function(databaseDiagnostics, call = parent.fra
   return(databaseDiagnostics)
 }
 
-checkCodelistDiagnosticsInput <- function(codelistDiagnostics, call = parent.frame()) {
+checkCodelistDiagnosticsInput <- function(codelistDiagnostics, cohort, call = parent.frame()) {
+
+  codelistDiagnostics$cohortId <- omopgenerics::validateCohortIdArgument(
+    cohortId = {{codelistDiagnostics$cohortId}},
+    cohort = cohort,
+    call = call
+  )
 
   omopgenerics::assertList(codelistDiagnostics, null = TRUE, call = call)
 
-  if(is.null(codelistDiagnostics)) {
+  if (is.null(codelistDiagnostics)) {
     return(codelistDiagnostics)
   }
 
@@ -57,7 +63,7 @@ checkCodelistDiagnosticsInput <- function(codelistDiagnostics, call = parent.fra
   return(codelistDiagnostics)
 }
 
-checkCohortDiagnosticsInput <- function(cohortDiagnostics, call = parent.frame()) {
+checkCohortDiagnosticsInput <- function(cohortDiagnostics, cohort, call = parent.frame()) {
 
   omopgenerics::assertList(cohortDiagnostics, null = TRUE, call = call)
 
@@ -85,7 +91,7 @@ checkCohortDiagnosticsInput <- function(cohortDiagnostics, call = parent.frame()
 
 }
 
-checkPopulationDiagnosticsInput <- function(populationDiagnostics, call = parent.frame()) {
+checkPopulationDiagnosticsInput <- function(populationDiagnostics, cohort, call = parent.frame()) {
 
   omopgenerics::assertList(populationDiagnostics, null = TRUE, call = call)
 
@@ -112,8 +118,3 @@ checkPopulationDiagnosticsInput <- function(populationDiagnostics, call = parent
   return(populationDiagnostics)
 
 }
-
-
-
-
-
