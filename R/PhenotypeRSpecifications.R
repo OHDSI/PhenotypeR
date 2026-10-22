@@ -42,7 +42,26 @@ exportPhenotypeRSpecifications <- function(x,
                                            fileName,
                                            path = getwd(),
                                            type = "excel") {
+  # input check
+  x <- validatePhenotypeRSpecifications(x)
+  omopgenerics::assertCharacter(fileName, length = 1)
+  omopgenerics::assertCharacter(path, length = 1)
+  omopgenerics::assertChoice(type, c("excel", "json"), length = 1)
 
+  path <- checkDirectory(path)
+  fileName <- file.path(path, fileName)
+
+  if (type == "excel") {
+
+  } else if (type == "json") {
+    if (!endsWith(fileName, ".json")) {
+      fileName <- paste0(fileName, ".json")
+    }
+    rlang::check_installed("jsonlite", "export in json format")
+    jsonlite::write_json(unclass(x), path = fileName, ...)
+  }
+
+  invisible(x)
 }
 
 #' @export
