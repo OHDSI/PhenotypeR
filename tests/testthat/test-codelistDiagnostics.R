@@ -97,8 +97,8 @@ test_that("measurementDiagnostics working", {
   attr(cdm, "write_schema") <- "results"
 
   codes <- list(all_measurements = cdm$measurement |>
-    dplyr::pull("measurement_concept_id") |>
-    unique()) |>
+                  dplyr::pull("measurement_concept_id") |>
+                  unique()) |>
     omopgenerics::newCodelist()
   cdm$measurement_cohort <- CohortConstructor::conceptCohort(cdm,
                                                              codes,
@@ -126,10 +126,10 @@ test_that("measurementDiagnostics working", {
                                                  measurementDiagnosticsSample = 5)
 
   expect_true(res_sampled |>
-    omopgenerics::filterSettings(result_type == "measurement_summary") |>
-    dplyr::filter(variable_name == "number_subjects", .data$estimate_name == "count") |>
-    dplyr::pull("estimate_value") |>
-    as.integer() <= 5)
+                omopgenerics::filterSettings(result_type == "measurement_summary") |>
+                dplyr::filter(variable_name == "number_subjects", .data$estimate_name == "count") |>
+                dplyr::pull("estimate_value") |>
+                as.integer() <= 5)
 
   # no measurement diagnostics
   res_no_meas <- PhenotypeR::codelistDiagnostics(cdm$measurement_cohort,
@@ -141,8 +141,8 @@ test_that("measurementDiagnostics working", {
                                                         multiple_codes,
                                                         "measurement_2")
 
-    res <- PhenotypeR::codelistDiagnostics(cdm$measurement_2,
-                                           measurementDiagnostics = TRUE)
+  res <- PhenotypeR::codelistDiagnostics(cdm$measurement_2,
+                                         measurementDiagnostics = TRUE)
   expect_equal(
     settings(res)$result_type,
     c("cohort_code_use", "measurement_summary", "measurement_value_as_number", "measurement_value_as_concept")
@@ -233,15 +233,36 @@ test_that("cohortId working", {
       cohortName = c("cohort_1", "cohort_2")
     )
 
-# specify cohort id
-res <- codelistDiagnostics(cdm$my_cohort,
-                           drugDiagnostics = TRUE,
-                           cohortId = 2L)
-expect_true(res |>
-  dplyr::filter(stringr::str_detect(group_level, "cohort_1")) |>
-  nrow() == 0)
-expect_true(res |>
-  dplyr::filter(stringr::str_detect(group_level, "cohort_2")) |>
-  nrow() > 0)
+  # specify cohort id
+  res <- codelistDiagnostics(cdm$my_cohort,
+                             drugDiagnostics = TRUE,
+                             cohortId = 2L)
+  expect_true(res |>
+                dplyr::filter(stringr::str_detect(group_level, "cohort_1")) |>
+                nrow() == 0)
+  expect_true(res |>
+                dplyr::filter(stringr::str_detect(group_level, "cohort_2")) |>
+                nrow() > 0)
 
+  # cohort id as name
+  expect_no_error(res <- codelistDiagnostics(cdm$my_cohort,
+                                             drugDiagnostics = TRUE,
+                                             cohortId = "cohort_2"))
+  expect_true(res |>
+                dplyr::filter(stringr::str_detect(group_level, "cohort_1")) |>
+                nrow() == 0)
+  expect_true(res |>
+                dplyr::filter(stringr::str_detect(group_level, "cohort_2")) |>
+                nrow() > 0)
+
+  # cohort id as tidyselect
+  expect_no_error(res <- codelistDiagnostics(cdm$my_cohort,
+                                             drugDiagnostics = TRUE,
+                                             cohortId = dplyr::ends_with("_2")))
+  expect_true(res |>
+                dplyr::filter(stringr::str_detect(group_level, "cohort_1")) |>
+                nrow() == 0)
+  expect_true(res |>
+                dplyr::filter(stringr::str_detect(group_level, "cohort_2")) |>
+                nrow() > 0)
 })

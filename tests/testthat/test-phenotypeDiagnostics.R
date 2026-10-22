@@ -78,6 +78,22 @@ test_that("overall diagnostics function", {
   expect_no_error(my_result <- phenotypeDiagnostics(cdm$my_cohort,
                                                     populationDiagnostics = list("populationSample" = 10000),
                                                     stagingDirectory = staging_path))
+
+  expect_no_error(phenotypeDiagnostics(
+    cdm$my_cohort,
+    databaseDiagnostics = NULL,
+    codelistDiagnostics = NULL,
+    cohortDiagnostics = list(
+      cohortId = dplyr::starts_with("cohort_1"),
+      cohortCount = TRUE,
+      cohortCharacteristics = FALSE,
+      largeScaleCharacteristics = FALSE,
+      compareCohorts = FALSE,
+      cohortSurvival = FALSE
+    ),
+    populationDiagnostics = NULL
+  ))
+
   cohort_post <- cdm$my_cohort |>
     dplyr::collect()
   logs_post <- list.files(staging_path, pattern = ".txt")

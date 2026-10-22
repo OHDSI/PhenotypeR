@@ -76,10 +76,17 @@ phenotypeDiagnostics <- function(cohort,
                                  stagingDirectory = NULL) {
   # Get arguments
   cohort <- omopgenerics::validateCohortArgument(cohort = cohort)
+
+  # validate cohortIds first (allow tidyselect expressions)
+  databaseDiagnostics <- validateDiagnosticsCohortId({{databaseDiagnostics}}, cohort)
+  codelistDiagnostics <- validateDiagnosticsCohortId({{codelistDiagnostics}}, cohort)
+  cohortDiagnostics <- validateDiagnosticsCohortId({{cohortDiagnostics}}, cohort)
+  populationDiagnostics <- validateDiagnosticsCohortId({{populationDiagnostics}}, cohort)
+
   databaseDiagnostics <- checkDatabaseDiagnosticsInput(databaseDiagnostics)
-  codelistDiagnostics <- checkCodelistDiagnosticsInput({{codelistDiagnostics}}, cohort)
-  cohortDiagnostics   <- checkCohortDiagnosticsInput({{cohortDiagnostics}}, cohort)
-  populationDiagnostics <- checkPopulationDiagnosticsInput({{populationDiagnostics}}, cohort)
+  codelistDiagnostics <- checkCodelistDiagnosticsInput(codelistDiagnostics)
+  cohortDiagnostics <- checkCohortDiagnosticsInput(cohortDiagnostics)
+  populationDiagnostics <- checkPopulationDiagnosticsInput(populationDiagnostics)
 
   existingLogFile <- getOption(x = "omopgenerics.logFile", default = NULL)
   if(!is.null(existingLogFile)){

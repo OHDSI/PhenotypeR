@@ -5,6 +5,45 @@ hasRows <- function(tbl){
     dplyr::pull("n")) >= 1
 }
 
+validateDiagnosticsCohortId <- function(diagnostics, cohort, call = parent.frame()) {
+  # to avoid evaluation
+  diagnostics <- rlang::enquo(diagnostics)
+  expression <- rlang::quo_get_expr(diagnostics)
+
+  # check that input is a list
+  if (rlang::is_call(expression) &&
+      (rlang::call_name(expression) == "list" ||
+         identical(expression[[1]], quote(base::list)))) {
+
+    # find cohortId argument
+    expression_environment <- rlang::quo_get_env(diagnostics)
+    arguments <- rlang::call_args(expression)
+    argument_names <- names(arguments)
+    cohort_id_position <- which(argument_names == "cohortId")
+
+    # evaluate safely cohortId if present
+    if (length(cohort_id_position) == 1) {
+      # change cohortId for NULL
+      cohort_id_expression <- arguments[[cohort_id_position]]
+      arguments[cohort_id_position] <- list(quote(NULL))
+      names(arguments) <- argument_names
+      safe_expression <- rlang::call2("list", !!!arguments)
+      diagnostics <- rlang::eval_tidy(safe_expression, env = expression_environment)
+      # validate cohortId
+      diagnostics$cohortId <- rlang::inject(
+        omopgenerics::validateCohortIdArgument(
+          !!rlang::new_quosure(cohort_id_expression, expression_environment),
+          cohort = cohort,
+          call = call
+        )
+      )
+      return(diagnostics)
+    }
+  }
+
+  return(diagnostics)
+}
+
 checkDatabaseDiagnosticsInput <- function(databaseDiagnostics, call = parent.frame()) {
   omopgenerics::assertList(databaseDiagnostics, null = TRUE, call = call)
 
@@ -16,7 +55,7 @@ checkDatabaseDiagnosticsInput <- function(databaseDiagnostics, call = parent.fra
     purrr::discard(rlang::is_missing)
 
   if(length(names(databaseDiagnostics))>0){
-  omopgenerics::assertChoice(names(databaseDiagnostics),
+    omopgenerics::assertChoice(names(databaseDiagnostics),
                                choices = names(availableArguments),
                                unique = TRUE,
                                call = call,
@@ -25,27 +64,21 @@ checkDatabaseDiagnosticsInput <- function(databaseDiagnostics, call = parent.fra
   }
 
   databaseDiagnostics <- c(databaseDiagnostics,
-    availableArguments[!names(availableArguments) %in% names(databaseDiagnostics)])
+                           availableArguments[!names(availableArguments) %in% names(databaseDiagnostics)])
 
   return(databaseDiagnostics)
 }
 
-checkCodelistDiagnosticsInput <- function(codelistDiagnostics, cohort, call = parent.frame()) {
-
-  codelistDiagnostics$cohortId <- omopgenerics::validateCohortIdArgument(
-    cohortId = {{codelistDiagnostics$cohortId}},
-    cohort = cohort,
-    call = call
-  )
+checkCodelistDiagnosticsInput <- function(codelistDiagnostics, call = parent.frame()) {
 
   omopgenerics::assertList(codelistDiagnostics, null = TRUE, call = call)
 
-  if (is.null(codelistDiagnostics)) {
+  if(is.null(codelistDiagnostics)) {
     return(codelistDiagnostics)
   }
 
   availableArguments <- formals(PhenotypeR::codelistDiagnostics) |>
-   purrr::discard(rlang::is_missing)
+    purrr::discard(rlang::is_missing)
 
   if(!length(codelistDiagnostics) == 0) {
     omopgenerics::assertChoice(names(codelistDiagnostics),
@@ -63,7 +96,7 @@ checkCodelistDiagnosticsInput <- function(codelistDiagnostics, cohort, call = pa
   return(codelistDiagnostics)
 }
 
-checkCohortDiagnosticsInput <- function(cohortDiagnostics, cohort, call = parent.frame()) {
+checkCohortDiagnosticsInput <- function(cohortDiagnostics, call = parent.frame()) {
 
   omopgenerics::assertList(cohortDiagnostics, null = TRUE, call = call)
 
@@ -91,7 +124,7 @@ checkCohortDiagnosticsInput <- function(cohortDiagnostics, cohort, call = parent
 
 }
 
-checkPopulationDiagnosticsInput <- function(populationDiagnostics, cohort, call = parent.frame()) {
+checkPopulationDiagnosticsInput <- function(populationDiagnostics, call = parent.frame()) {
 
   omopgenerics::assertList(populationDiagnostics, null = TRUE, call = call)
 
@@ -113,7 +146,7 @@ checkPopulationDiagnosticsInput <- function(populationDiagnostics, cohort, call 
   }
 
   populationDiagnostics <- c(populationDiagnostics,
-                         availableArguments[!names(availableArguments) %in% names(populationDiagnostics)])
+                             availableArguments[!names(availableArguments) %in% names(populationDiagnostics)])
 
   return(populationDiagnostics)
 
