@@ -149,20 +149,15 @@ populationDiagnostics <- function(cohort,
       fullContribution = FALSE)
   }
 
-    results <- results |>
-      vctrs::list_drop_empty() |>
-      omopgenerics::bind()
-
-  newSettings <- results |>
-    omopgenerics::settings() |>
-    dplyr::mutate("phenotyper_version" = as.character(utils::packageVersion(pkg = "PhenotypeR")),
-                  "diagnostic" = "populationDiagnostics",
-                  "populationDateStart" = populationDateRange[1],
-                  "populationDateEnd"   = populationDateRange[2],
-                  "populationSample"    = populationSample)
-
   results <- results |>
-    omopgenerics::newSummarisedResult(settings = newSettings)
+    vctrs::list_drop_empty() |>
+    omopgenerics::bind() |>
+    appendPhenotypeRVersion(
+      diagnostic = "populationDiagnostics",
+      populationDateStart = populationDateRange[1],
+      populationDateEnd = populationDateRange[2],
+      populationSample = populationSample
+    )
 
   return(results)
 }

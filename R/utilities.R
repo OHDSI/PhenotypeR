@@ -75,3 +75,12 @@ validateDiagnosticsInput <- function(x, diagnostics, cohort, call = parent.frame
   # add not populated elements
   c(x, availableArguments[!names(availableArguments) %in% names(x)])
 }
+
+appendPhenotypeRVersion <- function(result, ...) {
+  newSettings <- omopgenerics::settings(result) |>
+    dplyr::mutate(
+      phenotyper_version = as.character(utils::packageVersion("PhenotypeR")),
+      ...
+    )
+  omopgenerics::newSummarisedResult(result, settings = newSettings)
+}
