@@ -38,10 +38,12 @@ validateDiagnosticsInput <- function(x, diagnostics, cohort, call = parent.frame
           call = call
         )
       )
+    } else {
+      x <- rlang::eval_tidy(x)
     }
+  } else {
+    x <- rlang::eval_tidy(x)
   }
-
-  x <- rlang::eval_tidy(diagnostics)
 
   omopgenerics::assertList(x, null = TRUE, call = call, nm = diagnostics)
 
@@ -71,5 +73,5 @@ validateDiagnosticsInput <- function(x, diagnostics, cohort, call = parent.frame
   }
 
   # add not populated elements
-  utils::modifyList(x, availableArguments)
+  c(x, availableArguments[!names(availableArguments) %in% names(x)])
 }
