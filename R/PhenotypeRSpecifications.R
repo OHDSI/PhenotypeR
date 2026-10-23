@@ -35,7 +35,20 @@ newPhenotypeRSpecifications <- function(x) {
 }
 
 importPhenotypeRSpecifications <- function(path) {
+  omopgenerics::assertCharacter(path, length = 1)
 
+  if (endsWith(path, ".json")) {
+    rlang::check_installed("jsonlite", "import in json format")
+    x <- jsonlite::read_json(path = path)
+  } else if (endsWith(path, ".xlsx")) {
+    rlang::check_installed("openxlsx")
+    x <- readPhenotypeRExcel(path = path)
+  } else {
+    cli::cli_abort(c(x = "Only `.xlsx` or `.json` files can contain valid
+                     definitions of {.cls phenotyper_specifications}"))
+  }
+
+  newPhenotypeRSpecifications(x)
 }
 
 exportPhenotypeRSpecifications <- function(x,
@@ -52,6 +65,7 @@ exportPhenotypeRSpecifications <- function(x,
   fileName <- file.path(path, fileName)
 
   if (type == "excel") {
+    rlang::check_installed("openxlsx")
 
   } else if (type == "json") {
     if (!endsWith(fileName, ".json")) {
@@ -102,4 +116,7 @@ validatePhenotypeRSpecifications <- function(x, call = parent.frame()) {
   }
 
   return(x)
+}
+readPhenotypeRExcel <- function(path) {
+
 }
