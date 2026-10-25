@@ -118,5 +118,88 @@ validatePhenotypeRSpecifications <- function(x, call = parent.frame()) {
   return(x)
 }
 readPhenotypeRExcel <- function(path) {
+  # to suppress empty worksheets warning
+  x <- withCallingHandlers(
+    openxlsx::read.xlsx(
+      xlsxFile = path,
+      sheet = "Specifications",
+      startRow = 3,
+      cols = 1:24,
+      colNames = FALSE,
+      skipEmptyRows = TRUE,
+      skipEmptyCols = FALSE
+    ),
+    warning = function(w) {
+      if (grepl("No data found on worksheet", conditionMessage(w), fixed = TRUE)) {
+        invokeRestart("muffleWarning")
+      }
+    }
+  )
 
+  # if empty return empty list
+  if (is.null(x)) {
+    return(list())
+  }
+
+  # fill empty columns
+  Nmissing <- 24 - ncol(x)
+  if (Nmissing > 0) {
+    x[paste0("X", (ncol(x) + 1):24)] <- NA
+  }
+
+  cols <- c(
+    "cohortId", "snapshot", "person_table", "observation_period",
+    "clinical_records", "achilles_code_use", "orphan_code_use",
+    "cohort_code_use", "drug_diagnostics", "drug_diagnostics_sample",
+    "measurement_diagnostics", "measurement_diagnostics_sample",
+    "cohort_count", "cohort_characteristics", "large_scale_characteristics",
+    "compare_cohorts", "cohortSurvival", "cohortOverlap", "cohortSample",
+    "matchedSample", "incidence", "periodPrevalence", "populationSample",
+    "dateRange"
+  )
+  type <- c(
+    "character", rep("logical", 8), "numeric", "logical", "numeric",
+    rep("logical", 6), rep("numeric", 2), rep("logical", 2), "numeric",
+    "character"
+  )
+  diag <- c(
+    "id", rep("databaseDiagnostics", 4), rep("codelistDiagnostics", 7),
+    rep("cohortDiagnostics", 8), rep("populationDiagnostics", 4)
+  )
+
+  rn <- rlang::set_names(paste0("X", 1:24), cols)
+
+  # format list
+  x <- dplyr::as_tibble(x) |>
+    dplyr::select(dplyr::all_of(rn)) |>
+    dplyr::mutate(
+      dplyr::across(dplyr::all_of(cols[type == "character"]), as.character),
+      dplyr::across(dplyr::all_of(cols[type == "numeric"]), as.numeric),
+      dplyr::across(dplyr::all_of(cols[type == "logical"]), as.logical)
+    )
+
+  phenotypeRSpecifications <- list()
+  # database
+  for (dg in PhenotypeRDiagnostics) {
+    cols_dg <- cols[diag == dg]
+    # identify diagnostics paramatrisation
+    dx <- x |>
+      dplyr::select("cohortId", dplyr::all_of(cols_dg))
+    # add parametrisation id
+    phenotypeRSpecifications[[dg]] <- dx |>
+      dplyr::inner_join(
+        dx |>
+          dplyr::select(!"cohortId") |>
+          dplyr::distinct() |>
+          dplyr::mutate(group_id = dplyr::row_number()),
+        by = cols_dg,
+        na_matches = "na"
+      ) |>
+      dplyr::group_split(.data$group_id) |>
+      purrr::map(\(diag_group) {
+        diag_group |>
+          purrr::map(unique) |>
+          purrr::keep(\(x) !all(is.na(x)))
+      })
+  }
 }
