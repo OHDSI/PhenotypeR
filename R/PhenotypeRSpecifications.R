@@ -53,6 +53,7 @@ newPhenotypeRSpecifications <- function(databaseDiagnostics = NULL,
                                         codelistDiagnostics = NULL,
                                         cohortDiagnostics = NULL,
                                         populationDiagnostics = NULL) {
+  # TODO Discuss if default should be NULL [Not run that diagnostic] or list() [run with deafults]
   x <- constructPhenotypeRSpecifications(
     databaseDiagnostics = databaseDiagnostics,
     codelistDiagnostics = codelistDiagnostics,
@@ -235,22 +236,8 @@ constructPhenotypeRSpecifications <- function(databaseDiagnostics,
 }
 validatePhenotypeRSpecifications <- function(x, call = parent.frame()) {
   omopgenerics::assertClass(x, class = "phenotyper_specifications", call = call)
-
-  omopgenerics::assertList(x, call = call)
-
-  # add missing labels as not run TODO: discuss if missing is not run or run with defaults
-  for (nm in PhenotypeRDiagnostics) {
-    if (!nm %in% names(x)) {
-      x[[nm]] <- NULL
-    }
-  }
-
-  # remove extra labels
-  extra <- names(x)[!names(x) %in% PhenotypeRDiagnostics]
-  if (length(extra) > 0) {
-    cli::cli_inform(c("!" = "Extra labels removed from PhenotypeR specifications: {extra}."))
-    x[extra] <- NULL
-  }
+  omopgenerics::assertList(x, call = call, named = TRUE)
+  omopgenerics::assertTrue(identical(names(x), PhenotypeRDiagnostics))
 
   # validate inputs
   for (nm in PhenotypeRDiagnostics) {
