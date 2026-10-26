@@ -28,16 +28,64 @@ PhenotyepeRDiagnosticsSpecs <- list(
 
 #' Create a `phenotyper_specification` object
 #'
-#' @param databaseDiagnostics
-#' @param x A named list with `r PhenotypeRDiagnostics` fields.
-#' Each element should be a valid input for the
-#' `PehnotypeR::phenotypeDiagnostics()` arguments:
-#'   - **databaseDiagnostics**
-#'   - **codelistDiagnostics**
-#'   - **cohortDiagnostics**
-#'   - **populationDiagnostics**
+#' @param databaseDiagnostics A list of arguments to parametrise
+#' `databaseDiagnostics()`. If the list is empty, the default values will be
+#' assumed. Use cohort names for cohortId argument
+#' (e.g. `cohortId = "myocardial_infarction"`).
+#'
+#' Example:
+#' In the following example, all default diagnostics will be run except
+#' *person table summary* from databaseDiagnostics:
+#' `databaseDiagnostics = list(personTableSummary = FALSE)`
+#'
+#' If `NULL` codelist diagnostics won't be parametrised.
+#'
+#' @param codelistDiagnostics A list of arguments to parametrise
+#' `codelistDiagnostics()`. If the list is empty, the default values will be
+#' assumed. Use cohort names for cohortId argument
+#' (e.g. `cohortId = "myocardial_infarction"`).
+#'
+#' Example:
+#' In the below example, all diagnostics will be run, and a subsample of
+#' 1,000 participants will be used to run measurement diagnostics and another
+#' independent subsample of 500 participants will be used to run drug
+#' diagnostics:
+#'
+#' `codelistDiagnostics = list(
+#'   measurementDiagnosticsSample = 1000,
+#'   drugDiagnosticsSample = 500
+#' )`
+#'
+#' If `NULL` database diagnostics won't be parametrised.
+#'
+#' @param cohortDiagnostics A list of arguments to parametrise
+#' `cohortDiagnostics()`. If the list is empty, the default values will be
+#' assumed. Use cohort names for cohortId argument
+#' (e.g. `cohortId = "myocardial_infarction"`).
+#'
+#' Example:
+#' `cohortDiagnostics = list(
+#'   cohortSurvival = TRUE
+#' )`
+#'
+#' If `NULL` cohort diagnostics won't be parametrised.
+#'
+#' @param populationDiagnostics A list of arguments to parametrise
+#' `populationDiagnostics()`. If the list is empty, the default values will be
+#' assumed. Use cohort names for cohortId argument
+#' (e.g. `cohortId = "myocardial_infarction"`).
+#'
+#' Example:
+#' In the below example, all diagnostics will be run and a subsample of 100,000
+#' participants will be used to run populationDiagnostics.
+#' `populationDiagnostics = list(
+#'   populationSample = 100000
+#' )`
+#'
+#' If `NULL` population diagnostics won't be parametrised.
 #'
 #' @returns A `phenotyper_specification` object.
+#'
 #' @export
 #'
 #' @examples
@@ -75,6 +123,27 @@ newPhenotypeRSpecifications <- function(databaseDiagnostics = NULL,
 #' @export
 #'
 #' @examples
+#' library(PhenotypeR)
+#'
+#' x <- newPhenotypeRSpecifications(
+#'   codelistDiagnostics = list(cohortId = "acetaminophen", orphanCodeUse = TRUE)
+#' )
+#'
+#' x
+#'
+#' exportPhenotypeRSpecifications(
+#'   x = x,
+#'   fileName = "my_parametrisation",
+#'   path = tempdir(),
+#'   type = "excel"
+#' )
+#'
+#' xn <- importPhenotypeRSpecifications(
+#'   path = file.path(tempdir(), "my_parametrisation.xlsx")
+#' )
+#'
+#' xn
+#'
 importPhenotypeRSpecifications <- function(path) {
   omopgenerics::assertCharacter(path, length = 1)
 
@@ -105,6 +174,27 @@ importPhenotypeRSpecifications <- function(path) {
 #' @export
 #'
 #' @examples
+#' library(PhenotypeR)
+#'
+#' x <- newPhenotypeRSpecifications(
+#'   codelistDiagnostics = list(cohortId = "acetaminophen", orphanCodeUse = TRUE)
+#' )
+#'
+#' x
+#'
+#' exportPhenotypeRSpecifications(
+#'   x = x,
+#'   fileName = "my_parametrisation",
+#'   path = tempdir(),
+#'   type = "excel"
+#' )
+#'
+#' xn <- importPhenotypeRSpecifications(
+#'   path = file.path(tempdir(), "my_parametrisation.xlsx")
+#' )
+#'
+#' xn
+#'
 exportPhenotypeRSpecifications <- function(x,
                                            fileName,
                                            path = getwd(),

@@ -22,3 +22,26 @@ definition.
 \description{
 Export a \code{phenotyper_specification} object to a \code{json} or \code{xlsx} file
 }
+\examples{
+library(PhenotypeR)
+
+x <- newPhenotypeRSpecifications(
+  codelistDiagnostics = list(cohortId = "acetaminophen", orphanCodeUse = TRUE)
+)
+
+x
+
+exportPhenotypeRSpecifications(
+  x = x,
+  fileName = "my_parametrisation",
+  path = tempdir(),
+  type = "excel"
+)
+
+xn <- importPhenotypeRSpecifications(
+  path = file.path(tempdir(), "my_parametrisation.xlsx")
+)
+
+xn
+
+}

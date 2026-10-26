@@ -4,18 +4,62 @@
 \alias{newPhenotypeRSpecifications}
 \title{Create a \code{phenotyper_specification} object}
 \usage{
-newPhenotypeRSpecifications(x)
+newPhenotypeRSpecifications(
+  databaseDiagnostics = NULL,
+  codelistDiagnostics = NULL,
+  cohortDiagnostics = NULL,
+  populationDiagnostics = NULL
+)
 }
 \arguments{
-\item{x}{A named list with databaseDiagnostics, codelistDiagnostics, cohortDiagnostics, populationDiagnostics fields.
-Each element should be a valid input for the
-\code{PehnotypeR::phenotypeDiagnostics()} arguments:
-\itemize{
-\item \strong{databaseDiagnostics}
-\item \strong{codelistDiagnostics}
-\item \strong{cohortDiagnostics}
-\item \strong{populationDiagnostics}
-}}
+\item{databaseDiagnostics}{A list of arguments to parametrise
+\code{databaseDiagnostics()}. If the list is empty, the default values will be
+assumed. Use cohort names for cohortId argument
+(e.g. \code{cohortId = "myocardial_infarction"}).
+
+Example:
+In the following example, all default diagnostics will be run except
+\emph{person table summary} from databaseDiagnostics:
+\code{databaseDiagnostics = list(personTableSummary = FALSE)}
+
+If \code{NULL} codelist diagnostics won't be parametrised.}
+
+\item{codelistDiagnostics}{A list of arguments to parametrise
+\code{codelistDiagnostics()}. If the list is empty, the default values will be
+assumed. Use cohort names for cohortId argument
+(e.g. \code{cohortId = "myocardial_infarction"}).
+
+Example:
+In the below example, all diagnostics will be run, and a subsample of
+1,000 participants will be used to run measurement diagnostics and another
+independent subsample of 500 participants will be used to run drug
+diagnostics:
+
+\code{codelistDiagnostics = list( measurementDiagnosticsSample = 1000, drugDiagnosticsSample = 500 )}
+
+If \code{NULL} database diagnostics won't be parametrised.}
+
+\item{cohortDiagnostics}{A list of arguments to parametrise
+\code{cohortDiagnostics()}. If the list is empty, the default values will be
+assumed. Use cohort names for cohortId argument
+(e.g. \code{cohortId = "myocardial_infarction"}).
+
+Example:
+\code{cohortDiagnostics = list( cohortSurvival = TRUE )}
+
+If \code{NULL} cohort diagnostics won't be parametrised.}
+
+\item{populationDiagnostics}{A list of arguments to parametrise
+\code{populationDiagnostics()}. If the list is empty, the default values will be
+assumed. Use cohort names for cohortId argument
+(e.g. \code{cohortId = "myocardial_infarction"}).
+
+Example:
+In the below example, all diagnostics will be run and a subsample of 100,000
+participants will be used to run populationDiagnostics.
+\code{populationDiagnostics = list( populationSample = 100000 )}
+
+If \code{NULL} population diagnostics won't be parametrised.}
 }
 \value{
 A \code{phenotyper_specification} object.
@@ -26,10 +70,9 @@ Create a \code{phenotyper_specification} object
 \examples{
 library(PhenotypeR)
 
-x <- list(
+x <- newPhenotypeRSpecifications(
   codelistDiagnostics = list(cohortId = "acetaminophen", orphanCodeUse = TRUE)
-) |>
-  newPhenotypeRSpecifications()
+)
 
 x
 
