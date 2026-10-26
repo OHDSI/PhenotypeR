@@ -53,7 +53,9 @@ newPhenotypeRSpecifications <- function(databaseDiagnostics = NULL,
                                         codelistDiagnostics = NULL,
                                         cohortDiagnostics = NULL,
                                         populationDiagnostics = NULL) {
-  # TODO Discuss if default should be NULL [Not run that diagnostic] or list() [run with deafults]
+  # TODO Discuss if default should be:
+  # - NULL [Not run that diagnostic]
+  # - list() [run with defaults]
   x <- constructPhenotypeRSpecifications(
     databaseDiagnostics = databaseDiagnostics,
     codelistDiagnostics = codelistDiagnostics,
