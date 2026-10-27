@@ -67,8 +67,9 @@ Suggests:
     OmopConstructor,
     tools,
     jsonlite,
-    jsonvalidate, 
-    shinyjs
+    jsonvalidate,
+    shinyjs,
+    openxlsx
 Config/testthat/edition: 3
 Imports: 
     cli,
