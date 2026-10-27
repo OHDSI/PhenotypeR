@@ -217,10 +217,12 @@ importPhenotypeRSpecifications <- function(path) {
                      definitions of {.cls phenotyper_specifications}"))
   }
 
-  if (is.null(x)) {
-    x <- list()
-  }
-  do.call(newPhenotypeRSpecifications, x)
+  newPhenotypeRSpecifications(
+    databaseDiagnostics = x$databaseDisgnotics,
+    codelistDiagnostics = x$codelistDiagnostics,
+    cohortDiagnostics = x$cohortDiagnostics,
+    populationDiagnostics = x$populationDiagnostics
+  )
 }
 
 #' Export a `phenotyper_specification` object to a `json` or `xlsx` file
@@ -229,7 +231,6 @@ importPhenotypeRSpecifications <- function(path) {
 #' @param fileName Name of the file to be created.
 #' @param path Path where to save the file.
 #' @param type Character with the `type` to export: "excel" or "json".
-#' @param ... Additional arguments passed to `jsonlite::write_json()`.
 #'
 #' @returns A file will be created with the `phenotyper_specification`
 #' definition.
@@ -281,8 +282,7 @@ importPhenotypeRSpecifications <- function(path) {
 exportPhenotypeRSpecifications <- function(x,
                                            fileName,
                                            path = getwd(),
-                                           type = "excel",
-                                           ...) {
+                                           type = "excel") {
   # input check
   x <- validatePhenotypeRSpecifications(x)
   omopgenerics::assertCharacter(fileName, length = 1)
@@ -322,7 +322,12 @@ exportPhenotypeRSpecifications <- function(x,
       fileName <- paste0(fileName, ".json")
     }
     rlang::check_installed("jsonlite", "export in json format")
-    jsonlite::write_json(unclass(x), path = fileName, ...)
+    jsonlite::write_json(
+      x = unclass(x),
+      path = fileName,
+      pretty = TRUE,
+      auto_unbox = TRUE
+    )
   }
 
   invisible(x)
@@ -348,6 +353,7 @@ as_tibble.phenotyper_specifications <- function(x, ...) {
     purrr::list_c(ptype = character()) |>
     unique() |>
     sort()
+
   if (length(cohortIds) == 0L && any(lengths(x) > 0L)) {
     cohortIds <- NA_character_
   }
@@ -364,14 +370,10 @@ as_tibble.phenotyper_specifications <- function(x, ...) {
         if (is.null(x$cohortId)) {
           x$cohortId <- cohortIds
         }
-        purrr::imap(x, \(value, nm) {
-          if (nm == "populationDateRange") {
-            rangeToCharacter(value)
-          } else {
-            value
-          }
-        }) |>
-          dplyr::as_tibble()
+        if ("populationDateRange" %in% names(x)) {
+          x$populationDateRange <- rangeToCharacter(x$populationDateRange)
+        }
+        dplyr::as_tibble(x)
       }) |>
       dplyr::bind_rows()
 
@@ -430,34 +432,25 @@ validatePhenotypeRSpecifications <- function(x, call = parent.frame()) {
 
   # validate inputs
   for (nm in PhenotypeRDiagnostics) {
-    x[nm] <- list(validateDiagnosticsInput(x[[nm]], nm, call = call))
-  }
-
-  if (!is.null(x$populationDiagnostics)) {
-    x$populationDiagnostics <- purrr::map(
-      x$populationDiagnostics,
-      \(configuration) {
-        configuration$populationDateRange <- characterToRange(
-          configuration$populationDateRange,
-          call = call
-        )
-        configuration
-      }
-    )
+    x[[nm]] <- validateDiagnosticsInput(x[[nm]], nm, call = call)
   }
 
   return(x)
 }
 readPhenotypeRExcel <- function(path) {
   cols <- PhenotypeRDiagnosticsSpecs$args
+  type <- PhenotypeRDiagnosticsSpecs$argType
+  diag <- PhenotypeRDiagnosticsSpecs$diagnostics
+
   nArgs <- length(cols)
+
   # to suppress empty worksheets warning
   x <- withCallingHandlers(
     openxlsx::read.xlsx(
       xlsxFile = path,
       sheet = "Specifications",
-      startRow = 4,
-      cols = seq_len(nArgs + 1L),
+      startRow = 3,
+      cols = seq_len(nArgs),
       colNames = FALSE,
       skipEmptyRows = TRUE,
       skipEmptyCols = FALSE
@@ -471,13 +464,13 @@ readPhenotypeRExcel <- function(path) {
 
   # if empty return empty list
   if (is.null(x)) {
-    return(stats::setNames(rep(list(NULL), length(PhenotypeRDiagnostics)),
-                           PhenotypeRDiagnostics))
+    x <- rep(list(NULL), length(PhenotypeRDiagnostics)) |>
+      rlang::set_names(PhenotypeRDiagnostics)
+    return(x)
   }
 
   # The export sheet leaves its first column blank for workbook layout.
-  if (ncol(x) == nArgs + 1L) {
-    x <- x[-1]
+  if (ncol(x) == nArgs) {
     names(x) <- paste0("X", seq_len(nArgs))
   }
 
@@ -486,9 +479,6 @@ readPhenotypeRExcel <- function(path) {
   if (Nmissing > 0) {
     x[paste0("X", (ncol(x) + 1):nArgs)] <- NA
   }
-
-  type <- PhenotypeRDiagnosticsSpecs$argType
-  diag <- PhenotypeRDiagnosticsSpecs$diagnostics
 
   rn <- rlang::set_names(paste0("X", seq_len(nArgs)), cols)
 
@@ -501,19 +491,8 @@ readPhenotypeRExcel <- function(path) {
       dplyr::across(dplyr::all_of(cols[type == "logical"]), as.logical)
     )
 
-  x$populationDateRange <- purrr::map_chr(
-    x$populationDateRange,
-    \(value) {
-      if (is.na(value)) {
-        NA_character_
-      } else {
-        rangeToCharacter(value)
-      }
-    }
-  )
-
+  # create diagnostics
   phenotypeRSpecifications <- list()
-  # database
   for (dg in PhenotypeRDiagnostics) {
     diagnosticCols <- cols[diag == dg]
     # identify diagnostics parametrisation
@@ -523,7 +502,13 @@ readPhenotypeRExcel <- function(path) {
       dplyr::group_split(dplyr::across(!"cohortId")) |>
       purrr::map(\(diag_group) {
         diag_group |>
-          purrr::map(unique) |>
+          purrr::imap(\(x, nm) {
+            x <- unique(x)
+            if (nm == "populationDateRange") {
+              x <- characterToRange(x)
+            }
+            return(x)
+          }) |>
           purrr::keep(\(x) !all(is.na(x)))
       })
   }
