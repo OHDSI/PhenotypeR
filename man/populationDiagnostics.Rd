@@ -29,18 +29,17 @@ or not (FALSE).}
 sampling will be performed. Sample will be within populationDateRange if
 specified.}
 
-\item{populationDateRange}{Two dates. The first indicating the earliest cohort
-start date and the second indicating the latest possible cohort end date. If
-NULL or the first date is set as missing, the earliest observation_start_date
-in the observation_period table will be used for the former. If  NULL or the
-second date is set as missing, the latest observation_end_date in the
-observation_period table will be used for the latter.}
+\item{populationDateRange}{A Date vector of length two. The first date sets
+the earliest possible date and the second sets the latest possible date. Use
+\code{NA} for an open endpoint; both endpoints can be \code{NA} to use the full date
+range. In PhenotypeR specification files, enter the range as
+\verb{YYYY-MM-DD to YYYY-MM-DD} (for example, \verb{2015-01-01 to 2020-12-31}).}
 }
 \value{
 A summarised result
 }
 \description{
-PhenotypeR diagnostics on the cohort of input with relation to a denomination
+PhenotypeR diagnostics on the input cohort in relation to a denominator
 population. Diagnostics include:
 \itemize{
 \item Incidence

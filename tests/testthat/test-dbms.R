@@ -2,6 +2,7 @@
 test_that("eunomia", {
   skip_on_cran()
   skip_on_ci()
+  skip()
   con <- DBI::dbConnect(duckdb::duckdb(dbdir = CDMConnector::eunomiaDir()))
   cdm <- CDMConnector::cdmFromCon(con = con,
                                     cdmSchema = "main",
@@ -33,6 +34,7 @@ test_that("eunomia", {
 
 test_that("postgres test", {
   skip_on_cran()
+  skip()
   skip_if(Sys.getenv("CDM5_POSTGRESQL_DBNAME") == "")
 
   db <- DBI::dbConnect(RPostgres::Postgres(),

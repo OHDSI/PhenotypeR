@@ -70,12 +70,11 @@ NULL
 #' @param populationSample Number of people from the cdm to sample. If NULL no
 #' sampling will be performed. Sample will be within populationDateRange if
 #' specified.
-#' @param populationDateRange Two dates. The first indicating the earliest cohort
-#' start date and the second indicating the latest possible cohort end date. If
-#' NULL or the first date is set as missing, the earliest observation_start_date
-#' in the observation_period table will be used for the former. If  NULL or the
-#' second date is set as missing, the latest observation_end_date in the
-#' observation_period table will be used for the latter.
+#' @param populationDateRange A Date vector of length two. The first date sets
+#' the earliest possible date and the second sets the latest possible date. Use
+#' `NA` for an open endpoint; both endpoints can be `NA` to use the full date
+#' range. In PhenotypeR specification files, enter the range as
+#' `YYYY-MM-DD to YYYY-MM-DD` (for example, `2015-01-01 to 2020-12-31`).
 #'
 #' @name populationSampleDoc
 #' @keywords internal
