@@ -192,23 +192,7 @@ importPhenotypeRSpecifications <- function(path) {
 
   if (endsWith(path, ".json")) {
     rlang::check_installed("jsonlite", "import in json format")
-    x <- jsonlite::read_json(path = path, simplifyVector = FALSE)
-    x <- purrr::map(x, \(configurations) {
-      if (length(configurations) == 0L) {
-        return(NULL)
-      }
-      purrr::map(configurations, \(configuration) {
-        purrr::imap(configuration, \(value, nm) {
-          if (nm == "populationDateRange") {
-            value
-          } else if (is.list(value)) {
-            unlist(value, recursive = TRUE, use.names = FALSE)
-          } else {
-            value
-          }
-        })
-      })
-    })
+    x <- readPhenotypeRJson(path = path)
   } else if (endsWith(path, ".xlsx")) {
     rlang::check_installed("openxlsx")
     x <- readPhenotypeRExcel(path = path)
@@ -299,35 +283,13 @@ exportPhenotypeRSpecifications <- function(x,
     } else if (!endsWith(fileName, ".xlsx")) {
       fileName <- paste0(fileName, ".xlsx")
     }
-    # add instructions
-    wb <- openxlsx::loadWorkbook(
-      file = system.file("Instructions.xlsx", package = "CodelistGenerator")
-    )
-    # add data to the Specifications sheet
-    openxlsx::addWorksheet(wb = wb, sheetName = "Specifications")
-    openxlsx::writeData(
-      wb = wb,
-      sheet = "Specifications",
-      x = dplyr::as_tibble(x),
-      startCol = 2,
-      startRow = 3
-    )
-    openxlsx::saveWorkbook(
-      wb = wb,
-      file = fileName,
-      overwrite = TRUE
-    )
+    writePhenotyepeRExcel(x = x, file = fileName)
   } else if (type == "json") {
     if (!endsWith(fileName, ".json")) {
       fileName <- paste0(fileName, ".json")
     }
     rlang::check_installed("jsonlite", "export in json format")
-    jsonlite::write_json(
-      x = unclass(x),
-      path = fileName,
-      pretty = TRUE,
-      auto_unbox = TRUE
-    )
+    writePhenotyepeRJson(x = x, file = fileName)
   }
 
   invisible(x)
@@ -515,7 +477,54 @@ readPhenotypeRExcel <- function(path) {
 
   return(phenotypeRSpecifications)
 }
-
+readPhenotypeRJson <- function(path) {
+  x <- jsonlite::read_json(path = path, simplifyVector = FALSE)
+  x <- purrr::map(x, \(configurations) {
+    if (length(configurations) == 0L) {
+      return(NULL)
+    }
+    purrr::map(configurations, \(configuration) {
+      purrr::imap(configuration, \(value, nm) {
+        if (nm == "populationDateRange") {
+          value
+        } else if (is.list(value)) {
+          unlist(value, recursive = TRUE, use.names = FALSE)
+        } else {
+          value
+        }
+      })
+    })
+  })
+  return(x)
+}
+writePhenotyepeRExcel <- function(x, file) {
+  # add instructions
+  wb <- openxlsx::loadWorkbook(
+    file = system.file("Instructions.xlsx", package = "CodelistGenerator")
+  )
+  # add data to the Specifications sheet
+  openxlsx::addWorksheet(wb = wb, sheetName = "Specifications")
+  openxlsx::writeData(
+    wb = wb,
+    sheet = "Specifications",
+    x = dplyr::as_tibble(x),
+    startCol = 2,
+    startRow = 3
+  )
+  openxlsx::saveWorkbook(
+    wb = wb,
+    file = file,
+    overwrite = TRUE
+  )
+}
+writePhenotyepeRJson <- function(x, file) {
+  jsonlite::write_json(
+    x = unclass(x),
+    path = file,
+    pretty = TRUE,
+    auto_unbox = TRUE
+  )
+}
 characterToRange <- function(x) {
   x <- stringr::str_split(x, pattern = "to", n = 2)[[1]]
   as.Date(c(x, rep("NA", 2 - length(x))), format = "YYYY-MM-DD")
