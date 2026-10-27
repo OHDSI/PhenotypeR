@@ -525,12 +525,17 @@ writePhenotyepeRJson <- function(x, file) {
   )
 }
 characterToRange <- function(x) {
+  msg <- c(x = "Date range not correctly formatted, please use: YYYY-MM-DD to YYYY-MM-DD. Use NA for open end points.")
+  x <- stringr::str_squish(x)
+  if (!grepl("to", x) && nzchar(x)) {
+    cli::cli_abort(msg)
+  }
   x <- stringr::str_split(x, pattern = "to", n = 2)[[1]] |>
     purrr::map_chr(stringr::str_squish)
   dates <- as.Date(c(x, rep("NA", 2 - length(x))), format = "%Y-%m-%d")
   if ((is.na(dates[1]) & nzchar(x[1]) & !is.na(x[1]) & !identical(x[1], "NA")) |
       (is.na(dates[2]) & nzchar(x[2]) & !is.na(x[2]) & !identical(x[2], "NA"))) {
-    cli::cli_abort(c(x = "Date range not correctly formatted, please use: YYYY-MM-DD to YYYY-MM-DD."))
+    cli::cli_abort(msg)
   }
   return(dates)
 }

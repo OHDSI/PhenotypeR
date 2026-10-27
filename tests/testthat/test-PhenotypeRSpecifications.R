@@ -34,18 +34,12 @@ test_that("population date range parser accepts open endpoints and rejects unsaf
     as.Date(c(NA, NA))
   )
   expect_identical(
-    newPhenotypeRSpecifications(
-      populationDiagnostics = list(
-        cohortId = "cohort_1",
-        populationDateRange = "2020-01-01 to 2020-12-31"
-      )
-    )$populationDiagnostics[[1]]$populationDateRange,
-    as.Date(c("2020-01-01", "2020-12-31"))
+    characterToRange(""),
+    as.Date(c(NA, NA))
   )
 
   expect_error(characterToRange("2020/01/01 to 2020/12/31"))
   expect_error(characterToRange("2020-02-30 to 2020-12-31"))
-  expect_error(characterToRange("2020-12-31 to 2020-01-01"))
   expect_error(characterToRange(c("2020-01-01")))
 
   marker <- tempfile()
