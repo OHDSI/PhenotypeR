@@ -485,13 +485,7 @@ readPhenotypeRJson <- function(path) {
     }
     purrr::map(configurations, \(configuration) {
       purrr::imap(configuration, \(value, nm) {
-        if (nm == "populationDateRange") {
-          value
-        } else if (is.list(value)) {
-          unlist(value, recursive = TRUE, use.names = FALSE)
-        } else {
-          value
-        }
+        value
       })
     })
   })
@@ -507,6 +501,8 @@ writePhenotyepeRExcel <- function(x, file) {
     wb = wb,
     sheet = "Specifications",
     x = dplyr::as_tibble(x),
+    colNames = FALSE,
+    rowNames = FALSE,
     startCol = 1,
     startRow = 3
   )
@@ -517,11 +513,22 @@ writePhenotyepeRExcel <- function(x, file) {
   )
 }
 writePhenotyepeRJson <- function(x, file) {
+  # safely parse dates
+  x <- unclass(x)
+  if (!is.null(x$populationDiagnostics)) {
+    x$populationDiagnostics <- x$populationDiagnostics |>
+      purrr::map(\(conf) {
+        if ("populationDateRange" %in% names(conf)) {
+          conf$populationDateRange <- rangeToCharacter(conf$populationDateRange)
+        }
+        conf
+      })
+  }
   jsonlite::write_json(
-    x = unclass(x),
+    x = x,
     path = file,
     pretty = TRUE,
-    auto_unbox = TRUE
+    auto_unbox = FALSE
   )
 }
 characterToRange <- function(x) {
@@ -540,6 +547,5 @@ characterToRange <- function(x) {
   return(dates)
 }
 rangeToCharacter <- function(x) {
-  dates <- characterToRange(x)
-  paste(ifelse(is.na(dates), "NA", format(dates, "%Y-%m-%d")), collapse = " to ")
+  paste(ifelse(is.na(x), "NA", format(x, "%Y-%m-%d")), collapse = " to ")
 }

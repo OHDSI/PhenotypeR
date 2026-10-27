@@ -192,7 +192,7 @@ phenotypeDiagnostics <- function(cohort,
       incidence = diag$incidence,
       periodPrevalence = diag$periodPrevalence,
       populationSample = diag$populationSample,
-      populationDateRange = characterToRange(diag$populationDateRange)
+      populationDateRange = diag$populationDateRange
     )
     saveIncremental(incrementalResultPath, results, "populationDiagnostics", i, n)
   }
