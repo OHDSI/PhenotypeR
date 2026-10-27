@@ -8,10 +8,10 @@ navbar:
     right: [githublink]
   components:
     clinical_description_shiny:
-      text: "Clinical decriptions shiny app"
+      text: "Clinical descriptions shiny app"
       href: https://dpa-pde-oxford.shinyapps.io/PhenotypeDescriptionsShiny/
     data_source_description_shiny:
-      text: "Data source decriptions shiny app"
+      text: "Data source descriptions shiny app"
       href: https://dpa-pde-oxford.shinyapps.io/PhenotypeDataSourceDescriptionsShiny/
     custom_shiny:
       text: "PhenotypeR shiny app"
@@ -25,10 +25,10 @@ navbar:
       menu:
       - text: PhenotypeDiagnostics
         href: articles/PhenotypeDiagnostics.html
+      - text: PhenotypeRSpecifications
+        href: articles/PhenotypeRSpecifications.html
       - text: PhenotypeExpectations
         href: articles/PhenotypeExpectations.html
-      - text: CreateDescriptions
-        href: articles/CreateDescriptions.html
       - text: ShinyDiagnostics
         href: articles/ShinyDiagnostics.html
 
@@ -42,6 +42,11 @@ reference:
   - codelistDiagnostics
   - cohortDiagnostics
   - populationDiagnostics
+- subtitle: Diagnostic specifications
+- contents:
+  - newPhenotypeRSpecifications
+  - importPhenotypeRSpecifications
+  - exportPhenotypeRSpecifications
 - subtitle: Visualise results
 - contents:
   - shinyDiagnostics
