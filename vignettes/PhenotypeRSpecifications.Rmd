@@ -2,20 +2,20 @@
 title: "PhenotypeRSpecifications"
 output: rmarkdown::html_vignette
 vignette: >
-%\VignetteIndexEntry{PhenotypeRSpecifications}
+  %\VignetteIndexEntry{PhenotypeRSpecifications}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-  ---
-  
-  ```{r, include = FALSE}
-  knitr::opts_chunk$set(
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
-  )
-  ```
-  
-  ```{r setup}
-  library(PhenotypeR)
+)
+```
+
+```{r setup}
+library(PhenotypeR)
 ```
 
 ## Define diagnostics
@@ -77,7 +77,7 @@ exportPhenotypeRSpecifications(
 
 Populate in the excel spreadsheet:
 
-![](Figures/specifications.png)
+![Excel specification sheet with diagnostic settings for three cohorts.](Figures/specifications.png)
 
 Import it back:
 
@@ -98,8 +98,7 @@ diag <- newPhenotypeRSpecifications(
       cohortCodeUse = TRUE,
       drugDiagnostics = TRUE,
       drugDiagnosticsSample = 100000,
-      measurementDiagnostics = FALSE,
-      measurementDiagnosticsSample = 0
+      measurementDiagnostics = FALSE
     ),
     list(
       cohortId = "diclofenac",
@@ -107,9 +106,7 @@ diag <- newPhenotypeRSpecifications(
       orphanCodeUse = TRUE,
       cohortCodeUse = TRUE,
       drugDiagnostics = FALSE,
-      drugDiagnosticsSample = 0,
-      measurementDiagnostics = FALSE,
-      measurementDiagnosticsSample = 0
+      measurementDiagnostics = FALSE
     ),
     list(
       cohortId = "acetaminophen",
@@ -117,9 +114,7 @@ diag <- newPhenotypeRSpecifications(
       orphanCodeUse = TRUE,
       cohortCodeUse = TRUE,
       drugDiagnostics = FALSE,
-      drugDiagnosticsSample = 0,
-      measurementDiagnostics = FALSE,
-      measurementDiagnosticsSample = 0
+      measurementDiagnostics = FALSE
     )
   ), 
   cohortDiagnostics = list(
