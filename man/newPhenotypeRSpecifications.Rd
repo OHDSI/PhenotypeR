@@ -71,7 +71,7 @@ Create a \code{phenotyper_specification} object
 library(PhenotypeR)
 
 diag <- newPhenotypeRSpecifications(
-  codelistDiagnostics = list(cohortId = "acetaminophen", orphanCodeUse = TRUE)
+  codelistDiagnostics = list(cohortId = "warfarin", orphanCodeUse = TRUE)
 )
 
 diag

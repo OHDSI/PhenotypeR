@@ -94,7 +94,7 @@ PhenotypeRDiagnosticsSpecs <- list(
 #' library(PhenotypeR)
 #'
 #' diag <- newPhenotypeRSpecifications(
-#'   codelistDiagnostics = list(cohortId = "acetaminophen", orphanCodeUse = TRUE)
+#'   codelistDiagnostics = list(cohortId = "warfarin", orphanCodeUse = TRUE)
 #' )
 #'
 #' diag
@@ -149,7 +149,7 @@ newPhenotypeRSpecifications <- function(databaseDiagnostics = NULL,
 #' library(PhenotypeR)
 #'
 #' diag <- newPhenotypeRSpecifications(
-#'   codelistDiagnostics = list(cohortId = "acetaminophen", orphanCodeUse = TRUE)
+#'   codelistDiagnostics = list(cohortId = "warfarin", orphanCodeUse = TRUE)
 #' )
 #'
 #' diag
@@ -225,7 +225,7 @@ importPhenotypeRSpecifications <- function(path) {
 #' library(PhenotypeR)
 #'
 #' diag <- newPhenotypeRSpecifications(
-#'   codelistDiagnostics = list(cohortId = "acetaminophen", orphanCodeUse = TRUE)
+#'   codelistDiagnostics = list(cohortId = "warfarin", orphanCodeUse = TRUE)
 #' )
 #'
 #' diag

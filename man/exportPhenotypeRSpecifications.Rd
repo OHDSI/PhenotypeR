@@ -26,7 +26,7 @@ Export a \code{phenotyper_specification} object to a \code{json} or \code{xlsx} 
 library(PhenotypeR)
 
 diag <- newPhenotypeRSpecifications(
-  codelistDiagnostics = list(cohortId = "acetaminophen", orphanCodeUse = TRUE)
+  codelistDiagnostics = list(cohortId = "warfarin", orphanCodeUse = TRUE)
 )
 
 diag
