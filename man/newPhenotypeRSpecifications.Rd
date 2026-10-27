@@ -22,7 +22,7 @@ In the following example, all default diagnostics will be run except
 \emph{person table summary} from databaseDiagnostics:
 \code{databaseDiagnostics = list(personTableSummary = FALSE)}
 
-If \code{NULL} codelist diagnostics won't be parametrised.}
+If \code{NULL} database diagnostics won't be parametrised.}
 
 \item{codelistDiagnostics}{A list of arguments to parametrise
 \code{codelistDiagnostics()}. If the list is empty, the default values will be
@@ -37,7 +37,7 @@ diagnostics:
 
 \code{codelistDiagnostics = list( measurementDiagnosticsSample = 1000, drugDiagnosticsSample = 500 )}
 
-If \code{NULL} database diagnostics won't be parametrised.}
+If \code{NULL} codelist diagnostics won't be parametrised.}
 
 \item{cohortDiagnostics}{A list of arguments to parametrise
 \code{cohortDiagnostics()}. If the list is empty, the default values will be
@@ -57,7 +57,7 @@ assumed. Use cohort names for cohortId argument
 Example:
 In the below example, all diagnostics will be run and a subsample of 100,000
 participants will be used to run populationDiagnostics.
-\code{populationDiagnostics = list( populationSample = 100000 )}
+\code{populationDiagnostics = list( cohortId = "myocardial_infarction", populationSample = 100000, populationDateRange = as.Date(c("2015-01-01", "2020-12-31")) )}
 
 If \code{NULL} population diagnostics won't be parametrised.}
 }
@@ -70,10 +70,31 @@ Create a \code{phenotyper_specification} object
 \examples{
 library(PhenotypeR)
 
-x <- newPhenotypeRSpecifications(
+diag <- newPhenotypeRSpecifications(
   codelistDiagnostics = list(cohortId = "acetaminophen", orphanCodeUse = TRUE)
 )
 
-x
+diag
+
+# run Diagnostics from specifications
+library(omock)
+library(CohortConstructor)
+
+cdm <- mockCdmFromDataset(source = "duckdb")
+
+cdm$warfarin <- conceptCohort(
+  cdm = cdm,
+  conceptSet =  list(warfarin = c(1310149L, 40163554L)),
+  name = "warfarin"
+)
+
+result <- phenotypeDiagnostics(
+  cohort = cdm$warfarin,
+  databaseDiagnostics = diag$databaseDiagnostics,
+  codelistDiagnostics = diag$codelistDiagnostics,
+  cohortDiagnostics = diag$cohortDiagnostics,
+  populationDiagnostics = diag$populationDiagnostics
+)
+
 
 }

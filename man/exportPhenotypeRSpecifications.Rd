@@ -4,7 +4,13 @@
 \alias{exportPhenotypeRSpecifications}
 \title{Export a \code{phenotyper_specification} object to a \code{json} or \code{xlsx} file}
 \usage{
-exportPhenotypeRSpecifications(x, fileName, path = getwd(), type = "excel")
+exportPhenotypeRSpecifications(
+  x,
+  fileName,
+  path = getwd(),
+  type = "excel",
+  ...
+)
 }
 \arguments{
 \item{x}{A \code{phenotyper_specification} object.}
@@ -14,6 +20,8 @@ exportPhenotypeRSpecifications(x, fileName, path = getwd(), type = "excel")
 \item{path}{Path where to save the file.}
 
 \item{type}{Character with the \code{type} to export: "excel" or "json".}
+
+\item{...}{Additional arguments passed to \code{jsonlite::write_json()}.}
 }
 \value{
 A file will be created with the \code{phenotyper_specification}
@@ -25,23 +33,43 @@ Export a \code{phenotyper_specification} object to a \code{json} or \code{xlsx} 
 \examples{
 library(PhenotypeR)
 
-x <- newPhenotypeRSpecifications(
+diag <- newPhenotypeRSpecifications(
   codelistDiagnostics = list(cohortId = "acetaminophen", orphanCodeUse = TRUE)
 )
 
-x
+diag
 
 exportPhenotypeRSpecifications(
-  x = x,
+  x = diag,
   fileName = "my_parametrisation",
   path = tempdir(),
   type = "excel"
 )
 
-xn <- importPhenotypeRSpecifications(
+diagImported <- importPhenotypeRSpecifications(
   path = file.path(tempdir(), "my_parametrisation.xlsx")
 )
 
-xn
+diagImported
+
+# run Diagnostics from specifications
+library(omock)
+library(CohortConstructor)
+
+cdm <- mockCdmFromDataset(source = "duckdb")
+
+cdm$warfarin <- conceptCohort(
+  cdm = cdm,
+  conceptSet =  list(warfarin = c(1310149L, 40163554L)),
+  name = "warfarin"
+)
+
+result <- phenotypeDiagnostics(
+  cohort = cdm$warfarin,
+  databaseDiagnostics = diagImported$databaseDiagnostics,
+  codelistDiagnostics = diagImported$codelistDiagnostics,
+  cohortDiagnostics = diagImported$cohortDiagnostics,
+  populationDiagnostics = diagImported$populationDiagnostics
+)
 
 }

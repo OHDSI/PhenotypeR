@@ -1,7 +1,7 @@
 #' Population-level diagnostics
 #'
 #' @description
-#' PhenotypeR diagnostics on the cohort of input with relation to a denomination
+#' PhenotypeR diagnostics on the input cohort in relation to a denominator
 #' population. Diagnostics include:
 #'
 #' * Incidence
@@ -55,14 +55,14 @@ populationDiagnostics <- function(cohort,
   cohortName <- omopgenerics::tableName(cohort)
 
   if (!is.null(getOption("omopgenerics.logFile"))) {
-    omopgenerics::logMessage("Population diagnosics - denominator cohort")
+    omopgenerics::logMessage("Population diagnostics - denominator cohort")
   }
   denominatorTable <- omopgenerics::uniqueTableName()
 
   # add population sampling
   if(!is.null(populationSample)){
     if (!is.null(getOption("omopgenerics.logFile"))) {
-      omopgenerics::logMessage(paste0("Population diagnosics - sampling person table to ", populationSample, " people"))
+      omopgenerics::logMessage(paste0("Population diagnostics - sampling person table to ", populationSample, " people"))
     }
     if(is.na(populationDateRange[[1]]) && is.na(populationDateRange[[2]])){
       cdm$person <- cdm$person |>
@@ -121,7 +121,7 @@ populationDiagnostics <- function(cohort,
 
   if(isTRUE(incidence)) {
     if (!is.null(getOption("omopgenerics.logFile"))) {
-      omopgenerics::logMessage("Population diagnosics - incidence")
+      omopgenerics::logMessage("Population diagnostics - incidence")
     }
     results[["incidence"]] <- IncidencePrevalence::estimateIncidence(
       cdm = cdm,
@@ -136,7 +136,7 @@ populationDiagnostics <- function(cohort,
 
   if(isTRUE(periodPrevalence)) {
     if (!is.null(getOption("omopgenerics.logFile"))) {
-      omopgenerics::logMessage("Population diagnosics - prevalence")
+      omopgenerics::logMessage("Population diagnostics - prevalence")
     }
 
     results[["prevalence"]] <- IncidencePrevalence::estimatePeriodPrevalence(
@@ -170,5 +170,12 @@ populationDiagnostics <- function(cohort,
 checksPopulationDiagnostics <- function(populationSample, populationDateRange, call = parent.frame()){
   omopgenerics::assertNumeric(populationSample, integerish = TRUE, min = 1, null = TRUE, length = 1, call = call)
   omopgenerics::assertDate(populationDateRange, na = TRUE, length = 2, call = call)
+  if (!is.na(populationDateRange[1]) && !is.na(populationDateRange[2]) &&
+      populationDateRange[1] > populationDateRange[2]) {
+    cli::cli_abort(
+      "`populationDateRange` start date must be on or before its end date.",
+      call = call
+    )
+  }
 }
 

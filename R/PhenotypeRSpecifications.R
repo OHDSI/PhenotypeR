@@ -5,7 +5,7 @@ PhenotypeRDiagnostics <- c(
   "cohortDiagnostics",
   "populationDiagnostics"
 )
-PhenotyepeRDiagnosticsSpecs <- list(
+PhenotypeRDiagnosticsSpecs <- list(
   args = c(
     "cohortId", "snapshot", "personTableSummary", "observationPeriodsSummary",
     "clinicalRecordsSummary", "achillesCodeUse", "orphanCodeUse",
@@ -38,7 +38,7 @@ PhenotyepeRDiagnosticsSpecs <- list(
 #' *person table summary* from databaseDiagnostics:
 #' `databaseDiagnostics = list(personTableSummary = FALSE)`
 #'
-#' If `NULL` codelist diagnostics won't be parametrised.
+#' If `NULL` database diagnostics won't be parametrised.
 #'
 #' @param codelistDiagnostics A list of arguments to parametrise
 #' `codelistDiagnostics()`. If the list is empty, the default values will be
@@ -56,7 +56,7 @@ PhenotyepeRDiagnosticsSpecs <- list(
 #'   drugDiagnosticsSample = 500
 #' )`
 #'
-#' If `NULL` database diagnostics won't be parametrised.
+#' If `NULL` codelist diagnostics won't be parametrised.
 #'
 #' @param cohortDiagnostics A list of arguments to parametrise
 #' `cohortDiagnostics()`. If the list is empty, the default values will be
@@ -79,7 +79,9 @@ PhenotyepeRDiagnosticsSpecs <- list(
 #' In the below example, all diagnostics will be run and a subsample of 100,000
 #' participants will be used to run populationDiagnostics.
 #' `populationDiagnostics = list(
-#'   populationSample = 100000
+#'   cohortId = "myocardial_infarction",
+#'   populationSample = 100000,
+#'   populationDateRange = as.Date(c("2015-01-01", "2020-12-31"))
 #' )`
 #'
 #' If `NULL` population diagnostics won't be parametrised.
@@ -91,11 +93,32 @@ PhenotyepeRDiagnosticsSpecs <- list(
 #' @examples
 #' library(PhenotypeR)
 #'
-#' x <- newPhenotypeRSpecifications(
+#' diag <- newPhenotypeRSpecifications(
 #'   codelistDiagnostics = list(cohortId = "acetaminophen", orphanCodeUse = TRUE)
 #' )
 #'
-#' x
+#' diag
+#'
+#' # run Diagnostics from specifications
+#' library(omock)
+#' library(CohortConstructor)
+#'
+#' cdm <- mockCdmFromDataset(source = "duckdb")
+#'
+#' cdm$warfarin <- conceptCohort(
+#'   cdm = cdm,
+#'   conceptSet =  list(warfarin = c(1310149L, 40163554L)),
+#'   name = "warfarin"
+#' )
+#'
+#' result <- phenotypeDiagnostics(
+#'   cohort = cdm$warfarin,
+#'   databaseDiagnostics = diag$databaseDiagnostics,
+#'   codelistDiagnostics = diag$codelistDiagnostics,
+#'   cohortDiagnostics = diag$cohortDiagnostics,
+#'   populationDiagnostics = diag$populationDiagnostics
+#' )
+#'
 #'
 newPhenotypeRSpecifications <- function(databaseDiagnostics = NULL,
                                         codelistDiagnostics = NULL,
@@ -115,7 +138,7 @@ newPhenotypeRSpecifications <- function(databaseDiagnostics = NULL,
 
 #' Import a `phenotyper_specification` object from a `json` or `xlsx` file
 #'
-#' @param path File path to a `json` or `xslx` file that contains a valid
+#' @param path File path to a `.json` or `.xlsx` file that contains a valid
 #' `phenotyper_specification` definition.
 #'
 #' @returns A `phenotyper_specification` object.
@@ -125,31 +148,67 @@ newPhenotypeRSpecifications <- function(databaseDiagnostics = NULL,
 #' @examples
 #' library(PhenotypeR)
 #'
-#' x <- newPhenotypeRSpecifications(
+#' diag <- newPhenotypeRSpecifications(
 #'   codelistDiagnostics = list(cohortId = "acetaminophen", orphanCodeUse = TRUE)
 #' )
 #'
-#' x
+#' diag
 #'
 #' exportPhenotypeRSpecifications(
-#'   x = x,
+#'   x = diag,
 #'   fileName = "my_parametrisation",
 #'   path = tempdir(),
 #'   type = "excel"
 #' )
 #'
-#' xn <- importPhenotypeRSpecifications(
+#' diagImported <- importPhenotypeRSpecifications(
 #'   path = file.path(tempdir(), "my_parametrisation.xlsx")
 #' )
 #'
-#' xn
+#' diagImported
+#'
+#' # run Diagnostics from specifications
+#' library(omock)
+#' library(CohortConstructor)
+#'
+#' cdm <- mockCdmFromDataset(source = "duckdb")
+#'
+#' cdm$warfarin <- conceptCohort(
+#'   cdm = cdm,
+#'   conceptSet =  list(warfarin = c(1310149L, 40163554L)),
+#'   name = "warfarin"
+#' )
+#'
+#' result <- phenotypeDiagnostics(
+#'   cohort = cdm$warfarin,
+#'   databaseDiagnostics = diagImported$databaseDiagnostics,
+#'   codelistDiagnostics = diagImported$codelistDiagnostics,
+#'   cohortDiagnostics = diagImported$cohortDiagnostics,
+#'   populationDiagnostics = diagImported$populationDiagnostics
+#' )
 #'
 importPhenotypeRSpecifications <- function(path) {
   omopgenerics::assertCharacter(path, length = 1)
 
   if (endsWith(path, ".json")) {
     rlang::check_installed("jsonlite", "import in json format")
-    x <- jsonlite::read_json(path = path)
+    x <- jsonlite::read_json(path = path, simplifyVector = FALSE)
+    x <- purrr::map(x, \(configurations) {
+      if (length(configurations) == 0L) {
+        return(NULL)
+      }
+      purrr::map(configurations, \(configuration) {
+        purrr::imap(configuration, \(value, nm) {
+          if (nm == "populationDateRange") {
+            value
+          } else if (is.list(value)) {
+            unlist(value, recursive = TRUE, use.names = FALSE)
+          } else {
+            value
+          }
+        })
+      })
+    })
   } else if (endsWith(path, ".xlsx")) {
     rlang::check_installed("openxlsx")
     x <- readPhenotypeRExcel(path = path)
@@ -158,7 +217,10 @@ importPhenotypeRSpecifications <- function(path) {
                      definitions of {.cls phenotyper_specifications}"))
   }
 
-  newPhenotypeRSpecifications(x)
+  if (is.null(x)) {
+    x <- list()
+  }
+  do.call(newPhenotypeRSpecifications, x)
 }
 
 #' Export a `phenotyper_specification` object to a `json` or `xlsx` file
@@ -167,6 +229,7 @@ importPhenotypeRSpecifications <- function(path) {
 #' @param fileName Name of the file to be created.
 #' @param path Path where to save the file.
 #' @param type Character with the `type` to export: "excel" or "json".
+#' @param ... Additional arguments passed to `jsonlite::write_json()`.
 #'
 #' @returns A file will be created with the `phenotyper_specification`
 #' definition.
@@ -176,29 +239,50 @@ importPhenotypeRSpecifications <- function(path) {
 #' @examples
 #' library(PhenotypeR)
 #'
-#' x <- newPhenotypeRSpecifications(
+#' diag <- newPhenotypeRSpecifications(
 #'   codelistDiagnostics = list(cohortId = "acetaminophen", orphanCodeUse = TRUE)
 #' )
 #'
-#' x
+#' diag
 #'
 #' exportPhenotypeRSpecifications(
-#'   x = x,
+#'   x = diag,
 #'   fileName = "my_parametrisation",
 #'   path = tempdir(),
 #'   type = "excel"
 #' )
 #'
-#' xn <- importPhenotypeRSpecifications(
+#' diagImported <- importPhenotypeRSpecifications(
 #'   path = file.path(tempdir(), "my_parametrisation.xlsx")
 #' )
 #'
-#' xn
+#' diagImported
+#'
+#' # run Diagnostics from specifications
+#' library(omock)
+#' library(CohortConstructor)
+#'
+#' cdm <- mockCdmFromDataset(source = "duckdb")
+#'
+#' cdm$warfarin <- conceptCohort(
+#'   cdm = cdm,
+#'   conceptSet =  list(warfarin = c(1310149L, 40163554L)),
+#'   name = "warfarin"
+#' )
+#'
+#' result <- phenotypeDiagnostics(
+#'   cohort = cdm$warfarin,
+#'   databaseDiagnostics = diagImported$databaseDiagnostics,
+#'   codelistDiagnostics = diagImported$codelistDiagnostics,
+#'   cohortDiagnostics = diagImported$cohortDiagnostics,
+#'   populationDiagnostics = diagImported$populationDiagnostics
+#' )
 #'
 exportPhenotypeRSpecifications <- function(x,
                                            fileName,
                                            path = getwd(),
-                                           type = "excel") {
+                                           type = "excel",
+                                           ...) {
   # input check
   x <- validatePhenotypeRSpecifications(x)
   omopgenerics::assertCharacter(fileName, length = 1)
@@ -220,6 +304,7 @@ exportPhenotypeRSpecifications <- function(x,
       file = system.file("Instructions.xlsx", package = "CodelistGenerator")
     )
     # add data to the Specifications sheet
+    openxlsx::addWorksheet(wb = wb, sheetName = "Specifications")
     openxlsx::writeData(
       wb = wb,
       sheet = "Specifications",
@@ -229,7 +314,7 @@ exportPhenotypeRSpecifications <- function(x,
     )
     openxlsx::saveWorkbook(
       wb = wb,
-      file = file.path(path, fileName),
+      file = fileName,
       overwrite = TRUE
     )
   } else if (type == "json") {
@@ -254,6 +339,8 @@ print.phenotyper_specifications <- function(x, ...) {
 }
 
 #' @export
+#' @export as_tibble.phenotyper_specifications
+#' @importFrom dplyr as_tibble
 as_tibble.phenotyper_specifications <- function(x, ...) {
   cohortIds <- x |>
     purrr::list_flatten() |>
@@ -261,19 +348,27 @@ as_tibble.phenotyper_specifications <- function(x, ...) {
     purrr::list_c(ptype = character()) |>
     unique() |>
     sort()
+  if (length(cohortIds) == 0L && any(lengths(x) > 0L)) {
+    cohortIds <- NA_character_
+  }
 
   tib <- dplyr::tibble(cohortId = cohortIds)
 
-  cols <- PhenotyepeRDiagnosticsSpecs$args
-  type <- PhenotyepeRDiagnosticsSpecs$argType
-  diag <- PhenotyepeRDiagnosticsSpecs$diagnostics
+  cols <- PhenotypeRDiagnosticsSpecs$args
+  type <- PhenotypeRDiagnosticsSpecs$argType
+  diag <- PhenotypeRDiagnosticsSpecs$diagnostics
 
   for (dg in PhenotypeRDiagnostics) {
     lj <- x[[dg]] |>
       purrr::map(\(x) {
-        purrr::imap(x, \(x, nm) {
+        if (is.null(x$cohortId)) {
+          x$cohortId <- cohortIds
+        }
+        purrr::imap(x, \(value, nm) {
           if (nm == "populationDateRange") {
-            # format date in `YYYY-MM-DD to YYYY-MM-DD`
+            rangeToCharacter(value)
+          } else {
+            value
           }
         }) |>
           dplyr::as_tibble()
@@ -287,10 +382,12 @@ as_tibble.phenotyper_specifications <- function(x, ...) {
     if (length(missingCols) > 0) {
       q <- rep("NA", length(missingCols)) |>
         rlang::set_names(missingCols) |>
-        parse_exprs()
+        rlang::parse_exprs()
       lj <- lj |>
         dplyr::mutate(!!!q)
     }
+    lj <- lj |>
+      dplyr::mutate(cohortId = as.character(.data$cohortId))
 
     # add to tibble
     tib <- tib |>
@@ -333,19 +430,34 @@ validatePhenotypeRSpecifications <- function(x, call = parent.frame()) {
 
   # validate inputs
   for (nm in PhenotypeRDiagnostics) {
-    x[[nm]] <- validateDiagnosticsInput(x[[nm]], nm, call = call)
+    x[nm] <- list(validateDiagnosticsInput(x[[nm]], nm, call = call))
+  }
+
+  if (!is.null(x$populationDiagnostics)) {
+    x$populationDiagnostics <- purrr::map(
+      x$populationDiagnostics,
+      \(configuration) {
+        configuration$populationDateRange <- characterToRange(
+          configuration$populationDateRange,
+          call = call
+        )
+        configuration
+      }
+    )
   }
 
   return(x)
 }
 readPhenotypeRExcel <- function(path) {
+  cols <- PhenotypeRDiagnosticsSpecs$args
+  nArgs <- length(cols)
   # to suppress empty worksheets warning
   x <- withCallingHandlers(
     openxlsx::read.xlsx(
       xlsxFile = path,
       sheet = "Specifications",
-      startRow = 3,
-      cols = 1:24,
+      startRow = 4,
+      cols = seq_len(nArgs + 1L),
       colNames = FALSE,
       skipEmptyRows = TRUE,
       skipEmptyCols = FALSE
@@ -359,20 +471,26 @@ readPhenotypeRExcel <- function(path) {
 
   # if empty return empty list
   if (is.null(x)) {
-    return(list())
+    return(stats::setNames(rep(list(NULL), length(PhenotypeRDiagnostics)),
+                           PhenotypeRDiagnostics))
+  }
+
+  # The export sheet leaves its first column blank for workbook layout.
+  if (ncol(x) == nArgs + 1L) {
+    x <- x[-1]
+    names(x) <- paste0("X", seq_len(nArgs))
   }
 
   # fill empty columns
-  Nmissing <- 24 - ncol(x)
+  Nmissing <- nArgs - ncol(x)
   if (Nmissing > 0) {
-    x[paste0("X", (ncol(x) + 1):24)] <- NA
+    x[paste0("X", (ncol(x) + 1):nArgs)] <- NA
   }
 
-  cols <- PhenotyepeRDiagnosticsSpecs$args
-  type <- PhenotyepeRDiagnosticsSpecs$argType
-  diag <- PhenotyepeRDiagnosticsSpecs$diagnostics
+  type <- PhenotypeRDiagnosticsSpecs$argType
+  diag <- PhenotypeRDiagnosticsSpecs$diagnostics
 
-  rn <- rlang::set_names(paste0("X", 1:24), cols)
+  rn <- rlang::set_names(paste0("X", seq_len(nArgs)), cols)
 
   # format list
   x <- dplyr::as_tibble(x) |>
@@ -383,12 +501,25 @@ readPhenotypeRExcel <- function(path) {
       dplyr::across(dplyr::all_of(cols[type == "logical"]), as.logical)
     )
 
+  x$populationDateRange <- purrr::map_chr(
+    x$populationDateRange,
+    \(value) {
+      if (is.na(value)) {
+        NA_character_
+      } else {
+        rangeToCharacter(value)
+      }
+    }
+  )
+
   phenotypeRSpecifications <- list()
   # database
   for (dg in PhenotypeRDiagnostics) {
+    diagnosticCols <- cols[diag == dg]
     # identify diagnostics parametrisation
     phenotypeRSpecifications[[dg]] <- x |>
-      dplyr::select("cohortId", dplyr::all_of(cols[diag == dg])) |>
+      dplyr::filter(dplyr::if_any(dplyr::all_of(diagnosticCols), \(value) !is.na(value))) |>
+      dplyr::select("cohortId", dplyr::all_of(diagnosticCols)) |>
       dplyr::group_split(dplyr::across(!"cohortId")) |>
       purrr::map(\(diag_group) {
         diag_group |>
@@ -398,4 +529,12 @@ readPhenotypeRExcel <- function(path) {
   }
 
   return(phenotypeRSpecifications)
+}
+
+characterToRange <- function(x) {
+  x <- stringr::str_split(x, pattern = "to", n = 2)[[1]]
+  as.Date(c(x, rep("NA", 2 - length(x))), format = "YYYY-MM-DD")
+}
+rangeToCharacter <- function(x) {
+  paste(ifelse(is.na(dates), "NA", format(dates, "%Y-%m-%d")), collapse = " to ")
 }

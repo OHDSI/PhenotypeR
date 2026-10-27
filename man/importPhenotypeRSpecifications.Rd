@@ -7,7 +7,7 @@
 importPhenotypeRSpecifications(path)
 }
 \arguments{
-\item{path}{File path to a \code{json} or \code{xslx} file that contains a valid
+\item{path}{File path to a \code{.json} or \code{.xlsx} file that contains a valid
 \code{phenotyper_specification} definition.}
 }
 \value{
@@ -19,23 +19,43 @@ Import a \code{phenotyper_specification} object from a \code{json} or \code{xlsx
 \examples{
 library(PhenotypeR)
 
-x <- newPhenotypeRSpecifications(
+diag <- newPhenotypeRSpecifications(
   codelistDiagnostics = list(cohortId = "acetaminophen", orphanCodeUse = TRUE)
 )
 
-x
+diag
 
 exportPhenotypeRSpecifications(
-  x = x,
+  x = diag,
   fileName = "my_parametrisation",
   path = tempdir(),
   type = "excel"
 )
 
-xn <- importPhenotypeRSpecifications(
+diagImported <- importPhenotypeRSpecifications(
   path = file.path(tempdir(), "my_parametrisation.xlsx")
 )
 
-xn
+diagImported
+
+# run Diagnostics from specifications
+library(omock)
+library(CohortConstructor)
+
+cdm <- mockCdmFromDataset(source = "duckdb")
+
+cdm$warfarin <- conceptCohort(
+  cdm = cdm,
+  conceptSet =  list(warfarin = c(1310149L, 40163554L)),
+  name = "warfarin"
+)
+
+result <- phenotypeDiagnostics(
+  cohort = cdm$warfarin,
+  databaseDiagnostics = diagImported$databaseDiagnostics,
+  codelistDiagnostics = diagImported$codelistDiagnostics,
+  cohortDiagnostics = diagImported$cohortDiagnostics,
+  populationDiagnostics = diagImported$populationDiagnostics
+)
 
 }

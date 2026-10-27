@@ -17,3 +17,48 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(PhenotypeR)
 ```
+
+## Define diagnostics
+
+`newPhenotypeRSpecifications()` stores the settings for each diagnostic. Supply
+one named list for a single configuration or a list of named lists for several
+configurations.
+
+```{r}
+specifications <- newPhenotypeRSpecifications(
+  populationDiagnostics = list(
+    cohortId = "my_cohort",
+    incidence = TRUE,
+    periodPrevalence = TRUE,
+    populationSample = 100000,
+    populationDateRange = as.Date(c("2015-01-01", "2020-12-31"))
+  )
+)
+
+specifications
+```
+
+Use `NA` for an open date range endpoint. The spreadsheet and JSON formats
+represent a date range as `YYYY-MM-DD to YYYY-MM-DD`, for example
+`2015-01-01 to 2020-12-31` or `NA to 2020-12-31`. Imported ranges are checked
+as ISO dates; they are not evaluated as R code.
+
+## Export and import
+
+Specifications can be exported to and imported from Excel or JSON. The
+`as_tibble()` representation can also be used to review the rows before export.
+
+```{r, eval = FALSE}
+dplyr::as_tibble(specifications)
+
+exportPhenotypeRSpecifications(
+  specifications,
+  fileName = "my_specifications",
+  path = tempdir(),
+  type = "excel"
+)
+
+importPhenotypeRSpecifications(
+  file.path(tempdir(), "my_specifications.xlsx")
+)
+```
