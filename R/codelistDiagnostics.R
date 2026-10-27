@@ -58,16 +58,23 @@ codelistDiagnostics <- function(cohort,
   omopgenerics::assertLogical(orphanCodeUse, length = 1)
   omopgenerics::assertLogical(cohortCodeUse, length = 1)
   omopgenerics::assertLogical(drugDiagnostics, length = 1)
+  omopgenerics::assertLogical(measurementDiagnostics, length = 1)
   cdm <- omopgenerics::cdmReference(cohort)
   cohortTable <- omopgenerics::tableName(cohort)
   cohortIds <- omopgenerics::settings(cohort) |>
     dplyr::filter(.data$cohort_definition_id %in% .env$cohortId) |>
     dplyr::select("cohort_definition_id") |>
     dplyr::pull()
-  measurementDiagnosticsSample <- omopgenerics::assertNumeric(measurementDiagnosticsSample,
-                                                   min = 1, length = 1, null = TRUE)
-  drugDiagnosticsSample <- omopgenerics::assertNumeric(drugDiagnosticsSample,
-                                                   min = 1, length = 1, null = TRUE)
+  if (measurementDiagnostics) {
+    measurementDiagnosticsSample <- omopgenerics::assertNumeric(
+      x = measurementDiagnosticsSample, min = 1, length = 1, null = TRUE
+    )
+  }
+  if (drugDiagnostics) {
+    drugDiagnosticsSample <- omopgenerics::assertNumeric(
+      x = drugDiagnosticsSample, min = 1, length = 1, null = TRUE
+    )
+  }
 
   addAttribute <- c("i" = "You can add a codelist to a cohort with `addCodelistAttribute()`.")
   notPresentCodelist <- is.null(attr(cdm[[cohortTable]], "cohort_codelist"))
