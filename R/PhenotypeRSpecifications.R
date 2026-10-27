@@ -310,9 +310,9 @@ print.phenotyper_specifications <- function(x, ...) {
   invisible(x)
 }
 
-#' @export
-#' @export as_tibble.phenotyper_specifications
+
 #' @importFrom dplyr as_tibble
+#' @export
 as_tibble.phenotyper_specifications <- function(x, ...) {
   cohortIds <- x |>
     purrr::list_flatten() |>
