@@ -39,6 +39,7 @@ diagImported <- importPhenotypeRSpecifications(
 diagImported
 
 # run Diagnostics from specifications
+\donttest{
 library(omock)
 library(CohortConstructor)
 
@@ -57,5 +58,6 @@ result <- phenotypeDiagnostics(
   cohortDiagnostics = diagImported$cohortDiagnostics,
   populationDiagnostics = diagImported$populationDiagnostics
 )
+}
 
 }

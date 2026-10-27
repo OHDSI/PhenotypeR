@@ -77,6 +77,7 @@ diag <- newPhenotypeRSpecifications(
 diag
 
 # run Diagnostics from specifications
+\donttest{
 library(omock)
 library(CohortConstructor)
 
@@ -95,6 +96,6 @@ result <- phenotypeDiagnostics(
   cohortDiagnostics = diag$cohortDiagnostics,
   populationDiagnostics = diag$populationDiagnostics
 )
-
+}
 
 }

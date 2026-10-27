@@ -16,7 +16,8 @@ test_that("test check functions", {
     expect_no_error(x <- validateDiagnosticsInput(list(), diagnostics, cohort = NULL))
 
     expected <- formals(get(diagnostics, envir = asNamespace("PhenotypeR"))) |>
-      purrr::discard(rlang::is_missing)
+      purrr::discard(rlang::is_missing) |>
+      purrr::map(eval)
     expect_identical(x, list(expected))
     expect_identical(
       validateDiagnosticsInput(list(list()), diagnostics, cohort = NULL),

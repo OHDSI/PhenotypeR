@@ -100,6 +100,7 @@ PhenotypeRDiagnosticsSpecs <- list(
 #' diag
 #'
 #' # run Diagnostics from specifications
+#' \donttest{
 #' library(omock)
 #' library(CohortConstructor)
 #'
@@ -118,7 +119,7 @@ PhenotypeRDiagnosticsSpecs <- list(
 #'   cohortDiagnostics = diag$cohortDiagnostics,
 #'   populationDiagnostics = diag$populationDiagnostics
 #' )
-#'
+#' }
 #'
 newPhenotypeRSpecifications <- function(databaseDiagnostics = NULL,
                                         codelistDiagnostics = NULL,
@@ -168,6 +169,7 @@ newPhenotypeRSpecifications <- function(databaseDiagnostics = NULL,
 #' diagImported
 #'
 #' # run Diagnostics from specifications
+#' \donttest{
 #' library(omock)
 #' library(CohortConstructor)
 #'
@@ -186,6 +188,7 @@ newPhenotypeRSpecifications <- function(databaseDiagnostics = NULL,
 #'   cohortDiagnostics = diagImported$cohortDiagnostics,
 #'   populationDiagnostics = diagImported$populationDiagnostics
 #' )
+#' }
 #'
 importPhenotypeRSpecifications <- function(path) {
   omopgenerics::assertCharacter(path, length = 1)
@@ -244,6 +247,7 @@ importPhenotypeRSpecifications <- function(path) {
 #' diagImported
 #'
 #' # run Diagnostics from specifications
+#' \donttest{
 #' library(omock)
 #' library(CohortConstructor)
 #'
@@ -262,6 +266,7 @@ importPhenotypeRSpecifications <- function(path) {
 #'   cohortDiagnostics = diagImported$cohortDiagnostics,
 #'   populationDiagnostics = diagImported$populationDiagnostics
 #' )
+#' }
 #'
 exportPhenotypeRSpecifications <- function(x,
                                            fileName,

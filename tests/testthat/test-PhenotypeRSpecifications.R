@@ -14,7 +14,7 @@ test_that("specifications preserve diagnostic arguments and parse population dat
   ))
   expect_identical(x$populationDiagnostics[[1]]$populationDateRange, dates)
 
-  tab <- tibble::as_tibble(x)
+  tab <- dplyr::as_tibble(x)
   expect_identical(tab$cohortId, c("cohort_1", "cohort_2"))
   expect_identical(unique(tab$incidence), TRUE)
   expect_identical(tab$populationDateRange, rep("2020-01-01 to 2020-12-31", 2))
@@ -86,7 +86,7 @@ test_that("JSON specification export and import round-trip date ranges safely", 
                    as.Date(c(NA, "2020-12-31")))
   expect_identical(imported$populationDiagnostics[[2]]$populationDateRange,
                    as.Date(c(NA, NA)))
-  expect_identical(tibble::as_tibble(imported)$populationDateRange,
+  expect_identical(dplyr::as_tibble(imported)$populationDateRange,
                    c("NA to 2020-12-31", "NA to 2020-12-31", "NA to NA"))
 })
 
@@ -110,7 +110,7 @@ test_that("Excel specification export and import round-trip date ranges", {
 
   expect_identical(imported$populationDiagnostics[[1]]$populationDateRange,
                    as.Date(c("2020-01-01", NA)))
-  expect_identical(tibble::as_tibble(imported)$populationDateRange,
+  expect_identical(dplyr::as_tibble(imported)$populationDateRange,
                    "2020-01-01 to NA")
 })
 
@@ -214,7 +214,7 @@ test_that("blank cells in a populated Excel block use defaults", {
   x <- newPhenotypeRSpecifications(
     populationDiagnostics = list(cohortId = "my_cohort")
   )
-  row <- tibble::as_tibble(x)
+  row <- dplyr::as_tibble(x)
   row[setdiff(names(row), c("cohortId", "incidence"))] <- NA
   file <- tempfile(fileext = ".xlsx")
   openxlsx::write.xlsx(
