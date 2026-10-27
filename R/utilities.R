@@ -79,6 +79,22 @@ validateDiagnosticsInput <- function(x, diagnostics, cohort, call = parent.frame
       names(conf), choices = nms, unique = TRUE, null = TRUE, call = call,
       msg = msg
     )
-    c(conf, availableArguments[!names(availableArguments) %in% names(conf)])
+    conf <- c(conf, availableArguments[!names(availableArguments) %in% names(conf)])[nms]
+    purrr::imap(conf, \(value, arg) {
+      if (is.null(value) || arg == "populationDateRange") {
+        return(value)
+      }
+      if (arg == "cohortId") {
+        return(sort(unique(value)))
+      }
+      type <- PhenotypeRDiagnosticsSpecs$argType[
+        match(arg, PhenotypeRDiagnosticsSpecs$args)
+      ]
+      switch(type,
+        character = as.character(value),
+        numeric = as.numeric(value),
+        logical = as.logical(value)
+      )
+    })
   })
 }

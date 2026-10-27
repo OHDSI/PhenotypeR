@@ -458,7 +458,7 @@ readPhenotypeRExcel <- function(path) {
   for (dg in PhenotypeRDiagnostics) {
     diagnosticCols <- cols[diag == dg]
     # identify diagnostics parametrisation
-    phenotypeRSpecifications[[dg]] <- x |>
+    configurations <- x |>
       dplyr::filter(dplyr::if_any(dplyr::all_of(diagnosticCols), \(value) !is.na(value))) |>
       dplyr::select("cohortId", dplyr::all_of(diagnosticCols)) |>
       dplyr::group_split(dplyr::across(!"cohortId")) |>
@@ -466,13 +466,17 @@ readPhenotypeRExcel <- function(path) {
         diag_group |>
           purrr::imap(\(x, nm) {
             x <- unique(x)
-            if (nm == "populationDateRange") {
+            if (nm == "populationDateRange" && !all(is.na(x))) {
               x <- characterToRange(x)
             }
             return(x)
           }) |>
           purrr::keep(\(x) !all(is.na(x)))
       })
+    if (length(configurations) == 0) {
+      configurations <- NULL
+    }
+    phenotypeRSpecifications[dg] <- list(configurations)
   }
 
   return(phenotypeRSpecifications)

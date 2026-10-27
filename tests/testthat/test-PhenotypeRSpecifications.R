@@ -113,3 +113,112 @@ test_that("Excel specification export and import round-trip date ranges", {
   expect_identical(tibble::as_tibble(imported)$populationDateRange,
                    "2020-01-01 to NA")
 })
+
+test_that("Import and export are the same", {
+  diag <- newPhenotypeRSpecifications(
+    codelistDiagnostics = list(
+      cohortId = c("ibuprofen", "beta_blocker"),
+      drugDiagnostics = TRUE
+    )
+  )
+
+  dir <- tempdir()
+
+  # export as excel
+  file <- "specs.xlsx"
+  exportPhenotypeRSpecifications(x = diag, fileName = file, path = dir, type = "excel")
+  diagImported1 <- importPhenotypeRSpecifications(path = file.path(dir, file))
+  for (dg in PhenotypeR:::PhenotypeRDiagnostics) {
+    expect_identical(diag[[dg]], diagImported1[[dg]])
+  }
+
+  # export as json
+  file <- "specs.json"
+  exportPhenotypeRSpecifications(x = diag, fileName = file, path = dir, type = "json")
+  diagImported2 <- importPhenotypeRSpecifications(path = file.path(dir, file))
+  for (dg in PhenotypeR:::PhenotypeRDiagnostics) {
+    expect_identical(diag[[dg]], diagImported2[[dg]])
+  }
+
+  skip_on_cran()
+  cdm <- omock::mockCdmFromDataset(datasetName = "GiBleed", source = "duckdb")
+  cdm$my_cohort <- CohortConstructor::conceptCohort(
+    cdm = cdm,
+    conceptSet = list(ibuprofen = 1127433L, beta_blocker = 40481087L),
+    name = "my_cohort"
+  )
+  # run code and compare results
+  result1 <- phenotypeDiagnostics(
+    cohort = cdm$my_cohort,
+    databaseDiagnostics = NULL,
+    codelistDiagnostics = list(
+      cohortId = c("ibuprofen", "beta_blocker"),
+      drugDiagnostics = TRUE
+    ),
+    cohortDiagnostics = NULL,
+    populationDiagnostics = NULL
+  )
+  result2 <- phenotypeDiagnostics(
+    cohort = cdm$my_cohort,
+    databaseDiagnostics = diag$databaseDiagnostics,
+    codelistDiagnostics = diag$codelistDiagnostics,
+    cohortDiagnostics = diag$cohortDiagnostics,
+    populationDiagnostics = diag$populationDiagnostics
+  )
+  result3 <- phenotypeDiagnostics(
+    cohort = cdm$my_cohort,
+    databaseDiagnostics = diagImported1$databaseDiagnostics,
+    codelistDiagnostics = diagImported1$codelistDiagnostics,
+    cohortDiagnostics = diagImported1$cohortDiagnostics,
+    populationDiagnostics = diagImported1$populationDiagnostics
+  )
+  result4 <- phenotypeDiagnostics(
+    cohort = cdm$my_cohort,
+    databaseDiagnostics = diagImported2$databaseDiagnostics,
+    codelistDiagnostics = diagImported2$codelistDiagnostics,
+    cohortDiagnostics = diagImported2$cohortDiagnostics,
+    populationDiagnostics = diagImported2$populationDiagnostics
+  )
+
+  # filter logs out
+  result1 <- omopgenerics::filterSettings(result1, result_type != "summarise_log_file")
+  result2 <- omopgenerics::filterSettings(result2, result_type != "summarise_log_file")
+  result3 <- omopgenerics::filterSettings(result3, result_type != "summarise_log_file")
+  result4 <- omopgenerics::filterSettings(result4, result_type != "summarise_log_file")
+
+  # TODO probably this should not be needed!!
+  attr(result1, 'settings')$subset <- NULL
+  attr(result2, 'settings')$subset <- NULL
+  attr(result3, 'settings')$subset <- NULL
+  attr(result4, 'settings')$subset <- NULL
+
+  expect_identical(result1, result2)
+  expect_identical(result1, result3)
+  expect_identical(result1, result4)
+})
+
+test_that("exports distinguish skipped diagnostics from enabled defaults", {
+  for (x in list(
+    newPhenotypeRSpecifications(),
+    newPhenotypeRSpecifications(cohortDiagnostics = list())
+  )) {
+    for (type in c("excel", "json")) {
+      file <- tempfile(fileext = if (type == "excel") ".xlsx" else ".json")
+      exportPhenotypeRSpecifications(x, basename(file), dirname(file), type)
+      expect_identical(importPhenotypeRSpecifications(file), x)
+    }
+  }
+})
+
+test_that("blank cells in a populated Excel block use defaults", {
+  x <- newPhenotypeRSpecifications(
+    populationDiagnostics = list(cohortId = "my_cohort")
+  )
+  row <- tibble::as_tibble(x)
+  row[setdiff(names(row), c("cohortId", "incidence"))] <- NA
+  file <- tempfile(fileext = ".xlsx")
+  openxlsx::write.xlsx(
+    row, file, sheetName = "Specifications", startRow = 3, colNames = FALSE
+  )
+  expect_identical(importPhenotypeRSpecifications(file), x)
+})
