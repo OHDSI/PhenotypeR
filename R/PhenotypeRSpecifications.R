@@ -202,7 +202,7 @@ importPhenotypeRSpecifications <- function(path) {
   }
 
   newPhenotypeRSpecifications(
-    databaseDiagnostics = x$databaseDisgnotics,
+    databaseDiagnostics = x$databaseDiagnostics,
     codelistDiagnostics = x$codelistDiagnostics,
     cohortDiagnostics = x$cohortDiagnostics,
     populationDiagnostics = x$populationDiagnostics
@@ -394,7 +394,7 @@ validatePhenotypeRSpecifications <- function(x, call = parent.frame()) {
 
   # validate inputs
   for (nm in PhenotypeRDiagnostics) {
-    x[[nm]] <- validateDiagnosticsInput(x[[nm]], nm, call = call)
+    x[nm] <- list(validateDiagnosticsInput(x[[nm]], nm, call = call))
   }
 
   return(x)
@@ -500,15 +500,14 @@ readPhenotypeRJson <- function(path) {
 writePhenotyepeRExcel <- function(x, file) {
   # add instructions
   wb <- openxlsx::loadWorkbook(
-    file = system.file("Instructions.xlsx", package = "CodelistGenerator")
+    file = system.file("Instructions.xlsx", package = "PhenotypeR")
   )
   # add data to the Specifications sheet
-  openxlsx::addWorksheet(wb = wb, sheetName = "Specifications")
   openxlsx::writeData(
     wb = wb,
     sheet = "Specifications",
     x = dplyr::as_tibble(x),
-    startCol = 2,
+    startCol = 1,
     startRow = 3
   )
   openxlsx::saveWorkbook(
@@ -526,9 +525,16 @@ writePhenotyepeRJson <- function(x, file) {
   )
 }
 characterToRange <- function(x) {
-  x <- stringr::str_split(x, pattern = "to", n = 2)[[1]]
-  as.Date(c(x, rep("NA", 2 - length(x))), format = "YYYY-MM-DD")
+  x <- stringr::str_split(x, pattern = "to", n = 2)[[1]] |>
+    purrr::map_chr(stringr::str_squish)
+  dates <- as.Date(c(x, rep("NA", 2 - length(x))), format = "%Y-%m-%d")
+  if ((is.na(dates[1]) & nzchar(x[1]) & !is.na(x[1]) & !identical(x[1], "NA")) |
+      (is.na(dates[2]) & nzchar(x[2]) & !is.na(x[2]) & !identical(x[2], "NA"))) {
+    cli::cli_abort(c(x = "Date range not correctly formatted, please use: YYYY-MM-DD to YYYY-MM-DD."))
+  }
+  return(dates)
 }
 rangeToCharacter <- function(x) {
+  dates <- characterToRange(x)
   paste(ifelse(is.na(dates), "NA", format(dates, "%Y-%m-%d")), collapse = " to ")
 }
