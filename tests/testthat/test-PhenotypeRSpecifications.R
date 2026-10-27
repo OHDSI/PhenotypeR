@@ -73,7 +73,7 @@ test_that("JSON specification export and import round-trip date ranges safely", 
 
   expect_identical(
     json$populationDiagnostics[[1]]$populationDateRange,
-    as.Date(c(NA, "2020-12-31"))
+    "NA to 2020-12-31"
   )
   expect_identical(names(imported), names(x))
   expect_identical(

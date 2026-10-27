@@ -485,7 +485,11 @@ readPhenotypeRJson <- function(path) {
     }
     purrr::map(configurations, \(configuration) {
       purrr::imap(configuration, \(value, nm) {
-        value
+        if (nm == "populationDateRange") {
+          characterToRange(value)
+        } else {
+          unlist(value, recursive = TRUE, use.names = FALSE)
+        }
       })
     })
   })
@@ -513,7 +517,7 @@ writePhenotyepeRExcel <- function(x, file) {
   )
 }
 writePhenotyepeRJson <- function(x, file) {
-  # safely parse dates
+  # safely parse date ranges
   x <- unclass(x)
   if (!is.null(x$populationDiagnostics)) {
     x$populationDiagnostics <- x$populationDiagnostics |>
@@ -528,7 +532,7 @@ writePhenotyepeRJson <- function(x, file) {
     x = x,
     path = file,
     pretty = TRUE,
-    auto_unbox = FALSE
+    auto_unbox = TRUE
   )
 }
 characterToRange <- function(x) {

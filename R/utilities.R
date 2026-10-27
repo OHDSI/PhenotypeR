@@ -61,7 +61,8 @@ validateDiagnosticsInput <- function(x, diagnostics, cohort, call = parent.frame
     rlang::parse_expr() |>
     rlang::eval_tidy() |>
     formals() |>
-    purrr::discard(rlang::is_missing)
+    purrr::discard(rlang::is_missing) |>
+    purrr::map(eval)
 
   nms <- names(availableArguments)
 
