@@ -4,13 +4,7 @@
 \alias{exportPhenotypeRSpecifications}
 \title{Export a \code{phenotyper_specification} object to a \code{json} or \code{xlsx} file}
 \usage{
-exportPhenotypeRSpecifications(
-  x,
-  fileName,
-  path = getwd(),
-  type = "excel",
-  ...
-)
+exportPhenotypeRSpecifications(x, fileName, path = getwd(), type = "excel")
 }
 \arguments{
 \item{x}{A \code{phenotyper_specification} object.}
@@ -20,8 +14,6 @@ exportPhenotypeRSpecifications(
 \item{path}{Path where to save the file.}
 
 \item{type}{Character with the \code{type} to export: "excel" or "json".}
-
-\item{...}{Additional arguments passed to \code{jsonlite::write_json()}.}
 }
 \value{
 A file will be created with the \code{phenotyper_specification}
