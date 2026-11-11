@@ -36,6 +36,7 @@ importFrom(CodelistGenerator,
   summariseCohortCodeUse,
   summariseOrphanCodes
 )
+importFrom(lifecycle,deprecated)
 importFrom(omopgenerics,
   bind,
   exportSummarisedResult,

@@ -86,7 +86,7 @@ if(length(dataFiltered) > 0){
     values$shared_cohort_names <- values$shared_cohort_names[values$shared_cohort_names != "overall"]
   }
 }else{
-  diagnostics <- ""
+  diagnostics <- character()
 }
 
 # Filter not needed values
@@ -303,6 +303,56 @@ if("diagnostic" %in% colnames(expectations)){
   expectations <- expectations |>
     dplyr::mutate("diagnostic" = paste(all_diag, collapse = ", "))
 }
+
+# Panels shown in the app, keyed by the result types that populate them.
+panelResultTypes <- list(
+  summarise_omop_snapshot = "Snapshot",
+  summarise_person = "Person",
+  summarise_observation_period = "Observation periods",
+  summarise_clinical_records = "Clinical Records",
+  cohort_code_use = "Cohort code use",
+  achilles_code_use = "Achilles code use",
+  orphan_code_use = "Orphan codes",
+  measurement_summary = "Measurement Diagnostics",
+  summarise_drug_use = "Drug diagnostics",
+  summarise_cohort_count = "Cohort count",
+  summarise_characteristics = "Cohort characteristics",
+  summarise_large_scale_characteristics = c(
+    "Large scale characteristics", "Compare large scale characteristics" # TODO add diferentiation
+  ),
+  summarise_cohort_overlap = "Compare cohorts",
+  survival_estimates = "Cohort survival",
+  incidence = "Incidence",
+  prevalence = "Prevalence"
+)
+diagnosticsPanels <- unname(unlist(panelResultTypes[names(panelResultTypes) %in% data]))
+
+expectationPanelResults <- c(
+  cohort_count_expectations = "summarise_cohort_count",
+  cohort_characteristics_expectations = "summarise_characteristics",
+  large_scale_characteristics_expectations = "summarise_large_scale_characteristics",
+  compare_large_scale_characteristics_expectations = "summarise_large_scale_characteristics",
+  compare_cohorts_expectations = "summarise_cohort_overlap",
+  cohort_survival_expectations = "survival_estimates"
+)
+expectationPanelDiagnostics <- c(
+  cohort_count_expectations = "cohort_count",
+  cohort_characteristics_expectations = "cohort_characteristics",
+  large_scale_characteristics_expectations = "large_scale_characteristics",
+  compare_large_scale_characteristics_expectations = "compare_large_scale_characteristics",
+  compare_cohorts_expectations = "compare_cohorts",
+  cohort_survival_expectations = "cohort_survival"
+)
+availableExpectationDiagnostics <- expectations$diagnostics |>
+  as.character() |>
+  strsplit(",[[:space:]]*") |>
+  unlist(use.names = FALSE) |>
+  unique()
+expectationsPanels <- names(expectationPanelResults)[
+  unname(expectationPanelResults) %in% data &
+    unname(expectationPanelDiagnostics) %in% availableExpectationDiagnostics
+]
+
 phenotyper_version <- omopgenerics::settings(result) |>
   dplyr::filter(!is.na(phenotyper_version)) |>
   dplyr::pull("phenotyper_version") |>
@@ -343,6 +393,9 @@ qs2::qs_savem(dataFiltered,
               clinical_descriptions,
               database_descriptions,
               settingsFiltered,
+              diagnostics,
+              diagnosticsPanels,
+              expectationsPanels,
               file = here::here("data", "appData.qs"))
 
 rm(result, data, expectations, dataFiltered, choices, selected, values, values_subset,
