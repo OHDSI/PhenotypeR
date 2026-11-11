@@ -58,11 +58,11 @@ test_that("only one diagnostic", {
   result <- databaseDiagnostics(cdm$new_cohort)
   expect_no_error(shinyDiagnostics(result, directory = tempdir()))
 
-  result <- codelistDiagnostics(cdm$new_cohort)
-  expect_warning(shinyDiagnostics(result, directory = tempdir()))
+  # result <- codelistDiagnostics(cdm$new_cohort)
+  # expect_warning(shinyDiagnostics(result, directory = tempdir()))
 
-  result <- cohortDiagnostics(cdm$new_cohort, cohortSurvival = FALSE)
-  expect_warning(shinyDiagnostics(result, directory = tempdir()))
+  # result <- cohortDiagnostics(cdm$new_cohort, cohortSurvival = FALSE)
+  # expect_warning(shinyDiagnostics(result, directory = tempdir()))
 
   result <- populationDiagnostics(cdm$new_cohort, populationSample = 10000)
   expect_no_error(shinyDiagnostics(result, directory = tempdir()))

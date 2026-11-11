@@ -22,7 +22,7 @@
 #' @param clinicalDescriptions Clinical descriptions from `draftClinicalDescription()`
 #' or `importClinicalDescription()`
 #' @param databaseDescriptions Database descriptions from `importDatabaseDescription()`
-#' @param removeEmptyTabs Whether to remove tabs of those diagnostics that have not been performed or that were insufficient counts to produce a result (TRUE) or not (FALSE)
+#' @param removeEmptyTabs Deprecated and ignored. Tabs for diagnostics without results are always hidden.
 #'
 #' @return A shiny app
 #' @export
@@ -55,7 +55,10 @@ shinyDiagnostics <- function(result,
                              conceptReview = NULL,
                              clinicalDescriptions = NULL,
                              databaseDescriptions = NULL,
-                             removeEmptyTabs = TRUE){
+                             removeEmptyTabs = deprecated()) {
+  if (lifecycle::is_present(removeEmptyTabs)) {
+    lifecycle::deprecate_soft("0.6.0", "shinyDiagnostics(removeEmptyTabs=)")
+  }
 
   folderName <- "PhenotypeRShiny"
 
@@ -110,17 +113,6 @@ shinyDiagnostics <- function(result,
   if(!is.null(clinicalDescriptions)) {
     exportClinicalDescription(clinicalDescription = clinicalDescriptions,
                               outputDir = file.path(to, "data","raw","clinical_descriptions"))
-  }
-
-  # remove tabs
-  if(isTRUE(removeEmptyTabs)){
-    ui <- readLines(con = file.path(to,"ui.R"))
-    diag_to_remove <- checkWhichDiagnostics(result)
-    ui <- removeDiagnostics(ui, result, diag_to_remove)
-    ui <- removeExpectations(ui,
-                             expectationsPath = file.path(to, "data", "raw", "expectations", "expectations.csv"),
-                             to_remove = diag_to_remove)
-    writeLines(ui, file.path(to,"ui.R"))
   }
 
   # open project
@@ -196,132 +188,6 @@ copyDirectory <- function(from, to) {
   # copy files
   file.copy(from = oldFiles, to = NewFiles)
 }
-
-checkWhichDiagnostics <- function(result){
-
-  if(nrow(result) == 0){
-    diag_present <- ""
-  }else{
-    diag_present <- omopgenerics::settings(result) |> dplyr::pull("diagnostic") |> unique()
-    diag_present <- diag_present[diag_present != "Logging"]
-  }
-
-  result_type <- omopgenerics::settings(result) |> dplyr::pull("result_type") |> unique()
-  to_remove <- vector("list", length(diag_present))
-  names(to_remove) <- diag_present
-
-  if("databaseDiagnostics" %in% names(to_remove)) {
-    vals <- c(
-      summarise_omop_snapshot   = "snapshot",
-      summarise_person          = "person",
-      summarise_observation_period = "observation_period",
-      summarise_clinical_records   = "clinical_records"
-    )
-
-    to_remove[["databaseDiagnostics"]] <- unname(vals[!names(vals) %in% result_type])
-  }
-
-  if("codelistDiagnostics" %in% names(to_remove)) {
-    vals <- c(
-      "achilles_code_use" = "achilles_code_use",
-      "orphan_code_use" = "orphan_code_use",
-      "cohort_code_use" = "cohort_code_use",
-      "measurement_summary" = "measurement_diagnostics",
-      "summarise_drug_use" = "drug_diagnostics"
-    )
-
-    to_remove[["codelistDiagnostics"]] <- unname(vals[!names(vals) %in% result_type])
-  }
-
-  if ("cohortDiagnostics" %in% names(to_remove)) {
-    vals <- c(
-      "summarise_cohort_count" =  "cohort_count",
-      "summarise_characteristics" = "cohort_characteristics",
-      "summarise_large_scale_characteristics" = "large_scale_characteristics",
-      "summarise_large_scale_characteristics" = "compare_large_scale_characteristics",
-      "summarise_cohort_overlap" = "compare_cohorts",
-      "survival_estimates" =  "cohort_survival"
-    )
-
-    to_remove[["cohortDiagnostics"]] <- unname(vals[!names(vals) %in% result_type])
-  }
-
-  if("populationDiagnostics" %in% names(to_remove)) {
-    vals <- c(
-      "incidence" =  "incidence",
-      "prevalence" = "prevalence"
-    )
-
-    to_remove[["populationDiagnostics"]] <- unname(vals[!names(vals) %in% result_type])
-  }
-
-  return(to_remove)
-}
-
-removeDiagnostics <- function(ui, result, to_remove){
-
-  # Eliminate overall diagnostics
-  x <- setdiff(c("databaseDiagnostics", "codelistDiagnostics", "cohortDiagnostics", "populationDiagnostics"), names(to_remove))
-  if(length(x) != 0) {
-    for(i in seq_along(x)){
-      start <- which(stringr::str_detect(ui, stringr::regex(paste0("\\b", x[[i]], "_start\\b"), ignore_case = FALSE)))
-      end   <- which(stringr::str_detect(ui, stringr::regex(paste0("\\b", x[[i]], "_end\\b"), ignore_case = FALSE)))
-      ui <- ui[-seq(start,end,1)]
-    }
-    cli::cli_warn("{x} tab{?s} will be removed as the diagnostic{?s} {?was/were} not performed")
-  }
-
-  # Eliminate specific diagnostics
-  if(length(to_remove) != 0) {
-    for(i in seq_along(to_remove)){
-      if(length(to_remove[[i]]) != 0){
-        xi <- to_remove[[i]]
-
-        for(j in seq_along(xi)) {
-          start <- which(stringr::str_detect(ui, stringr::regex(paste0("\\b", xi[[j]], "_start\\b"), ignore_case = FALSE)))
-          end   <- which(stringr::str_detect(ui, stringr::regex(paste0("\\b", xi[[j]], "_end\\b"), ignore_case = FALSE)))
-          ui <- ui[-seq(start,end,1)]
-        }
-
-        cli::cli_warn("The following tabs from {names(to_remove[i])} will be removed because they are not present in the summarised result: {to_remove[[i]]}")
-      }
-    }
-  }
-
-  return(ui)
-}
-
-removeExpectations <- function(ui, expectationsPath, to_remove) {
-
-  if(file.exists(expectationsPath)){
-  expectations <- readr::read_csv(expectationsPath, show_col_types = FALSE)
-  } else {
-    expectations <- emptyExpectations()
-  }
-
-  all_exp <- c("cohort_count", "cohort_characteristics", "large_scale_characteristics",
-               "compare_large_scale_characteristics", "compare_cohorts", "cohort_survival")
-  x <- unique(expectations$diagnostics)
-
-  if("cohortDiagnostics" %in% names(to_remove)) {
-    all_exp <- setdiff(all_exp, to_remove$cohortDiagnostics)
-    x <- setdiff(x, to_remove$cohortDiagnostics)
-    x <- setdiff(all_exp, x)
-
-    if(length(x) != 0) {
-      for(i in seq_along(x)) {
-        start <- which(stringr::str_detect(ui, stringr::regex(paste0("\\b", x[[i]], "_expectations_start\\b"), ignore_case = FALSE)))
-        end   <- which(stringr::str_detect(ui, stringr::regex(paste0("\\b", x[[i]], "_expectations_end\\b"), ignore_case = FALSE)))
-        ui <- ui[-seq(start,end,1)]
-      }
-    }
-
-    cli::cli_warn("Expectations tab in {x} will be removed, as none were provided.")
-  }
-
-  return(ui)
-}
-
 
 emptyExpectations <- function(){
   dplyr::tibble("cohort_name" = NA_character_,
