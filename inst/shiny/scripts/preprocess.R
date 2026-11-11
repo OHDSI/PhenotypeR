@@ -110,59 +110,56 @@ values <- values[!stringr::str_detect(names(values), "survival_events")]
 values <- values[!stringr::str_detect(names(values), "survival_summary")]
 values <- values[!stringr::str_detect(names(values), "survival_attrition")]
 
-# Pre-define some selected
-if("summarise_dob_density" %in% names(dataFiltered)){
-  minDob <- dataFiltered$summarise_dob_density |>
-    omopgenerics::tidy() |>
-    dplyr::summarise(min_dob = min(density_x, na.rm = TRUE)) |>
-    dplyr::pull("min_dob") |>
-    lubridate::floor_date(unit = "years")
+getDateRange <- function(x) {
+  x <- as.Date(x)
+  x <- x[!is.na(x)]
+  if (length(x) == 0) {
+    return(c(as.Date("1900-01-01"), Sys.Date()))
+  }
 
-  maxDob <- dataFiltered$summarise_dob_density |>
-    omopgenerics::tidy() |>
-    dplyr::summarise(max_dob = max(density_x, na.rm = TRUE)) |>
-    dplyr::pull("max_dob") |>
-    lubridate::ceiling_date(unit = "years")
-} else {
-  minDob <- c(as.Date("1900-01-01"))
-  maxDob <- Sys.Date()
+  dateRange <- as.Date(c(
+    clock::date_start(min(x), precision = "year"),
+    clock::date_end(max(x),  precision = "year")
+  ))
+  if (dateRange[[1]] >= dateRange[[2]]) {
+    dateRange[[2]] <- dateRange[[1]] + lubridate::years(1)
+  }
+  dateRange
 }
 
-if("summarise_obs_density" %in% names(dataFiltered)){
-  minObs <- dataFiltered$summarise_obs_density |>
+# Keep slider ranges valid even when a result is absent or has no dates.
+if ("summarise_dob_density" %in% names(dataFiltered)) {
+  dobRange <- dataFiltered$summarise_dob_density |>
     omopgenerics::tidy() |>
-    dplyr::summarise(min_obs = min(density_x, na.rm = TRUE)) |>
-    dplyr::pull("min_obs") |>
-    lubridate::floor_date(unit = "years")
-  maxObs <- dataFiltered$summarise_obs_density |>
-    omopgenerics::tidy() |>
-    dplyr::summarise(max_obs = max(density_x, na.rm = TRUE)) |>
-    dplyr::pull("max_obs") |>
-    lubridate::ceiling_date(unit = "years")
+    dplyr::pull("density_x") |>
+    getDateRange()
 } else {
-  minObs <- c(as.Date("1900-01-01"))
-  maxObs <- Sys.Date()
+  dobRange <- c(as.Date("1900-01-01"), Sys.Date())
+}
+if ("summarise_obs_density" %in% names(dataFiltered)) {
+  obsRange <- dataFiltered$summarise_obs_density |>
+    omopgenerics::tidy() |>
+    dplyr::pull("density_x") |>
+    getDateRange()
+} else {
+  obsRange <- c(as.Date("1900-01-01"), Sys.Date())
+}
+if ("summarise_trend" %in% names(dataFiltered)) {
+  recordRange <- dataFiltered$summarise_trend |>
+    omopgenerics::tidy() |>
+    dplyr::mutate(time = as.Date(stringr::str_split_i(time_interval, " to", 1))) |>
+    dplyr::pull("time") |>
+    getDateRange()
+} else {
+  recordRange <- c(as.Date("1900-01-01"), Sys.Date())
 }
 
-if("summarise_trend" %in% names(dataFiltered)){
-  minRecords <- dataFiltered$summarise_trend |>
-    omopgenerics::tidy() |>
-    dplyr::mutate(time = stringr::str_split_i(time_interval, " to", 1)) |>
-    dplyr::mutate(time = as.Date(time)) |>
-    dplyr::summarise(min_records = min(time, na.rm = TRUE)) |>
-    dplyr::pull("min_records") |>
-    lubridate::floor_date(unit = "years")
-  maxRecords <- dataFiltered$summarise_trend |>
-    omopgenerics::tidy() |>
-    dplyr::mutate(time = stringr::str_split_i(time_interval, " to", 1)) |>
-    dplyr::mutate(time = as.Date(time)) |>
-    dplyr::summarise(max_records = max(time, na.rm = TRUE)) |>
-    dplyr::pull("max_records") |>
-    lubridate::ceiling_date(unit = "years")
-} else {
-  minRecords <- as.Date(NA)
-  maxRecords <- as.Date(NA)
-}
+minDob <- dobRange[[1]]
+maxDob <- dobRange[[2]]
+minObs <- obsRange[[1]]
+maxObs <- obsRange[[2]]
+minRecords <- recordRange[[1]]
+maxRecords <- recordRange[[2]]
 
 if("codelistDiagnostics" %in% diagnostics){
   values$achilles_code_use_codelist_name <- values$achilles_code_use_codelist_name |> sort()
@@ -400,5 +397,3 @@ qs2::qs_savem(dataFiltered,
 
 rm(result, data, expectations, dataFiltered, choices, selected, values, values_subset,
    clinical_descriptions, database_descriptions)
-
-
