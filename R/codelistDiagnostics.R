@@ -66,14 +66,10 @@ codelistDiagnostics <- function(cohort,
     dplyr::select("cohort_definition_id") |>
     dplyr::pull()
   if (measurementDiagnostics) {
-    measurementDiagnosticsSample <- omopgenerics::assertNumeric(
-      x = measurementDiagnosticsSample, min = 1, length = 1, null = TRUE
-    )
+    omopgenerics::assertNumeric(measurementDiagnosticsSample, min = 1, length = 1, null = TRUE)
   }
   if (drugDiagnostics) {
-    drugDiagnosticsSample <- omopgenerics::assertNumeric(
-      x = drugDiagnosticsSample, min = 1, length = 1, null = TRUE
-    )
+    omopgenerics::assertNumeric(drugDiagnosticsSample, min = 1, length = 1, null = TRUE)
   }
 
   addAttribute <- c("i" = "You can add a codelist to a cohort with `addCodelistAttribute()`.")
