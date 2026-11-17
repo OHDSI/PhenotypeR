@@ -178,3 +178,28 @@ test_that("overall diagnostics function", {
           unique(settings(cohort_pop_diag_only) |>
                    dplyr::pull("result_type"))))
 })
+
+test_that("binding problems due to logger", {
+  skip_on_cran()
+
+  cdm <- omock::mockCdmFromDataset(source = "duckdb")
+  cdm$warfarin <- CohortConstructor::conceptCohort(
+    cdm = cdm,
+    conceptSet =  list(warfarin = c(1310149L, 40163554L)),
+    name = "warfarin"
+  )
+  result1 <- phenotypeDiagnostics(
+    cdm$warfarin,
+    databaseDiagnostics = NULL,
+    cohortDiagnostics = NULL,
+    populationDiagnostics = NULL
+  )
+  result2 <- phenotypeDiagnostics(
+    cdm$warfarin,
+    databaseDiagnostics = NULL,
+    cohortDiagnostics = NULL,
+    populationDiagnostics = NULL
+  )
+
+  expect_no_error(bind(result1, result2))
+})

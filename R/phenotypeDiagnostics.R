@@ -99,8 +99,8 @@ phenotypeDiagnostics <- function(cohort,
   )
 
   existingLogFile <- getOption(x = "omopgenerics.logFile", default = NULL)
-  if(!is.null(existingLogFile)){
-  options("omopgenerics.logFile" = NULL)
+  if (!is.null(existingLogFile)) {
+    options("omopgenerics.logFile" = NULL)
   }
 
   if(!is.null(stagingDirectory)){
@@ -111,10 +111,8 @@ phenotypeDiagnostics <- function(cohort,
                                  fileext = ".txt")
   }
 
-  if(!is.null(phenotyperLogFile)) {
-    cli::cli_inform("Logging PhenotypeR progress in {phenotyperLogFile}")
-    omopgenerics::createLogFile(logFile = phenotyperLogFile)
-  }
+  cli::cli_inform("Logging PhenotypeR progress in {phenotyperLogFile}")
+  omopgenerics::createLogFile(logFile = phenotyperLogFile)
 
   incrementalResultPath <- getOption(x = "PhenotypeR.incremenatl_save_path")
   if(!is.null(stagingDirectory)) {
@@ -196,13 +194,22 @@ phenotypeDiagnostics <- function(cohort,
       }
     }
   }
+
   results[["log"]] <- omopgenerics::summariseLogFile(
     cdmName = omopgenerics::cdmName(cdm)
   )
+
+  # PhenotypeR run id
+  id <- getOption("PhenotypeR.run_id", 0L) + 1L
+  options("PhenotypeR.run_id" = id)
+
   newSettings <- results[["log"]]  |>
     omopgenerics::settings() |>
-    dplyr::mutate("phenotyper_version" = as.character(utils::packageVersion(pkg = "PhenotypeR")),
-                  "diagnostic" = "Logging")
+    dplyr::mutate(
+      "phenotyper_version" = as.character(utils::packageVersion(pkg = "PhenotypeR")),
+      "diagnostic" = "Logging",
+      "phenotyper_run_id" = sprintf("%03i", id)
+    )
   results[["log"]] <- results[["log"]] |>
     omopgenerics::newSummarisedResult(settings = newSettings)
 
@@ -216,9 +223,12 @@ phenotypeDiagnostics <- function(cohort,
 
   # if log file existed at the start, copy back to original location
   if (!is.null(existingLogFile)) {
-    file.copy(from = getOption(x = "omopgenerics.logFile", default = NULL),
-              to = existingLogFile,
-              overwrite = TRUE) |>
+    cat(
+      readLines(getOption("omopgenerics.logFile"), warn = FALSE),
+      sep = "\n",
+      file = existingLogFile,
+      append = TRUE
+    ) |>
       invisible()
     options("omopgenerics.logFile" = existingLogFile)
   }
