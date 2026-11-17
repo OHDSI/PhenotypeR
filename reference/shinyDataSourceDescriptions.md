@@ -30,6 +30,6 @@ Shiny app
 # \donttest{
 shinyDataSourceDescriptions(tempdir())
 #> ℹ Creating shiny from provided data
-#> ℹ Shiny app created in /tmp/Rtmp00jdvo/dataSourceDescritpionShiny
+#> ℹ Shiny app created in /tmp/Rtmp2SmITT/dataSourceDescritpionShiny
 # }
 ```

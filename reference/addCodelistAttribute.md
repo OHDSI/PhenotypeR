@@ -48,7 +48,7 @@ cdm <- mockCdmFromDataset(source = "duckdb")
 #> ℹ Creating local <cdm_reference> object.
 #> ℹ Inserting <cdm_reference> into duckdb.
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/Rtmp00jdvo/duckdb
+#> ℹ /tmp/Rtmp2SmITT/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
@@ -71,7 +71,7 @@ cohort <- addCodelistAttribute(cohort = cdm$warfarin,
 #> Warning: Overwriting codelist for cohort warfarin
 attr(cohort, "cohort_codelist")
 #> # A query:  ?? x 4
-#> # Database: DuckDB 1.5.6 [unknown@Linux 7.0.0-1017-azure:R 4.6.1//tmp/Rtmp00jdvo/file1b4a613838b5.duckdb]
+#> # Database: DuckDB 2.0.0 [unknown@Linux 7.0.0-1019-azure:R 4.6.2//tmp/Rtmp2SmITT/file1d8950d8abd3.duckdb]
 #>   cohort_definition_id codelist_name concept_id codelist_type
 #>                  <int> <chr>              <int> <chr>        
 #> 1                    1 warfarin         1310149 index event  
