@@ -13,7 +13,7 @@ shinyDiagnostics(
   conceptReview = NULL,
   clinicalDescriptions = NULL,
   databaseDescriptions = NULL,
-  removeEmptyTabs = TRUE
+  removeEmptyTabs = deprecated()
 )
 }
 \arguments{
@@ -36,7 +36,7 @@ or \code{importClinicalDescription()}}
 
 \item{databaseDescriptions}{Database descriptions from \code{importDatabaseDescription()}}
 
-\item{removeEmptyTabs}{Whether to remove tabs of those diagnostics that have not been performed or that were insufficient counts to produce a result (TRUE) or not (FALSE)}
+\item{removeEmptyTabs}{Deprecated and ignored. Tabs for diagnostics without results are always hidden.}
 }
 \value{
 A shiny app

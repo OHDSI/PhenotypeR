@@ -1,5 +1,6 @@
 ui <- fluidPage(
   bslib::page_navbar(
+    id = "main_navbar",
     theme = bs_theme(5, "pulse"),
     navbar_options =list(class = "bg-dark", theme = "dark"),
 
@@ -120,6 +121,7 @@ ui <- fluidPage(
     # databaseDiagnostics_start -----
     bslib::nav_menu(
       title = "Database diagnostics",
+      value = "databaseDiagnostics",
       icon = shiny::icon("list"),
       ## snapshot_start -----
       bslib::nav_panel(
@@ -509,6 +511,7 @@ ui <- fluidPage(
     # codelistDiagnostics_start -----
     bslib::nav_menu(
       title = "Codelist diagnostics",
+      value = "codelistDiagnostics",
       icon = shiny::icon("list"),
       ## cohort_code_use_start -----
       bslib::nav_panel(
@@ -1324,6 +1327,7 @@ ui <- fluidPage(
     # cohortDiagnostics_start -----
     bslib::nav_menu(
       title = "Cohort diagnostics",
+      value = "cohortDiagnostics",
       icon = shiny::icon("list"),
       ## cohort_count_start ----
       bslib::nav_panel(
@@ -1377,10 +1381,10 @@ ui <- fluidPage(
           )),
         icon = shiny::icon("person"),
         # cohort_count_expectations_start
-        accordion(open = FALSE,
+        accordion(id = "cohort_count_expectations_accordion", open = FALSE,
                   accordion_panel(
                     title = "Show cohort expectations",
-                    value = "panel_ce_1",
+                    value = "cohort_count_expectations",
                     reactable::reactableOutput("cohort_count_expectations")
                   )),
         # cohort_count_expectations_end
@@ -1536,10 +1540,10 @@ ui <- fluidPage(
           )),
         icon = shiny::icon("users-gear"),
         # cohort_characteristics_expectations_start
-        accordion(open = FALSE,
+        accordion(id = "cohort_characteristics_expectations_accordion", open = FALSE,
                   accordion_panel(
                     title = "Show cohort expectations",
-                    value = "panel_ce_2",
+                    value = "cohort_characteristics_expectations",
                     reactable::reactableOutput("cohort_characteristics_expectations")
                   )),
         # cohort_characteristics_expectations_end
@@ -1697,10 +1701,10 @@ ui <- fluidPage(
           )),
         icon = shiny::icon("arrow-up-right-dots"),
         # large_scale_characteristics_expectations_start
-        accordion(open = FALSE,
+        accordion(id = "large_scale_characteristics_expectations_accordion", open = FALSE,
                   accordion_panel(
                     title = "Show cohort expectations",
-                    value = "panel_ce_3",
+                    value = "large_scale_characteristics_expectations",
                     reactable::reactableOutput("large_scale_characteristics_expectations")
                   )),
         # large_scale_characteristics_expectations_end
@@ -1878,10 +1882,10 @@ ui <- fluidPage(
         ),
         icon = shiny::icon("people-arrows"),
         # compare_large_scale_characteristics_expectations_start
-        accordion(open = FALSE,
+        accordion(id = "compare_large_scale_characteristics_expectations_accordion", open = FALSE,
                   accordion_panel(
                     title = "Show cohort expectations",
-                    value = "panel_ce_4",
+                    value = "compare_large_scale_characteristics_expectations",
                     reactable::reactableOutput("compare_large_scale_characteristics_expectations")
                   )),
         # compare_large_scale_characteristics_expectations_end
@@ -2069,10 +2073,10 @@ ui <- fluidPage(
           )),
         icon = shiny::icon("yin-yang"),
         # compare_cohorts_expectations_start
-        accordion(open = FALSE,
+        accordion(id = "compare_cohorts_expectations_accordion", open = FALSE,
                   accordion_panel(
                     title = "Show cohort expectations",
-                    value = "panel_ce_5",
+                    value = "compare_cohorts_expectations",
                     reactable::reactableOutput("compare_cohorts_expectations")
                   )),
         # compare_cohorts_expectations_end
@@ -2385,10 +2389,10 @@ ui <- fluidPage(
           )),
         icon = shiny::icon("chart-gantt"),
         # cohort_survival_expectations_start
-        accordion(open = FALSE,
+        accordion(id = "cohort_survival_expectations_accordion", open = FALSE,
                   accordion_panel(
                     title = "Show cohort expectations",
-                    value = "panel_ce_6",
+                    value = "cohort_survival_expectations",
                     reactable::reactableOutput("cohort_survival_expectations")
                   )),
         # cohort_survival_expectations_end
@@ -2538,6 +2542,7 @@ ui <- fluidPage(
     # populationDiagnostics_start -----
     bslib::nav_menu(
       title = "Population diagnostics",
+      value = "populationDiagnostics",
       icon = shiny::icon("list"),
       ## incidence_start -----
       bslib::nav_panel(

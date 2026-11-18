@@ -3,6 +3,46 @@
 
 server <- function(input, output, session) {
 
+  # Hide menus when none of their panels have results.
+  allDiagnosticsMenu <- c(
+    "databaseDiagnostics", "codelistDiagnostics", "cohortDiagnostics",
+    "populationDiagnostics"
+  )
+  purrr::walk(setdiff(allDiagnosticsMenu, diagnostics), \(menu) {
+    bslib::nav_hide(id = "main_navbar", target = menu, session = session)
+  })
+
+  # Hide individual panels that have no results.
+  allDiagnosticsPanels <- c(
+    # databaseDiagnostics
+    "Snapshot", "Person", "Observation periods", "Clinical Records",
+    # codelistDiagnostics
+    "Cohort code use", "Achilles code use", "Orphan codes",
+    "Measurement Diagnostics", "Drug diagnostics",
+    # cohortDiagnostics
+    "Cohort count", "Cohort characteristics", "Large scale characteristics",
+    "Compare large scale characteristics", "Compare cohorts",
+    "Cohort survival",
+    # populationDiagnostics
+    "Incidence", "Prevalence"
+  )
+  purrr::walk(setdiff(allDiagnosticsPanels, diagnosticsPanels), \(menu) {
+    bslib::nav_hide(id = "main_navbar", target = menu, session = session)
+  })
+
+  # Hide expectation panels that have no expectations or matching results.
+  allExpectationsPanels <- c(
+    "cohort_count_expectations", "cohort_characteristics_expectations",
+    "large_scale_characteristics_expectations",
+    "compare_large_scale_characteristics_expectations",
+    "compare_cohorts_expectations", "cohort_survival_expectations"
+  )
+  purrr::walk(setdiff(allExpectationsPanels, expectationsPanels), \(panel) {
+    bslib::accordion_panel_remove(
+      id = paste0(panel, "_accordion"), target = panel, session = session
+    )
+  })
+
   # Shared variables
   inputs_initialized <- reactiveVal(FALSE)
   shared_cdm_names   <- reactiveVal(NULL)
