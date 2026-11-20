@@ -24,6 +24,7 @@ test_that("test check functions", {
 test_that("overall diagnostics function", {
 
   skip_on_cran()
+  rlang::local_options(omopgenerics.logFile = NULL)
 
   cdm_local <- omock::mockCdmReference() |>
     omock::mockPerson(nPerson = 5000) |>
@@ -43,8 +44,8 @@ test_that("overall diagnostics function", {
 
   original_log_path  <- file.path(tempdir(), omopgenerics::uniqueTableName())
   dir.create(original_log_path, showWarnings = FALSE)
-  options("omopgenerics.logFile" = original_log_path)
   omopgenerics::createLogFile(logFile = file.path(original_log_path, "log.txt"))
+  original_log_file <- getOption("omopgenerics.logFile")
   omopgenerics::logMessage("start test")
 
   staging_path <- file.path(tempdir(), omopgenerics::uniqueTableName())
@@ -74,6 +75,7 @@ test_that("overall diagnostics function", {
     ),
     populationDiagnostics = NULL
   ))
+  expect_identical(getOption("omopgenerics.logFile"), original_log_file)
 
   cohort_post <- cdm$my_cohort |>
     dplyr::collect()

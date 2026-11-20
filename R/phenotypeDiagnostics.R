@@ -99,6 +99,7 @@ phenotypeDiagnostics <- function(cohort,
   )
 
   existingLogFile <- getOption(x = "omopgenerics.logFile", default = NULL)
+  on.exit(options("omopgenerics.logFile" = existingLogFile), add = TRUE)
   if (!is.null(existingLogFile)) {
     options("omopgenerics.logFile" = NULL)
   }
@@ -230,7 +231,6 @@ phenotypeDiagnostics <- function(cohort,
       append = TRUE
     ) |>
       invisible()
-    options("omopgenerics.logFile" = existingLogFile)
   }
 
   return(results)
