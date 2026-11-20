@@ -54,16 +54,12 @@ populationDiagnostics <- function(cohort,
   cdm <- omopgenerics::cdmReference(cohort)
   cohortName <- omopgenerics::tableName(cohort)
 
-  if (!is.null(getOption("omopgenerics.logFile"))) {
-    omopgenerics::logMessage("Population diagnosics - denominator cohort")
-  }
+  omopgenerics::logMessage("Population diagnosics - denominator cohort")
   denominatorTable <- omopgenerics::uniqueTableName()
 
   # add population sampling
   if(!is.null(populationSample)){
-    if (!is.null(getOption("omopgenerics.logFile"))) {
-      omopgenerics::logMessage(paste0("Population diagnosics - sampling person table to ", populationSample, " people"))
-    }
+    omopgenerics::logMessage(paste0("Population diagnosics - sampling person table to ", populationSample, " people"))
     if(is.na(populationDateRange[[1]]) && is.na(populationDateRange[[2]])){
       cdm$person <- cdm$person |>
         dplyr::slice_sample(n = populationSample)
@@ -120,9 +116,7 @@ populationDiagnostics <- function(cohort,
   results <- list()
 
   if(isTRUE(incidence)) {
-    if (!is.null(getOption("omopgenerics.logFile"))) {
-      omopgenerics::logMessage("Population diagnosics - incidence")
-    }
+    omopgenerics::logMessage("Population diagnosics - incidence")
     results[["incidence"]] <- IncidencePrevalence::estimateIncidence(
       cdm = cdm,
       denominatorTable = denominatorTable,
@@ -135,9 +129,7 @@ populationDiagnostics <- function(cohort,
   }
 
   if(isTRUE(periodPrevalence)) {
-    if (!is.null(getOption("omopgenerics.logFile"))) {
-      omopgenerics::logMessage("Population diagnosics - prevalence")
-    }
+    omopgenerics::logMessage("Population diagnosics - prevalence")
 
     results[["prevalence"]] <- IncidencePrevalence::estimatePeriodPrevalence(
       cdm = cdm,

@@ -66,17 +66,13 @@ databaseDiagnostics <- function(cohort,
 
   # Snapshot ----
   if(isTRUE(snapshot)) {
-    if (!is.null(getOption("omopgenerics.logFile"))) {
-      omopgenerics::logMessage("Database diagnostics - getting CDM Snapshot")
-    }
+    omopgenerics::logMessage("Database diagnostics - getting CDM Snapshot")
     results[["snap"]] <- OmopSketch::summariseOmopSnapshot(cdm)
   }
 
   # Person table ----
   if(isTRUE(personTableSummary)) {
-    if (!is.null(getOption("omopgenerics.logFile"))) {
-      omopgenerics::logMessage("Database diagnostics - summarising person table")
-    }
+    omopgenerics::logMessage("Database diagnostics - summarising person table")
     results[["personTableSummary"]] <- OmopSketch::summarisePerson(cdm)
     results[["dob_density"]] <- cdm$person |>
       PatientProfiles::addDemographics(age = FALSE,
@@ -97,9 +93,7 @@ databaseDiagnostics <- function(cohort,
 
   # Observation period ----
   if(isTRUE(observationPeriodsSummary)) {
-    if (!is.null(getOption("omopgenerics.logFile"))) {
-      omopgenerics::logMessage("Database diagnostics - summarising observation period")
-    }
+    omopgenerics::logMessage("Database diagnostics - summarising observation period")
     results[["obs_period"]] <- OmopSketch::summariseObservationPeriod(cdm$observation_period)
     results[["obs_density"]] <- cdm$observation_period |>
       PatientProfiles::summariseResult(
@@ -156,15 +150,11 @@ databaseDiagnostics <- function(cohort,
               sort()
             workingOmopTables <- intersect(workingOmopTables, names(cdm))
             if(length(workingOmopTables) >= 1) {
-              if (!is.null(getOption("omopgenerics.logFile"))) {
-                omopgenerics::logMessage("Database diagnostics - summarising clinical tables - summary")
-              }
+              omopgenerics::logMessage("Database diagnostics - summarising clinical tables - summary")
 
               results[["omop_tabs"]] <- OmopSketch::summariseClinicalRecords(cdm,
                                                                              omopTableName = workingOmopTables)
-              if (!is.null(getOption("omopgenerics.logFile"))) {
-                omopgenerics::logMessage("Database diagnostics - summarising clinical tables - trends")
-              }
+              omopgenerics::logMessage("Database diagnostics - summarising clinical tables - trends")
               results[["omop_tab_trends"]] <- OmopSketch::summariseTrend(cdm = cdm,
                                                                          event = workingOmopTables,
                                                                          output = "record",
