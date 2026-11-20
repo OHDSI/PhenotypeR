@@ -74,6 +74,7 @@ test_that("overall diagnostics function", {
     ),
     populationDiagnostics = NULL
   ))
+  expect_null(getOption("omopgenerics.logFile"))
 
   cohort_post <- cdm$my_cohort |>
     dplyr::collect()
