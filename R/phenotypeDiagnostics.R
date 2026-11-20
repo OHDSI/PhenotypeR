@@ -231,6 +231,8 @@ phenotypeDiagnostics <- function(cohort,
     ) |>
       invisible()
     options("omopgenerics.logFile" = existingLogFile)
+  } else {
+    options("omopgenerics.logFile" = NULL)
   }
 
   return(results)
