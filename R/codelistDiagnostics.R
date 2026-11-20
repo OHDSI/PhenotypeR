@@ -117,9 +117,7 @@ codelistDiagnostics <- function(cohort,
     dplyr::pull("cohort_definition_id")
 
   if(isTRUE(cohortCodeUse)) {
-    if (!is.null(getOption("omopgenerics.logFile"))) {
-      omopgenerics::logMessage("Codelist diagnostics - index event breakdown")
-    }
+    omopgenerics::logMessage("Codelist diagnostics - index event breakdown")
     results[["index_event_"]] <- CodelistGenerator::summariseCohortCodeUse(
       cdm = cdm,
       cohortTable = cohortTable,
@@ -141,9 +139,7 @@ codelistDiagnostics <- function(cohort,
     dplyr::collect()
 
   if (isTRUE(measurementDiagnostics) && nrow(measurements) > 0) {
-    if (!is.null(getOption("omopgenerics.logFile"))) {
-      omopgenerics::logMessage("Codelist diagnostics - measurement concepts")
-    }
+    omopgenerics::logMessage("Codelist diagnostics - measurement concepts")
     measurementCohortsIds <- unique(measurements$cohort_definition_id)
 
     for (id in measurementCohortsIds) {
@@ -185,9 +181,7 @@ codelistDiagnostics <- function(cohort,
     dplyr::filter(tolower(.data$domain_id) %in% c("drug")) |>
     dplyr::collect()
   if (nrow(drugs) > 0) {
-    if (!is.null(getOption("omopgenerics.logFile"))) {
-      omopgenerics::logMessage("Codelist diagnostics - drug diagnostics")
-    }
+    omopgenerics::logMessage("Codelist diagnostics - drug diagnostics")
     drugCohortsIds <- unique(drugs$cohort_definition_id)
     for (id in drugCohortsIds) {
       nm <- omopgenerics::uniqueTableName()
@@ -222,16 +216,12 @@ codelistDiagnostics <- function(cohort,
   if("achilles_results" %in% names(cdm)){
 
     if(isTRUE(achillesCodeUse)) {
-      if (!is.null(getOption("omopgenerics.logFile"))) {
-        omopgenerics::logMessage("Codelist diagnostics - achilles code counts")
-      }
+      omopgenerics::logMessage("Codelist diagnostics - achilles code counts")
       results[[paste0("achilles_code_use")]] <- CodelistGenerator::summariseAchillesCodeUse(x = all_codelists, cdm = cdm)
     }
 
     if(isTRUE(orphanCodeUse)) {
-      if (!is.null(getOption("omopgenerics.logFile"))) {
-        omopgenerics::logMessage("Codelist diagnostics - orphan concepts")
-      }
+      omopgenerics::logMessage("Codelist diagnostics - orphan concepts")
       results[["orphan_codes"]] <- CodelistGenerator::summariseOrphanCodes(
         x = all_codelists,
         cdm = cdm
