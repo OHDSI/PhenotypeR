@@ -99,6 +99,7 @@ phenotypeDiagnostics <- function(cohort,
   )
 
   existingLogFile <- getOption(x = "omopgenerics.logFile", default = NULL)
+  on.exit(options("omopgenerics.logFile" = existingLogFile), add = TRUE)
   if (!is.null(existingLogFile)) {
     options("omopgenerics.logFile" = NULL)
   }
@@ -231,10 +232,6 @@ phenotypeDiagnostics <- function(cohort,
     ) |>
       invisible()
   }
-
-  # this should be outside the if statment because if logger did not exit
-  # before the PhenotypeR run it must be deleted from the record
-  options("omopgenerics.logFile" = existingLogFile)
 
   return(results)
 }
